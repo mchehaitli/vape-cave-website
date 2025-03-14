@@ -26,10 +26,10 @@ const HomePage = () => {
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold font-['Poppins'] mb-4 leading-tight">
                 Vape into the <span className="text-primary">Future</span>
               </h1>
-              <h2 className="text-xl md:text-2xl mb-8 text-white/80 font-medium max-w-[1100px] mx-auto">
-                Your One Stop Vape Shop for Disposables | E-Liquids | Salts | Delta | THC - A | Glass | Tobacco | Hookah / Shisha | Vaporizers | Mods | and much more
+              <h2 className="text-xl md:text-2xl lg:text-3xl mb-8 text-white/90 font-medium max-w-[1100px] mx-auto leading-relaxed">
+                Your One Stop Vape Shop for <span className="text-primary font-semibold">Disposables</span> | <span className="text-primary font-semibold">E-Liquids</span> | <span className="text-primary font-semibold">Salts</span> | <span className="text-primary font-semibold">Delta</span> | <span className="text-primary font-semibold">THC - A</span> | <span className="text-primary font-semibold">Glass</span> | <span className="text-primary font-semibold">Tobacco</span> | <span className="text-primary font-semibold">Hookah / Shisha</span> | <span className="text-primary font-semibold">Vaporizers</span> | <span className="text-primary font-semibold">Mods</span> | and much more
               </h2>
-              <p className="text-lg md:text-xl mb-10 text-white/90 max-w-2xl mx-auto">
+              <p className="text-base md:text-lg mb-10 text-white/80 max-w-2xl mx-auto">
                 We are a locally owned business specializing in Vaporizers, E-Liquid, Salt Nic, and many different types of disposable devices. We also carry a wide range of glass pipes and accessories as well as Novelties and Hookahs/Shisha. Basically we carry all your smoking needs!
               </p>
               <div className="flex flex-wrap justify-center gap-5 mt-8">
