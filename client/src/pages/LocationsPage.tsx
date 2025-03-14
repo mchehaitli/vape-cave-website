@@ -2,6 +2,7 @@ import MainLayout from "@/layouts/MainLayout";
 import { Helmet } from "react-helmet";
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
+import GoogleMapsIntegration from "@/components/GoogleMapsIntegration";
 
 // Define the structure for store locations with all needed information
 interface StoreLocation {
@@ -230,22 +231,27 @@ const LocationsPage = () => {
                     </div>
                   </div>
                   
-                  {/* Google Maps Embed */}
+                  {/* Google Maps Integration */}
                   <div 
-                    className="h-64 bg-gray-100 rounded-lg mb-6 overflow-hidden cursor-pointer"
+                    className="h-64 rounded-lg mb-6 overflow-hidden cursor-pointer"
                     onClick={() => setActiveLocation(activeLocation === location.id ? null : location.id)}
                   >
-                    <iframe 
-                      src={location.mapEmbed} 
-                      width="100%" 
-                      height="100%" 
-                      style={{ border: 0 }} 
-                      allowFullScreen 
-                      loading="lazy" 
-                      referrerPolicy="no-referrer-when-downgrade"
-                      title={`Map to ${location.name}`}
-                      className="w-full h-full"
-                    ></iframe>
+                    <GoogleMapsIntegration
+                      locations={[{
+                        id: location.id,
+                        name: location.name,
+                        address: location.fullAddress,
+                        position: location.coordinates,
+                        phone: location.phone,
+                        hours: location.hours
+                      }]}
+                      apiKey={import.meta.env.GOOGLE_MAPS_API_KEY as string}
+                      height="100%"
+                      width="100%"
+                      zoom={15}
+                      activeLocationId={activeLocation === location.id ? location.id : null}
+                      onMarkerClick={(id) => setActiveLocation(id)}
+                    />
                   </div>
                   
                   <div className="flex flex-wrap gap-3 pt-2">
