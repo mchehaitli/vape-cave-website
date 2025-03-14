@@ -46,7 +46,7 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
   const [markers, setMarkers] = useState<any[]>([]);
   
   // Use API key from props if provided, otherwise from environment variables
-  const apiKey = propApiKey || import.meta.env.GOOGLE_MAPS_API_KEY || '';
+  const apiKey = propApiKey || import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '';
   console.log("API Key available:", !!apiKey);
   
   // Log the URL for debugging domain restriction issues
