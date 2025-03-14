@@ -268,8 +268,10 @@ const LocationsPage = () => {
                     {/* Google Maps Direction Link */}
                     <a 
                       href={location.id === 1 
-                        ? "google.navigation:q=33.150849,-96.824392&mode=d" 
-                        : "google.navigation:q=32.680717,-97.135062&mode=d"}
+                        ? "https://www.google.com/maps/dir/?api=1&destination=6958+Main+St+Frisco+TX+75033&destination_place_id=ChIJs3D9CpwZTIYRfczJQQzTOeA&travelmode=driving" 
+                        : "https://www.google.com/maps/dir/?api=1&destination=4100+S+Cooper+St+Arlington+TX+76015&travelmode=driving"}
+                      target="_blank"
+                      rel="noopener noreferrer" 
                       className="inline-flex items-center bg-[#4285F4] hover:bg-[#4285F4]/90 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 shadow hover:shadow-lg"
                     >
                       <svg className="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
