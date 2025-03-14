@@ -265,11 +265,11 @@ const LocationsPage = () => {
                       Call Store
                     </a>
                     
-                    {/* Google Maps Direction Link - Platform-specific handling */}
+                    {/* Google Maps Direction Link - Using standard web URLs */}
                     <a 
                       href={location.id === 1 
-                        ? "https://www.google.com/maps/place/Vape+Cave+Smoke+%26+Stuff/@33.150849,-96.824392,17z/" 
-                        : "https://www.google.com/maps/place/Vape+Cave+Smoke+%26+Stuff/@32.680717,-97.135062,17z/"}
+                        ? "https://www.google.com/maps/dir/?api=1&destination=6958+Main+St+Frisco+TX+75033&destination_place_id=ChIJs3D9CpwZTIYRfczJQQzTOeA" 
+                        : "https://www.google.com/maps/dir/?api=1&destination=4100+S+Cooper+St+Unit+4108+Arlington+TX+76015&destination_place_id=ChIJJ3MoxMMxToYR1paVqsAIbi8"} 
                       target="_blank"
                       rel="noopener noreferrer" 
                       className="inline-flex items-center bg-[#4285F4] hover:bg-[#4285F4]/90 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 shadow hover:shadow-lg"
