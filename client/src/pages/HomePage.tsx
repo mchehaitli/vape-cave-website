@@ -27,7 +27,7 @@ const HomePage = () => {
                 Premium Vaping <span className="text-primary">Experience</span>
               </h1>
               <p className="text-lg md:text-xl mb-10 text-white/90 max-w-2xl mx-auto">
-                Discover our wide selection of high-quality vape products, e-liquids, and accessories at Vape Cave - your ultimate destination for all vaping needs.
+                We are a locally owned business specializing in Vaporizers, E-Liquid, Salt Nic, and many different types of disposable devices. We also carry a wide range of glass pipes and accessories as well as Novelties and Hookahs/Shisha. Basically we carry all your smoking needs!
               </p>
               <div className="flex flex-wrap justify-center gap-5 mt-8">
                 <Link href="/products">
