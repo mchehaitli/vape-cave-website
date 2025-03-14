@@ -387,24 +387,33 @@ const LocationsPage = () => {
           </div>
           
           <div className="relative rounded-xl overflow-hidden shadow-lg h-[500px] mb-8">
-            <iframe 
-              src="https://www.google.com/maps/d/embed?mid=1f7JA1hDmOWfPxIFLVVDjL7xn2mB9r-s&ehbc=2E312F" 
-              width="100%" 
-              height="100%" 
-              style={{ border: 0 }} 
-              allowFullScreen 
-              loading="lazy" 
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Vape Cave Store Locations"
-              className="w-full h-full"
-            ></iframe>
+            <GoogleMapsIntegration
+              locations={locations.map(location => ({
+                id: location.id,
+                name: location.name,
+                address: location.fullAddress,
+                position: location.coordinates,
+                phone: location.phone,
+                hours: location.hours
+              }))}
+              apiKey={import.meta.env.GOOGLE_MAPS_API_KEY as string}
+              height="100%"
+              width="100%"
+              zoom={11}
+              activeLocationId={activeLocation}
+              onMarkerClick={(id) => setActiveLocation(id)}
+            />
             <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-4 rounded-lg shadow z-10">
               <h3 className="font-semibold text-lg mb-2">All Vape Cave Locations</h3>
               <ul className="space-y-2">
                 {locations.map(location => (
-                  <li key={location.id} className="flex items-center">
-                    <div className="h-3 w-3 rounded-full bg-primary mr-3"></div>
-                    <span>{location.name}</span>
+                  <li 
+                    key={location.id} 
+                    className="flex items-center cursor-pointer hover:text-primary transition-colors"
+                    onClick={() => setActiveLocation(activeLocation === location.id ? null : location.id)}
+                  >
+                    <div className={`h-3 w-3 rounded-full mr-3 ${activeLocation === location.id ? 'bg-blue-500' : 'bg-primary'}`}></div>
+                    <span className={activeLocation === location.id ? 'font-medium' : ''}>{location.name}</span>
                   </li>
                 ))}
               </ul>
