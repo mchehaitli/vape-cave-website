@@ -36,7 +36,7 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
   // Detect iOS devices to use Apple Maps
   const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
   
-  // Create URL for different platforms
+  // Create URL for different platforms with enhanced SEO and Plus Code integration
   const getDirectionsUrl = () => {
     // Get encoded versions of address and plus code
     const encodedAddress = encodeURIComponent(address);
@@ -48,43 +48,54 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
     const city = cityMatch ? cityMatch[1].trim() : "Frisco"; // Default to Frisco for SEO focus
     
     // Create a more precise query with the location name appended for SEO
-    // Include "vape shop" keywords for better local SEO
+    // Include "vape shop" keywords and Plus Code for better local SEO
     const enhancedQuery = plusCode 
-      ? `${plusCode} Vape Cave ${city}, Texas` 
-      : `Vape Cave ${address}`;
+      ? `${plusCode} Vape Cave ${city}, Texas - Premium Vape Shop` 
+      : `Vape Cave ${address} - Premium Vape Shop in ${city}`;
     const encodedEnhancedQuery = encodeURIComponent(enhancedQuery);
     
+    // Add Google Place ID if this is the Frisco location
+    const isFriscoLocation = city === "Frisco" || address.includes("Frisco") || address.includes("75033");
+    const googlePlaceId = isFriscoLocation ? "ChIJxXjrR3wVkFQRcKK89i-aFDw" : undefined;
+    const placeIdParam = googlePlaceId ? `&place_id=${googlePlaceId}` : "";
+    
+    // New approach with enhanced URL parameters for better search indexing
     if (isIOS && isMobile) {
       // Enhanced URL scheme for Apple Maps on iOS devices
-      // Using specific format for better Plus Code support on iOS 16+
+      // Using specific format with multiple location identifiers for better iOS 16+ support
       
       if (encodedPlusCode) {
-        // For Plus Code locations, use a format that promotes the Plus Code
-        // This URL includes both the Plus Code in the query and coordinates for precision
-        return `https://maps.apple.com/?q=${encodedPlusCode} ${city}&ll=${lat},${lng}&address=${encodedAddress}`;
+        // For Plus Code locations, combine multiple location identifiers
+        // This creates a more robust Apple Maps link with redundant location data
+        return `https://maps.apple.com/?q=${encodedPlusCode} ${city}&ll=${lat},${lng}&address=${encodedAddress}&t=m&sll=${lat},${lng}`;
       } else {
-        // Fall back to standard coordinates
-        return `https://maps.apple.com/?address=${encodedAddress}&ll=${lat},${lng}`;
+        // Use address + coordinates for maximum compatibility
+        return `https://maps.apple.com/?address=${encodedAddress}&ll=${lat},${lng}&t=m`;
       }
     } else if (isMobile) {
-      // Enhanced URL scheme for Google Maps app on Android
+      // Enhanced URL scheme for Google Maps app on Android with SEO fields
       if (encodedPlusCode) {
-        // Use Plus Code as the primary search query for better precision
-        // Google Maps on Android has excellent Plus Code support
-        return `https://www.google.com/maps/search/?api=1&query=${encodedEnhancedQuery}`;
+        // Use Plus Code as the primary identifier with enhanced query parameters
+        // Add semantic markup in the query for better search visibility
+        return `https://www.google.com/maps/search/?api=1&query=${encodedEnhancedQuery}${placeIdParam}`;
       } else {
-        // Include both destination and query parameters for better results
-        return `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}&query=${encodedAddress}&travelmode=driving`;
+        // Include both destination and query parameters with travelmode
+        return `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}&query=${encodedEnhancedQuery}&travelmode=driving${placeIdParam}`;
       }
     } else {
-      // Enhanced URL scheme for Google Maps web on desktop
+      // Enhanced URL scheme for desktop browsers with maximum indexable parameters
       if (encodedPlusCode) {
-        // Use Plus Code with enhanced SEO query for more accurate location on desktop
-        // This format is more search-friendly and preserves the Plus Code precision
-        return `https://www.google.com/maps/search/?api=1&query=${encodedEnhancedQuery}`;
+        // Create a search URL with Plus Code that's optimized for maximum search visibility
+        // This format is highly indexable and includes all necessary location identifiers
+        const enhancedUrl = `https://www.google.com/maps/search/?api=1&query=${encodedEnhancedQuery}${placeIdParam}`;
+        
+        // For desktop users, log the Plus Code usage for analytics
+        console.log(`Plus Code directions requested: ${plusCode} for ${city} location`);
+        
+        return enhancedUrl;
       } else {
-        // Include both destination and query parameters for better desktop results
-        return `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}&travelmode=driving`;
+        // Create a directions URL with enhanced metadata
+        return `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}&destination_place_id=${googlePlaceId || ""}&travelmode=driving`;
       }
     }
   };
@@ -133,10 +144,30 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
             {`
               {
                 "@context": "https://schema.org",
-                "@type": "Place",
+                "@type": "VapeShop",
                 "name": "Vape Cave Frisco",
-                "description": "Premium vape shop in Frisco, TX offering a wide selection of vapes, e-liquids, THC-A, Delta 8, and smoking accessories.",
+                "alternateName": ["Vape Cave Smoke & Stuff", "Vape Shop Frisco 552G+86"],
+                "description": "Premium vape shop in Frisco, TX offering a wide selection of vapes, e-liquids, THC-A, Delta 8, and smoking accessories. Located at Plus Code: ${plusCode}.",
                 "url": "https://vapecavetx.com/locations/frisco",
+                "telephone": "+14692940061",
+                "email": "info@vapecavetx.com",
+                "openingHoursSpecification": [
+                  {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Sunday"],
+                    "opens": "10:00",
+                    "closes": "24:00"
+                  },
+                  {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": ["Friday", "Saturday"],
+                    "opens": "10:00",
+                    "closes": "01:00"
+                  }
+                ],
+                "priceRange": "$$",
+                "paymentAccepted": "Cash, Credit Card, Debit Card",
+                "areaServed": ["Frisco", "Allen", "Plano", "McKinney", "North Texas"],
                 "address": {
                   "@type": "PostalAddress",
                   "streetAddress": "${address.split(',')[0]}",
@@ -150,7 +181,32 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
                   "latitude": ${lat},
                   "longitude": ${lng}
                 },
-                "hasMap": "https://plus.codes/${plusCode}"
+                "hasMap": [
+                  {
+                    "@type": "Map",
+                    "name": "Google Maps with Plus Code",
+                    "url": "https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(plusCode)}",
+                    "description": "Find our Frisco vape shop using Google Maps with Plus Code ${plusCode}"
+                  },
+                  {
+                    "@type": "Map",
+                    "name": "Plus Codes Direct",
+                    "url": "https://plus.codes/${plusCode.replace(/\\s+/g, '')}",
+                    "description": "Direct link to our location using Plus Code navigation"
+                  }
+                ],
+                "identifier": [
+                  {
+                    "@type": "PropertyValue",
+                    "name": "Plus Code",
+                    "value": "${plusCode}"
+                  },
+                  {
+                    "@type": "PropertyValue",
+                    "name": "Google Place ID",
+                    "value": "ChIJxXjrR3wVkFQRcKK89i-aFDw"
+                  }
+                ]
               }
             `}
           </script>
@@ -172,6 +228,9 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
         aria-label={`Get directions to ${address}${plusCode ? ` (Plus Code: ${plusCode})` : ''}`}
         data-location={locationCity}
         data-plus-code={plusCode || ""}
+        data-google-place-id="ChIJxXjrR3wVkFQRcKK89i-aFDw"
+        itemScope
+        itemType="https://schema.org/VapeShop"
         itemProp="hasMap"
       >
         {showIcon && (

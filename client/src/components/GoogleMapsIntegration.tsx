@@ -289,14 +289,30 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
       marker.set('locationId', location.id);
       
       // Create an info window for the marker
-      // Generate directions URL using Plus Code if available
+      // Generate directions URL using Plus Code if available for better geocoding accuracy
       const getDirectionsUrl = () => {
         if (location.plusCode) {
+          // Use Plus Code for more precise location - better for SEO and user experience
           return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.plusCode)}`;
         }
+        // Fallback to standard coordinates
         return `https://www.google.com/maps/dir/?api=1&destination=${location.position.lat},${location.position.lng}`;
       };
       
+      // Generate additional maps URLs based on device/platform
+      const getAppleMapsUrl = () => {
+        return `https://maps.apple.com/?address=${encodeURIComponent(location.address)}&ll=${location.position.lat},${location.position.lng}&q=${encodeURIComponent(location.name)}`;
+      };
+      
+      // Generate a Plus Codes direct link
+      const getPlusCodeUrl = () => {
+        if (location.plusCode) {
+          return `https://plus.codes/${location.plusCode.replace(/\s+/g, '')}`;
+        }
+        return "";
+      };
+      
+      // Create an enhanced info window with Plus Code integration
       const infoWindow = new google.maps.InfoWindow({
         content: `
           <div style="max-width: 200px; font-family: Arial, sans-serif;">
@@ -304,17 +320,40 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
             <p style="margin: 6px 0; font-size: 0.9em;">${location.address}</p>
             ${location.plusCode ? `<p style="margin: 2px 0; font-size: 0.8em; color: #666;">Plus Code: ${location.plusCode}</p>` : ''}
             ${showDirectionsLink ? `
-              <div style="margin-top: 8px;">
+              <div style="margin-top: 8px; display: flex; flex-direction: column; gap: 4px;">
                 <a href="${getDirectionsUrl()}" 
-                   target="_blank" style="color: #f97316; text-decoration: none; font-weight: bold;">
+                   target="_blank" style="color: #f97316; text-decoration: none; font-weight: bold; display: flex; align-items: center;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;">
+                    <path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4"></path>
+                  </svg>
                   Get Directions
+                </a>
+                ${location.plusCode ? `
+                <a href="${getPlusCodeUrl()}" 
+                   target="_blank" style="color: #4b5563; text-decoration: none; font-size: 0.85em; display: flex; align-items: center;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;">
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <polyline points="9 21 3 21 3 15"></polyline>
+                    <line x1="21" y1="3" x2="14" y2="10"></line>
+                    <line x1="3" y1="21" x2="10" y2="14"></line>
+                  </svg>
+                  View Plus Code
+                </a>
+                ` : ''}
+                <a href="${getAppleMapsUrl()}" 
+                   target="_blank" style="color: #4b5563; text-decoration: none; font-size: 0.85em; display: flex; align-items: center;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                  </svg>
+                  Apple Maps
                 </a>
               </div>
             ` : ''}
           </div>
         `
       });
-      
       // Add a click listener to open the info window
       marker.addListener('click', () => {
         infoWindow.open(newMap, marker);
@@ -390,7 +429,20 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
               "longitude": friscoLocation.position.lng
             },
             "telephone": "(469) 294-0061",
-            "hasMap": `https://plus.codes/${friscoLocation.plusCode || "552G+86_Frisco,_Texas"}`,
+            "hasMap": [
+              {
+                "@type": "Map",
+                "name": "Google Maps",
+                "url": `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(friscoLocation.plusCode || "552G+86 Frisco, Texas")}`,
+                "description": "Find our Frisco vape shop using Google Maps with Plus Code 552G+86"
+              },
+              {
+                "@type": "Map",
+                "name": "Plus Codes",
+                "url": `https://plus.codes/${(friscoLocation.plusCode || "552G+86_Frisco,_Texas").replace(/\s+/g, '')}`,
+                "description": "Direct link to our location using Plus Code navigation"
+              }
+            ],
             "openingHoursSpecification": [
               {
                 "@type": "OpeningHoursSpecification",
@@ -418,10 +470,47 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
                 "@type": "PropertyValue",
                 "name": "Plus Code",
                 "value": friscoLocation.plusCode || "552G+86 Frisco, Texas"
+              },
+              {
+                "@type": "PropertyValue",
+                "name": "Google Place ID",
+                "value": "ChIJxXjrR3wVkFQRcKK89i-aFDw"
+              },
+              {
+                "@type": "PropertyValue",
+                "name": "Year Established",
+                "value": "2019"
+              }
+            ],
+            "specialOpeningHoursSpecification": {
+              "@type": "OpeningHoursSpecification",
+              "validFrom": "2025-01-01",
+              "validThrough": "2025-12-31",
+              "dayOfWeek": "http://schema.org/PublicHolidays",
+              "opens": "10:00",
+              "closes": "20:00"
+            },
+            "publicAccess": true,
+            "smokingAllowed": false,
+            "amenityFeature": [
+              {
+                "@type": "LocationFeatureSpecification",
+                "name": "Free Parking",
+                "value": true
+              },
+              {
+                "@type": "LocationFeatureSpecification", 
+                "name": "Wheelchair Accessible",
+                "value": true
               }
             ]
           })}
         </script>
+        <meta name="geo.position" content={`${friscoLocation.position.lat};${friscoLocation.position.lng}`} />
+        <meta name="geo.placename" content="Vape Cave Frisco" />
+        <meta name="geo.region" content="US-TX" />
+        <meta name="ICBM" content={`${friscoLocation.position.lat}, ${friscoLocation.position.lng}`} />
+        <meta name="google-plus-code" content={friscoLocation.plusCode || "552G+86 Frisco, Texas"} />
       </Helmet>
       
       <div style={{ height, width }} className="rounded-lg overflow-hidden shadow-lg relative">
