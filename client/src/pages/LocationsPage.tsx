@@ -43,8 +43,8 @@ const LocationsPage = () => {
       closedDays: "",
       image: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       coordinates: {
-        lat: 33.1562,
-        lng: -96.8236
+        lat: 33.150730,
+        lng: -96.822550
       },
       googlePlaceId: "ChIJxXjrR3wVkFQRcKK89i-aFDw", // This should be your actual Google Place ID
       appleMapsLink: "https://maps.apple.com/?address=6958%20Main%20St,%20Frisco,%20TX%2075033&ll=33.1562,-96.8236&q=Vape%20Cave%20Frisco",
@@ -72,8 +72,8 @@ const LocationsPage = () => {
       closedDays: "",
       image: "https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       coordinates: {
-        lat: 32.6870,
-        lng: -97.1365
+        lat: 32.683571,
+        lng: -97.134650
       },
       googlePlaceId: "ChIJyersF8wXkFQRVQw-oKzhjYI", // This should be your actual Google Place ID
       appleMapsLink: "https://maps.apple.com/?address=4100%20S%20Cooper%20St,%20Unit%204108,%20Arlington,%20TX%2076015&ll=32.6870,-97.1365&q=Vape%20Cave%20Arlington",
