@@ -48,7 +48,67 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
   
   // Use API key from props if provided, otherwise from environment variables
   const apiKey = propApiKey || import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '';
-  console.log("API Key available:", !!apiKey);
+  
+  // Add structured data for maps integration
+  useEffect(() => {
+    // Add LD+JSON structured data for enhanced map findability
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    
+    // Create structured data focusing on the Frisco location if it exists
+    const friscoLocation = locations.find(loc => loc.id === 1) || locations[0];
+    
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "VapeShop",
+      "name": friscoLocation.name,
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": friscoLocation.address,
+        "addressLocality": friscoLocation.city,
+        "addressRegion": "TX",
+        "postalCode": "75033",
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": friscoLocation.position.lat,
+        "longitude": friscoLocation.position.lng
+      },
+      "telephone": "(469) 294-0061",
+      "hasMap": `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(friscoLocation.plusCode || '')}`,
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Sunday"],
+          "opens": "10:00",
+          "closes": "24:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Friday", "Saturday"],
+          "opens": "10:00",
+          "closes": "01:00"
+        }
+      ],
+      "url": window.location.href,
+      "areaServed": ["Frisco", "Allen", "Plano", "McKinney", "North Texas"],
+      "additionalProperty": {
+        "@type": "PropertyValue",
+        "name": "Plus Code",
+        "value": friscoLocation.plusCode || "552G+86 Frisco, Texas"
+      }
+    };
+    
+    script.textContent = JSON.stringify(structuredData);
+    document.head.appendChild(script);
+    
+    return () => {
+      if (document.head.contains(script)) {
+        document.head.removeChild(script);
+      }
+    };
+  }, [locations]);
   
   // Log the URL for debugging domain restriction issues
   useEffect(() => {

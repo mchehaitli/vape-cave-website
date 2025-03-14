@@ -16,11 +16,15 @@ const LocationsPage = () => {
     // Format phone for structured data (remove non-digits and add country code)
     const formattedPhone = "+1" + location.phone.replace(/[^0-9]/g, '');
     
-    return {
+    // Enhanced schema specifically for the Frisco location (or other locations)
+    const isFrisco = location.id === 1;
+    
+    const schema = {
       "@context": "https://schema.org",
-      "@type": "Store",
+      "@type": "VapeShop", // More specific type for better SEO
       "@id": `https://vapecavetx.com/locations/${location.id}`,
       "name": location.name,
+      "alternateName": isFrisco ? "Vape Cave Frisco - Premium Vape Shop" : undefined,
       "url": `https://vapecavetx.com/locations/${location.id}`,
       "logo": "https://vapecavetx.com/logo.png",
       "image": location.image,
@@ -28,6 +32,7 @@ const LocationsPage = () => {
       "email": location.email,
       "description": location.description,
       "areaServed": location.areaServed,
+      "slogan": isFrisco ? "Frisco's premier destination for quality vaping products and accessories" : undefined,
       "address": {
         "@type": "PostalAddress",
         "streetAddress": location.address,
@@ -41,6 +46,22 @@ const LocationsPage = () => {
         "latitude": location.coordinates.lat,
         "longitude": location.coordinates.lng
       },
+      "hasMap": [
+        {
+          "@type": "Map",
+          "url": location.plusCode 
+            ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.plusCode)}`
+            : `https://www.google.com/maps/dir/?api=1&destination=${location.coordinates.lat},${location.coordinates.lng}`
+        },
+        {
+          "@type": "Map",
+          "url": location.mapEmbed
+        },
+        {
+          "@type": "Map", 
+          "url": `https://plus.codes/${location.plusCode?.replace(/\s+/g, '')}`
+        }
+      ],
       "additionalProperty": [
         {
           "@type": "PropertyValue",
@@ -51,8 +72,18 @@ const LocationsPage = () => {
           "@type": "PropertyValue",
           "name": "yearEstablished",
           "value": location.yearEstablished
+        },
+        isFrisco ? {
+          "@type": "PropertyValue",
+          "name": "googleMapPlusCode",
+          "value": "552G+86 Frisco, Texas"
+        } : undefined,
+        {
+          "@type": "PropertyValue",
+          "name": "googlePlaceId",
+          "value": location.googlePlaceId || ""
         }
-      ],
+      ].filter(Boolean),
       "openingHoursSpecification": Object.entries(location.openingHours).map(([day, hours]) => {
         const parts = hours.split(' - ');
         return {
@@ -65,12 +96,12 @@ const LocationsPage = () => {
       "priceRange": location.priceRange,
       "paymentAccepted": location.acceptedPayments.join(", "),
       "currenciesAccepted": "USD",
-      "hasMap": location.mapEmbed,
       "publicAccess": true,
       "isAccessibleForFree": true,
       "smokingAllowed": true,
-      "keywords": "vape shop, e-cigarettes, e-liquids, vaping accessories, " + 
-        location.services.join(", ").toLowerCase(),
+      "keywords": isFrisco 
+        ? "vape shop frisco, delta 8 frisco, thc-a frisco, 552G+86, frisco vape shop, vape products frisco tx, vaping frisco, smoke shop frisco, vape accessories frisco" 
+        : "vape shop, e-cigarettes, e-liquids, vaping accessories, " + location.services.join(", ").toLowerCase(),
       "amenityFeature": location.amenities.map(amenity => ({
         "@type": "LocationFeatureSpecification",
         "name": amenity,
@@ -93,9 +124,19 @@ const LocationsPage = () => {
           "target": {
             "@type": "EntryPoint",
             "urlTemplate": location.plusCode 
-              ? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(location.plusCode)}`
+              ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.plusCode)}`
               : `https://www.google.com/maps/dir/?api=1&destination=${location.coordinates.lat},${location.coordinates.lng}`
           }
+        },
+        {
+          "@type": "FindAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": location.plusCode 
+              ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.plusCode)}`
+              : `https://www.google.com/maps/search/?api=1&query=${location.city}+vape+shop`
+          },
+          "query-input": "required name=vape shop location"
         }
       ],
       "sameAs": [
@@ -105,6 +146,8 @@ const LocationsPage = () => {
         location.socialProfiles?.yelp
       ].filter(Boolean)
     };
+    
+    return schema;
   };
 
   // Set Frisco location (ID 1) as active by default for better SEO and user experience
