@@ -30,6 +30,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
     "@type": "Organization",
     "@id": "https://vapecavetx.com/#organization",
     "name": "Vape Cave",
+    "alternateName": ["Vape Cave Frisco", "Vape Cave Smoke & Stuff"],
     "url": "https://vapecavetx.com",
     "logo": {
       "@type": "ImageObject",
@@ -50,7 +51,21 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         "contactType": "customer service",
         "areaServed": ["Frisco", "Allen", "Plano", "McKinney", "Dallas", "North Texas"],
         "availableLanguage": "English",
-        "contactOption": "TollFree"
+        "contactOption": "TollFree",
+        "hoursAvailable": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Sunday"],
+            "opens": "10:00",
+            "closes": "24:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Friday", "Saturday"],
+            "opens": "10:00",
+            "closes": "01:00"
+          }
+        ]
       }
     ],
     "address": [
@@ -71,9 +86,50 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         "addressCountry": "US"
       }
     ],
+    "location": [
+      {
+        "@type": "VapeShop",
+        "name": "Vape Cave Frisco",
+        "url": "https://vapecavetx.com/locations/1",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "6958 Main St #200",
+          "addressLocality": "Frisco",
+          "addressRegion": "TX",
+          "postalCode": "75033",
+          "addressCountry": "US"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 33.150730,
+          "longitude": -96.822550
+        },
+        "telephone": "+14692940061",
+        "additionalProperty": {
+          "@type": "PropertyValue",
+          "name": "plusCode",
+          "value": "552G+86 Frisco, Texas"
+        },
+        "hasMap": "https://plus.codes/552G+86_Frisco,_Texas"
+      }
+    ],
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": canonicalUrl
+    },
+    "potentialAction": {
+      "@type": "FindAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://vapecavetx.com/locations",
+        "inLanguage": "en-US",
+        "actionPlatform": [
+          "http://schema.org/DesktopWebPlatform",
+          "http://schema.org/IOSPlatform",
+          "http://schema.org/AndroidPlatform"
+        ]
+      },
+      "query-input": "required name=search_term_string"
     }
   };
 
@@ -89,6 +145,10 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         <meta name="keywords" content="vape shop frisco, 552G+86 frisco, frisco vape shop, delta 8 frisco, thc-a frisco, disposable vape frisco, vape products frisco tx, vaping frisco, frisco vaporizer shop, vape cave frisco" />
         <meta name="author" content="Vape Cave" />
         <meta name="robots" content="index, follow" />
+        <meta name="geo.position" content="33.150730;-96.822550" />
+        <meta name="geo.placename" content="Vape Cave Frisco" />
+        <meta name="geo.region" content="US-TX" />
+        <meta name="ICBM" content="33.150730, -96.822550" />
         
         {/* Canonical Tag */}
         <link rel="canonical" href={canonicalUrl} />

@@ -229,6 +229,67 @@ export const getFormattedLocationsForMap = () => {
     name: loc.name,
     address: loc.fullAddress,
     position: loc.coordinates,
-    plusCode: loc.plusCode // Include Plus Code for more precise navigation
+    plusCode: loc.plusCode, // Include Plus Code for more precise navigation
+    city: loc.city // Include city for better location context
   }));
+};
+
+// Helper function to get a location by Plus Code
+export const getLocationByPlusCode = (plusCode: string): StoreLocation | undefined => {
+  return storeLocations.find(location => 
+    location.plusCode?.toLowerCase().includes(plusCode.toLowerCase())
+  );
+};
+
+// Get the Frisco location (for convenience in SEO-focused components)
+export const getFriscoLocation = (): StoreLocation => {
+  return storeLocations.find(location => location.id === 1) || storeLocations[0];
+};
+
+// Generate a structured data representation for a location
+export const generateStructuredDataForLocation = (location: StoreLocation) => {
+  // Format phone for structured data (remove non-digits and add country code)
+  const formattedPhone = "+1" + location.phone.replace(/[^0-9]/g, '');
+  
+  // Check if this is the Frisco location
+  const isFrisco = location.id === 1 || location.city === "Frisco";
+  
+  return {
+    "@context": "https://schema.org",
+    "@type": "VapeShop",
+    "name": location.name,
+    "alternateName": isFrisco ? "Vape Cave Frisco - Premium Vape Shop" : undefined,
+    "url": `https://vapecavetx.com/locations/${location.id}`,
+    "description": location.description,
+    "telephone": formattedPhone,
+    "email": location.email,
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": location.address,
+      "addressLocality": location.city,
+      "addressRegion": "TX",
+      "postalCode": location.fullAddress.match(/\d{5}(?![\d-])/) ? location.fullAddress.match(/\d{5}(?![\d-])/)?.[0] : "",
+      "addressCountry": "US"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": location.coordinates.lat,
+      "longitude": location.coordinates.lng
+    },
+    "hasMap": location.plusCode ? `https://plus.codes/${location.plusCode.replace(/\s+/g, '')}` : undefined,
+    "openingHoursSpecification": Object.entries(location.openingHours).map(([day, hours]) => {
+      const parts = hours.split(' - ');
+      return {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": day,
+        "opens": parts[0],
+        "closes": parts[1] === "Closed" ? "00:00" : parts[1]
+      };
+    }),
+    "additionalProperty": [{
+      "@type": "PropertyValue",
+      "name": "Plus Code",
+      "value": location.plusCode || ""
+    }]
+  };
 };

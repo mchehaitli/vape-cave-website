@@ -56,11 +56,21 @@ const HomePage = () => {
         "hasMap": [
           {
             "@type": "Map",
-            "url": "https://www.google.com/maps/search/?api=1&query=552G%2B86+Frisco%2C+Texas"
+            "name": "Google Maps",
+            "url": "https://www.google.com/maps/search/?api=1&query=552G%2B86+Frisco%2C+Texas",
+            "description": "Find our Frisco vape shop using Google Maps with Plus Code 552G+86"
           },
           {
             "@type": "Map", 
-            "url": "https://plus.codes/552G+86_Frisco,_Texas"
+            "name": "Plus Codes",
+            "url": "https://plus.codes/552G+86_Frisco,_Texas",
+            "description": "Direct link to our Frisco location using Plus Code navigation"
+          },
+          {
+            "@type": "Map",
+            "name": "Apple Maps",
+            "url": "https://maps.apple.com/?address=6958%20Main%20St%20%23200,%20Frisco,%20TX%20%2075033,%20United%20States&ll=33.150730,-96.822550&q=Vape%20Cave",
+            "description": "Find our Frisco vape shop on Apple Maps"
           }
         ],
         "additionalProperty": [
@@ -142,15 +152,34 @@ const HomePage = () => {
         ]
       }
     ],
-    "potentialAction": {
-      "@type": "FindAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": "https://www.google.com/maps/search/?api=1&query=552G%2B86+Frisco%2C+Texas"
+    "potentialAction": [
+      {
+        "@type": "FindAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.google.com/maps/search/?api=1&query=552G%2B86+Frisco%2C+Texas"
+        },
+        "description": "Find directions to our Frisco store using Google Maps Plus Code",
+        "query-input": "required name=location"
       },
-      "description": "Find directions to our Frisco store using Google Maps Plus Code",
-      "query-input": "required name=location"
-    },
+      {
+        "@type": "FindAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://plus.codes/552G+86_Frisco,_Texas"
+        },
+        "description": "Use Plus Code to find our Frisco location",
+        "query-input": "required name=pluscode"
+      },
+      {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://vapecavetx.com/search?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    ],
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://vapecavetx.com/"
@@ -168,6 +197,12 @@ const HomePage = () => {
         <meta name="description" content="Visit Vape Cave in Frisco TX (Plus Code: 552G+86) for premium vaping products, disposables, Delta 8, THC-A, and accessories. Open daily with expert staff and competitive prices." />
         <meta name="keywords" content="vape shop frisco, 552G+86 frisco, frisco vape shop, delta 8 frisco, thc-a frisco, disposable vape frisco, vape products frisco tx, vaping frisco, frisco vaporizer shop, vape cave frisco" />
         <link rel="canonical" href="https://vapecavetx.com/" />
+        <meta name="geo.position" content="33.150730;-96.822550" />
+        <meta name="geo.placename" content="Vape Cave Frisco" />
+        <meta name="geo.region" content="US-TX" />
+        <meta name="ICBM" content="33.150730, -96.822550" />
+        <meta name="google-place-id" content="ChIJxXjrR3wVkFQRcKK89i-aFDw" />
+        <meta name="google-plus-code" content="552G+86 Frisco, Texas" />
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
