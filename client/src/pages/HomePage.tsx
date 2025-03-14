@@ -32,19 +32,21 @@ const HomePage = () => {
             </h1>
             <div className="divider-orange ml-0"></div>
             <h2 className="text-xl md:text-2xl font-light mt-6 mb-8 text-light-gray max-w-2xl">
-              Your one-stop destination for all your smoking needs: <span className="text-orange font-medium">Disposables</span>, <span className="text-orange font-medium">E-Liquids</span>, <span className="text-orange font-medium">Delta</span>, <span className="text-orange font-medium">Glass</span>, and much more.
+              Discover our wide selection of high-quality vape products, e-liquids, and accessories at Vape Cave - your ultimate destination for all vaping needs.
             </h2>
             
             <div className="flex flex-wrap gap-5 mt-10">
-              <Link href="/products">
-                <a className="btn-primary px-8 py-3 rounded-md text-lg inline-block transform transition hover:-translate-y-1">
-                  Explore Products
-                </a>
+              <Link 
+                href="/products"
+                className="btn-primary px-8 py-3 rounded-md text-lg inline-block transform transition hover:-translate-y-1"
+              >
+                Explore Products
               </Link>
-              <Link href="/locations">
-                <a className="btn-outline px-8 py-3 rounded-md text-lg inline-block transform transition hover:-translate-y-1">
-                  Find Our Stores
-                </a>
+              <Link 
+                href="/locations"
+                className="btn-outline px-8 py-3 rounded-md text-lg inline-block transform transition hover:-translate-y-1"
+              >
+                Find Our Stores
               </Link>
             </div>
           </div>
@@ -123,10 +125,11 @@ const HomePage = () => {
           </div>
           
           <div className="text-center mt-14">
-            <Link href="/products">
-              <a className="btn-outline px-8 py-3 rounded-md inline-block">
-                View All Products
-              </a>
+            <Link 
+              href="/products"
+              className="btn-outline px-8 py-3 rounded-md inline-block"
+            >
+              View All Products
             </Link>
           </div>
         </div>
