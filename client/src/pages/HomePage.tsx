@@ -14,7 +14,7 @@ const HomePage = () => {
   return (
     <MainLayout
       title="Vape Cave - Premium Vaping Products"
-      description="Welcome to Vape Cave - your one-stop shop for premium vaping products, e-liquids, and accessories. Visit our stores in City A and City B."
+      description="Welcome to Vape Cave - your one-stop shop for premium vaping products, e-liquids, and accessories. Visit our stores in Frisco and Arlington, TX."
     >
       {/* Hero Section */}
       <section id="home" className="bg-gray-900 py-20 md:py-32 text-white relative overflow-hidden">
@@ -153,26 +153,26 @@ const HomePage = () => {
                 />
               </div>
               <div className="p-6">
-                <h3 className="font-['Poppins'] font-semibold text-xl mb-3">City A Location</h3>
+                <h3 className="font-['Poppins'] font-semibold text-xl mb-3">Frisco Location</h3>
                 <div className="space-y-3 mb-5">
                   <div className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    <span className="text-gray-700">123 Main Street, City A</span>
+                    <span className="text-gray-700">6958 Main St, Frisco, TX 75033</span>
                   </div>
                   <div className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
-                    <span className="text-gray-700">555-123-4567</span>
+                    <span className="text-gray-700">(469) 294-0061</span>
                   </div>
                   <div className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span className="text-gray-700">10 AM - 8 PM (Monday - Saturday)</span>
+                    <span className="text-gray-700">10 AM - 12 AM (Open 7 days)</span>
                   </div>
                 </div>
                 
@@ -194,26 +194,26 @@ const HomePage = () => {
                 />
               </div>
               <div className="p-6">
-                <h3 className="font-['Poppins'] font-semibold text-xl mb-3">City B Location</h3>
+                <h3 className="font-['Poppins'] font-semibold text-xl mb-3">Arlington Location</h3>
                 <div className="space-y-3 mb-5">
                   <div className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    <span className="text-gray-700">456 Oak Avenue, City B</span>
+                    <span className="text-gray-700">4100 S Cooper St, Unit 4108, Arlington, TX 76015</span>
                   </div>
                   <div className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
-                    <span className="text-gray-700">555-987-6543</span>
+                    <span className="text-gray-700">(682) 270-0334</span>
                   </div>
                   <div className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span className="text-gray-700">11 AM - 9 PM (Monday - Saturday)</span>
+                    <span className="text-gray-700">10 AM - 11 PM (Open 7 days)</span>
                   </div>
                 </div>
                 
