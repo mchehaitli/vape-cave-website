@@ -18,7 +18,7 @@ const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({ onVerify })
 
   return (
     <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 backdrop-blur-md">
-      <div className="bg-white rounded-xl shadow-2xl max-w-xl w-full mx-4 p-6 md:p-8 border-2 border-primary relative">
+      <div className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 p-6 md:p-8 border-2 border-primary relative">
         <div className="mb-6 flex justify-center">
           <img 
             src={specialLogo} 
