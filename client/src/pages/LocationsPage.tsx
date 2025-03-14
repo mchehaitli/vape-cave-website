@@ -389,12 +389,12 @@ const LocationsPage = () => {
       </section>
       
       {/* Store Locator Map */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-darker text-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold font-['Poppins'] mb-3">Find Your Nearest Store</h2>
             <div className="h-1 w-24 bg-primary mx-auto rounded-full mb-6"></div>
-            <p className="text-gray-600 max-w-2xl mx-auto">Use the interactive map below to find the Vape Cave location nearest to you.</p>
+            <p className="text-gray-300 max-w-2xl mx-auto">Use the interactive map below to find the Vape Cave location nearest to you.</p>
           </div>
           
           <div className="relative rounded-xl overflow-hidden shadow-lg h-[500px] mb-8">
@@ -411,17 +411,17 @@ const LocationsPage = () => {
               zoom={11}
               activeLocationId={activeLocation}
             />
-            <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-4 rounded-lg shadow z-10">
-              <h3 className="font-semibold text-lg mb-2">All Vape Cave Locations</h3>
+            <div className="absolute top-4 left-4 bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg shadow z-10 border border-gray-700">
+              <h3 className="font-semibold text-lg mb-2 text-white">All Vape Cave Locations</h3>
               <ul className="space-y-2">
                 {locations.map(location => (
                   <li 
                     key={location.id} 
-                    className="flex items-center cursor-pointer hover:text-primary transition-colors"
+                    className="flex items-center cursor-pointer hover:text-primary transition-colors text-gray-300"
                     onClick={() => setActiveLocation(activeLocation === location.id ? null : location.id)}
                   >
                     <div className={`h-3 w-3 rounded-full mr-3 ${activeLocation === location.id ? 'bg-blue-500' : 'bg-primary'}`}></div>
-                    <span className={activeLocation === location.id ? 'font-medium' : ''}>{location.name}</span>
+                    <span className={activeLocation === location.id ? 'font-medium text-white' : ''}>{location.name}</span>
                   </li>
                 ))}
               </ul>
@@ -429,7 +429,7 @@ const LocationsPage = () => {
           </div>
           
           <div className="text-center">
-            <p className="text-gray-600 mb-6">Need help finding us? Contact us directly for directions!</p>
+            <p className="text-gray-300 mb-6">Need help finding us? Contact us directly for directions!</p>
             <Link href="/contact">
               <button className="inline-flex items-center bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
