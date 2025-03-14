@@ -43,9 +43,19 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
     
     if (isIOS && isMobile) {
       // Use Apple Maps on iOS devices
-      // Note: Apple Maps doesn't directly support Plus Codes in their URL scheme
-      // but we still use the lat/lng for precision
-      return `https://maps.apple.com/?address=${encodedAddress}&ll=${lat},${lng}`;
+      // For iOS, we have a few options:
+      
+      // 1. Use Plus Code in query parameter as a fallback for direct latitude/longitude
+      //    While Apple Maps doesn't directly support Plus Codes in their URL scheme,
+      //    this allows users to see and copy the Plus Code if needed
+      if (encodedPlusCode) {
+        // Include plus code in the query for better precision
+        // This format works better with iOS 16+ devices
+        return `https://maps.apple.com/?q=${encodedPlusCode}&ll=${lat},${lng}&address=${encodedAddress}`;
+      } else {
+        // Fall back to standard coordinates
+        return `https://maps.apple.com/?address=${encodedAddress}&ll=${lat},${lng}`;
+      }
     } else if (isMobile) {
       // Use Google Maps app on Android
       if (encodedPlusCode) {
@@ -108,7 +118,7 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
         focus:outline-none focus:ring-2 focus:ring-primary/30 focus:ring-offset-2
         ${className}
       `}
-      aria-label={`Get directions to ${address}`}
+      aria-label={`Get directions to ${address}${plusCode ? ` (Plus Code: ${plusCode})` : ''}`}
     >
       {showIcon && (
         <svg 

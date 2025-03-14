@@ -193,7 +193,10 @@ const HomePage = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    <span className="text-gray-300">4100 S Cooper St, Unit 4108, Arlington, TX 76015</span>
+                    <div>
+                      <span className="text-gray-300 block">4100 S Cooper St, Unit 4108, Arlington, TX 76015</span>
+                      <span className="text-gray-400 text-xs mt-1 block">Plus Code: MVJ7+7W Arlington, Texas</span>
+                    </div>
                   </div>
                   <div className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">

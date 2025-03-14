@@ -107,22 +107,23 @@ const LocationsPage = () => {
     };
   };
 
-  const [activeLocation, setActiveLocation] = useState<number | null>(null);
+  // Set Frisco location (ID 1) as active by default for better SEO and user experience
+  const [activeLocation, setActiveLocation] = useState<number | null>(1);
   
   // Get properly formatted locations for Google Maps
   const mapLocations = getFormattedLocationsForMap();
 
   return (
     <MainLayout
-      title="Store Locations - Vape Cave"
-      description="Visit our convenient Vape Cave locations in Frisco and Arlington, TX. Find store hours, contact information, and directions to our vape shops featuring Disposable Vapes, Delta 8, THC-A, Delta 9, and more."
+      title="Vape Cave Frisco Location | Vape Shop in Frisco, TX | Store Hours & Directions"
+      description="Visit our Vape Cave Frisco location (Plus Code: 552G+86) at 6958 Main St #200, Frisco, TX 75033. Open daily 10AM-12AM with premium vaping products, Delta 8, THC-A, disposables, glass, and accessories."
     >
       {/* SEO Schema.org structured data */}
       <Helmet>
-        <title>Vape Cave Locations | Frisco & Arlington Stores - Hours & Directions</title>
-        <meta name="description" content="Visit Vape Cave at our convenient locations in Frisco and Arlington, TX. We offer premium vaping products, disposables, Delta 8, THC-A, Delta 9, pre-rolls, flower, and more. Find store hours, contact information, maps, and get directions." />
+        <title>Vape Cave Frisco Location | Vape Shop in Frisco, TX | Store Hours & Directions</title>
+        <meta name="description" content="Visit our Vape Cave Frisco location (Plus Code: 552G+86) at 6958 Main St #200, Frisco, TX 75033. Open daily 10AM-12AM with premium vaping products, Delta 8, THC-A, disposables, glass, and accessories." />
         <link rel="canonical" href="https://vapecavetx.com/locations" />
-        <meta name="keywords" content="vape store frisco, vape shop arlington, vape cave directions, delta 8 store, thc-a near me, disposable vape shop, vape stores texas, e-liquid shop" />
+        <meta name="keywords" content="vape store frisco, vape shop frisco tx, vape cave frisco, 552G+86 frisco, frisco vape shop, delta 8 frisco, thc-a frisco, disposable vape frisco, e-liquid frisco, vape products frisco tx" />
         
         {/* Location schema data */}
         <script type="application/ld+json">
