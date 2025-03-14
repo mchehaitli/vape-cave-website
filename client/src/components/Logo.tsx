@@ -1,13 +1,29 @@
 import React from "react";
-import logoImage from "../assets/vapecave-logo.png";
+import orangeLogoImage from "../assets/vapecave-logo.png";
+import blackLogoImage from "../assets/vapecave-logo-black.png";
 
-const Logo: React.FC = () => {
+interface LogoProps {
+  variant?: "orange" | "black";
+  location?: "header" | "footer";
+}
+
+const Logo: React.FC<LogoProps> = ({ 
+  variant = "orange", 
+  location = "header" 
+}) => {
+  const logoSrc = variant === "orange" ? orangeLogoImage : blackLogoImage;
+  
+  // Different sizing based on location
+  const sizeClasses = location === "header" 
+    ? "h-16 md:h-20 lg:h-24 w-auto" 
+    : "h-12 md:h-16 lg:h-20 w-auto";
+    
   return (
     <div className="flex items-center">
       <img 
-        src={logoImage} 
+        src={logoSrc} 
         alt="Vape Cave - Smoke & Stuff" 
-        className="h-20 md:h-24 lg:h-28 w-auto"
+        className={sizeClasses}
       />
     </div>
   );

@@ -16,7 +16,7 @@ const Footer = () => {
     <footer className="bg-gray-900 text-white">
       <div className="container mx-auto px-4 py-12">
         <div className="flex justify-center mb-8">
-          <Logo />
+          <Logo variant="orange" location="footer" />
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">

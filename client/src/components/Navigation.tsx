@@ -24,7 +24,7 @@ const Navigation = () => {
           {/* Logo */}
           <Link href="/">
             <div className="logo-container cursor-pointer">
-              <Logo />
+              <Logo variant="black" location="header" />
             </div>
           </Link>
 
