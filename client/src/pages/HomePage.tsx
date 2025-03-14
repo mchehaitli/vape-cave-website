@@ -8,8 +8,8 @@ const HomePage = () => {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Vape Cave",
-    "url": "https://vapecave.com",
-    "logo": "https://vapecave.com/logo.png",
+    "url": "https://vapecavetx.com",
+    "logo": "https://vapecavetx.com/logo.png",
     "description": "Vape Cave offers premium vaping products, e-liquids, and accessories at our convenient Frisco and Arlington, TX locations. We provide expert advice and a wide selection for all your vaping needs.",
     "sameAs": [
       "https://facebook.com/vapecavetx",

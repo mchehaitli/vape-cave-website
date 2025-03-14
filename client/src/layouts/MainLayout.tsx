@@ -21,15 +21,15 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   structuredData
 }) => {
   // Determine canonical URL
-  const baseUrl = "https://vapecave.com";
+  const baseUrl = "https://vapecavetx.com";
   const canonicalUrl = canonical ? `${baseUrl}${canonical}` : baseUrl;
   
   const defaultStructuredData = {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Vape Cave",
-    "url": "https://vapecave.com",
-    "logo": "https://vapecave.com/logo.png",
+    "url": "https://vapecavetx.com",
+    "logo": "https://vapecavetx.com/logo.png",
     "sameAs": [
       "https://facebook.com/vapecavetx",
       "https://instagram.com/vapecavetx",

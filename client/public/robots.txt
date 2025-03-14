@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://vapecave.com/sitemap.xml
+Sitemap: https://vapecavetx.com/sitemap.xml

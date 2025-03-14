@@ -47,7 +47,7 @@ const Navigation = () => {
               {navItems.map((item) => (
                 <li key={item.path} role="none">
                   <Link href={item.path}>
-                    <a
+                    <span
                       role="menuitem"
                       aria-label={item.ariaLabel}
                       aria-current={location === item.path ? "page" : undefined}
@@ -58,7 +58,7 @@ const Navigation = () => {
                       }`}
                     >
                       {item.label}
-                    </a>
+                    </span>
                   </Link>
                 </li>
               ))}
@@ -86,7 +86,7 @@ const Navigation = () => {
               className={index < navItems.length - 1 ? "py-2 border-b border-black/10" : "py-2"}
             >
               <Link href={item.path}>
-                <a
+                <span
                   role="menuitem"
                   aria-label={item.ariaLabel}
                   aria-current={location === item.path ? "page" : undefined}
@@ -94,7 +94,7 @@ const Navigation = () => {
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {item.label}
-                </a>
+                </span>
               </Link>
             </li>
           ))}
