@@ -81,13 +81,13 @@ const LocationsPage = () => {
       email: "vapecavetx@gmail.com",
       storeCode: "VC-ARLINGTON",
       openingHours: {
-        "Monday": "10:00-23:00",
-        "Tuesday": "10:00-23:00",
-        "Wednesday": "10:00-23:00",
-        "Thursday": "10:00-23:00",
-        "Friday": "10:00-23:00",
-        "Saturday": "10:00-23:00",
-        "Sunday": "10:00-23:00"
+        "Monday": "10:00 AM - 11:00 PM",
+        "Tuesday": "10:00 AM - 11:00 PM",
+        "Wednesday": "10:00 AM - 11:00 PM",
+        "Thursday": "10:00 AM - 11:00 PM",
+        "Friday": "10:00 AM - 11:00 PM",
+        "Saturday": "10:00 AM - 11:00 PM",
+        "Sunday": "10:00 AM - 11:00 PM"
       }
     }
   ];
@@ -117,12 +117,15 @@ const LocationsPage = () => {
         "latitude": location.coordinates.lat,
         "longitude": location.coordinates.lng
       },
-      "openingHoursSpecification": Object.entries(location.openingHours).map(([day, hours]) => ({
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": day,
-        "opens": hours.split('-')[0],
-        "closes": hours.split('-')[1] === "Closed" ? "00:00" : hours.split('-')[1]
-      })),
+      "openingHoursSpecification": Object.entries(location.openingHours).map(([day, hours]) => {
+        const parts = hours.split(' - ');
+        return {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": day,
+          "opens": parts[0],
+          "closes": parts[1] === "Closed" ? "00:00" : parts[1]
+        };
+      }),
       "priceRange": "$$"
     };
   };
