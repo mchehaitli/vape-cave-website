@@ -34,23 +34,23 @@ const LocationsPage = () => {
   const locations: StoreLocation[] = [
     {
       id: 1,
-      name: "Vape Cave Downtown",
-      city: "City A",
-      address: "123 Main Street",
-      fullAddress: "123 Main Street, City A, State 12345",
+      name: "Vape Cave Frisco",
+      city: "Frisco",
+      address: "3333 Preston Road",
+      fullAddress: "3333 Preston Road, Frisco, TX 75034",
       phone: "555-123-4567",
       hours: "10 AM - 8 PM (Monday - Saturday)",
       closedDays: "Sunday",
       image: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       coordinates: {
-        lat: 40.712778,
-        lng: -74.005439
+        lat: 33.1137,
+        lng: -96.8050
       },
       googlePlaceId: "ChIJxXjrR3wVkFQRcKK89i-aFDw", // This should be your actual Google Place ID
-      appleMapsLink: "https://maps.apple.com/?address=123%20Main%20Street,%20City%20A,%20State%2012345&ll=40.712778,-74.005439&q=Vape%20Cave%20Downtown",
-      mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.2408651289297!2d-74.00543852373156!3d40.7127779748643!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a1983c178c5%3A0xf4f40d590e54a8b0!2sCity%20Hall%20Park!5e0!3m2!1sen!2sus!4v1693311756407!5m2!1sen!2sus",
-      email: "downtown@vapecave.com",
-      storeCode: "VC-DOWNTOWN",
+      appleMapsLink: "https://maps.apple.com/?address=3333%20Preston%20Road,%20Frisco,%20TX%2075034&ll=33.1137,-96.8050&q=Vape%20Cave%20Frisco",
+      mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3056.2408651289297!2d-96.8050!3d33.1137!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a1983c178c5%3A0xf4f40d590e54a8b0!2s3333%20Preston%20Rd%2C%20Frisco%2C%20TX%2075034!5e0!3m2!1sen!2sus!4v1693311756407!5m2!1sen!2sus",
+      email: "frisco@vapecave.com",
+      storeCode: "VC-FRISCO",
       openingHours: {
         "Monday": "10:00-20:00",
         "Tuesday": "10:00-20:00",
@@ -63,23 +63,23 @@ const LocationsPage = () => {
     },
     {
       id: 2,
-      name: "Vape Cave Eastside",
-      city: "City B",
-      address: "456 Oak Avenue",
-      fullAddress: "456 Oak Avenue, City B, State 67890",
+      name: "Vape Cave Arlington",
+      city: "Arlington",
+      address: "2500 E Abram St",
+      fullAddress: "2500 E Abram St, Arlington, TX 76010",
       phone: "555-987-6543",
       hours: "11 AM - 9 PM (Monday - Saturday)",
       closedDays: "Sunday",
       image: "https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       coordinates: {
-        lat: 40.729322,
-        lng: -74.076736
+        lat: 32.7357,
+        lng: -97.0745
       },
       googlePlaceId: "ChIJyersF8wXkFQRVQw-oKzhjYI", // This should be your actual Google Place ID
-      appleMapsLink: "https://maps.apple.com/?address=456%20Oak%20Avenue,%20City%20B,%20State%2067890&ll=40.729322,-74.076736&q=Vape%20Cave%20Eastside",
-      mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.246781652386!2d-74.07673562373365!3d40.72932187145809!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25cc32c6ee0c9%3A0x618d992cf4076d55!2sNewport%20Centre%20Mall!5e0!3m2!1sen!2sus!4v1693311805030!5m2!1sen!2sus",
-      email: "eastside@vapecave.com",
-      storeCode: "VC-EASTSIDE",
+      appleMapsLink: "https://maps.apple.com/?address=2500%20E%20Abram%20St,%20Arlington,%20TX%2076010&ll=32.7357,-97.0745&q=Vape%20Cave%20Arlington",
+      mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.246781652386!2d-97.0745!3d32.7357!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25cc32c6ee0c9%3A0x618d992cf4076d55!2s2500%20E%20Abram%20St%2C%20Arlington%2C%20TX%2076010!5e0!3m2!1sen!2sus!4v1693311805030!5m2!1sen!2sus",
+      email: "arlington@vapecave.com",
+      storeCode: "VC-ARLINGTON",
       openingHours: {
         "Monday": "11:00-21:00",
         "Tuesday": "11:00-21:00",
@@ -132,7 +132,7 @@ const LocationsPage = () => {
   return (
     <MainLayout
       title="Store Locations - Vape Cave"
-      description="Visit our convenient Vape Cave locations in City A and City B. Find store hours, contact information, and directions."
+      description="Visit our convenient Vape Cave locations in Frisco and Arlington, TX. Find store hours, contact information, and directions."
     >
       {/* SEO Schema.org structured data */}
       <Helmet>
@@ -245,7 +245,7 @@ const LocationsPage = () => {
                         phone: location.phone,
                         hours: location.hours
                       }]}
-                      apiKey={import.meta.env.GOOGLE_MAPS_API_KEY as string}
+                      apiKey={"AIzaSyAmuEPaYfG1ketf_ZzVnpcjfSe1qdMa3t0"}
                       height="100%"
                       width="100%"
                       zoom={15}
@@ -360,7 +360,7 @@ const LocationsPage = () => {
               
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <h3 className="text-xl font-semibold mb-3">Is there parking available at your locations?</h3>
-                <p className="text-gray-700">Yes, all of our stores have convenient parking options nearby. Our City A location has a dedicated parking lot, while our City B location offers street parking and is near a public parking garage.</p>
+                <p className="text-gray-700">Yes, all of our stores have convenient parking options nearby. Our Frisco location has a dedicated parking lot, while our Arlington location offers street parking and is near a public parking garage.</p>
               </div>
               
               <div className="bg-white p-6 rounded-lg shadow-md">
@@ -396,7 +396,7 @@ const LocationsPage = () => {
                 phone: location.phone,
                 hours: location.hours
               }))}
-              apiKey={import.meta.env.GOOGLE_MAPS_API_KEY as string}
+              apiKey={"AIzaSyAmuEPaYfG1ketf_ZzVnpcjfSe1qdMa3t0"}
               height="100%"
               width="100%"
               zoom={11}
