@@ -174,7 +174,7 @@ const LocationsPage = () => {
       </section>
       
       {/* Locations Grid */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gray-100">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
@@ -185,8 +185,8 @@ const LocationsPage = () => {
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             {locations.map((location) => (
-              <div key={location.id} className="bg-white rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl">
-                <div className="p-6 bg-gradient-to-r from-primary/10 to-transparent border-b border-gray-100">
+              <div key={location.id} className="bg-white/90 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl">
+                <div className="p-6 bg-gradient-to-r from-primary/5 to-transparent border-b border-gray-100">
                   <h2 className="text-3xl font-bold mb-2 text-gray-800">{location.name}</h2>
                   <div className="flex items-center text-sm text-gray-500 mb-2">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -349,7 +349,7 @@ const LocationsPage = () => {
       </section>
       
       {/* FAQ Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gray-100">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold font-['Poppins'] mb-3">Frequently Asked Questions</h2>
@@ -430,14 +430,13 @@ const LocationsPage = () => {
           
           <div className="text-center">
             <p className="text-gray-600 mb-6">Need help finding us? Contact us directly for directions!</p>
-            <Link 
-              href="/contact"
-              className="inline-flex items-center bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg"
-            >
+            <Link href="/contact">
+              <button className="inline-flex items-center bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
                 Contact Us
+              </button>
             </Link>
           </div>
         </div>
