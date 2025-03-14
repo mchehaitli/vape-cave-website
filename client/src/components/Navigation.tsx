@@ -22,9 +22,11 @@ const Navigation = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <div className="logo-container" onClick={() => window.location.href = "/"}>
-            <Logo />
-          </div>
+          <Link href="/">
+            <div className="logo-container cursor-pointer">
+              <Logo />
+            </div>
+          </Link>
 
           {/* Mobile Menu Toggle */}
           <button
@@ -33,7 +35,9 @@ const Navigation = () => {
             onClick={toggleMobileMenu}
             aria-label="Toggle menu"
           >
-            <i className="fas fa-bars text-2xl"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
           </button>
 
           {/* Desktop Navigation */}
@@ -41,15 +45,15 @@ const Navigation = () => {
             <ul className="flex space-x-8 font-['Poppins'] font-medium">
               {navItems.map((item) => (
                 <li key={item.path}>
-                  <div onClick={() => window.location.href = item.path} className="cursor-pointer">
-                    <span className={`text-black hover:text-white transition-colors ${
+                  <Link href={item.path}>
+                    <span className={`text-black hover:text-white transition-colors cursor-pointer ${
                       location === item.path 
                         ? 'font-bold after:block after:w-full after:h-0.5 after:bg-black after:mt-1' 
                         : ''
                     }`}>
                       {item.label}
                     </span>
-                  </div>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -70,14 +74,15 @@ const Navigation = () => {
             <li 
               key={item.path} 
               className={index < navItems.length - 1 ? "py-2 border-b border-black/10" : "py-2"}
-              onClick={() => {
-                window.location.href = item.path;
-                setMobileMenuOpen(false);
-              }}
             >
-              <div className="block text-black cursor-pointer">
-                {item.label}
-              </div>
+              <Link href={item.path}>
+                <span 
+                  className="block text-black cursor-pointer"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {item.label}
+                </span>
+              </Link>
             </li>
           ))}
         </ul>
