@@ -228,6 +228,7 @@ export const getFormattedLocationsForMap = () => {
     id: loc.id,
     name: loc.name,
     address: loc.fullAddress,
-    position: loc.coordinates
+    position: loc.coordinates,
+    plusCode: loc.plusCode // Include Plus Code for more precise navigation
   }));
 };

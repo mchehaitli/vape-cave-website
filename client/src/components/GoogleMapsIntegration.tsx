@@ -180,14 +180,23 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
       marker.set('locationId', location.id);
       
       // Create an info window for the marker
+      // Generate directions URL using Plus Code if available
+      const getDirectionsUrl = () => {
+        if (location.plusCode) {
+          return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.plusCode)}`;
+        }
+        return `https://www.google.com/maps/dir/?api=1&destination=${location.position.lat},${location.position.lng}`;
+      };
+      
       const infoWindow = new google.maps.InfoWindow({
         content: `
           <div style="max-width: 200px; font-family: Arial, sans-serif;">
             <h3 style="margin: 8px 0; color: #f97316; font-weight: bold;">${location.name}</h3>
             <p style="margin: 6px 0; font-size: 0.9em;">${location.address}</p>
+            ${location.plusCode ? `<p style="margin: 2px 0; font-size: 0.8em; color: #666;">Plus Code: ${location.plusCode}</p>` : ''}
             ${showDirectionsLink ? `
               <div style="margin-top: 8px;">
-                <a href="https://www.google.com/maps/dir/?api=1&destination=${location.position.lat},${location.position.lng}" 
+                <a href="${getDirectionsUrl()}" 
                    target="_blank" style="color: #f97316; text-decoration: none; font-weight: bold;">
                   Get Directions
                 </a>
@@ -257,10 +266,14 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
       {showDirectionsLink && activeLocation && (
         <div className="bg-white/80 text-xs p-2 absolute bottom-0 right-0 rounded-tl-lg shadow-md z-10">
           <a 
-            href={`https://www.google.com/maps/dir/?api=1&destination=${activeLocation.position.lat},${activeLocation.position.lng}`}
+            href={activeLocation.plusCode 
+              ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(activeLocation.plusCode)}`
+              : `https://www.google.com/maps/dir/?api=1&destination=${activeLocation.position.lat},${activeLocation.position.lng}`
+            }
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center text-primary font-semibold hover:underline"
+            title={activeLocation.plusCode ? `Using Plus Code: ${activeLocation.plusCode}` : "Get directions to this location"}
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" />

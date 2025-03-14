@@ -41,6 +41,18 @@ const LocationsPage = () => {
         "latitude": location.coordinates.lat,
         "longitude": location.coordinates.lng
       },
+      "additionalProperty": [
+        {
+          "@type": "PropertyValue",
+          "name": "plusCode",
+          "value": location.plusCode || ""
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "yearEstablished",
+          "value": location.yearEstablished
+        }
+      ],
       "openingHoursSpecification": Object.entries(location.openingHours).map(([day, hours]) => {
         const parts = hours.split(' - ');
         return {
@@ -57,13 +69,6 @@ const LocationsPage = () => {
       "publicAccess": true,
       "isAccessibleForFree": true,
       "smokingAllowed": true,
-      "additionalProperty": [
-        {
-          "@type": "PropertyValue",
-          "name": "yearEstablished",
-          "value": location.yearEstablished
-        }
-      ],
       "keywords": "vape shop, e-cigarettes, e-liquids, vaping accessories, " + 
         location.services.join(", ").toLowerCase(),
       "amenityFeature": location.amenities.map(amenity => ({
@@ -87,7 +92,9 @@ const LocationsPage = () => {
           "@type": "MapAction",
           "target": {
             "@type": "EntryPoint",
-            "urlTemplate": `https://www.google.com/maps/dir/?api=1&destination=${location.coordinates.lat},${location.coordinates.lng}`
+            "urlTemplate": location.plusCode 
+              ? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(location.plusCode)}`
+              : `https://www.google.com/maps/dir/?api=1&destination=${location.coordinates.lat},${location.coordinates.lng}`
           }
         }
       ],
@@ -223,6 +230,18 @@ const LocationsPage = () => {
                           <p className="font-medium text-gray-800">{location.email}</p>
                         </div>
                       </div>
+                      
+                      {location.plusCode && (
+                        <div className="flex">
+                          <div className="text-primary mr-3">
+                            <i className="fas fa-map-marker-alt"></i>
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-600">Plus Code</p>
+                            <p className="font-medium text-gray-800">{location.plusCode}</p>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                   
@@ -262,7 +281,8 @@ const LocationsPage = () => {
                           id: location.id,
                           name: location.name,
                           address: location.fullAddress,
-                          position: location.coordinates
+                          position: location.coordinates,
+                          plusCode: location.plusCode
                         }
                       ]}
                       height="100%"
