@@ -3,97 +3,12 @@ import { Helmet } from "react-helmet";
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import GoogleMapsIntegration from "@/components/GoogleMapsIntegration";
-
-// Define the structure for store locations with all needed information
-interface StoreLocation {
-  id: number;
-  name: string;
-  city: string;
-  address: string;
-  fullAddress: string;
-  phone: string;
-  hours: string;
-  closedDays: string;
-  image: string;
-  coordinates: {
-    lat: number;
-    lng: number;
-  };
-  googlePlaceId?: string; // Optional Google Place ID for direct integration
-  appleMapsLink?: string; // Optional direct Apple Maps link
-  mapEmbed: string;
-  email?: string;
-  storeCode?: string;
-  openingHours: {
-    [key: string]: string;
-  };
-}
+import DirectionsButton from "@/components/DirectionsButton";
+import { storeLocations, getFormattedLocationsForMap } from "@/data/storeInfo";
 
 const LocationsPage = () => {
-  // Store locations data - replace with your actual store information
-  const locations: StoreLocation[] = [
-    {
-      id: 1,
-      name: "Vape Cave Frisco",
-      city: "Frisco",
-      address: "6958 Main St",
-      fullAddress: "6958 Main St, Frisco, TX 75033, United States",
-      phone: "(469) 294-0061",
-      hours: "10:00 AM - 12:00 AM / 1:00 AM (Extended hours on weekends)",
-      closedDays: "",
-      image: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      coordinates: {
-        lat: 33.150730,
-        lng: -96.822550
-      },
-      googlePlaceId: "ChIJxXjrR3wVkFQRcKK89i-aFDw", // This should be your actual Google Place ID
-      appleMapsLink: "https://maps.apple.com/?address=6958%20Main%20St,%20Unit%20200,%20Frisco,%20TX%20%2075033,%20United%20States&auid=14231591118256703794&ll=33.150849,-96.824392&lsp=9902&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m",
-      mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3056.2408651289297!2d-96.8236!3d33.1562!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a1983c178c5%3A0xf4f40d590e54a8b0!2s6958%20Main%20St%2C%20Frisco%2C%20TX%2075033!5e0!3m2!1sen!2sus!4v1693311756407!5m2!1sen!2sus",
-      email: "vapecavetex@gmail.com",
-      storeCode: "VC-FRISCO",
-      openingHours: {
-        "Monday": "10:00 AM - 12:00 AM",
-        "Tuesday": "10:00 AM - 12:00 AM",
-        "Wednesday": "10:00 AM - 12:00 AM",
-        "Thursday": "10:00 AM - 12:00 AM",
-        "Friday": "10:00 AM - 1:00 AM",
-        "Saturday": "10:00 AM - 1:00 AM",
-        "Sunday": "10:00 AM - 12:00 AM"
-      }
-    },
-    {
-      id: 2,
-      name: "Vape Cave Arlington",
-      city: "Arlington",
-      address: "4100 S Cooper St, Unit 4108",
-      fullAddress: "4100 S Cooper St, Unit 4108, Arlington, TX 76015, United States",
-      phone: "(682) 270-0334",
-      hours: "10:00 AM - 11:00 PM (7 days a week)",
-      closedDays: "",
-      image: "https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      coordinates: {
-        lat: 32.683571,
-        lng: -97.134650
-      },
-      googlePlaceId: "ChIJyersF8wXkFQRVQw-oKzhjYI", // This should be your actual Google Place ID
-      appleMapsLink: "https://maps.app.goo.gl/7RRoEeD3uzANmdhZA",
-      mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.246781652386!2d-97.1365!3d32.6870!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25cc32c6ee0c9%3A0x618d992cf4076d55!2s4100%20S%20Cooper%20St,%20Unit%204108,%20Arlington,%20TX%2076015!5e0!3m2!1sen!2sus!4v1693311805030!5m2!1sen!2sus",
-      email: "vapecavetx@gmail.com",
-      storeCode: "VC-ARLINGTON",
-      openingHours: {
-        "Monday": "10:00 AM - 11:00 PM",
-        "Tuesday": "10:00 AM - 11:00 PM",
-        "Wednesday": "10:00 AM - 11:00 PM",
-        "Thursday": "10:00 AM - 11:00 PM",
-        "Friday": "10:00 AM - 11:00 PM",
-        "Saturday": "10:00 AM - 11:00 PM",
-        "Sunday": "10:00 AM - 11:00 PM"
-      }
-    }
-  ];
-
-  // Create structured data for SEO
-  const generateLocalBusinessSchema = (location: StoreLocation) => {
+  // Create enhanced structured data for SEO - more detailed for better search visibility
+  const generateLocalBusinessSchema = (location: typeof storeLocations[0]) => {
     // Parse postal code from address (ZIP code is the last 5 digits in US addresses)
     const zipCodeMatch = location.fullAddress.match(/\d{5}(?![\d-])/);
     const postalCode = zipCodeMatch ? zipCodeMatch[0] : "";
@@ -111,8 +26,8 @@ const LocationsPage = () => {
       "image": location.image,
       "telephone": formattedPhone,
       "email": location.email,
-      "description": `Visit Vape Cave ${location.city} for premium vaping products, e-liquids, and accessories. We offer expert advice and a wide selection of products for all your vaping needs.`,
-      "areaServed": ["Frisco", "Arlington", "Dallas", "Fort Worth", "Texas"],
+      "description": location.description,
+      "areaServed": location.areaServed,
       "address": {
         "@type": "PostalAddress",
         "streetAddress": location.address,
@@ -135,51 +50,72 @@ const LocationsPage = () => {
           "closes": parts[1] === "Closed" ? "00:00" : parts[1]
         };
       }),
-      "priceRange": "$$",
-      "paymentAccepted": "Cash, Credit Card",
+      "priceRange": location.priceRange,
+      "paymentAccepted": location.acceptedPayments.join(", "),
       "currenciesAccepted": "USD",
       "hasMap": location.mapEmbed,
-      "keywords": "vape shop, e-cigarettes, e-liquids, vaping accessories, CBD, vape products, smoke shop",
-      "amenityFeature": [
+      "publicAccess": true,
+      "isAccessibleForFree": true,
+      "smokingAllowed": true,
+      "additionalProperty": [
         {
-          "@type": "LocationFeatureSpecification",
-          "name": "Expert Staff",
-          "value": true
-        },
-        {
-          "@type": "LocationFeatureSpecification",
-          "name": "Wide Product Selection",
-          "value": true
-        },
-        {
-          "@type": "LocationFeatureSpecification",
-          "name": "Competitive Pricing",
-          "value": true
+          "@type": "PropertyValue",
+          "name": "yearEstablished",
+          "value": location.yearEstablished
         }
       ],
-      "potentialAction": {
-        "@type": "ViewAction", 
-        "target": {
-          "@type": "EntryPoint",
-          "urlTemplate": `https://vapecave.com/locations/${location.id}`
+      "keywords": "vape shop, e-cigarettes, e-liquids, vaping accessories, " + 
+        location.services.join(", ").toLowerCase(),
+      "amenityFeature": location.amenities.map(amenity => ({
+        "@type": "LocationFeatureSpecification",
+        "name": amenity,
+        "value": true
+      })),
+      "department": location.services.map(service => ({
+        "@type": "Department",
+        "name": service
+      })),
+      "potentialAction": [
+        {
+          "@type": "ViewAction", 
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": `https://vapecavetx.com/locations/${location.id}`
+          }
+        },
+        {
+          "@type": "MapAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": `https://www.google.com/maps/dir/?api=1&destination=${location.coordinates.lat},${location.coordinates.lng}`
+          }
         }
-      }
+      ],
+      "sameAs": [
+        location.socialProfiles?.facebook,
+        location.socialProfiles?.instagram,
+        location.socialProfiles?.twitter,
+        location.socialProfiles?.yelp
+      ].filter(Boolean)
     };
   };
 
   const [activeLocation, setActiveLocation] = useState<number | null>(null);
+  
+  // Get properly formatted locations for Google Maps
+  const mapLocations = getFormattedLocationsForMap();
 
   return (
     <MainLayout
       title="Store Locations - Vape Cave"
-      description="Visit our convenient Vape Cave locations in Frisco and Arlington, TX. Find store hours, contact information, and directions."
+      description="Visit our convenient Vape Cave locations in Frisco and Arlington, TX. Find store hours, contact information, and directions to our vape shops featuring Disposable Vapes, Delta 8, THC-A, Delta 9, and more."
     >
       {/* SEO Schema.org structured data */}
       <Helmet>
         <title>Vape Cave Locations | Frisco & Arlington Stores - Hours & Directions</title>
-        <meta name="description" content="Visit Vape Cave at our two convenient locations in Frisco and Arlington, TX. Find store hours, contact information, maps, and get directions to your nearest store." />
-        <link rel="canonical" href="https://vapecave.com/locations" />
-        <meta name="keywords" content="vape store frisco, vape shop arlington, vape cave directions, vape stores texas, e-liquid shop, vaping store near me" />
+        <meta name="description" content="Visit Vape Cave at our convenient locations in Frisco and Arlington, TX. We offer premium vaping products, disposables, Delta 8, THC-A, Delta 9, pre-rolls, flower, and more. Find store hours, contact information, maps, and get directions." />
+        <link rel="canonical" href="https://vapecavetx.com/locations" />
+        <meta name="keywords" content="vape store frisco, vape shop arlington, vape cave directions, delta 8 store, thc-a near me, disposable vape shop, vape stores texas, e-liquid shop" />
         
         {/* Location schema data */}
         <script type="application/ld+json">
@@ -189,7 +125,7 @@ const LocationsPage = () => {
             "name": "Vape Cave",
             "url": "https://vapecavetx.com",
             "logo": "https://vapecavetx.com/logo.png",
-            "description": "Vape Cave offers premium vaping products, e-liquids, and accessories at our convenient Frisco and Arlington, TX locations.",
+            "description": "Vape Cave offers premium vaping products, e-liquids, and accessories at our convenient Frisco and Arlington, TX locations. We specialize in Disposable Vapes, Delta 8, THC-A, Delta 9, pre-rolls, flower, vape pens, and cartridges.",
             "sameAs": [
               "https://facebook.com/vapecavetx",
               "https://instagram.com/vapecavetx",
@@ -209,7 +145,7 @@ const LocationsPage = () => {
               "addressCountry": "US",
               "addressRegion": "TX"
             },
-            "location": locations.map(location => generateLocalBusinessSchema(location))
+            "location": storeLocations.map(location => generateLocalBusinessSchema(location))
           })}
         </script>
       </Helmet>
@@ -221,305 +157,296 @@ const LocationsPage = () => {
             <h1 className="text-4xl md:text-5xl font-bold font-['Poppins'] mb-4">Our Locations</h1>
             <div className="h-1 w-24 bg-white mx-auto rounded-full mb-6"></div>
             <p className="text-white/90 max-w-2xl mx-auto text-lg">
-              Visit us at one of our convenient locations for personalized service and expert advice from our knowledgeable staff.
+              Visit us at one of our convenient locations for personalized service and expert advice on our premium selection of vaping products, disposables, Delta 8, THC-A, and more.
             </p>
           </div>
         </div>
       </section>
       
       {/* Locations Grid */}
-      <section className="py-16 bg-dark text-white">
+      <section className="py-12 bg-light">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold font-['Poppins'] mb-3">Our Store Locations</h2>
-              <div className="h-1 w-24 bg-primary mx-auto rounded-full mb-6"></div>
-              <p className="text-gray-300 max-w-2xl mx-auto">Find your nearest Vape Cave store and visit us to explore our premium selection of vaping products and accessories.</p>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            {locations.map((location) => (
-              <div key={location.id} className="card-dark rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl">
-                <div className="p-6 bg-gradient-to-r from-primary/10 to-transparent border-b border-gray-700">
-                  <h2 className="text-3xl font-bold mb-2 text-white">{location.name}</h2>
-                  <div className="flex items-center text-sm text-gray-300 mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <p>{location.city === "Frisco" ? "Open until 12:00 AM (1:00 AM on weekends)" : "Open until 11:00 PM daily"}</p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {storeLocations.map((location) => (
+              <div 
+                key={location.id}
+                className={`bg-white rounded-lg shadow-md overflow-hidden border ${
+                  activeLocation === location.id ? 'border-primary' : 'border-gray-200'
+                }`}
+              >
+                <div className="h-60 overflow-hidden relative">
+                  <img 
+                    src={location.image} 
+                    alt={location.name} 
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                    <div className="p-6">
+                      <h2 className="text-2xl text-white font-bold font-['Poppins'] mb-1">{location.name}</h2>
+                      <p className="text-white/90 text-sm">{location.fullAddress}</p>
+                    </div>
                   </div>
                 </div>
+                
                 <div className="p-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <div>
-                      <h3 className="font-['Poppins'] font-semibold text-lg mb-3 text-white">Contact Information</h3>
-                      <div className="space-y-2">
-                        <div className="flex items-start">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                          </svg>
-                          <span className="text-gray-300">{location.fullAddress}</span>
+                  {/* Store Information */}
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold font-['Poppins'] mb-4">Store Information</h3>
+                    
+                    <div className="space-y-3">
+                      <div className="flex">
+                        <div className="text-primary mr-3">
+                          <i className="fas fa-phone"></i>
                         </div>
-                        <div className="flex items-start">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                          </svg>
-                          <span className="text-gray-300">{location.phone}</span>
+                        <div>
+                          <p className="text-sm text-dark/70">Phone</p>
+                          <p className="font-medium">{location.phone}</p>
                         </div>
-                        {location.email && (
-                          <div className="flex items-start">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                            </svg>
-                            <span className="text-gray-300">{location.email}</span>
-                          </div>
-                        )}
                       </div>
-                    </div>
-                    <div>
-                      <h3 className="font-['Poppins'] font-semibold text-lg mb-3 text-white">Business Hours</h3>
-                      <div className="space-y-2">
-                        {Object.entries(location.openingHours).map(([day, hours]) => (
-                          <div key={day} className="flex justify-between">
-                            <span className="font-medium text-gray-300">{day}</span>
-                            <span className={hours === "Closed" ? "text-red-400" : "text-gray-300"}>
-                              {hours}
-                            </span>
-                          </div>
-                        ))}
+                      
+                      <div className="flex">
+                        <div className="text-primary mr-3">
+                          <i className="fas fa-clock"></i>
+                        </div>
+                        <div>
+                          <p className="text-sm text-dark/70">Hours</p>
+                          <p className="font-medium">{location.hours}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex">
+                        <div className="text-primary mr-3">
+                          <i className="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                          <p className="text-sm text-dark/70">Email</p>
+                          <p className="font-medium">{location.email}</p>
+                        </div>
                       </div>
                     </div>
                   </div>
                   
-                  {/* Google Maps Integration */}
-                  <div 
-                    className="h-64 rounded-lg mb-6 overflow-hidden cursor-pointer"
-                    onClick={() => setActiveLocation(activeLocation === location.id ? null : location.id)}
-                  >
-                    <GoogleMapsIntegration
-                      locations={[{
-                        id: location.id,
-                        name: location.name,
-                        address: location.fullAddress,
-                        position: location.coordinates
-                      }]}
-                      apiKey="AIzaSyAmuEPaYfG1ketf_ZzVnpcjfSe1qdMa3t0"
+                  {/* Hours of Operation */}
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold font-['Poppins'] mb-4" id="store-hours">Hours of Operation</h3>
+                    <div className="grid grid-cols-2 gap-2">
+                      {Object.entries(location.openingHours).map(([day, hours]) => (
+                        <div key={day} className="flex justify-between py-1 border-b border-gray-100">
+                          <span className="font-medium">{day}</span>
+                          <span className="text-dark/70">{hours}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Featured Products Section */}
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold font-['Poppins'] mb-4">Featured Products</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {location.services.slice(0, 6).map((service, index) => (
+                        <span 
+                          key={index} 
+                          className="bg-primary/10 text-primary text-xs font-medium py-1 px-3 rounded-full"
+                        >
+                          {service}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Map */}
+                  <div className="mb-6 h-72 rounded-lg overflow-hidden">
+                    <GoogleMapsIntegration 
+                      locations={[
+                        {
+                          id: location.id,
+                          name: location.name,
+                          address: location.fullAddress,
+                          position: location.coordinates
+                        }
+                      ]}
                       height="100%"
                       width="100%"
-                      zoom={15}
-                      activeLocationId={location.id}
                     />
                   </div>
                   
-                  <div className="flex flex-wrap gap-3 pt-2">
-                    <a 
-                      href={`tel:${location.phone.replace(/[^0-9]/g, '')}`} 
-                      className="inline-flex items-center bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 shadow hover:shadow-lg"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                      </svg>
-                      Call Store
-                    </a>
+                  {/* Action Buttons */}
+                  <div className="flex flex-wrap gap-3">
+                    <DirectionsButton
+                      address={location.fullAddress}
+                      lat={location.coordinates.lat}
+                      lng={location.coordinates.lng}
+                      className="flex-1"
+                      buttonText="Get Directions"
+                      variant="primary"
+                    />
                     
-                    {/* Google Maps Direction Link - Using CID-based URLs */}
-                    <a 
-                      href={location.id === 1 
-                        ? "https://maps.google.com/?cid=13323908610056077709" 
-                        : "https://maps.google.com/?cid=7961382489912074668"} 
-                      target="_blank"
-                      rel="noopener noreferrer" 
-                      className="inline-flex items-center bg-[#4285F4] hover:bg-[#4285F4]/90 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 shadow hover:shadow-lg"
+                    <button 
+                      onClick={() => setActiveLocation(activeLocation === location.id ? null : location.id)}
+                      className="flex-1 border border-primary text-primary hover:bg-primary/10 font-medium py-2 px-4 rounded-md flex items-center justify-center"
                     >
-                      <svg className="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-                      </svg>
-                      Google Maps
-                    </a>
-                    
-                    {/* Apple Maps Link */}
-                    {location.appleMapsLink && (
-                      <a 
-                        href={location.appleMapsLink}
-                        target="_blank"
-                        rel="noopener noreferrer" 
-                        className="inline-flex items-center bg-black hover:bg-black/90 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 shadow hover:shadow-lg"
-                        onClick={(e) => {
-                          // Let the default href handle the navigation - this should work on most modern phones
-                          // We won't try to be clever with URI schemes since they can be unreliable
-                        }}
-                      >
-                        <svg className="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
-                          <path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" />
-                        </svg>
-                        Apple Maps
-                      </a>
-                    )}
+                      <i className="fas fa-info-circle mr-2"></i>
+                      {activeLocation === location.id ? 'Hide Details' : 'More Details'}
+                    </button>
                   </div>
                 </div>
+                
+                {/* Expanded Details (show when active) */}
+                {activeLocation === location.id && (
+                  <div className="p-6 pt-0">
+                    <div className="h-px bg-gray-200 my-6"></div>
+                    
+                    <div className="space-y-6">
+                      <div>
+                        <h3 className="text-lg font-semibold font-['Poppins'] mb-3">Get In Touch</h3>
+                        <p className="text-dark/70 mb-4">
+                          Have questions about our products or services? Contact us directly at this location for personalized assistance.
+                        </p>
+                        <a 
+                          href={`tel:${location.phone.replace(/[^0-9]/g, '')}`} 
+                          className="text-primary hover:underline font-medium flex items-center"
+                        >
+                          <i className="fas fa-phone-alt mr-2"></i>
+                          Call Us Now
+                        </a>
+                      </div>
+                      
+                      <div>
+                        <h3 className="text-lg font-semibold font-['Poppins'] mb-3">About This Location</h3>
+                        <p className="text-dark/70">
+                          {location.description}
+                        </p>
+                      </div>
+                      
+                      {location.neighborhoodInfo && (
+                        <div>
+                          <h3 className="text-lg font-semibold font-['Poppins'] mb-3">Neighborhood Information</h3>
+                          <p className="text-dark/70">
+                            {location.neighborhoodInfo}
+                          </p>
+                        </div>
+                      )}
+                      
+                      {location.parking && (
+                        <div className="flex items-start">
+                          <div className="bg-primary/20 p-2 rounded-full mr-3 mt-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium mb-1">Parking Available</h4>
+                            <p className="text-dark/70">{location.parking}</p>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {location.publicTransit && (
+                        <div className="flex items-start">
+                          <div className="bg-primary/20 p-2 rounded-full mr-3 mt-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium mb-1">Public Transit</h4>
+                            <p className="text-dark/70">{location.publicTransit}</p>
+                          </div>
+                        </div>
+                      )}
+                      
+                      <div>
+                        <h3 className="text-lg font-semibold font-['Poppins'] mb-3">Products We Offer</h3>
+                        <div className="grid grid-cols-2 gap-2">
+                          {location.services.map((service, index) => (
+                            <div key={index} className="flex items-center gap-2">
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                              </svg>
+                              <span>{service}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <h3 className="text-lg font-semibold font-['Poppins'] mb-3">Payment Methods</h3>
+                        <div className="flex flex-wrap gap-2">
+                          {location.acceptedPayments.map((payment, index) => (
+                            <span 
+                              key={index} 
+                              className="bg-gray-100 text-dark/80 text-xs font-medium py-1 px-3 rounded-full"
+                            >
+                              {payment}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Additional Call-to-Action Button */}
+                    <div className="mt-6">
+                      <Link 
+                        to={`/locations/${location.id}`} 
+                        className="w-full bg-dark hover:bg-dark/90 text-white font-medium py-3 px-4 rounded-md flex items-center justify-center"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                        View Full Location Details
+                      </Link>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>
         </div>
       </section>
       
-      {/* Store Features */}
-      <section className="py-16 bg-medium text-white">
+      {/* Full Map Section */}
+      <section className="py-12 bg-dark">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold font-['Poppins'] mb-3">Why Visit Our Stores?</h2>
-            <div className="h-1 w-24 bg-primary mx-auto rounded-full mb-6"></div>
-            <p className="text-gray-300 max-w-2xl mx-auto">We offer personalized service and a unique shopping experience at all of our locations.</p>
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold font-['Poppins'] text-white mb-2">Find Us on the Map</h2>
+            <p className="text-white/70 max-w-2xl mx-auto">
+              Explore our locations across the Dallas-Fort Worth area. We're conveniently located to serve customers from Frisco, Arlington, and surrounding communities.
+            </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center p-6 bg-dark rounded-lg">
-              <div className="bg-primary/20 w-16 h-16 flex items-center justify-center rounded-full mx-auto mb-4">
-                <i className="fas fa-user-friends text-2xl text-primary"></i>
-              </div>
-              <h3 className="font-['Poppins'] font-semibold text-xl mb-2">Expert Staff</h3>
-              <p className="text-gray-300">Our knowledgeable team can help you find the perfect products for your needs and answer any questions.</p>
-            </div>
-            
-            <div className="text-center p-6 bg-dark rounded-lg">
-              <div className="bg-primary/20 w-16 h-16 flex items-center justify-center rounded-full mx-auto mb-4">
-                <i className="fas fa-box-open text-2xl text-primary"></i>
-              </div>
-              <h3 className="font-['Poppins'] font-semibold text-xl mb-2">Product Testing</h3>
-              <p className="text-gray-300">Try before you buy with our in-store product testing stations for e-liquids and devices.</p>
-            </div>
-            
-            <div className="text-center p-6 bg-dark rounded-lg">
-              <div className="bg-primary/20 w-16 h-16 flex items-center justify-center rounded-full mx-auto mb-4">
-                <i className="fas fa-tags text-2xl text-primary"></i>
-              </div>
-              <h3 className="font-['Poppins'] font-semibold text-xl mb-2">Exclusive Offers</h3>
-              <p className="text-gray-300">Visit our stores for special in-store promotions, loyalty rewards, and product bundles.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* FAQ Section */}
-      <section className="py-16 bg-dark text-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold font-['Poppins'] mb-3">Frequently Asked Questions</h2>
-            <div className="h-1 w-24 bg-primary mx-auto rounded-full mb-6"></div>
-            <p className="text-gray-300 max-w-2xl mx-auto">Find answers to common questions about our store locations and services.</p>
-          </div>
-          
-          <div className="max-w-3xl mx-auto">
-            <div className="space-y-6">
-              <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
-                <h3 className="text-xl font-semibold mb-3 text-white">Do I need to be 21+ to enter your stores?</h3>
-                <p className="text-gray-300">Yes, all customers must be at least 21 years of age to enter our stores and purchase products. Valid ID is required.</p>
-              </div>
-              
-              <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
-                <h3 className="text-xl font-semibold mb-3 text-white">Do your stores offer product testing?</h3>
-                <p className="text-gray-300">Yes, we have designated testing stations for e-liquids and devices at all of our locations. Our staff can guide you through the testing process.</p>
-              </div>
-              
-              <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
-                <h3 className="text-xl font-semibold mb-3 text-white">Is there parking available at your locations?</h3>
-                <p className="text-gray-300">Yes, all of our stores have convenient parking options nearby. Our Frisco location has a dedicated parking lot, while our Arlington location offers street parking and is near a public parking garage.</p>
-              </div>
-              
-              <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
-                <h3 className="text-xl font-semibold mb-3 text-white">Do you offer repairs or maintenance services for vaping devices?</h3>
-                <p className="text-gray-300">Yes, our knowledgeable staff can assist with basic troubleshooting and maintenance. For more complex repairs, we offer a service program with quick turnaround times.</p>
-              </div>
-              
-              <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
-                <h3 className="text-xl font-semibold mb-3 text-white">Are your stores wheelchair accessible?</h3>
-                <p className="text-gray-300">Yes, all of our locations are wheelchair accessible with ramp entrances and spacious aisles to ensure all customers can shop comfortably.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* Store Locator Map */}
-      <section className="py-16 bg-darker text-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold font-['Poppins'] mb-3">Find Your Nearest Store</h2>
-            <div className="h-1 w-24 bg-primary mx-auto rounded-full mb-6"></div>
-            <p className="text-gray-300 max-w-2xl mx-auto">Use the interactive map below to find the Vape Cave location nearest to you.</p>
-          </div>
-          
-          <div className="relative rounded-xl overflow-hidden shadow-lg h-[500px] mb-8">
-            <GoogleMapsIntegration
-              locations={locations.map(location => ({
-                id: location.id,
-                name: location.name,
-                address: location.fullAddress,
-                position: location.coordinates
-              }))}
-              apiKey="AIzaSyAmuEPaYfG1ketf_ZzVnpcjfSe1qdMa3t0"
+          <div className="h-[600px] rounded-lg overflow-hidden shadow-xl">
+            <GoogleMapsIntegration 
+              locations={mapLocations}
               height="100%"
               width="100%"
-              zoom={11}
-              activeLocationId={activeLocation}
+              zoom={10}
             />
-            <div className="absolute top-4 left-4 bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg shadow z-10 border border-gray-700">
-              <h3 className="font-semibold text-lg mb-2 text-white">All Vape Cave Locations</h3>
-              <ul className="space-y-2">
-                {locations.map(location => (
-                  <li 
-                    key={location.id} 
-                    className="flex items-center cursor-pointer hover:text-primary transition-colors text-gray-300"
-                    onClick={() => setActiveLocation(activeLocation === location.id ? null : location.id)}
-                  >
-                    <div className={`h-3 w-3 rounded-full mr-3 ${activeLocation === location.id ? 'bg-blue-500' : 'bg-primary'}`}></div>
-                    <span className={activeLocation === location.id ? 'font-medium text-white' : ''}>{location.name}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          
-          <div className="text-center">
-            <p className="text-gray-300 mb-6">Need help finding us? Contact us directly for directions!</p>
-            <Link href="/contact">
-              <button className="inline-flex items-center bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-                Contact Us
-              </button>
-            </Link>
           </div>
         </div>
       </section>
       
-      {/* Call to Action */}
-      <section className="py-16 bg-gradient-to-r from-primary/80 to-primary/20 text-white">
+      {/* Visit Us CTA */}
+      <section className="py-16 bg-primary/10">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold font-['Poppins'] mb-4">Ready to Visit Us?</h2>
-          <p className="mb-8 max-w-2xl mx-auto text-lg">Come experience our premium selection of vaping products and receive expert advice from our friendly staff.</p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <a 
-              href="#top" 
-              className="inline-flex items-center bg-white hover:bg-white/90 text-primary font-bold py-3 px-8 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              Find a Location
-            </a>
-            <Link href="/products">
-              <button className="inline-flex items-center bg-black hover:bg-black/90 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                </svg>
-                Shop Products
-              </button>
-            </Link>
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-3xl font-bold font-['Poppins'] mb-4">Come Visit Us Today!</h2>
+            <p className="text-dark/70 text-lg mb-8">
+              Experience our friendly atmosphere, knowledgeable staff, and premium selection of vaping products, disposables, Delta 8, THC-A, Delta 9, and more at a location near you.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <a 
+                href="#store-hours" 
+                className="bg-primary hover:bg-primary/90 text-black font-bold py-3 px-8 rounded-md"
+              >
+                View Store Hours
+              </a>
+              <a 
+                href="tel:4692940061" 
+                className="bg-dark hover:bg-dark/90 text-white font-bold py-3 px-8 rounded-md"
+              >
+                Call Us Now
+              </a>
+            </div>
           </div>
         </div>
       </section>
