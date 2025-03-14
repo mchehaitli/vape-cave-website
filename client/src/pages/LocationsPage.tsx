@@ -268,8 +268,8 @@ const LocationsPage = () => {
                     {/* Google Maps Direction Link */}
                     <a 
                       href={location.id === 1 
-                        ? "https://www.google.com/maps/dir/?api=1&destination=6958+Main+St+Frisco+TX+75033&destination_place_id=ChIJs3D9CpwZTIYRfczJQQzTOeA&travelmode=driving" 
-                        : "https://www.google.com/maps/dir/?api=1&destination=4100+S+Cooper+St+Arlington+TX+76015&travelmode=driving"}
+                        ? "https://maps.app.goo.gl/jzbqUDyvvGHuwyXJ7" 
+                        : "https://maps.app.goo.gl/7RRoEeD3uzANmdhZA"}
                       target="_blank"
                       rel="noopener noreferrer" 
                       className="inline-flex items-center bg-[#4285F4] hover:bg-[#4285F4]/90 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 shadow hover:shadow-lg"
