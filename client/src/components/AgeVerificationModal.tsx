@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ageLogo from "../assets/age_verification_logo_new.png";
+import { Helmet } from "react-helmet";
 
 interface AgeVerificationModalProps {
   onVerify: (isVerified: boolean) => void;
@@ -18,6 +19,51 @@ const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({ onVerify })
 
   return (
     <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 backdrop-blur-md">
+      <Helmet>
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "WebPage",
+              "name": "Age Verification - Vape Cave Frisco",
+              "description": "Verify your age to access Vape Cave Frisco's premium selection of vaping products and accessories. Must be 21+ to enter.",
+              "publisher": {
+                "@type": "VapeShop",
+                "name": "Vape Cave Frisco",
+                "address": {
+                  "@type": "PostalAddress",
+                  "streetAddress": "6958 Main St #200",
+                  "addressLocality": "Frisco",
+                  "addressRegion": "TX",
+                  "postalCode": "75033",
+                  "addressCountry": "US"
+                },
+                "geo": {
+                  "@type": "GeoCoordinates",
+                  "latitude": 33.1507,
+                  "longitude": -96.8236
+                },
+                "openingHoursSpecification": [
+                  {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Sunday"],
+                    "opens": "10:00",
+                    "closes": "24:00"
+                  },
+                  {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": ["Friday", "Saturday"],
+                    "opens": "10:00",
+                    "closes": "01:00"
+                  }
+                ],
+                "telephone": "(469) 294-0061",
+                "hasMap": "https://plus.codes/552G+86_Frisco,_Texas"
+              }
+            }
+          `}
+        </script>
+      </Helmet>
       <div className="bg-black rounded-xl shadow-2xl max-w-md w-full mx-4 p-6 md:p-8 border-2 border-primary relative">
         <div className="mb-6 flex justify-center">
           <img 
