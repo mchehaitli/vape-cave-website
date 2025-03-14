@@ -43,17 +43,17 @@ const ContactPage = () => {
       description="Get in touch with Vape Cave for product inquiries, store information, or any questions about our services."
     >
       {/* Contact Header */}
-      <section className="bg-secondary py-10 text-white">
+      <section className="bg-black py-10 text-white">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl font-bold font-['Poppins'] mb-2">Contact Us</h1>
-          <p className="text-white/80 max-w-2xl">
+          <p className="text-gray-300 max-w-2xl">
             Have questions or need assistance? Reach out to our team and we'll get back to you shortly.
           </p>
         </div>
       </section>
       
       {/* Contact Form and Info */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-darker">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
             {/* Contact Form */}
@@ -136,7 +136,7 @@ const ContactPage = () => {
             
             {/* Contact Info */}
             <div className="lg:col-span-2">
-              <div className="bg-secondary text-white p-6 rounded-lg h-full">
+              <div className="bg-black text-white p-6 rounded-lg h-full border border-gray-800">
                 <h3 className="font-['Poppins'] font-semibold text-xl mb-6">Get In Touch</h3>
                 
                 <div className="space-y-6">
@@ -146,7 +146,7 @@ const ContactPage = () => {
                     </div>
                     <div>
                       <h4 className="font-medium mb-1">Email Us</h4>
-                      <p className="text-white/80">vapecavetx@gmail.com</p>
+                      <p className="text-gray-300">vapecavetx@gmail.com</p>
                     </div>
                   </div>
                   
@@ -156,8 +156,8 @@ const ContactPage = () => {
                     </div>
                     <div>
                       <h4 className="font-medium mb-1">Call Us</h4>
-                      <p className="text-white/80">Frisco: (469) 294-0061</p>
-                      <p className="text-white/80">Arlington: (682) 270-0334</p>
+                      <p className="text-gray-300">Frisco: (469) 294-0061</p>
+                      <p className="text-gray-300">Arlington: (682) 270-0334</p>
                     </div>
                   </div>
                   
@@ -167,9 +167,9 @@ const ContactPage = () => {
                     </div>
                     <div>
                       <h4 className="font-medium mb-1">Business Hours</h4>
-                      <p className="text-white/80">Frisco: 10:00 AM - 12:00 AM (1:00 AM Fri-Sat)</p>
-                      <p className="text-white/80">Arlington: 10:00 AM - 11:00 PM</p>
-                      <p className="text-white/80 font-medium">Both locations open 7 days a week</p>
+                      <p className="text-gray-300">Frisco: 10:00 AM - 12:00 AM (1:00 AM Fri-Sat)</p>
+                      <p className="text-gray-300">Arlington: 10:00 AM - 11:00 PM</p>
+                      <p className="text-gray-300 font-medium">Both locations open 7 days a week</p>
                     </div>
                   </div>
                   
@@ -179,8 +179,8 @@ const ContactPage = () => {
                     </div>
                     <div>
                       <h4 className="font-medium mb-1">Locations</h4>
-                      <p className="text-white/80">Frisco: 6958 Main St, Frisco, TX 75033</p>
-                      <p className="text-white/80">Arlington: 4100 S Cooper St, Unit 4108, Arlington, TX 76015</p>
+                      <p className="text-gray-300">Frisco: 6958 Main St, Frisco, TX 75033</p>
+                      <p className="text-gray-300">Arlington: 4100 S Cooper St, Unit 4108, Arlington, TX 76015</p>
                     </div>
                   </div>
                 </div>
@@ -200,38 +200,6 @@ const ContactPage = () => {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* FAQ Section */}
-      <section className="py-12 bg-light">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold font-['Poppins'] mb-3">Frequently Asked Questions</h2>
-            <p className="text-dark/70 max-w-2xl mx-auto">Find answers to our most commonly asked questions.</p>
-          </div>
-          
-          <div className="max-w-3xl mx-auto space-y-4">
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="font-['Poppins'] font-medium text-lg mb-2">What is your age policy?</h3>
-              <p className="text-dark/70">All customers must be 21 years of age or older to purchase vaping products. Valid ID is required for all purchases, both in-store and online.</p>
-            </div>
-            
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="font-['Poppins'] font-medium text-lg mb-2">Do you offer shipping?</h3>
-              <p className="text-dark/70">Yes, we offer nationwide shipping for all products. Orders typically ship within 1-2 business days and arrive within 3-5 business days.</p>
-            </div>
-            
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="font-['Poppins'] font-medium text-lg mb-2">What payment methods do you accept?</h3>
-              <p className="text-dark/70">We accept all major credit cards, debit cards, and cash for in-store purchases. Online payments are processed securely through our payment gateway.</p>
-            </div>
-            
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="font-['Poppins'] font-medium text-lg mb-2">What is your return policy?</h3>
-              <p className="text-dark/70">We accept returns within 14 days of purchase for unused and unopened products. Please contact us for more information on our return process.</p>
             </div>
           </div>
         </div>
