@@ -10,6 +10,14 @@ interface Location {
   };
 }
 
+// Define MapTypeId enum since we can't access google.maps before it's loaded
+enum MapTypeId {
+  ROADMAP = 'roadmap',
+  SATELLITE = 'satellite',
+  HYBRID = 'hybrid',
+  TERRAIN = 'terrain'
+}
+
 interface GoogleMapsIntegrationProps {
   locations: Location[];
   height?: string;
@@ -17,7 +25,7 @@ interface GoogleMapsIntegrationProps {
   zoom?: number;
   activeLocationId?: number | null;
   showDirectionsLink?: boolean;
-  mapType?: google.maps.MapTypeId;
+  mapType?: string; // Changed to string type to avoid direct dependency on google.maps
 }
 
 // Using Google Maps API for enhanced maps functionality
@@ -28,12 +36,12 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
   zoom = 14,
   activeLocationId = null,
   showDirectionsLink = true,
-  mapType = google.maps.MapTypeId.ROADMAP
+  mapType = MapTypeId.ROADMAP
 }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
-  const [map, setMap] = useState<google.maps.Map | null>(null);
-  const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
+  const [map, setMap] = useState<any>(null);
+  const [markers, setMarkers] = useState<any[]>([]);
   
   // Get the API key from environment variables
   const apiKey = import.meta.env.GOOGLE_MAPS_API_KEY || '';
@@ -62,29 +70,33 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
       
       // Cleanup function to remove the script
       return () => {
-        document.head.removeChild(script);
-        delete window.initGoogleMaps;
+        if (document.head.contains(script)) {
+          document.head.removeChild(script);
+        }
+        if (window.initGoogleMaps) {
+          delete window.initGoogleMaps;
+        }
       };
     }
   }, [apiKey]);
   
   // Initialize the map when the API is loaded
   useEffect(() => {
-    if (mapLoaded) {
+    if (mapLoaded && window.google && window.google.maps) {
       initializeMap();
     }
   }, [mapLoaded]);
   
   // Update the map when the active location changes
   useEffect(() => {
-    if (map && activeLocation) {
+    if (map && activeLocation && window.google && window.google.maps) {
       map.setCenter(activeLocation.position);
       
       // Highlight the active marker
       markers.forEach(marker => {
         const locationId = Number(marker.get('locationId'));
         if (locationId === activeLocation.id) {
-          marker.setAnimation(google.maps.Animation.BOUNCE);
+          marker.setAnimation(window.google.maps.Animation.BOUNCE);
           setTimeout(() => {
             marker.setAnimation(null);
           }, 1500);
@@ -95,7 +107,9 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
   
   // Initialize the map
   const initializeMap = () => {
-    if (!mapRef.current) return;
+    if (!mapRef.current || !window.google || !window.google.maps) return;
+    
+    const google = window.google;
     
     // Create the map
     const newMap = new google.maps.Map(mapRef.current, {
@@ -171,8 +185,8 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
       newMap.fitBounds(bounds);
       
       // Adjust zoom if it's too zoomed in (for locations that are very close)
-      const listener = google.maps.event.addListenerOnce(newMap, 'idle', () => {
-        if (newMap.getZoom()! > 16) {
+      google.maps.event.addListenerOnce(newMap, 'idle', () => {
+        if (newMap.getZoom() && newMap.getZoom() > 16) {
           newMap.setZoom(16);
         }
       });
@@ -231,8 +245,8 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
 // Add typings to the global window object
 declare global {
   interface Window {
-    initGoogleMaps: () => void;
-    google: typeof google;
+    initGoogleMaps?: () => void;
+    google?: any;
   }
 }
 
