@@ -265,11 +265,11 @@ const LocationsPage = () => {
                       Call Store
                     </a>
                     
-                    {/* Google Maps Direction Link - Using Android Intent for better app integration */}
+                    {/* Google Maps Direction Link - Platform-specific handling */}
                     <a 
                       href={location.id === 1 
-                        ? "intent://maps.google.com/maps?daddr=33.150849,-96.824392&dirflg=d&mode=driving#Intent;scheme=https;package=com.google.android.apps.maps;end" 
-                        : "intent://maps.google.com/maps?daddr=32.680717,-97.135062&dirflg=d&mode=driving#Intent;scheme=https;package=com.google.android.apps.maps;end"}
+                        ? "https://www.google.com/maps/place/Vape+Cave+Smoke+%26+Stuff/@33.150849,-96.824392,17z/" 
+                        : "https://www.google.com/maps/place/Vape+Cave+Smoke+%26+Stuff/@32.680717,-97.135062,17z/"}
                       target="_blank"
                       rel="noopener noreferrer" 
                       className="inline-flex items-center bg-[#4285F4] hover:bg-[#4285F4]/90 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 shadow hover:shadow-lg"
