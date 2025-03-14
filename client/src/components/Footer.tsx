@@ -86,7 +86,10 @@ const Footer = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <span className="text-white/70">6958 Main St, Frisco, TX 75033</span>
+                <div>
+                  <span className="text-white/70 block">6958 Main St, Frisco, TX 75033</span>
+                  <span className="text-primary/80 text-xs mt-1 block">Plus Code: 552G+86 Frisco, Texas</span>
+                </div>
               </li>
               <li className="flex items-start">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -118,7 +121,10 @@ const Footer = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <span className="text-white/70">4100 S Cooper St, Unit 4108, Arlington, TX 76015</span>
+                <div>
+                  <span className="text-white/70 block">4100 S Cooper St, Unit 4108, Arlington, TX 76015</span>
+                  <span className="text-primary/80 text-xs mt-1 block">Plus Code: MVJ7+7W Arlington, Texas</span>
+                </div>
               </li>
               <li className="flex items-start">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">

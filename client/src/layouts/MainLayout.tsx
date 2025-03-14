@@ -24,12 +24,20 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   const baseUrl = "https://vapecavetx.com";
   const canonicalUrl = canonical ? `${baseUrl}${canonical}` : baseUrl;
   
+  // Enhanced structured data with emphasis on Frisco location
   const defaultStructuredData = {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": "https://vapecavetx.com/#organization",
     "name": "Vape Cave",
     "url": "https://vapecavetx.com",
-    "logo": "https://vapecavetx.com/logo.png",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://vapecavetx.com/logo.png",
+      "width": 180,
+      "height": 60
+    },
+    "description": "Premium vaping products and accessories at Vape Cave Frisco (Plus Code: 552G+86). Visit our convenient locations in Frisco and Arlington, TX or shop online.",
     "sameAs": [
       "https://facebook.com/vapecavetx",
       "https://instagram.com/vapecavetx",
@@ -38,15 +46,34 @@ const MainLayout: React.FC<MainLayoutProps> = ({
     "contactPoint": [
       {
         "@type": "ContactPoint",
-        "telephone": "+1-469-294-0061",
+        "telephone": "+14692940061",
         "contactType": "customer service",
-        "areaServed": "US",
-        "availableLanguage": "English"
+        "areaServed": ["Frisco", "Allen", "Plano", "McKinney", "Dallas", "North Texas"],
+        "availableLanguage": "English",
+        "contactOption": "TollFree"
       }
     ],
-    "address": {
-      "@type": "PostalAddress",
-      "addressCountry": "US"
+    "address": [
+      {
+        "@type": "PostalAddress",
+        "streetAddress": "6958 Main St #200",
+        "addressLocality": "Frisco",
+        "addressRegion": "TX",
+        "postalCode": "75033",
+        "addressCountry": "US"
+      },
+      {
+        "@type": "PostalAddress",
+        "streetAddress": "4100 S Cooper St #4108",
+        "addressLocality": "Arlington",
+        "addressRegion": "TX",
+        "postalCode": "76015",
+        "addressCountry": "US"
+      }
+    ],
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": canonicalUrl
     }
   };
 
@@ -59,7 +86,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         <title>{title}</title>
         <meta name="description" content={description} />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="keywords" content="vape, vaping, e-cigarettes, e-liquids, vape shop, vape accessories, frisco, arlington, texas, vape store" />
+        <meta name="keywords" content="vape shop frisco, 552G+86 frisco, frisco vape shop, delta 8 frisco, thc-a frisco, disposable vape frisco, vape products frisco tx, vaping frisco, frisco vaporizer shop, vape cave frisco" />
         <meta name="author" content="Vape Cave" />
         <meta name="robots" content="index, follow" />
         
