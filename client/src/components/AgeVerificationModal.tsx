@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ageLogo from "../assets/age_verification_logo.png";
+import ageLogo from "../assets/age_verification_logo_new.png";
 
 interface AgeVerificationModalProps {
   onVerify: (isVerified: boolean) => void;
