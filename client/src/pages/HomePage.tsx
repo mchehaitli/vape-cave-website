@@ -134,7 +134,7 @@ const HomePage = () => {
       </section>
 
       {/* Locations Preview Section */}
-      <section className="py-20 bg-medium text-white">
+      <section className="py-20 bg-dark text-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold font-['Poppins'] mb-3">Our Locations</h2>
@@ -144,7 +144,7 @@ const HomePage = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             {/* Location 1 */}
-            <div className="bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-700">
+            <div className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700">
               <div className="p-6">
                 <h3 className="font-['Poppins'] font-semibold text-2xl mb-4 text-white">Frisco Location</h3>
                 <div className="space-y-3 mb-5">
@@ -178,7 +178,7 @@ const HomePage = () => {
             </div>
             
             {/* Location 2 */}
-            <div className="bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-700">
+            <div className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700">
               <div className="p-6">
                 <h3 className="font-['Poppins'] font-semibold text-2xl mb-4 text-white">Arlington Location</h3>
                 <div className="space-y-3 mb-5">
@@ -215,7 +215,7 @@ const HomePage = () => {
       </section>
 
       {/* Age Verification Notice */}
-      <section className="py-14 bg-dark">
+      <section className="py-14 bg-darker">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto bg-black p-8 rounded-xl shadow-lg border border-gray-800">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-primary mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
