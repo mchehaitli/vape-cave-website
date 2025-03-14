@@ -191,7 +191,7 @@ const LocationsPage = () => {
                 <div className="p-6">
                   {/* Store Information */}
                   <div className="mb-6">
-                    <h3 className="text-lg font-semibold font-['Poppins'] mb-4">Store Information</h3>
+                    <h3 className="text-lg font-semibold font-['Poppins'] text-gray-800 mb-4">Store Information</h3>
                     
                     <div className="space-y-3">
                       <div className="flex">
@@ -199,8 +199,8 @@ const LocationsPage = () => {
                           <i className="fas fa-phone"></i>
                         </div>
                         <div>
-                          <p className="text-sm text-dark/70">Phone</p>
-                          <p className="font-medium">{location.phone}</p>
+                          <p className="text-sm text-gray-600">Phone</p>
+                          <p className="font-medium text-gray-800">{location.phone}</p>
                         </div>
                       </div>
                       
@@ -209,8 +209,8 @@ const LocationsPage = () => {
                           <i className="fas fa-clock"></i>
                         </div>
                         <div>
-                          <p className="text-sm text-dark/70">Hours</p>
-                          <p className="font-medium">{location.hours}</p>
+                          <p className="text-sm text-gray-600">Hours</p>
+                          <p className="font-medium text-gray-800">{location.hours}</p>
                         </div>
                       </div>
                       
@@ -219,8 +219,8 @@ const LocationsPage = () => {
                           <i className="fas fa-envelope"></i>
                         </div>
                         <div>
-                          <p className="text-sm text-dark/70">Email</p>
-                          <p className="font-medium">{location.email}</p>
+                          <p className="text-sm text-gray-600">Email</p>
+                          <p className="font-medium text-gray-800">{location.email}</p>
                         </div>
                       </div>
                     </div>
@@ -228,12 +228,12 @@ const LocationsPage = () => {
                   
                   {/* Hours of Operation */}
                   <div className="mb-6">
-                    <h3 className="text-lg font-semibold font-['Poppins'] mb-4" id="store-hours">Hours of Operation</h3>
+                    <h3 className="text-lg font-semibold font-['Poppins'] text-gray-800 mb-4" id="store-hours">Hours of Operation</h3>
                     <div className="grid grid-cols-2 gap-2">
                       {Object.entries(location.openingHours).map(([day, hours]) => (
                         <div key={day} className="flex justify-between py-1 border-b border-gray-100">
-                          <span className="font-medium">{day}</span>
-                          <span className="text-dark/70">{hours}</span>
+                          <span className="font-medium text-gray-800">{day}</span>
+                          <span className="text-gray-600">{hours}</span>
                         </div>
                       ))}
                     </div>
@@ -241,7 +241,7 @@ const LocationsPage = () => {
                   
                   {/* Featured Products Section */}
                   <div className="mb-6">
-                    <h3 className="text-lg font-semibold font-['Poppins'] mb-4">Featured Products</h3>
+                    <h3 className="text-lg font-semibold font-['Poppins'] text-gray-800 mb-4">Featured Products</h3>
                     <div className="flex flex-wrap gap-2">
                       {location.services.slice(0, 6).map((service, index) => (
                         <span 
@@ -298,8 +298,8 @@ const LocationsPage = () => {
                     
                     <div className="space-y-6">
                       <div>
-                        <h3 className="text-lg font-semibold font-['Poppins'] mb-3">Get In Touch</h3>
-                        <p className="text-dark/70 mb-4">
+                        <h3 className="text-lg font-semibold font-['Poppins'] text-gray-800 mb-3">Get In Touch</h3>
+                        <p className="text-gray-600 mb-4">
                           Have questions about our products or services? Contact us directly at this location for personalized assistance.
                         </p>
                         <a 
@@ -312,16 +312,16 @@ const LocationsPage = () => {
                       </div>
                       
                       <div>
-                        <h3 className="text-lg font-semibold font-['Poppins'] mb-3">About This Location</h3>
-                        <p className="text-dark/70">
+                        <h3 className="text-lg font-semibold font-['Poppins'] text-gray-800 mb-3">About This Location</h3>
+                        <p className="text-gray-600">
                           {location.description}
                         </p>
                       </div>
                       
                       {location.neighborhoodInfo && (
                         <div>
-                          <h3 className="text-lg font-semibold font-['Poppins'] mb-3">Neighborhood Information</h3>
-                          <p className="text-dark/70">
+                          <h3 className="text-lg font-semibold font-['Poppins'] text-gray-800 mb-3">Neighborhood Information</h3>
+                          <p className="text-gray-600">
                             {location.neighborhoodInfo}
                           </p>
                         </div>
@@ -335,8 +335,8 @@ const LocationsPage = () => {
                             </svg>
                           </div>
                           <div>
-                            <h4 className="font-medium mb-1">Parking Available</h4>
-                            <p className="text-dark/70">{location.parking}</p>
+                            <h4 className="font-medium text-gray-800 mb-1">Parking Available</h4>
+                            <p className="text-gray-600">{location.parking}</p>
                           </div>
                         </div>
                       )}
@@ -349,33 +349,33 @@ const LocationsPage = () => {
                             </svg>
                           </div>
                           <div>
-                            <h4 className="font-medium mb-1">Public Transit</h4>
-                            <p className="text-dark/70">{location.publicTransit}</p>
+                            <h4 className="font-medium text-gray-800 mb-1">Public Transit</h4>
+                            <p className="text-gray-600">{location.publicTransit}</p>
                           </div>
                         </div>
                       )}
                       
                       <div>
-                        <h3 className="text-lg font-semibold font-['Poppins'] mb-3">Products We Offer</h3>
+                        <h3 className="text-lg font-semibold font-['Poppins'] text-gray-800 mb-3">Products We Offer</h3>
                         <div className="grid grid-cols-2 gap-2">
                           {location.services.map((service, index) => (
                             <div key={index} className="flex items-center gap-2">
                               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                               </svg>
-                              <span>{service}</span>
+                              <span className="text-gray-700">{service}</span>
                             </div>
                           ))}
                         </div>
                       </div>
                       
                       <div>
-                        <h3 className="text-lg font-semibold font-['Poppins'] mb-3">Payment Methods</h3>
+                        <h3 className="text-lg font-semibold font-['Poppins'] text-gray-800 mb-3">Payment Methods</h3>
                         <div className="flex flex-wrap gap-2">
                           {location.acceptedPayments.map((payment, index) => (
                             <span 
                               key={index} 
-                              className="bg-gray-100 text-dark/80 text-xs font-medium py-1 px-3 rounded-full"
+                              className="bg-gray-100 text-gray-700 text-xs font-medium py-1 px-3 rounded-full"
                             >
                               {payment}
                             </span>
@@ -429,8 +429,8 @@ const LocationsPage = () => {
       <section className="py-16 bg-primary/10">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold font-['Poppins'] mb-4">Come Visit Us Today!</h2>
-            <p className="text-dark/70 text-lg mb-8">
+            <h2 className="text-3xl font-bold font-['Poppins'] text-gray-800 mb-4">Come Visit Us Today!</h2>
+            <p className="text-gray-600 text-lg mb-8">
               Experience our friendly atmosphere, knowledgeable staff, and premium selection of vaping products, disposables, Delta 8, THC-A, Delta 9, and more at a location near you.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
