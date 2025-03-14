@@ -20,7 +20,7 @@ const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({ onVerify })
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 backdrop-blur-sm">
       <div className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 p-8 border-2 border-primary">
         <div className="mb-6 flex justify-center">
-          <Logo />
+          <Logo variant="orange" location="footer" />
         </div>
         
         <div className="text-center mb-6">
