@@ -268,24 +268,14 @@ const LocationsPage = () => {
                     {/* Google Maps Direction Link - Using Geo URI for app opening */}
                     <a 
                       href={location.id === 1 
-                        ? `geo:${location.coordinates.lat},${location.coordinates.lng}?q=Vape+Cave+Smoke+And+Stuff+Frisco` 
-                        : `geo:${location.coordinates.lat},${location.coordinates.lng}?q=Vape+Cave+Smoke+And+Stuff+Arlington`}
+                        ? "https://maps.app.goo.gl/jzbqUDyvvGHuwyXJ7" 
+                        : "https://maps.app.goo.gl/7RRoEeD3uzANmdhZA"}
                       target="_blank"
                       rel="noopener noreferrer" 
                       className="inline-flex items-center bg-[#4285F4] hover:bg-[#4285F4]/90 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 shadow hover:shadow-lg"
                       onClick={(e) => {
-                        // If geo URI doesn't work, fall back to the direct app links
-                        if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
-                          e.preventDefault();
-                          window.location.href = location.id === 1 
-                            ? "https://maps.app.goo.gl/jzbqUDyvvGHuwyXJ7" 
-                            : "https://maps.app.goo.gl/7RRoEeD3uzANmdhZA";
-                        } else if (navigator.userAgent.match(/Android/i)) {
-                          e.preventDefault();
-                          window.location.href = location.id === 1 
-                            ? "https://maps.app.goo.gl/jzbqUDyvvGHuwyXJ7" 
-                            : "https://maps.app.goo.gl/7RRoEeD3uzANmdhZA";
-                        }
+                        // Let the default href handle the navigation - this should work on most modern phones
+                        // We won't try to be clever with URI schemes since they can be unreliable
                       }}
                     >
                       <svg className="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -302,16 +292,8 @@ const LocationsPage = () => {
                         rel="noopener noreferrer" 
                         className="inline-flex items-center bg-black hover:bg-black/90 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 shadow hover:shadow-lg"
                         onClick={(e) => {
-                          // On iOS, try to open directly in Apple Maps app
-                          if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
-                            e.preventDefault();
-                            // Check if it's Frisco or Arlington
-                            if (location.id === 1) {
-                              window.location.href = "https://maps.apple.com/?address=6958%20Main%20St,%20Unit%20200,%20Frisco,%20TX%20%2075033,%20United%20States&auid=14231591118256703794&ll=33.150849,-96.824392&lsp=9902&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m";
-                            } else {
-                              window.location.href = "https://maps.apple.com/?address=4100%20S%20Cooper%20St,%20Unit%204108,%20Arlington,%20TX%20%2076015,%20United%20States&auid=18240116569179355943&ll=32.680717,-97.135062&lsp=9902&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m";
-                            }
-                          }
+                          // Let the default href handle the navigation - this should work on most modern phones
+                          // We won't try to be clever with URI schemes since they can be unreliable
                         }}
                       >
                         <svg className="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
