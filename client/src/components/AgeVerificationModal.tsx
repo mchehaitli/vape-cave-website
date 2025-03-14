@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import specialLogo from "../assets/vapecave-logo-special.png";
+import whiteLogo from "../assets/white_logo_transparent_background.png";
 
 interface AgeVerificationModalProps {
   onVerify: (isVerified: boolean) => void;
@@ -21,7 +21,7 @@ const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({ onVerify })
       <div className="bg-black rounded-xl shadow-2xl max-w-md w-full mx-4 p-6 md:p-8 border-2 border-primary relative">
         <div className="mb-6 flex justify-center">
           <img 
-            src={specialLogo} 
+            src={whiteLogo} 
             alt="Vape Cave - Smoke & Stuff" 
             className="h-44 md:h-52 lg:h-60 w-auto" 
           />
