@@ -1,0 +1,101 @@
+# Replit Prompt: Create a Vape Shop Website (Vape Cave)
+
+**Project Goal:** Generate a basic, multi-page website for "Vape Cave" with two locations, designed for easy SEO updates.
+
+**Instructions:**
+
+1.  **File Structure:**
+    * Create the following files:
+        * `index.html` (Homepage)
+        * `locations.html` (Locations Page)
+        * `products.html` (Products Page)
+        * `contact.html` (Contact Page)
+        * `style.css` (CSS Styles)
+        * `script.js` (JavaScript, if needed)
+        * `robots.txt`
+        * `sitemap.xml`
+        * Create an `images` folder to store images.
+
+2.  **Homepage (`index.html`):**
+    * Include a header with the shop name "Vape Cave" and a navigation menu linking to all pages.
+    * Add a brief introduction to Vape Cave.
+    * Include a section featuring popular products.
+    * Add a section with a short description of each location, with a link to the locations page.
+    * Include a footer with copyright information.
+    * Add placeholder meta tags for title and description.
+
+3.  **Locations Page (`locations.html`):**
+    * Display detailed information for both Vape Cave locations:
+        * Address
+        * Phone number
+        * Hours of operation
+        * Map (embedded Google Maps iframe)
+        * Include a photo of each location.
+    * Add placeholder meta tags for title and description.
+
+4.  **Products Page (`products.html`):**
+    * Create a basic product listing with placeholder images and descriptions.
+    * Organize products into categories (e.g., e-liquids, devices, accessories).
+    * Add placeholder meta tags for title and description.
+
+5.  **Contact Page (`contact.html`):**
+    * Include a contact form with fields for name, email, message.
+    * Display contact information (phone, email).
+    * Add placeholder meta tags for title and description.
+
+6.  **CSS (`style.css`):**
+    * Create a basic stylesheet for layout and styling.
+    * Use semantic HTML and CSS for SEO friendliness.
+    * Ensure the site is mobile responsive.
+
+7.  **JavaScript (`script.js`):**
+    * If needed, add basic javascript for any interactive elements.
+
+8.  **SEO Optimization (Basic):**
+    * Use descriptive page titles and meta descriptions.
+    * Use header tags (H1, H2, etc.) appropriately.
+    * Include alt text for all images.
+    * Create a simple `robots.txt` file that allows indexing.
+    * Create a simple `sitemap.xml` file with links to all pages.
+
+9.  **Image Placeholders:**
+    * Include placeholder images in the `images` folder.
+
+10. **Easy Updates:**
+    * Organize content in a way that is easily editable.
+    * Add comments to the HTML to explain sections.
+
+**Example Location Data (Use these as placeholders):**
+
+* **Location 1:**
+    * Address: 123 Main Street, City A
+    * Phone: 555-123-4567
+    * Hours: 10 AM - 8 PM
+* **Location 2:**
+    * Address: 456 Oak Avenue, City B
+    * Phone: 555-987-6543
+    * Hours: 11 AM - 9 PM
+
+**Meta Tag Placeholders:**
+
+* Replace `[Page Title]` with relevant keywords.
+* Replace `[Page Description]` with a concise summary of the page content.
+
+**Important Notes:**
+
+* This is a basic website structure. You can expand it with more features and content.
+* Remember to replace placeholder content with your actual shop information.
+* Be very aware of all local, state and federal laws regarding vape related websites.
+
+**After the replit has finished:**
+
+1.  Review all of the code, and ensure it is correct.
+2.  Replace all placeholder content, with your own.
+3.  Add real images.
+4.  Add your business address to the google maps embeded iframes.
+5.  Add real products.
+6.  Add real contact information.
+7.  Deploy the website.
+8.  Test the website on multiple devices.
+9.  Monitor the website for errors.
+10. Update the website regularly with new content.
