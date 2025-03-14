@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import MainLayout from "@/layouts/MainLayout";
 import { products } from "@/data/products";
 import { useState } from "react";
+import vapeLounge from "../assets/images/vape-lounge.png";
 
 const HomePage = () => {
   const [activeCategory, setActiveCategory] = useState("all");
@@ -19,22 +20,32 @@ const HomePage = () => {
       {/* Hero Section */}
       <section id="home" className="bg-gray-900 py-16 md:py-28 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/30 mix-blend-multiply"></div>
-        <div className="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1562766179-629c3df11035?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center"></div>
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-2xl">
-            <h2 className="text-4xl md:text-5xl font-bold font-['Poppins'] mb-6 leading-tight">Premium Vaping Experience</h2>
-            <p className="text-lg mb-8 text-white/90">Discover our wide selection of high-quality vape products, e-liquids, and accessories at Vape Cave - your ultimate destination for all vaping needs.</p>
-            <div className="flex flex-wrap gap-4">
-              <Link href="/products">
-                <div className="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-lg cursor-pointer">
-                  Shop Now
-                </div>
-              </Link>
-              <Link href="/locations">
-                <div className="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold py-3 px-8 rounded-lg transition-colors cursor-pointer backdrop-blur-sm">
-                  Find Our Stores
-                </div>
-              </Link>
+          <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
+            <div className="md:w-1/2">
+              <h2 className="text-4xl md:text-5xl font-bold font-['Poppins'] mb-6 leading-tight">Premium Vaping Experience</h2>
+              <p className="text-lg mb-8 text-white/90">Discover our wide selection of high-quality vape products, e-liquids, and accessories at Vape Cave - your ultimate destination for all vaping needs.</p>
+              <div className="flex flex-wrap gap-4">
+                <Link href="/products">
+                  <div className="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-lg cursor-pointer">
+                    Shop Now
+                  </div>
+                </Link>
+                <Link href="/locations">
+                  <div className="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold py-3 px-8 rounded-lg transition-colors cursor-pointer backdrop-blur-sm">
+                    Find Our Stores
+                  </div>
+                </Link>
+              </div>
+            </div>
+            <div className="md:w-1/2 mt-6 md:mt-0">
+              <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-primary/40">
+                <img 
+                  src={vapeLounge} 
+                  alt="Vape Cave Lounge" 
+                  className="w-full h-auto object-cover"
+                />
+              </div>
             </div>
           </div>
         </div>
