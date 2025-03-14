@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import MainLayout from "@/layouts/MainLayout";
 import { products } from "@/data/products";
 import { useState } from "react";
-import vapeLounge from "../assets/images/vape-lounge.png";
+import vapeLounge from "../assets/images/vape-lounge.jpg";
 
 const HomePage = () => {
   const [activeCategory, setActiveCategory] = useState("all");
