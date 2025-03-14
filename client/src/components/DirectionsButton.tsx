@@ -37,24 +37,31 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
   
   // Create URL for different platforms
   const getDirectionsUrl = () => {
-    // If Plus Code is available, use that instead of address for more precise directions
-    if (plusCode) {
-      const encodedPlusCode = encodeURIComponent(plusCode);
-      return `https://www.google.com/maps/search/?api=1&query=${encodedPlusCode}`;
-    }
-    
-    // Otherwise, fall back to standard address-based directions
+    // Get encoded versions of address and plus code
     const encodedAddress = encodeURIComponent(address);
+    const encodedPlusCode = plusCode ? encodeURIComponent(plusCode) : null;
     
     if (isIOS && isMobile) {
       // Use Apple Maps on iOS devices
+      // Note: Apple Maps doesn't directly support Plus Codes in their URL scheme
+      // but we still use the lat/lng for precision
       return `https://maps.apple.com/?address=${encodedAddress}&ll=${lat},${lng}`;
     } else if (isMobile) {
       // Use Google Maps app on Android
-      return `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}&travelmode=driving`;
+      if (encodedPlusCode) {
+        // Use Plus Code for more accurate location on Android
+        return `https://www.google.com/maps/search/?api=1&query=${encodedPlusCode}`;
+      } else {
+        return `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}&travelmode=driving`;
+      }
     } else {
       // Use Google Maps web on desktop
-      return `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}&travelmode=driving`;
+      if (encodedPlusCode) {
+        // Use Plus Code for more accurate location on desktop
+        return `https://www.google.com/maps/search/?api=1&query=${encodedPlusCode}`;
+      } else {
+        return `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}&travelmode=driving`;
+      }
     }
   };
   

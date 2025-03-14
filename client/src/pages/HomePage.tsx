@@ -25,6 +25,52 @@ const HomePage = () => {
         "availableLanguage": "English"
       }
     ],
+    "location": [
+      {
+        "@type": "Place",
+        "name": "Vape Cave Frisco",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "6958 Main St",
+          "addressLocality": "Frisco",
+          "addressRegion": "TX",
+          "postalCode": "75033",
+          "addressCountry": "US"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 33.1543,
+          "longitude": -96.8359
+        },
+        "additionalProperty": {
+          "@type": "PropertyValue",
+          "name": "plusCode",
+          "value": "552G+86 Frisco, Texas"
+        }
+      },
+      {
+        "@type": "Place",
+        "name": "Vape Cave Arlington",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "4100 S Cooper St, Unit 4108",
+          "addressLocality": "Arlington",
+          "addressRegion": "TX",
+          "postalCode": "76015",
+          "addressCountry": "US"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 32.6889,
+          "longitude": -97.1153
+        },
+        "additionalProperty": {
+          "@type": "PropertyValue",
+          "name": "plusCode",
+          "value": "MVJ7+7W Arlington, Texas"
+        }
+      }
+    ],
     "address": [
       {
         "@type": "PostalAddress",
@@ -110,7 +156,10 @@ const HomePage = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    <span className="text-gray-300">6958 Main St, Frisco, TX 75033</span>
+                    <div>
+                      <span className="text-gray-300 block">6958 Main St, Frisco, TX 75033</span>
+                      <span className="text-gray-400 text-xs mt-1 block">Plus Code: 552G+86 Frisco, Texas</span>
+                    </div>
                   </div>
                   <div className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
