@@ -44,7 +44,7 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
   const [markers, setMarkers] = useState<any[]>([]);
   
   // Get the API key from environment variables
-  const apiKey = import.meta.env.GOOGLE_MAPS_API_KEY || '';
+  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '';
   
   // Get the currently active location or the first one
   const activeLocation = locations.find(loc => loc.id === activeLocationId) || locations[0];
@@ -54,30 +54,43 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
     // Check if the Google Maps API is already loaded
     if (window.google && window.google.maps) {
       initializeMap();
-    } else {
-      // Load the Google Maps API script
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initGoogleMaps`;
-      script.async = true;
-      script.defer = true;
-      
-      // Define the callback function to initialize the map
+      return;
+    }
+    
+    // Check if the script is already being loaded
+    const existingScript = document.querySelector('script[src*="maps.googleapis.com/maps/api/js"]');
+    if (existingScript) {
+      // If script is already loading, we just need to wait for it
       window.initGoogleMaps = () => {
         setMapLoaded(true);
       };
-      
-      document.head.appendChild(script);
-      
-      // Cleanup function to remove the script
-      return () => {
-        if (document.head.contains(script)) {
-          document.head.removeChild(script);
-        }
-        if (window.initGoogleMaps) {
-          delete window.initGoogleMaps;
-        }
-      };
+      return;
     }
+    
+    // Load the Google Maps API script
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initGoogleMaps`;
+    script.async = true;
+    script.defer = true;
+    
+    // Define the callback function to initialize the map
+    window.initGoogleMaps = () => {
+      setMapLoaded(true);
+    };
+    
+    document.head.appendChild(script);
+    
+    // Cleanup function to remove the script
+    return () => {
+      // Only remove the script and callback if this component added it
+      if (document.head.contains(script)) {
+        document.head.removeChild(script);
+      }
+      // TypeScript-friendly way to remove an optional property
+      if ('initGoogleMaps' in window) {
+        delete (window as any).initGoogleMaps;
+      }
+    };
   }, [apiKey]);
   
   // Initialize the map when the API is loaded
