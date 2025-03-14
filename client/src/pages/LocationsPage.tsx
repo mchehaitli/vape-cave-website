@@ -265,18 +265,12 @@ const LocationsPage = () => {
                       Call Store
                     </a>
                     
-                    {/* Google Maps Direction Link - Using Geo URI for app opening */}
+                    {/* Google Maps Direction Link */}
                     <a 
                       href={location.id === 1 
-                        ? "https://maps.app.goo.gl/jzbqUDyvvGHuwyXJ7" 
-                        : "https://maps.app.goo.gl/7RRoEeD3uzANmdhZA"}
-                      target="_blank"
-                      rel="noopener noreferrer" 
+                        ? "google.navigation:q=33.150849,-96.824392&mode=d" 
+                        : "google.navigation:q=32.680717,-97.135062&mode=d"}
                       className="inline-flex items-center bg-[#4285F4] hover:bg-[#4285F4]/90 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 shadow hover:shadow-lg"
-                      onClick={(e) => {
-                        // Let the default href handle the navigation - this should work on most modern phones
-                        // We won't try to be clever with URI schemes since they can be unreliable
-                      }}
                     >
                       <svg className="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
