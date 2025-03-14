@@ -40,13 +40,13 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
     
     if (isIOS && isMobile) {
       // Use Apple Maps on iOS devices
-      return `https://maps.apple.com/?q=${encodedAddress}&ll=${lat},${lng}`;
+      return `https://maps.apple.com/?address=${encodedAddress}&ll=${lat},${lng}`;
     } else if (isMobile) {
       // Use Google Maps app on Android
-      return `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=driving`;
+      return `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}&travelmode=driving`;
     } else {
       // Use Google Maps web on desktop
-      return `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=driving`;
+      return `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}&travelmode=driving`;
     }
   };
   
