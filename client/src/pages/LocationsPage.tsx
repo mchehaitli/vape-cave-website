@@ -39,7 +39,7 @@ const LocationsPage = () => {
       address: "6958 Main St",
       fullAddress: "6958 Main St, Frisco, TX 75033, United States",
       phone: "(469) 294-0061",
-      hours: "10 AM - 12 AM / 1 AM (Extended hours on weekends)",
+      hours: "10:00 AM - 12:00 AM / 1:00 AM (Extended hours on weekends)",
       closedDays: "",
       image: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       coordinates: {
@@ -52,13 +52,13 @@ const LocationsPage = () => {
       email: "vapecavetex@gmail.com",
       storeCode: "VC-FRISCO",
       openingHours: {
-        "Monday": "10:00-00:00",
-        "Tuesday": "10:00-00:00",
-        "Wednesday": "10:00-00:00",
-        "Thursday": "10:00-00:00",
-        "Friday": "10:00-01:00",
-        "Saturday": "10:00-01:00",
-        "Sunday": "10:00-00:00"
+        "Monday": "10:00 AM - 12:00 AM",
+        "Tuesday": "10:00 AM - 12:00 AM",
+        "Wednesday": "10:00 AM - 12:00 AM",
+        "Thursday": "10:00 AM - 12:00 AM",
+        "Friday": "10:00 AM - 1:00 AM",
+        "Saturday": "10:00 AM - 1:00 AM",
+        "Sunday": "10:00 AM - 12:00 AM"
       }
     },
     {
@@ -68,7 +68,7 @@ const LocationsPage = () => {
       address: "4100 S Cooper St, Unit 4108",
       fullAddress: "4100 S Cooper St, Unit 4108, Arlington, TX 76015, United States",
       phone: "(682) 270-0334",
-      hours: "10 AM - 11 PM (7 days a week)",
+      hours: "10:00 AM - 11:00 PM (7 days a week)",
       closedDays: "",
       image: "https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       coordinates: {

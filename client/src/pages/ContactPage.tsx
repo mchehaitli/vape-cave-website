@@ -167,8 +167,8 @@ const ContactPage = () => {
                     </div>
                     <div>
                       <h4 className="font-medium mb-1">Business Hours</h4>
-                      <p className="text-white/80">Frisco: 10 AM - 12 AM (1 AM Fri-Sat)</p>
-                      <p className="text-white/80">Arlington: 10 AM - 11 PM</p>
+                      <p className="text-white/80">Frisco: 10:00 AM - 12:00 AM (1:00 AM Fri-Sat)</p>
+                      <p className="text-white/80">Arlington: 10:00 AM - 11:00 PM</p>
                       <p className="text-white/80 font-medium">Both locations open 7 days a week</p>
                     </div>
                   </div>
