@@ -246,7 +246,7 @@ const LocationsPage = () => {
                         address: location.fullAddress,
                         position: location.coordinates
                       }]}
-                      apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ''}
+                      apiKey="AIzaSyAmuEPaYfG1ketf_ZzVnpcjfSe1qdMa3t0"
                       height="100%"
                       width="100%"
                       zoom={15}
@@ -394,7 +394,7 @@ const LocationsPage = () => {
                 address: location.fullAddress,
                 position: location.coordinates
               }))}
-              apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ''}
+              apiKey="AIzaSyAmuEPaYfG1ketf_ZzVnpcjfSe1qdMa3t0"
               height="100%"
               width="100%"
               zoom={11}
