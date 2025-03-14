@@ -41,35 +41,48 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
     const encodedAddress = encodeURIComponent(address);
     const encodedPlusCode = plusCode ? encodeURIComponent(plusCode) : null;
     
+    // Extract city from address for better SEO context
+    // Assume city is typically between a comma and the state abbreviation
+    const cityMatch = address.match(/,\s*([^,]+),\s*[A-Z]{2}/);
+    const city = cityMatch ? cityMatch[1].trim() : "Frisco"; // Default to Frisco for SEO focus
+    
+    // Create a more precise query with the location name appended for SEO
+    // Include "vape shop" keywords for better local SEO
+    const enhancedQuery = plusCode 
+      ? `${plusCode} Vape Cave ${city}, Texas` 
+      : `Vape Cave ${address}`;
+    const encodedEnhancedQuery = encodeURIComponent(enhancedQuery);
+    
     if (isIOS && isMobile) {
-      // Use Apple Maps on iOS devices
-      // For iOS, we have a few options:
+      // Enhanced URL scheme for Apple Maps on iOS devices
+      // Using specific format for better Plus Code support on iOS 16+
       
-      // 1. Use Plus Code in query parameter as a fallback for direct latitude/longitude
-      //    While Apple Maps doesn't directly support Plus Codes in their URL scheme,
-      //    this allows users to see and copy the Plus Code if needed
       if (encodedPlusCode) {
-        // Include plus code in the query for better precision
-        // This format works better with iOS 16+ devices
-        return `https://maps.apple.com/?q=${encodedPlusCode}&ll=${lat},${lng}&address=${encodedAddress}`;
+        // For Plus Code locations, use a format that promotes the Plus Code
+        // This URL includes both the Plus Code in the query and coordinates for precision
+        return `https://maps.apple.com/?q=${encodedPlusCode} ${city}&ll=${lat},${lng}&address=${encodedAddress}`;
       } else {
         // Fall back to standard coordinates
         return `https://maps.apple.com/?address=${encodedAddress}&ll=${lat},${lng}`;
       }
     } else if (isMobile) {
-      // Use Google Maps app on Android
+      // Enhanced URL scheme for Google Maps app on Android
       if (encodedPlusCode) {
-        // Use Plus Code for more accurate location on Android
-        return `https://www.google.com/maps/search/?api=1&query=${encodedPlusCode}`;
+        // Use Plus Code as the primary search query for better precision
+        // Google Maps on Android has excellent Plus Code support
+        return `https://www.google.com/maps/search/?api=1&query=${encodedEnhancedQuery}`;
       } else {
-        return `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}&travelmode=driving`;
+        // Include both destination and query parameters for better results
+        return `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}&query=${encodedAddress}&travelmode=driving`;
       }
     } else {
-      // Use Google Maps web on desktop
+      // Enhanced URL scheme for Google Maps web on desktop
       if (encodedPlusCode) {
-        // Use Plus Code for more accurate location on desktop
-        return `https://www.google.com/maps/search/?api=1&query=${encodedPlusCode}`;
+        // Use Plus Code with enhanced SEO query for more accurate location on desktop
+        // This format is more search-friendly and preserves the Plus Code precision
+        return `https://www.google.com/maps/search/?api=1&query=${encodedEnhancedQuery}`;
       } else {
+        // Include both destination and query parameters for better desktop results
         return `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}&travelmode=driving`;
       }
     }
@@ -105,6 +118,10 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
     }
   };
   
+  // Extract city from address for structured data 
+  const cityMatch = address.match(/,\s*([^,]+),\s*[A-Z]{2}/);
+  const locationCity = cityMatch ? cityMatch[1].trim() : "Frisco"; // Default to Frisco for SEO focus
+  
   return (
     <a
       href={getDirectionsUrl()}
@@ -119,6 +136,9 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
         ${className}
       `}
       aria-label={`Get directions to ${address}${plusCode ? ` (Plus Code: ${plusCode})` : ''}`}
+      data-location={locationCity}
+      data-plus-code={plusCode || ""}
+      itemProp="hasMap"
     >
       {showIcon && (
         <svg 

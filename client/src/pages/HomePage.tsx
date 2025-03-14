@@ -3,14 +3,20 @@ import { Helmet } from "react-helmet";
 import MainLayout from "@/layouts/MainLayout";
 
 const HomePage = () => {
-  // Home page structured data
+  // Enhanced home page structured data with focus on Frisco location and Plus Code
   const homePageSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": "https://vapecavetx.com/#organization",
     "name": "Vape Cave",
     "url": "https://vapecavetx.com",
-    "logo": "https://vapecavetx.com/logo.png",
-    "description": "Vape Cave offers premium vaping products, e-liquids, and accessories at our convenient Frisco and Arlington, TX locations. We provide expert advice and a wide selection for all your vaping needs.",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://vapecavetx.com/logo.png",
+      "width": 180,
+      "height": 60
+    },
+    "description": "Vape Cave offers premium vaping products, e-liquids, disposables, Delta 8, THC-A, and accessories at our convenient Frisco (Plus Code: 552G+86) and Arlington, TX locations. We provide expert advice and a wide selection for all your vaping needs.",
     "sameAs": [
       "https://facebook.com/vapecavetx",
       "https://instagram.com/vapecavetx",
@@ -21,17 +27,22 @@ const HomePage = () => {
         "@type": "ContactPoint",
         "telephone": "+14692940061",
         "contactType": "customer service",
-        "areaServed": "US",
-        "availableLanguage": "English"
+        "areaServed": ["Frisco", "Allen", "Plano", "McKinney", "Dallas", "North Texas"],
+        "availableLanguage": "English",
+        "contactOption": "TollFree"
       }
     ],
     "location": [
       {
-        "@type": "Place",
+        "@type": "VapeShop",
+        "@id": "https://vapecavetx.com/locations/frisco",
         "name": "Vape Cave Frisco",
+        "url": "https://vapecavetx.com/locations",
+        "telephone": "+14692940061",
+        "priceRange": "$$",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "6958 Main St",
+          "streetAddress": "6958 Main St #200",
           "addressLocality": "Frisco",
           "addressRegion": "TX",
           "postalCode": "75033",
@@ -39,21 +50,56 @@ const HomePage = () => {
         },
         "geo": {
           "@type": "GeoCoordinates",
-          "latitude": 33.1543,
-          "longitude": -96.8359
+          "latitude": 33.150730,
+          "longitude": -96.822550
         },
-        "additionalProperty": {
-          "@type": "PropertyValue",
-          "name": "plusCode",
-          "value": "552G+86 Frisco, Texas"
-        }
+        "hasMap": [
+          {
+            "@type": "Map",
+            "url": "https://www.google.com/maps/search/?api=1&query=552G%2B86+Frisco%2C+Texas"
+          },
+          {
+            "@type": "Map", 
+            "url": "https://plus.codes/552G+86_Frisco,_Texas"
+          }
+        ],
+        "additionalProperty": [
+          {
+            "@type": "PropertyValue",
+            "name": "plusCode",
+            "value": "552G+86 Frisco, Texas"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "googlePlaceId",
+            "value": "ChIJxXjrR3wVkFQRcKK89i-aFDw"
+          }
+        ],
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Sunday"],
+            "opens": "10:00",
+            "closes": "24:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Friday", "Saturday"],
+            "opens": "10:00",
+            "closes": "01:00"
+          }
+        ]
       },
       {
-        "@type": "Place",
+        "@type": "VapeShop",
+        "@id": "https://vapecavetx.com/locations/arlington",
         "name": "Vape Cave Arlington",
+        "url": "https://vapecavetx.com/locations",
+        "telephone": "+16822700334",
+        "priceRange": "$$",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "4100 S Cooper St, Unit 4108",
+          "streetAddress": "4100 S Cooper St #4108",
           "addressLocality": "Arlington",
           "addressRegion": "TX",
           "postalCode": "76015",
@@ -61,34 +107,54 @@ const HomePage = () => {
         },
         "geo": {
           "@type": "GeoCoordinates",
-          "latitude": 32.6889,
-          "longitude": -97.1153
+          "latitude": 32.687070,
+          "longitude": -97.134800
         },
-        "additionalProperty": {
-          "@type": "PropertyValue",
-          "name": "plusCode",
-          "value": "MVJ7+7W Arlington, Texas"
-        }
+        "hasMap": [
+          {
+            "@type": "Map",
+            "url": "https://www.google.com/maps/search/?api=1&query=MVJ7%2B7W+Arlington%2C+Texas"
+          },
+          {
+            "@type": "Map", 
+            "url": "https://plus.codes/MVJ7+7W_Arlington,_Texas"
+          }
+        ],
+        "additionalProperty": [
+          {
+            "@type": "PropertyValue",
+            "name": "plusCode",
+            "value": "MVJ7+7W Arlington, Texas"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "googlePlaceId",
+            "value": "ChIJ23422NdJSYYRVX94pdZlUGg"
+          }
+        ],
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+            "opens": "10:00",
+            "closes": "23:00"
+          }
+        ]
       }
     ],
-    "address": [
-      {
-        "@type": "PostalAddress",
-        "streetAddress": "6958 Main St",
-        "addressLocality": "Frisco",
-        "addressRegion": "TX",
-        "postalCode": "75033",
-        "addressCountry": "US"
+    "potentialAction": {
+      "@type": "FindAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://www.google.com/maps/search/?api=1&query=552G%2B86+Frisco%2C+Texas"
       },
-      {
-        "@type": "PostalAddress",
-        "streetAddress": "4100 S Cooper St, Unit 4108",
-        "addressLocality": "Arlington",
-        "addressRegion": "TX",
-        "postalCode": "76015",
-        "addressCountry": "US"
-      }
-    ]
+      "description": "Find directions to our Frisco store using Google Maps Plus Code",
+      "query-input": "required name=location"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://vapecavetx.com/"
+    }
   };
 
   return (
@@ -98,7 +164,19 @@ const HomePage = () => {
       canonical="/"
     >
       <Helmet>
-        <meta name="keywords" content="vape shop, vaping products, e-liquids, vape accessories, frisco vape shop, arlington vape store, premium vapes" />
+        <title>Vape Cave | Premium Vape Shop in Frisco TX (552G+86) | Disposables, Delta 8, THC-A</title>
+        <meta name="description" content="Visit Vape Cave in Frisco TX (Plus Code: 552G+86) for premium vaping products, disposables, Delta 8, THC-A, and accessories. Open daily with expert staff and competitive prices." />
+        <meta name="keywords" content="vape shop frisco, 552G+86 frisco, frisco vape shop, delta 8 frisco, thc-a frisco, disposable vape frisco, vape products frisco tx, vaping frisco, frisco vaporizer shop, vape cave frisco" />
+        <link rel="canonical" href="https://vapecavetx.com/" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://vapecavetx.com/" />
+        <meta property="og:title" content="Vape Cave Frisco | Premium Vape Shop at 552G+86" />
+        <meta property="og:description" content="Visit Vape Cave in Frisco (Plus Code: 552G+86) for premium vaping products, expert advice, and a wide selection for all your vaping needs." />
+        <meta property="og:image" content="https://vapecavetx.com/og-image.jpg" />
+        
+        {/* Structured data for search engines */}
         <script type="application/ld+json">
           {JSON.stringify(homePageSchema)}
         </script>

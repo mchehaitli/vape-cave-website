@@ -9,6 +9,7 @@ interface Location {
     lng: number;
   };
   plusCode?: string; // Add optional Plus Code field
+  city?: string; // Add optional city for better location context
 }
 
 // Define MapTypeId enum since we can't access google.maps before it's loaded
@@ -58,6 +59,10 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
     // Create structured data focusing on the Frisco location if it exists
     const friscoLocation = locations.find(loc => loc.id === 1) || locations[0];
     
+    // Extract city name from address (assuming format like "address, City, State ZIP")
+    const cityMatch = friscoLocation.address.match(/,\s*([^,]+),\s*[A-Z]{2}/);
+    const locationCity = friscoLocation.city || (cityMatch ? cityMatch[1].trim() : "Frisco");
+    
     const structuredData = {
       "@context": "https://schema.org",
       "@type": "VapeShop",
@@ -65,7 +70,7 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
       "address": {
         "@type": "PostalAddress",
         "streetAddress": friscoLocation.address,
-        "addressLocality": friscoLocation.city,
+        "addressLocality": locationCity,
         "addressRegion": "TX",
         "postalCode": "75033",
         "addressCountry": "US"
