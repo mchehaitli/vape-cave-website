@@ -139,7 +139,7 @@ export const storeLocations: StoreLocation[] = [
       lng: -97.134800
     },
     googlePlaceId: "ChIJ23422NdJSYYRVX94pdZlUGg", 
-    plusCode: "552G+86 Frisco, Texas", // Note: This appears to be the same as Frisco - may need verification
+    plusCode: "MVJ7+7W Arlington, Texas",
     appleMapsLink: "https://maps.apple.com/?address=4100%20S%20Cooper%20St%20%234108,%20Arlington,%20TX%20%2076015,%20United%20States&ll=32.687070,-97.134800&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m",
     mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3357.926302595539!2d-97.13739482379145!3d32.68707018061235!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864e6377a56ba2c1%3A0x63d3de7c2a26fd3d!2s4100%20S%20Cooper%20St%20%234108%2C%20Arlington%2C%20TX%2076015!5e0!3m2!1sen!2sus!4v1672321865030!5m2!1sen!2sus",
     email: "vapecavetx@gmail.com",

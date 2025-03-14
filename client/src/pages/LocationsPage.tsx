@@ -279,6 +279,7 @@ const LocationsPage = () => {
                       className="flex-1"
                       buttonText="Get Directions"
                       variant="primary"
+                      plusCode={location.plusCode}
                     />
                     
                     <button 

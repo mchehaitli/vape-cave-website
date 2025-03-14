@@ -8,6 +8,7 @@ interface Location {
     lat: number;
     lng: number;
   };
+  plusCode?: string; // Add optional Plus Code field
 }
 
 // Define MapTypeId enum since we can't access google.maps before it's loaded

@@ -26,7 +26,8 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
   variant = 'primary',
   size = 'md',
   showIcon = true,
-  fullWidth = false
+  fullWidth = false,
+  plusCode
 }) => {
   // Detect if the user is on a mobile device
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -36,7 +37,13 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
   
   // Create URL for different platforms
   const getDirectionsUrl = () => {
-    // Encode the address for URL safety
+    // If Plus Code is available, use that instead of address for more precise directions
+    if (plusCode) {
+      const encodedPlusCode = encodeURIComponent(plusCode);
+      return `https://www.google.com/maps/search/?api=1&query=${encodedPlusCode}`;
+    }
+    
+    // Otherwise, fall back to standard address-based directions
     const encodedAddress = encodeURIComponent(address);
     
     if (isIOS && isMobile) {
