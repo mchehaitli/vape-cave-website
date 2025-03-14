@@ -68,8 +68,8 @@ const LocationsPage = () => {
       address: "4100 S Cooper St, Unit 4108",
       fullAddress: "4100 S Cooper St, Unit 4108, Arlington, TX 76015, United States",
       phone: "(682) 270-0334",
-      hours: "11 AM - 9 PM (Monday - Saturday)",
-      closedDays: "Sunday",
+      hours: "10 AM - 11 PM (7 days a week)",
+      closedDays: "",
       image: "https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       coordinates: {
         lat: 32.6870,
@@ -81,13 +81,13 @@ const LocationsPage = () => {
       email: "vapecavetx@gmail.com",
       storeCode: "VC-ARLINGTON",
       openingHours: {
-        "Monday": "11:00-21:00",
-        "Tuesday": "11:00-21:00",
-        "Wednesday": "11:00-21:00",
-        "Thursday": "11:00-21:00",
-        "Friday": "11:00-21:00",
-        "Saturday": "11:00-21:00",
-        "Sunday": "Closed"
+        "Monday": "10:00-23:00",
+        "Tuesday": "10:00-23:00",
+        "Wednesday": "10:00-23:00",
+        "Thursday": "10:00-23:00",
+        "Friday": "10:00-23:00",
+        "Saturday": "10:00-23:00",
+        "Sunday": "10:00-23:00"
       }
     }
   ];
