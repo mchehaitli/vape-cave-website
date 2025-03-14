@@ -26,6 +26,7 @@ interface GoogleMapsIntegrationProps {
   activeLocationId?: number | null;
   showDirectionsLink?: boolean;
   mapType?: string; // Changed to string type to avoid direct dependency on google.maps
+  apiKey?: string; // Allow direct passing of API key
 }
 
 // Using Google Maps API for enhanced maps functionality
@@ -36,15 +37,16 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
   zoom = 14,
   activeLocationId = null,
   showDirectionsLink = true,
-  mapType = MapTypeId.ROADMAP
+  mapType = MapTypeId.ROADMAP,
+  apiKey: propApiKey // Get API key from props
 }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [map, setMap] = useState<any>(null);
   const [markers, setMarkers] = useState<any[]>([]);
   
-  // Get the API key from environment variables
-  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '';
+  // Use API key from props if provided, otherwise from environment variables
+  const apiKey = propApiKey || import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '';
   
   // Get the currently active location or the first one
   const activeLocation = locations.find(loc => loc.id === activeLocationId) || locations[0];
