@@ -36,7 +36,7 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
   const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
   
   // Get the API key from environment variables
-  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '';
+  const apiKey = import.meta.env.GOOGLE_MAPS_API_KEY || '';
   
   // Get the currently active location or the first one
   const activeLocation = locations.find(loc => loc.id === activeLocationId) || locations[0];
