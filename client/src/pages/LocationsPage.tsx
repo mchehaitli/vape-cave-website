@@ -309,7 +309,7 @@ const LocationsPage = () => {
                             if (location.id === 1) {
                               window.location.href = "https://maps.apple.com/?address=6958%20Main%20St,%20Unit%20200,%20Frisco,%20TX%20%2075033,%20United%20States&auid=14231591118256703794&ll=33.150849,-96.824392&lsp=9902&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m";
                             } else {
-                              window.location.href = "https://maps.apple.com/?address=4100%20S.%20Cooper%20St,%20Arlington,%20TX%2076015,%20United%20States&ll=32.687752,-97.134873&q=Vape%20Cave%20Smoke%20%26%20Stuff";
+                              window.location.href = "https://maps.apple.com/?address=4100%20S%20Cooper%20St,%20Unit%204108,%20Arlington,%20TX%20%2076015,%20United%20States&auid=18240116569179355943&ll=32.680717,-97.135062&lsp=9902&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m";
                             }
                           }
                         }}
