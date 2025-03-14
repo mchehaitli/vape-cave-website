@@ -259,40 +259,96 @@ const HomePage = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            {/* Location 1 */}
-            <div className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700">
+            {/* Frisco Location - Enhanced with SEO and structured data */}
+            <div 
+              className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700" 
+              itemScope 
+              itemType="https://schema.org/VapeShop"
+              data-plus-code="552G+86"
+              data-location="frisco"
+            >
               <div className="p-6">
-                <h3 className="font-['Poppins'] font-semibold text-2xl mb-4 text-white">Frisco Location</h3>
+                <h3 className="font-['Poppins'] font-semibold text-2xl mb-4 text-white" itemProp="name">Frisco Location (552G+86)</h3>
                 <div className="space-y-3 mb-5">
                   <div className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    <div>
-                      <span className="text-gray-300 block">6958 Main St, Frisco, TX 75033</span>
-                      <span className="text-gray-400 text-xs mt-1 block">Plus Code: 552G+86 Frisco, Texas</span>
+                    <div itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
+                      <span className="text-gray-300 block">
+                        <span itemProp="streetAddress">6958 Main St #200</span>, 
+                        <span itemProp="addressLocality">Frisco</span>, 
+                        <span itemProp="addressRegion">TX</span> 
+                        <span itemProp="postalCode">75033</span>
+                      </span>
+                      <span className="text-gray-400 text-xs mt-1 block">
+                        <a 
+                          href="https://plus.codes/552G+86_Frisco,_Texas" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="hover:text-primary transition-colors"
+                          itemProp="hasMap"
+                        >
+                          Plus Code: 552G+86 Frisco, Texas
+                        </a>
+                      </span>
+                      <meta itemProp="identifier" content="552G+86 Frisco, Texas" />
+                      <meta itemProp="google-place-id" content="ChIJxXjrR3wVkFQRcKK89i-aFDw" />
                     </div>
                   </div>
                   <div className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
-                    <span className="text-gray-300">(469) 294-0061</span>
+                    <a 
+                      href="tel:+14692940061" 
+                      className="text-gray-300 hover:text-primary transition-colors"
+                      itemProp="telephone"
+                    >
+                      (469) 294-0061
+                    </a>
                   </div>
-                  <div className="flex items-start">
+                  <div className="flex items-start" itemProp="openingHoursSpecification" itemScope itemType="https://schema.org/OpeningHoursSpecification">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span className="text-gray-300">10:00 AM - 12:00 AM (Open 7 days)</span>
+                    <span className="text-gray-300">
+                      <span itemProp="opens">10:00 AM</span> - <span itemProp="closes">12:00 AM</span> (Open 7 days)
+                    </span>
+                    <meta itemProp="dayOfWeek" content="Monday Tuesday Wednesday Thursday Friday Saturday Sunday" />
+                  </div>
+                  
+                  <div className="flex items-start mt-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-0.5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div className="flex flex-wrap gap-2" itemProp="makesOffer" itemScope itemType="https://schema.org/Offer">
+                      <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">Delta 8</span>
+                      <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">THC-A</span>
+                      <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">Disposables</span>
+                    </div>
                   </div>
                 </div>
                 
                 <Link href="/locations">
                   <div className="inline-block bg-primary hover:bg-primary/90 text-white font-bold py-2 px-6 rounded-lg transition-colors shadow-md cursor-pointer">
-                    View Details
+                    View Store Details
                   </div>
                 </Link>
+                
+                <a 
+                  href="https://www.google.com/maps/search/?api=1&query=552G%2B86+Frisco%2C+Texas" 
+                  target="_blank"
+                  rel="noopener noreferrer" 
+                  className="inline-block bg-transparent border border-primary text-primary hover:bg-primary/10 font-bold py-2 px-6 rounded-lg transition-colors shadow-md cursor-pointer ml-2"
+                >
+                  Get Directions
+                </a>
+                
+                <div className="mt-2 text-xs text-gray-500 italic">
+                  Search "552G+86" on Google Maps to find us
+                </div>
               </div>
             </div>
             

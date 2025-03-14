@@ -25,11 +25,40 @@ const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({ onVerify })
             {
               "@context": "https://schema.org",
               "@type": "WebPage",
-              "name": "Age Verification - Vape Cave Frisco",
-              "description": "Verify your age to access Vape Cave Frisco's premium selection of vaping products and accessories. Must be 21+ to enter.",
+              "name": "Age Verification - Vape Cave Frisco (552G+86)",
+              "description": "Verify your age to access Vape Cave Frisco's premium selection of vaping products at Plus Code 552G+86. Must be 21+ to enter. Delta 8, THC-A, disposables & more.",
+              "url": "https://vapecavetx.com",
+              "isAccessibleForFree": true,
+              "keywords": "age verification, vape shop frisco, 552G+86 frisco, frisco vape shop, delta 8 frisco, thc-a frisco",
+              "speakable": {
+                "@type": "SpeakableSpecification",
+                "cssSelector": ["h3", ".text-gray-300"]
+              },
+              "mainContentOfPage": {
+                "@type": "WebPageElement",
+                "cssSelector": ".bg-black.rounded-xl"
+              },
+              "breadcrumb": {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                  {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://vapecavetx.com"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Age Verification",
+                    "item": "https://vapecavetx.com/age-verification"
+                  }
+                ]
+              },
               "publisher": {
                 "@type": "VapeShop",
                 "name": "Vape Cave Frisco",
+                "alternateName": ["Vape Cave Smoke & Stuff", "Vape Shop Frisco 552G+86"],
                 "address": {
                   "@type": "PostalAddress",
                   "streetAddress": "6958 Main St #200",
@@ -40,8 +69,8 @@ const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({ onVerify })
                 },
                 "geo": {
                   "@type": "GeoCoordinates",
-                  "latitude": 33.1507,
-                  "longitude": -96.8236
+                  "latitude": 33.150730,
+                  "longitude": -96.822550
                 },
                 "openingHoursSpecification": [
                   {
@@ -57,8 +86,36 @@ const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({ onVerify })
                     "closes": "01:00"
                   }
                 ],
-                "telephone": "(469) 294-0061",
-                "hasMap": "https://plus.codes/552G+86_Frisco,_Texas"
+                "telephone": "+14692940061",
+                "email": "info@vapecavetx.com",
+                "priceRange": "$$",
+                "paymentAccepted": "Cash, Credit Card, Debit Card",
+                "hasMap": [
+                  {
+                    "@type": "Map",
+                    "name": "Google Maps with Plus Code",
+                    "url": "https://www.google.com/maps/search/?api=1&query=552G%2B86+Frisco%2C+Texas",
+                    "description": "Find our Frisco vape shop using Google Maps with Plus Code 552G+86"
+                  },
+                  {
+                    "@type": "Map",
+                    "name": "Plus Codes Direct",
+                    "url": "https://plus.codes/552G+86_Frisco,_Texas",
+                    "description": "Direct link to our location using Plus Code navigation"
+                  }
+                ],
+                "identifier": [
+                  {
+                    "@type": "PropertyValue",
+                    "name": "Plus Code",
+                    "value": "552G+86 Frisco, Texas"
+                  },
+                  {
+                    "@type": "PropertyValue",
+                    "name": "Google Place ID",
+                    "value": "ChIJxXjrR3wVkFQRcKK89i-aFDw"
+                  }
+                ]
               }
             }
           `}
@@ -92,19 +149,32 @@ const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({ onVerify })
           <button 
             onClick={() => handleVerify(true)}
             className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+            data-location="Frisco, TX"
+            data-plus-code="552G+86"
+            data-store-id="vape-cave-frisco"
+            data-action="age-verify-accept"
+            itemProp="potentialAction"
+            itemScope
+            itemType="https://schema.org/AgreeAction"
           >
-            <span className="flex items-center justify-center">
+            <span className="flex items-center justify-center" itemProp="name">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
               </svg>
               I am 21 or older
             </span>
+            <meta itemProp="location" content="552G+86 Frisco, Texas" />
+            <meta itemProp="description" content="Age verification for access to Vape Cave Frisco at Plus Code 552G+86" />
           </button>
           <button 
             onClick={() => handleVerify(false)}
             className="w-full bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 hover:shadow"
+            data-action="age-verify-decline"
+            itemProp="potentialAction"
+            itemScope
+            itemType="https://schema.org/DisagreeAction"
           >
-            <span className="flex items-center justify-center">
+            <span className="flex items-center justify-center" itemProp="name">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
               </svg>
@@ -114,8 +184,14 @@ const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({ onVerify })
         </div>
         
         <p className="text-xs text-gray-400 text-center">
-          By entering this site, you are confirming that you are of legal age to purchase vaping products in your location.
+          By entering this site, you are confirming that you are of legal age to purchase vaping products in your location. Vape Cave Frisco (Plus Code: 552G+86) only serves customers 21 and older.
         </p>
+        <div className="mt-2 text-xs text-gray-500 text-center" itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
+          <span itemProp="streetAddress">6958 Main St #200</span>, 
+          <span itemProp="addressLocality">Frisco</span>, 
+          <span itemProp="addressRegion">TX</span> 
+          <span itemProp="postalCode">75033</span>
+        </div>
       </div>
     </div>
   );
