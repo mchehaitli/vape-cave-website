@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 interface Location {
   id: number;
@@ -45,38 +45,16 @@ const GoogleMapsIntegration = ({
   const [markers, setMarkers] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const googleScriptLoaded = useRef(false);
 
-  // Calculate center if not provided
-  const calculateCenter = () => {
-    if (center) return center;
-    if (locations.length === 0) return { lat: 37.7749, lng: -122.4194 }; // Default to San Francisco
-    
-    if (locations.length === 1) return locations[0].position;
-    
-    // Find bounds of all locations
-    const bounds = new window.google.maps.LatLngBounds();
-    locations.forEach(location => {
-      bounds.extend(new window.google.maps.LatLng(
-        location.position.lat,
-        location.position.lng
-      ));
-    });
-    
-    return {
-      lat: bounds.getCenter().lat(),
-      lng: bounds.getCenter().lng()
-    };
-  };
-
-  // Initialize map when API is loaded
-  const initializeMap = () => {
-    if (!mapRef.current) return;
-    if (!window.google) {
-      setError('Google Maps API not loaded');
+  // Create the map instance with memoized callback
+  const initializeMap = useCallback(() => {
+    if (!mapRef.current || !window.google || !window.google.maps) {
+      setError('Google Maps API not loaded correctly');
       setLoading(false);
       return;
     }
-    
+
     try {
       // Create map
       const mapOptions = {
@@ -130,11 +108,8 @@ const GoogleMapsIntegration = ({
         });
         
         marker.addListener('click', () => {
-          // Close all info windows
-          markers.forEach(m => m.infoWindow.close());
-          // Open this info window
+          markers.forEach(m => m.infoWindow && m.infoWindow.close());
           infoWindow.open(newMap, marker);
-          // Call callback
           onMarkerClick(location.id);
         });
         
@@ -143,17 +118,19 @@ const GoogleMapsIntegration = ({
       
       setMarkers(newMarkers);
       
-      // If there's an active location, center on it and open its info window
+      // If there's an active location, center on it
       if (activeLocationId) {
         const activeLocation = locations.find(loc => loc.id === activeLocationId);
         if (activeLocation) {
           newMap.setCenter(activeLocation.position);
           newMap.setZoom(zoom + 2);
-          const activeMarker = newMarkers.find((_, index) => 
-            locations[index].id === activeLocationId
-          );
-          if (activeMarker) {
-            activeMarker.infoWindow.open(newMap, activeMarker.marker);
+          
+          const activeMarkerIndex = locations.findIndex(loc => loc.id === activeLocationId);
+          if (activeMarkerIndex >= 0 && newMarkers[activeMarkerIndex]) {
+            newMarkers[activeMarkerIndex].infoWindow.open(
+              newMap, 
+              newMarkers[activeMarkerIndex].marker
+            );
           }
         }
       } else if (locations.length > 1) {
@@ -171,29 +148,36 @@ const GoogleMapsIntegration = ({
       setLoading(false);
     } catch (err) {
       console.error('Error initializing map:', err);
-      setError('Error initializing map');
+      setError('Error initializing map. Please try refreshing the page.');
       setLoading(false);
     }
-  };
+  }, [locations, center, zoom, activeLocationId, onMarkerClick]);
 
   // Load Google Maps API
   useEffect(() => {
-    // Define initMap directly in the effect to avoid lint warnings
-    const handleInitMap = () => initializeMap();
-    
-    if (window.google) {
-      handleInitMap();
+    // Skip if already loaded
+    if (window.google && window.google.maps) {
+      if (!googleScriptLoaded.current) {
+        googleScriptLoaded.current = true;
+        initializeMap();
+      }
       return;
     }
+
+    // Create callback on window
+    window.initMap = () => {
+      googleScriptLoaded.current = true;
+      initializeMap();
+    };
     
-    window.initMap = handleInitMap;
-    
+    // Load the script
     const script = document.createElement('script');
     script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initMap`;
     script.async = true;
     script.defer = true;
+    script.id = 'google-maps-script';
     script.onerror = () => {
-      setError('Failed to load Google Maps API');
+      setError('Failed to load Google Maps API. Please check your connection.');
       setLoading(false);
     };
     
@@ -201,25 +185,32 @@ const GoogleMapsIntegration = ({
     
     return () => {
       // Clean up
-      window.initMap = () => {}; // Replace with empty function instead of undefined
-      if (document.head.contains(script)) {
-        document.head.removeChild(script);
+      window.initMap = () => {};
+      const existingScript = document.getElementById('google-maps-script');
+      if (existingScript) {
+        document.head.removeChild(existingScript);
       }
     };
   }, [apiKey, initializeMap]);
 
   // Update markers when activeLocationId changes
   useEffect(() => {
-    if (!map || !window.google || markers.length === 0) return;
+    if (!map || !window.google || !window.google.maps || markers.length === 0) return;
     
     markers.forEach((marker, index) => {
+      if (!marker || !marker.marker || !marker.infoWindow) return;
+      
       const location = locations[index];
+      if (!location) return;
+      
+      // Update marker icon
       marker.marker.setIcon(
-        location.id === activeLocationId ?
-          { url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png' } :
-          { url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png' }
+        location.id === activeLocationId
+          ? { url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png' }
+          : { url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png' }
       );
       
+      // Open or close info window
       if (location.id === activeLocationId) {
         map.setCenter(location.position);
         map.setZoom(zoom + 2);
@@ -228,7 +219,7 @@ const GoogleMapsIntegration = ({
         marker.infoWindow.close();
       }
     });
-  }, [activeLocationId, map, markers]);
+  }, [activeLocationId, map, markers, locations, zoom]);
 
   return (
     <div style={{ height, width, position: 'relative' }}>
@@ -258,7 +249,7 @@ const GoogleMapsIntegration = ({
           left: 0, 
           right: 0, 
           bottom: 0, 
-          backgroundColor: 'rgba(255,0,0,0.1)', 
+          backgroundColor: 'rgba(255,107,0,0.05)', 
           display: 'flex', 
           alignItems: 'center', 
           justifyContent: 'center',
@@ -267,7 +258,7 @@ const GoogleMapsIntegration = ({
           textAlign: 'center'
         }}>
           <div>
-            <h3 className="text-lg font-semibold text-red-600 mb-2">Error Loading Map</h3>
+            <h3 className="text-lg font-semibold text-red-600 mb-2">Map Loading Error</h3>
             <p className="text-gray-800">{error}</p>
           </div>
         </div>
