@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Helmet } from 'react-helmet';
 
 interface Location {
   id: number;
@@ -50,12 +51,8 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
   // Use API key from props if provided, otherwise from environment variables
   const apiKey = propApiKey || import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '';
   
-  // Add structured data for maps integration
+  // Add structured data for maps integration using react-helmet
   useEffect(() => {
-    // Add LD+JSON structured data for enhanced map findability
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    
     // Create structured data focusing on the Frisco location if it exists
     const friscoLocation = locations.find(loc => loc.id === 1) || locations[0];
     
@@ -63,14 +60,25 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
     const cityMatch = friscoLocation.address.match(/,\s*([^,]+),\s*[A-Z]{2}/);
     const locationCity = friscoLocation.city || (cityMatch ? cityMatch[1].trim() : "Frisco");
     
+    // Create a more precise hasMap URL with the Plus Code for better discoverability
+    const hasMapUrl = friscoLocation.plusCode 
+      ? `https://plus.codes/${friscoLocation.plusCode}`
+      : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(friscoLocation.address)}`;
+      
+    // Split address into components for more structured markup
+    const addressParts = friscoLocation.address.split(',').map(part => part.trim());
+    const streetAddress = addressParts[0];
+    
+    // Create more comprehensive structured data for SEO
     const structuredData = {
       "@context": "https://schema.org",
       "@type": "VapeShop",
-      "name": friscoLocation.name,
+      "name": "Vape Cave Frisco",
+      "description": "Premium vape shop in Frisco, TX offering a wide selection of vapes, e-liquids, THC-A, Delta 8, and smoking accessories.",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": friscoLocation.address,
-        "addressLocality": locationCity,
+        "streetAddress": streetAddress,
+        "addressLocality": "Frisco",
         "addressRegion": "TX",
         "postalCode": "75033",
         "addressCountry": "US"
@@ -81,7 +89,7 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
         "longitude": friscoLocation.position.lng
       },
       "telephone": "(469) 294-0061",
-      "hasMap": `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(friscoLocation.plusCode || '')}`,
+      "hasMap": hasMapUrl,
       "openingHoursSpecification": [
         {
           "@type": "OpeningHoursSpecification",
@@ -96,23 +104,59 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
           "closes": "01:00"
         }
       ],
-      "url": window.location.href,
+      "url": "https://vapecavetx.com/locations/frisco",
+      "sameAs": [
+        "https://www.facebook.com/vapecavetx",
+        "https://www.instagram.com/vapecavetx/"
+      ],
       "areaServed": ["Frisco", "Allen", "Plano", "McKinney", "North Texas"],
-      "additionalProperty": {
-        "@type": "PropertyValue",
-        "name": "Plus Code",
-        "value": friscoLocation.plusCode || "552G+86 Frisco, Texas"
+      "priceRange": "$$",
+      "paymentAccepted": "Cash, Credit Card",
+      "additionalProperty": [
+        {
+          "@type": "PropertyValue",
+          "name": "Plus Code",
+          "value": friscoLocation.plusCode || "552G+86 Frisco, Texas"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "Year Established",
+          "value": "2019"
+        }
+      ],
+      "amenityFeature": [
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Free Parking",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Wheelchair Accessible",
+          "value": true
+        }
+      ],
+      "publicAccess": true,
+      "smokingAllowed": false,
+      "isAccessibleForFree": true,
+      "maximumAttendeeCapacity": 25,
+      "specialOpeningHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "validFrom": "2025-01-01",
+        "validThrough": "2025-12-31",
+        "dayOfWeek": "http://schema.org/PublicHolidays",
+        "opens": "10:00",
+        "closes": "20:00"
       }
     };
     
-    script.textContent = JSON.stringify(structuredData);
-    document.head.appendChild(script);
-    
-    return () => {
-      if (document.head.contains(script)) {
-        document.head.removeChild(script);
+    // Using Helmet for structured data instead of direct DOM manipulation
+    // This is better for React and avoids potential memory leaks
+    document.querySelectorAll('script[type="application/ld+json"]').forEach(el => {
+      if (el.textContent?.includes('"@type":"VapeShop"')) {
+        document.head.removeChild(el);
       }
-    };
+    });
   }, [locations]);
   
   // Log the URL for debugging domain restriction issues
@@ -320,34 +364,94 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
     );
   };
   
+  // Create structured data focusing on the Frisco location if it exists
+  const friscoLocation = locations.find(loc => loc.id === 1) || locations[0];
+  
   return (
-    <div style={{ height, width }} className="rounded-lg overflow-hidden shadow-lg relative">
-      {apiKey ? (
-        <div ref={mapRef} style={{ height: '100%', width: '100%' }} />
-      ) : (
-        renderFallbackMap()
-      )}
+    <>
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "VapeShop",
+            "name": "Vape Cave Frisco",
+            "description": "Premium vape shop in Frisco, TX offering a wide selection of vapes, e-liquids, THC-A, Delta 8, and smoking accessories.",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "6958 Main St #200",
+              "addressLocality": "Frisco",
+              "addressRegion": "TX", 
+              "postalCode": "75033",
+              "addressCountry": "US"
+            },
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": friscoLocation.position.lat,
+              "longitude": friscoLocation.position.lng
+            },
+            "telephone": "(469) 294-0061",
+            "hasMap": `https://plus.codes/${friscoLocation.plusCode || "552G+86_Frisco,_Texas"}`,
+            "openingHoursSpecification": [
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Sunday"],
+                "opens": "10:00",
+                "closes": "24:00"
+              },
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Friday", "Saturday"],
+                "opens": "10:00",
+                "closes": "01:00"
+              }
+            ],
+            "url": "https://vapecavetx.com/locations/frisco",
+            "sameAs": [
+              "https://www.facebook.com/vapecavetx",
+              "https://www.instagram.com/vapecavetx/"
+            ],
+            "areaServed": ["Frisco", "Allen", "Plano", "McKinney", "North Texas"],
+            "priceRange": "$$",
+            "paymentAccepted": "Cash, Credit Card",
+            "additionalProperty": [
+              {
+                "@type": "PropertyValue",
+                "name": "Plus Code",
+                "value": friscoLocation.plusCode || "552G+86 Frisco, Texas"
+              }
+            ]
+          })}
+        </script>
+      </Helmet>
       
-      {showDirectionsLink && activeLocation && (
-        <div className="bg-white/80 text-xs p-2 absolute bottom-0 right-0 rounded-tl-lg shadow-md z-10">
-          <a 
-            href={activeLocation.plusCode 
-              ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(activeLocation.plusCode)}`
-              : `https://www.google.com/maps/dir/?api=1&destination=${activeLocation.position.lat},${activeLocation.position.lng}`
-            }
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex items-center text-primary font-semibold hover:underline"
-            title={activeLocation.plusCode ? `Using Plus Code: ${activeLocation.plusCode}` : "Get directions to this location"}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" />
-            </svg>
-            Get Directions
-          </a>
-        </div>
-      )}
-    </div>
+      <div style={{ height, width }} className="rounded-lg overflow-hidden shadow-lg relative">
+        {apiKey ? (
+          <div ref={mapRef} style={{ height: '100%', width: '100%' }} />
+        ) : (
+          renderFallbackMap()
+        )}
+        
+        {showDirectionsLink && activeLocation && (
+          <div className="bg-white/80 text-xs p-2 absolute bottom-0 right-0 rounded-tl-lg shadow-md z-10">
+            <a 
+              href={activeLocation.plusCode 
+                ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(activeLocation.plusCode)}`
+                : `https://www.google.com/maps/dir/?api=1&destination=${activeLocation.position.lat},${activeLocation.position.lng}`
+              }
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center text-primary font-semibold hover:underline"
+              title={activeLocation.plusCode ? `Using Plus Code: ${activeLocation.plusCode}` : "Get directions to this location"}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" />
+              </svg>
+              Get Directions
+            </a>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

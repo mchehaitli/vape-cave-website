@@ -166,6 +166,16 @@ const LocationsPage = () => {
         <title>Vape Cave Frisco Location | Vape Shop in Frisco, TX | Store Hours & Directions</title>
         <meta name="description" content="Visit our Vape Cave Frisco location (Plus Code: 552G+86) at 6958 Main St #200, Frisco, TX 75033. Open daily 10AM-12AM with premium vaping products, Delta 8, THC-A, disposables, glass, and accessories." />
         <link rel="canonical" href="https://vapecavetx.com/locations" />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Vape Cave Frisco Location | Plus Code: 552G+86" />
+        <meta property="og:description" content="Visit our Vape Cave Frisco location at 6958 Main St #200, Frisco, TX 75033. Find us easily with Plus Code: 552G+86. Premium vapes, Delta 8, THC-A, and more." />
+        <meta property="og:url" content="https://vapecavetx.com/locations" />
+        <meta property="og:site_name" content="Vape Cave" />
+        <meta property="og:image" content="https://vapecavetx.com/storefront-frisco.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Vape Cave Frisco Location | Plus Code: 552G+86" />
+        <meta name="twitter:description" content="Visit our Vape Cave Frisco location with Plus Code: 552G+86. Premium vapes, Delta 8, THC-A, and more." />
         <meta name="keywords" content="vape store frisco, vape shop frisco tx, vape cave frisco, 552G+86 frisco, frisco vape shop, delta 8 frisco, thc-a frisco, disposable vape frisco, e-liquid frisco, vape products frisco tx" />
         
         {/* Location schema data */}
