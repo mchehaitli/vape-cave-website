@@ -23,11 +23,11 @@ const HomePage = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-12">
             <div className="md:w-1/2 mt-6 md:mt-0 flex items-center justify-center">
-              <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-primary/40 max-w-[500px] h-auto">
+              <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-primary/40 max-w-[650px] w-full h-auto">
                 <img 
                   src={vapeLounge} 
                   alt="Vape Cave Lounge" 
-                  className="w-full h-full object-cover max-h-[360px]"
+                  className="w-full h-full object-cover max-h-[380px]"
                 />
               </div>
             </div>
