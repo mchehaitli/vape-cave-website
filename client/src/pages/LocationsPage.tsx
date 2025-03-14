@@ -94,22 +94,31 @@ const LocationsPage = () => {
 
   // Create structured data for SEO
   const generateLocalBusinessSchema = (location: StoreLocation) => {
+    // Parse postal code from address (ZIP code is the last 5 digits in US addresses)
+    const zipCodeMatch = location.fullAddress.match(/\d{5}(?![\d-])/);
+    const postalCode = zipCodeMatch ? zipCodeMatch[0] : "";
+    
+    // Format phone for structured data (remove non-digits and add country code)
+    const formattedPhone = "+1" + location.phone.replace(/[^0-9]/g, '');
+    
     return {
       "@context": "https://schema.org",
-      "@type": "VapeShop",
+      "@type": "Store",
       "@id": `https://vapecave.com/locations/${location.id}`,
       "name": location.name,
       "url": `https://vapecave.com/locations/${location.id}`,
       "logo": "https://vapecave.com/logo.png",
       "image": location.image,
-      "telephone": location.phone,
+      "telephone": formattedPhone,
       "email": location.email,
+      "description": `Visit Vape Cave ${location.city} for premium vaping products, e-liquids, and accessories. We offer expert advice and a wide selection of products for all your vaping needs.`,
+      "areaServed": ["Frisco", "Arlington", "Dallas", "Fort Worth", "Texas"],
       "address": {
         "@type": "PostalAddress",
         "streetAddress": location.address,
         "addressLocality": location.city,
-        "addressRegion": "State", // Replace with actual state
-        "postalCode": "12345", // Replace with actual postal code
+        "addressRegion": "TX",
+        "postalCode": postalCode,
         "addressCountry": "US"
       },
       "geo": {
@@ -126,7 +135,35 @@ const LocationsPage = () => {
           "closes": parts[1] === "Closed" ? "00:00" : parts[1]
         };
       }),
-      "priceRange": "$$"
+      "priceRange": "$$",
+      "paymentAccepted": "Cash, Credit Card",
+      "currenciesAccepted": "USD",
+      "hasMap": location.mapEmbed,
+      "keywords": "vape shop, e-cigarettes, e-liquids, vaping accessories, CBD, vape products, smoke shop",
+      "amenityFeature": [
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Expert Staff",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Wide Product Selection",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Competitive Pricing",
+          "value": true
+        }
+      ],
+      "potentialAction": {
+        "@type": "ViewAction", 
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": `https://vapecave.com/locations/${location.id}`
+        }
+      }
     };
   };
 
@@ -139,6 +176,12 @@ const LocationsPage = () => {
     >
       {/* SEO Schema.org structured data */}
       <Helmet>
+        <title>Vape Cave Locations | Frisco & Arlington Stores - Hours & Directions</title>
+        <meta name="description" content="Visit Vape Cave at our two convenient locations in Frisco and Arlington, TX. Find store hours, contact information, maps, and get directions to your nearest store." />
+        <link rel="canonical" href="https://vapecave.com/locations" />
+        <meta name="keywords" content="vape store frisco, vape shop arlington, vape cave directions, vape stores texas, e-liquid shop, vaping store near me" />
+        
+        {/* Location schema data */}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
@@ -146,16 +189,27 @@ const LocationsPage = () => {
             "name": "Vape Cave",
             "url": "https://vapecave.com",
             "logo": "https://vapecave.com/logo.png",
-            "contactPoint": {
-              "@type": "ContactPoint",
-              "telephone": "+1-555-123-4567",
-              "contactType": "customer service"
-            },
+            "description": "Vape Cave offers premium vaping products, e-liquids, and accessories at our convenient Frisco and Arlington, TX locations.",
+            "sameAs": [
+              "https://facebook.com/vapecavetx",
+              "https://instagram.com/vapecavetx",
+              "https://twitter.com/vapecavetx"
+            ],
+            "contactPoint": [
+              {
+                "@type": "ContactPoint",
+                "telephone": "+14692940061",
+                "contactType": "customer service",
+                "areaServed": "US",
+                "availableLanguage": "English"
+              }
+            ],
             "address": {
               "@type": "PostalAddress",
-              "addressCountry": "US"
+              "addressCountry": "US",
+              "addressRegion": "TX"
             },
-            "department": locations.map(location => generateLocalBusinessSchema(location))
+            "location": locations.map(location => generateLocalBusinessSchema(location))
           })}
         </script>
       </Helmet>

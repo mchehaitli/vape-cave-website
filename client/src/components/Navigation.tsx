@@ -11,47 +11,54 @@ const Navigation = () => {
   };
 
   const navItems = [
-    { label: "Home", path: "/" },
-    { label: "Locations", path: "/locations" },
-    { label: "Contact", path: "/contact" },
+    { label: "Home", path: "/", ariaLabel: "Go to homepage" },
+    { label: "Locations", path: "/locations", ariaLabel: "Find our store locations" },
+    { label: "Contact", path: "/contact", ariaLabel: "Contact us" },
   ];
 
   return (
     <header className="bg-primary sticky top-0 z-50 shadow-lg backdrop-blur-sm bg-opacity-95">
       <div className="container mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
-          {/* Logo */}
+          {/* Logo with improved accessibility */}
           <Link href="/">
-            <div className="logo-container cursor-pointer">
+            <div className="logo-container cursor-pointer" role="img" aria-label="Vape Cave Logo - Go to homepage">
               <Logo variant="black" location="header" />
             </div>
           </Link>
 
-          {/* Mobile Menu Toggle */}
+          {/* Mobile Menu Toggle with improved accessibility */}
           <button
             id="menu-toggle"
-            className="md:hidden text-black focus:outline-none"
+            className="md:hidden text-black focus:outline-none focus:ring-2 focus:ring-black/20 rounded-md"
             onClick={toggleMobileMenu}
-            aria-label="Toggle menu"
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
+            aria-label="Toggle navigation menu"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:block">
-            <ul className="flex space-x-8 font-['Poppins'] font-medium">
+          {/* Desktop Navigation with Semantic Structure */}
+          <nav className="hidden md:block" aria-label="Main Navigation">
+            <ul className="flex space-x-8 font-['Poppins'] font-medium" role="menubar">
               {navItems.map((item) => (
-                <li key={item.path}>
+                <li key={item.path} role="none">
                   <Link href={item.path}>
-                    <span className={`text-black hover:text-white transition-colors cursor-pointer ${
-                      location === item.path 
-                        ? 'font-bold after:block after:w-full after:h-0.5 after:bg-black after:mt-1' 
-                        : ''
-                    }`}>
+                    <a
+                      role="menuitem"
+                      aria-label={item.ariaLabel}
+                      aria-current={location === item.path ? "page" : undefined}
+                      className={`text-black hover:text-white transition-colors cursor-pointer ${
+                        location === item.path 
+                          ? 'font-bold after:block after:w-full after:h-0.5 after:bg-black after:mt-1' 
+                          : ''
+                      }`}
+                    >
                       {item.label}
-                    </span>
+                    </a>
                   </Link>
                 </li>
               ))}
@@ -60,27 +67,34 @@ const Navigation = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Navigation with Improved Accessibility */}
       <div 
+        id="mobile-menu"
+        role="navigation"
+        aria-label="Mobile Navigation"
         className={`md:hidden bg-primary border-t border-black/20 transition-all duration-300 ease-in-out ${
           mobileMenuOpen 
             ? 'max-h-screen opacity-100' 
             : 'max-h-0 opacity-0 overflow-hidden'
         }`}
       >
-        <ul className="container mx-auto px-4 py-3 font-['Poppins'] font-medium">
+        <ul className="container mx-auto px-4 py-3 font-['Poppins'] font-medium" role="menu">
           {navItems.map((item, index) => (
             <li 
               key={item.path} 
+              role="none"
               className={index < navItems.length - 1 ? "py-2 border-b border-black/10" : "py-2"}
             >
               <Link href={item.path}>
-                <span 
-                  className="block text-black cursor-pointer"
+                <a
+                  role="menuitem"
+                  aria-label={item.ariaLabel}
+                  aria-current={location === item.path ? "page" : undefined}
+                  className="block text-black cursor-pointer hover:text-white/90 transition-colors"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {item.label}
-                </span>
+                </a>
               </Link>
             </li>
           ))}

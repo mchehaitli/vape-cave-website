@@ -1,12 +1,62 @@
 import { Link } from "wouter";
+import { Helmet } from "react-helmet";
 import MainLayout from "@/layouts/MainLayout";
 
 const HomePage = () => {
+  // Home page structured data
+  const homePageSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Vape Cave",
+    "url": "https://vapecave.com",
+    "logo": "https://vapecave.com/logo.png",
+    "description": "Vape Cave offers premium vaping products, e-liquids, and accessories at our convenient Frisco and Arlington, TX locations. We provide expert advice and a wide selection for all your vaping needs.",
+    "sameAs": [
+      "https://facebook.com/vapecavetx",
+      "https://instagram.com/vapecavetx",
+      "https://twitter.com/vapecavetx"
+    ],
+    "contactPoint": [
+      {
+        "@type": "ContactPoint",
+        "telephone": "+14692940061",
+        "contactType": "customer service",
+        "areaServed": "US",
+        "availableLanguage": "English"
+      }
+    ],
+    "address": [
+      {
+        "@type": "PostalAddress",
+        "streetAddress": "6958 Main St",
+        "addressLocality": "Frisco",
+        "addressRegion": "TX",
+        "postalCode": "75033",
+        "addressCountry": "US"
+      },
+      {
+        "@type": "PostalAddress",
+        "streetAddress": "4100 S Cooper St, Unit 4108",
+        "addressLocality": "Arlington",
+        "addressRegion": "TX",
+        "postalCode": "76015",
+        "addressCountry": "US"
+      }
+    ]
+  };
+
   return (
     <MainLayout
-      title="Vape Cave - Premium Vaping Products"
-      description="Welcome to Vape Cave - your one-stop shop for premium vaping products, e-liquids, and accessories. Visit our stores in Frisco and Arlington, TX."
+      title="Vape Cave | Premium Vaping Products & Accessories | Frisco & Arlington TX"
+      description="Welcome to Vape Cave - your one-stop shop for premium vaping products, e-liquids, and accessories. Visit our conveniently located stores in Frisco and Arlington, TX."
+      canonical="/"
     >
+      <Helmet>
+        <meta name="keywords" content="vape shop, vaping products, e-liquids, vape accessories, frisco vape shop, arlington vape store, premium vapes" />
+        <script type="application/ld+json">
+          {JSON.stringify(homePageSchema)}
+        </script>
+      </Helmet>
       {/* Hero Section */}
       <section id="home" className="bg-gray-900 py-20 md:py-32 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/20 mix-blend-multiply"></div>
