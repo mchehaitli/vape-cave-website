@@ -410,107 +410,155 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
     <>
       <Helmet>
         <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "VapeShop",
-            "name": "Vape Cave Frisco",
-            "description": "Premium vape shop in Frisco, TX offering a wide selection of vapes, e-liquids, THC-A, Delta 8, and smoking accessories.",
-            "address": {
-              "@type": "PostalAddress",
-              "streetAddress": "6958 Main St #200",
-              "addressLocality": "Frisco",
-              "addressRegion": "TX", 
-              "postalCode": "75033",
-              "addressCountry": "US"
-            },
-            "geo": {
-              "@type": "GeoCoordinates",
-              "latitude": friscoLocation.position.lat,
-              "longitude": friscoLocation.position.lng
-            },
-            "telephone": "(469) 294-0061",
-            "hasMap": [
-              {
-                "@type": "Map",
-                "name": "Google Maps",
-                "url": `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(friscoLocation.plusCode || "552G+86 Frisco, Texas")}`,
-                "description": "Find our Frisco vape shop using Google Maps with Plus Code 552G+86"
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "VapeShop",
+              "@id": "https://vapecavetx.com/locations/frisco/#vapeshop",
+              "name": "Vape Cave Frisco (552G+86)",
+              "alternateName": ["Vape Cave Smoke & Stuff", "Vape Shop Frisco 552G+86", "Frisco Vape Store"],
+              "description": "Premium vape shop in Frisco, TX (Plus Code: 552G+86) offering a wide selection of vapes, e-liquids, THC-A, Delta 8, disposables, and smoking accessories. Located on Main Street with convenient parking.",
+              "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": "https://vapecavetx.com/locations/frisco/"
               },
-              {
-                "@type": "Map",
-                "name": "Plus Codes",
-                "url": `https://plus.codes/${(friscoLocation.plusCode || "552G+86_Frisco,_Texas").replace(/\s+/g, '')}`,
-                "description": "Direct link to our location using Plus Code navigation"
-              }
-            ],
-            "openingHoursSpecification": [
-              {
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "6958 Main St #200",
+                "addressLocality": "Frisco",
+                "addressRegion": "TX", 
+                "postalCode": "75033",
+                "addressCountry": "US"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": ${friscoLocation.position.lat},
+                "longitude": ${friscoLocation.position.lng},
+                "name": "Vape Cave Frisco 552G+86 Coordinates"
+              },
+              "telephone": "+14692940061",
+              "email": "info@vapecavetx.com",
+              "image": "https://vapecavetx.com/images/vape-cave-frisco-storefront.jpg",
+              "logo": "https://vapecavetx.com/logo.png",
+              "photo": {
+                "@type": "ImageObject",
+                "contentUrl": "https://vapecavetx.com/images/vape-cave-frisco-interior.jpg",
+                "description": "Interior of Vape Cave Frisco store at Plus Code 552G+86"
+              },
+              "currenciesAccepted": "USD",
+              "paymentAccepted": "Cash, Credit Card, Debit Card, Apple Pay, Google Pay",
+              "isAccessibleForFree": true,
+              "hasMap": [
+                {
+                  "@type": "Map",
+                  "name": "Google Maps with Plus Code",
+                  "url": "https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(friscoLocation.plusCode || "552G+86 Frisco, Texas")}&place_id=ChIJxXjrR3wVkFQRcKK89i-aFDw",
+                  "description": "Find our Frisco vape shop using Google Maps with Plus Code 552G+86"
+                },
+                {
+                  "@type": "Map",
+                  "name": "Plus Codes Direct Navigation",
+                  "url": "https://plus.codes/${(friscoLocation.plusCode || "552G+86_Frisco,_Texas").replace(/\\s+/g, '')}",
+                  "description": "Direct link to our Frisco vape shop using Plus Code navigation (552G+86)"
+                },
+                {
+                  "@type": "Map",
+                  "name": "Apple Maps Navigation",
+                  "url": "https://maps.apple.com/?address=${encodeURIComponent("6958 Main St #200, Frisco, TX 75033")}&ll=${friscoLocation.position.lat},${friscoLocation.position.lng}",
+                  "description": "Navigate to Vape Cave Frisco using Apple Maps"
+                }
+              ],
+              "openingHoursSpecification": [
+                {
+                  "@type": "OpeningHoursSpecification",
+                  "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Sunday"],
+                  "opens": "10:00",
+                  "closes": "24:00"
+                },
+                {
+                  "@type": "OpeningHoursSpecification",
+                  "dayOfWeek": ["Friday", "Saturday"],
+                  "opens": "10:00",
+                  "closes": "01:00"
+                }
+              ],
+              "url": "https://vapecavetx.com/locations/frisco",
+              "sameAs": [
+                "https://www.facebook.com/vapecavetx",
+                "https://www.instagram.com/vapecavetx/"
+              ],
+              "areaServed": ["Frisco", "Allen", "Plano", "McKinney", "North Texas"],
+              "priceRange": "$$",
+              "additionalProperty": [
+                {
+                  "@type": "PropertyValue",
+                  "name": "Plus Code",
+                  "value": "${friscoLocation.plusCode || "552G+86 Frisco, Texas"}"
+                },
+                {
+                  "@type": "PropertyValue",
+                  "name": "Google Place ID",
+                  "value": "ChIJxXjrR3wVkFQRcKK89i-aFDw"
+                },
+                {
+                  "@type": "PropertyValue",
+                  "name": "Year Established",
+                  "value": "2019"
+                }
+              ],
+              "specialOpeningHoursSpecification": {
                 "@type": "OpeningHoursSpecification",
-                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Sunday"],
+                "validFrom": "2025-01-01",
+                "validThrough": "2025-12-31",
+                "dayOfWeek": "http://schema.org/PublicHolidays",
                 "opens": "10:00",
-                "closes": "24:00"
+                "closes": "20:00"
               },
-              {
-                "@type": "OpeningHoursSpecification",
-                "dayOfWeek": ["Friday", "Saturday"],
-                "opens": "10:00",
-                "closes": "01:00"
-              }
-            ],
-            "url": "https://vapecavetx.com/locations/frisco",
-            "sameAs": [
-              "https://www.facebook.com/vapecavetx",
-              "https://www.instagram.com/vapecavetx/"
-            ],
-            "areaServed": ["Frisco", "Allen", "Plano", "McKinney", "North Texas"],
-            "priceRange": "$$",
-            "paymentAccepted": "Cash, Credit Card",
-            "additionalProperty": [
-              {
-                "@type": "PropertyValue",
-                "name": "Plus Code",
-                "value": friscoLocation.plusCode || "552G+86 Frisco, Texas"
-              },
-              {
-                "@type": "PropertyValue",
-                "name": "Google Place ID",
-                "value": "ChIJxXjrR3wVkFQRcKK89i-aFDw"
-              },
-              {
-                "@type": "PropertyValue",
-                "name": "Year Established",
-                "value": "2019"
-              }
-            ],
-            "specialOpeningHoursSpecification": {
-              "@type": "OpeningHoursSpecification",
-              "validFrom": "2025-01-01",
-              "validThrough": "2025-12-31",
-              "dayOfWeek": "http://schema.org/PublicHolidays",
-              "opens": "10:00",
-              "closes": "20:00"
-            },
-            "publicAccess": true,
-            "smokingAllowed": false,
-            "amenityFeature": [
-              {
-                "@type": "LocationFeatureSpecification",
-                "name": "Free Parking",
-                "value": true
-              },
-              {
-                "@type": "LocationFeatureSpecification", 
-                "name": "Wheelchair Accessible",
-                "value": true
-              }
-            ]
-          })}
+              "publicAccess": true,
+              "smokingAllowed": false,
+              "amenityFeature": [
+                {
+                  "@type": "LocationFeatureSpecification",
+                  "name": "Free Parking",
+                  "value": true
+                },
+                {
+                  "@type": "LocationFeatureSpecification", 
+                  "name": "Wheelchair Accessible",
+                  "value": true
+                }
+              ]
+            }
+          `}
         </script>
+        {/* Standard geo meta tags */}
         <meta name="geo.position" content={`${friscoLocation.position.lat};${friscoLocation.position.lng}`} />
-        <meta name="geo.placename" content="Vape Cave Frisco" />
+        <meta name="geo.placename" content="Vape Cave Frisco (552G+86)" />
         <meta name="geo.region" content="US-TX" />
         <meta name="ICBM" content={`${friscoLocation.position.lat}, ${friscoLocation.position.lng}`} />
+        
+        {/* Plus Code and location-specific metadata */}
         <meta name="google-plus-code" content={friscoLocation.plusCode || "552G+86 Frisco, Texas"} />
+        <meta name="location-city" content="Frisco" />
+        <meta name="location-state" content="Texas" />
+        <meta name="location-zipcode" content="75033" />
+        <meta name="google-place-id" content="ChIJxXjrR3wVkFQRcKK89i-aFDw" />
+        
+        {/* Store information */}
+        <meta name="business-name" content="Vape Cave Frisco" />
+        <meta name="business-type" content="Vape Shop" />
+        <meta name="business-phone" content="+14692940061" />
+        <meta name="business-email" content="info@vapecavetx.com" />
+        
+        {/* Product categories */}
+        <meta name="product-category" content="Vapes, E-Liquids, Disposables, Delta 8, THC-A, Smoking Accessories" />
+        
+        {/* Local business schema support */}
+        <meta name="DC.title" content="Vape Cave Frisco - Premium Vape Shop at 552G+86" />
+        <meta name="DC.description" content="Visit Vape Cave at Plus Code 552G+86 in Frisco, TX for premium vaping products, disposables, Delta 8, THC-A and smoking accessories." />
+        <meta name="DC.publisher" content="Vape Cave" />
+        <meta name="DC.contributor" content="Frisco Chamber of Commerce" />
+        <meta name="DC.coverage" content="Frisco, Plano, Allen, McKinney, North Texas" />
       </Helmet>
       
       <div style={{ height, width }} className="rounded-lg overflow-hidden shadow-lg relative">
