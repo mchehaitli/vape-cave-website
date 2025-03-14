@@ -47,7 +47,7 @@ const LocationsPage = () => {
         lng: -96.822550
       },
       googlePlaceId: "ChIJxXjrR3wVkFQRcKK89i-aFDw", // This should be your actual Google Place ID
-      appleMapsLink: "https://maps.apple.com/?address=6958%20Main%20St,%20Frisco,%20TX%2075033&ll=33.1562,-96.8236&q=Vape%20Cave%20Frisco",
+      appleMapsLink: "https://maps.apple.com/?address=6958%20Main%20St,%20Unit%20200,%20Frisco,%20TX%20%2075033,%20United%20States&auid=14231591118256703794&ll=33.150849,-96.824392&lsp=9902&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m",
       mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3056.2408651289297!2d-96.8236!3d33.1562!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a1983c178c5%3A0xf4f40d590e54a8b0!2s6958%20Main%20St%2C%20Frisco%2C%20TX%2075033!5e0!3m2!1sen!2sus!4v1693311756407!5m2!1sen!2sus",
       email: "vapecavetex@gmail.com",
       storeCode: "VC-FRISCO",
@@ -76,7 +76,7 @@ const LocationsPage = () => {
         lng: -97.134650
       },
       googlePlaceId: "ChIJyersF8wXkFQRVQw-oKzhjYI", // This should be your actual Google Place ID
-      appleMapsLink: "https://maps.apple.com/?address=4100%20S%20Cooper%20St,%20Unit%204108,%20Arlington,%20TX%2076015&ll=32.6870,-97.1365&q=Vape%20Cave%20Arlington",
+      appleMapsLink: "https://maps.app.goo.gl/7RRoEeD3uzANmdhZA",
       mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.246781652386!2d-97.1365!3d32.6870!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25cc32c6ee0c9%3A0x618d992cf4076d55!2s4100%20S%20Cooper%20St,%20Unit%204108,%20Arlington,%20TX%2076015!5e0!3m2!1sen!2sus!4v1693311805030!5m2!1sen!2sus",
       email: "vapecavetx@gmail.com",
       storeCode: "VC-ARLINGTON",
@@ -267,7 +267,7 @@ const LocationsPage = () => {
                     
                     {/* Google Maps Direction Link */}
                     <a 
-                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.fullAddress)}${location.googlePlaceId ? `&query_place_id=${location.googlePlaceId}` : ''}`}
+                      href={location.id === 1 ? "https://maps.app.goo.gl/jzbqUDyvvGHuwyXJ7" : "https://maps.app.goo.gl/7RRoEeD3uzANmdhZA"}
                       target="_blank"
                       rel="noopener noreferrer" 
                       className="inline-flex items-center bg-[#4285F4] hover:bg-[#4285F4]/90 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 shadow hover:shadow-lg"
