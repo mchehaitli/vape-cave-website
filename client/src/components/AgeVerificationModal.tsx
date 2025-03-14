@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Logo from "./Logo";
+import specialLogo from "../assets/vapecave-logo-special.png";
 
 interface AgeVerificationModalProps {
   onVerify: (isVerified: boolean) => void;
@@ -17,10 +17,16 @@ const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({ onVerify })
   };
 
   return (
-    <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 backdrop-blur-sm">
-      <div className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 p-8 border-2 border-primary">
-        <div className="mb-6 flex justify-center">
-          <Logo variant="orange" location="footer" />
+    <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 backdrop-blur-md">
+      <div className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 p-6 md:p-8 border-2 border-primary relative">
+        <div className="mb-8 flex justify-center">
+          <div className="bg-gradient-to-b from-white to-white/10 p-4 rounded-full shadow-lg">
+            <img 
+              src={specialLogo} 
+              alt="Vape Cave - Smoke & Stuff" 
+              className="h-28 md:h-32 lg:h-36 w-auto" 
+            />
+          </div>
         </div>
         
         <div className="text-center mb-6">
@@ -41,15 +47,25 @@ const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({ onVerify })
         <div className="space-y-4 mb-6">
           <button 
             onClick={() => handleVerify(true)}
-            className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-lg transition-colors shadow-md"
+            className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
           >
-            I am 21 or older
+            <span className="flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+              I am 21 or older
+            </span>
           </button>
           <button 
             onClick={() => handleVerify(false)}
-            className="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded-lg transition-colors"
+            className="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded-lg transition-all duration-300 hover:shadow"
           >
-            I am under 21
+            <span className="flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+              I am under 21
+            </span>
           </button>
         </div>
         
