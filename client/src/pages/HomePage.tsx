@@ -2,7 +2,6 @@ import { Link } from "wouter";
 import MainLayout from "@/layouts/MainLayout";
 import { products } from "@/data/products";
 import { useState } from "react";
-import vapeLounge from "../assets/images/vape-lounge.jpg";
 
 const HomePage = () => {
   const [activeCategory, setActiveCategory] = useState("all");
@@ -18,30 +17,26 @@ const HomePage = () => {
       description="Welcome to Vape Cave - your one-stop shop for premium vaping products, e-liquids, and accessories. Visit our stores in City A and City B."
     >
       {/* Hero Section */}
-      <section id="home" className="bg-gray-900 py-16 md:py-28 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/30 mix-blend-multiply"></div>
+      <section id="home" className="bg-gray-900 py-20 md:py-32 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/20 mix-blend-multiply"></div>
+        <div className="absolute inset-0 opacity-20 bg-pattern"></div>
         <div className="container mx-auto px-4 relative z-10">
-          <div className="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-12">
-            <div className="md:w-1/2 mt-6 md:mt-0 flex items-center justify-center">
-              <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-primary/40 max-w-[650px] w-full h-auto">
-                <img 
-                  src={vapeLounge} 
-                  alt="Vape Cave Lounge" 
-                  className="w-full h-full object-cover max-h-[380px]"
-                />
-              </div>
-            </div>
-            <div className="md:w-1/2">
-              <h2 className="text-4xl md:text-5xl font-bold font-['Poppins'] mb-6 leading-tight">Premium Vaping Experience</h2>
-              <p className="text-lg mb-8 text-white/90">Discover our wide selection of high-quality vape products, e-liquids, and accessories at Vape Cave - your ultimate destination for all vaping needs.</p>
-              <div className="flex flex-wrap gap-4">
+          <div className="flex flex-col items-center">
+            <div className="w-full max-w-3xl mx-auto text-center">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold font-['Poppins'] mb-6 leading-tight">
+                Premium Vaping <span className="text-primary">Experience</span>
+              </h1>
+              <p className="text-lg md:text-xl mb-10 text-white/90 max-w-2xl mx-auto">
+                Discover our wide selection of high-quality vape products, e-liquids, and accessories at Vape Cave - your ultimate destination for all vaping needs.
+              </p>
+              <div className="flex flex-wrap justify-center gap-5 mt-8">
                 <Link href="/products">
-                  <div className="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-lg cursor-pointer">
+                  <div className="bg-primary hover:bg-primary/90 text-white font-bold py-4 px-10 rounded-lg transition-all duration-300 shadow-lg cursor-pointer hover:shadow-xl hover:-translate-y-1">
                     Shop Now
                   </div>
                 </Link>
                 <Link href="/locations">
-                  <div className="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold py-3 px-8 rounded-lg transition-colors cursor-pointer backdrop-blur-sm">
+                  <div className="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold py-4 px-10 rounded-lg transition-all duration-300 cursor-pointer backdrop-blur-sm hover:shadow-lg hover:-translate-y-1">
                     Find Our Stores
                   </div>
                 </Link>
