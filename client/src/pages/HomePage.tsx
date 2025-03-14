@@ -145,15 +145,8 @@ const HomePage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             {/* Location 1 */}
             <div className="bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-700">
-              <div className="h-64 overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                  alt="Vape Cave Main Street Location" 
-                  className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
-                />
-              </div>
               <div className="p-6">
-                <h3 className="font-['Poppins'] font-semibold text-xl mb-3 text-white">Frisco Location</h3>
+                <h3 className="font-['Poppins'] font-semibold text-2xl mb-4 text-white">Frisco Location</h3>
                 <div className="space-y-3 mb-5">
                   <div className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -186,15 +179,8 @@ const HomePage = () => {
             
             {/* Location 2 */}
             <div className="bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-700">
-              <div className="h-64 overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                  alt="Vape Cave Oak Avenue Location" 
-                  className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
-                />
-              </div>
               <div className="p-6">
-                <h3 className="font-['Poppins'] font-semibold text-xl mb-3 text-white">Arlington Location</h3>
+                <h3 className="font-['Poppins'] font-semibold text-2xl mb-4 text-white">Arlington Location</h3>
                 <div className="space-y-3 mb-5">
                   <div className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
