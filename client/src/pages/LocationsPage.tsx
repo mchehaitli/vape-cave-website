@@ -174,21 +174,21 @@ const LocationsPage = () => {
       </section>
       
       {/* Locations Grid */}
-      <section className="py-16 bg-gray-100">
+      <section className="py-16 bg-dark text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold font-['Poppins'] mb-3">Our Store Locations</h2>
               <div className="h-1 w-24 bg-primary mx-auto rounded-full mb-6"></div>
-              <p className="text-gray-600 max-w-2xl mx-auto">Find your nearest Vape Cave store and visit us to explore our premium selection of vaping products and accessories.</p>
+              <p className="text-gray-300 max-w-2xl mx-auto">Find your nearest Vape Cave store and visit us to explore our premium selection of vaping products and accessories.</p>
             </div>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             {locations.map((location) => (
-              <div key={location.id} className="bg-white/90 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl">
-                <div className="p-6 bg-gradient-to-r from-primary/5 to-transparent border-b border-gray-100">
-                  <h2 className="text-3xl font-bold mb-2 text-gray-800">{location.name}</h2>
-                  <div className="flex items-center text-sm text-gray-500 mb-2">
+              <div key={location.id} className="card-dark rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl">
+                <div className="p-6 bg-gradient-to-r from-primary/10 to-transparent border-b border-gray-700">
+                  <h2 className="text-3xl font-bold mb-2 text-white">{location.name}</h2>
+                  <div className="flex items-center text-sm text-gray-300 mb-2">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -198,38 +198,38 @@ const LocationsPage = () => {
                 <div className="p-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <div>
-                      <h3 className="font-['Poppins'] font-semibold text-lg mb-3 text-gray-800">Contact Information</h3>
+                      <h3 className="font-['Poppins'] font-semibold text-lg mb-3 text-white">Contact Information</h3>
                       <div className="space-y-2">
                         <div className="flex items-start">
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                           </svg>
-                          <span className="text-gray-700">{location.fullAddress}</span>
+                          <span className="text-gray-300">{location.fullAddress}</span>
                         </div>
                         <div className="flex items-start">
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                           </svg>
-                          <span className="text-gray-700">{location.phone}</span>
+                          <span className="text-gray-300">{location.phone}</span>
                         </div>
                         {location.email && (
                           <div className="flex items-start">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                             </svg>
-                            <span className="text-gray-700">{location.email}</span>
+                            <span className="text-gray-300">{location.email}</span>
                           </div>
                         )}
                       </div>
                     </div>
                     <div>
-                      <h3 className="font-['Poppins'] font-semibold text-lg mb-3 text-gray-800">Business Hours</h3>
+                      <h3 className="font-['Poppins'] font-semibold text-lg mb-3 text-white">Business Hours</h3>
                       <div className="space-y-2">
                         {Object.entries(location.openingHours).map(([day, hours]) => (
                           <div key={day} className="flex justify-between">
-                            <span className="font-medium">{day}</span>
-                            <span className={hours === "Closed" ? "text-red-500" : "text-gray-700"}>
+                            <span className="font-medium text-gray-300">{day}</span>
+                            <span className={hours === "Closed" ? "text-red-400" : "text-gray-300"}>
                               {hours}
                             </span>
                           </div>
@@ -312,76 +312,76 @@ const LocationsPage = () => {
       </section>
       
       {/* Store Features */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-medium text-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-10">
             <h2 className="text-3xl font-bold font-['Poppins'] mb-3">Why Visit Our Stores?</h2>
             <div className="h-1 w-24 bg-primary mx-auto rounded-full mb-6"></div>
-            <p className="text-gray-600 max-w-2xl mx-auto">We offer personalized service and a unique shopping experience at all of our locations.</p>
+            <p className="text-gray-300 max-w-2xl mx-auto">We offer personalized service and a unique shopping experience at all of our locations.</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center p-6">
-              <div className="bg-primary/10 w-16 h-16 flex items-center justify-center rounded-full mx-auto mb-4">
+            <div className="text-center p-6 bg-dark rounded-lg">
+              <div className="bg-primary/20 w-16 h-16 flex items-center justify-center rounded-full mx-auto mb-4">
                 <i className="fas fa-user-friends text-2xl text-primary"></i>
               </div>
               <h3 className="font-['Poppins'] font-semibold text-xl mb-2">Expert Staff</h3>
-              <p className="text-gray-600">Our knowledgeable team can help you find the perfect products for your needs and answer any questions.</p>
+              <p className="text-gray-300">Our knowledgeable team can help you find the perfect products for your needs and answer any questions.</p>
             </div>
             
-            <div className="text-center p-6">
-              <div className="bg-primary/10 w-16 h-16 flex items-center justify-center rounded-full mx-auto mb-4">
+            <div className="text-center p-6 bg-dark rounded-lg">
+              <div className="bg-primary/20 w-16 h-16 flex items-center justify-center rounded-full mx-auto mb-4">
                 <i className="fas fa-box-open text-2xl text-primary"></i>
               </div>
               <h3 className="font-['Poppins'] font-semibold text-xl mb-2">Product Testing</h3>
-              <p className="text-gray-600">Try before you buy with our in-store product testing stations for e-liquids and devices.</p>
+              <p className="text-gray-300">Try before you buy with our in-store product testing stations for e-liquids and devices.</p>
             </div>
             
-            <div className="text-center p-6">
-              <div className="bg-primary/10 w-16 h-16 flex items-center justify-center rounded-full mx-auto mb-4">
+            <div className="text-center p-6 bg-dark rounded-lg">
+              <div className="bg-primary/20 w-16 h-16 flex items-center justify-center rounded-full mx-auto mb-4">
                 <i className="fas fa-tags text-2xl text-primary"></i>
               </div>
               <h3 className="font-['Poppins'] font-semibold text-xl mb-2">Exclusive Offers</h3>
-              <p className="text-gray-600">Visit our stores for special in-store promotions, loyalty rewards, and product bundles.</p>
+              <p className="text-gray-300">Visit our stores for special in-store promotions, loyalty rewards, and product bundles.</p>
             </div>
           </div>
         </div>
       </section>
       
       {/* FAQ Section */}
-      <section className="py-16 bg-gray-100">
+      <section className="py-16 bg-dark text-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold font-['Poppins'] mb-3">Frequently Asked Questions</h2>
             <div className="h-1 w-24 bg-primary mx-auto rounded-full mb-6"></div>
-            <p className="text-gray-600 max-w-2xl mx-auto">Find answers to common questions about our store locations and services.</p>
+            <p className="text-gray-300 max-w-2xl mx-auto">Find answers to common questions about our store locations and services.</p>
           </div>
           
           <div className="max-w-3xl mx-auto">
             <div className="space-y-6">
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-semibold mb-3">Do I need to be 21+ to enter your stores?</h3>
-                <p className="text-gray-700">Yes, all customers must be at least 21 years of age to enter our stores and purchase products. Valid ID is required.</p>
+              <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
+                <h3 className="text-xl font-semibold mb-3 text-white">Do I need to be 21+ to enter your stores?</h3>
+                <p className="text-gray-300">Yes, all customers must be at least 21 years of age to enter our stores and purchase products. Valid ID is required.</p>
               </div>
               
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-semibold mb-3">Do your stores offer product testing?</h3>
-                <p className="text-gray-700">Yes, we have designated testing stations for e-liquids and devices at all of our locations. Our staff can guide you through the testing process.</p>
+              <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
+                <h3 className="text-xl font-semibold mb-3 text-white">Do your stores offer product testing?</h3>
+                <p className="text-gray-300">Yes, we have designated testing stations for e-liquids and devices at all of our locations. Our staff can guide you through the testing process.</p>
               </div>
               
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-semibold mb-3">Is there parking available at your locations?</h3>
-                <p className="text-gray-700">Yes, all of our stores have convenient parking options nearby. Our Frisco location has a dedicated parking lot, while our Arlington location offers street parking and is near a public parking garage.</p>
+              <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
+                <h3 className="text-xl font-semibold mb-3 text-white">Is there parking available at your locations?</h3>
+                <p className="text-gray-300">Yes, all of our stores have convenient parking options nearby. Our Frisco location has a dedicated parking lot, while our Arlington location offers street parking and is near a public parking garage.</p>
               </div>
               
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-semibold mb-3">Do you offer repairs or maintenance services for vaping devices?</h3>
-                <p className="text-gray-700">Yes, our knowledgeable staff can assist with basic troubleshooting and maintenance. For more complex repairs, we offer a service program with quick turnaround times.</p>
+              <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
+                <h3 className="text-xl font-semibold mb-3 text-white">Do you offer repairs or maintenance services for vaping devices?</h3>
+                <p className="text-gray-300">Yes, our knowledgeable staff can assist with basic troubleshooting and maintenance. For more complex repairs, we offer a service program with quick turnaround times.</p>
               </div>
               
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-semibold mb-3">Are your stores wheelchair accessible?</h3>
-                <p className="text-gray-700">Yes, all of our locations are wheelchair accessible with ramp entrances and spacious aisles to ensure all customers can shop comfortably.</p>
+              <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
+                <h3 className="text-xl font-semibold mb-3 text-white">Are your stores wheelchair accessible?</h3>
+                <p className="text-gray-300">Yes, all of our locations are wheelchair accessible with ramp entrances and spacious aisles to ensure all customers can shop comfortably.</p>
               </div>
             </div>
           </div>
