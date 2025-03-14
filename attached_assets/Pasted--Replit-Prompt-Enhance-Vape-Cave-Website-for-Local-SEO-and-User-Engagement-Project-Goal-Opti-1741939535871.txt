@@ -1,0 +1,68 @@
+# Replit Prompt: Enhance Vape Cave Website for Local SEO and User Engagement
+
+**Project Goal:** Optimize the Vape Cave website for local search visibility, user engagement, and clear calls to action.
+
+**Instructions:**
+
+1.  **Local SEO Optimization:**
+    * Enhance schema markup (LocalBusiness schema) with detailed and accurate information, including business name, address, phone number (NAP), hours of operation, and services offered.
+    * Ensure consistent NAP across all website pages and online directories.
+    * Optimize location pages with unique, location-specific content, including details about the store's atmosphere, offerings, and community involvement.
+    * Ensure the website is mobile-friendly and loads quickly.
+2.  **Google Maps Optimization:**
+    * Embed Google Maps iframes on location pages, displaying the exact store locations.
+    * Include "Get Directions" links on location pages, directing users to Google Maps for easy navigation.
+3.  **Clear Calls to Action (CTAs):**
+    * Implement clear and compelling CTAs on the homepage, location pages, and product pages.
+    * Examples: "Visit Our Store," "Get Directions," "Shop Now," "Contact Us," "Sign up for our newsletter".
+    * Create a pop-up modal that appears on the homepage after a short delay (e.g., 10 seconds) or when the user intends to exit the page.
+        * The pop-up should include:
+            * A clear headline: "Get 15% Off Storewide!"
+            * A field for the user to enter their email address.
+            * A "Submit" button.
+            * A clear message indicating that by signing up, they agree to receive promotional emails (ensure compliance with privacy laws).
+        * Upon successful email submission:
+            * Generate a unique discount code.
+            * Display the discount code to the user.
+            * Store the email address, discount code, timestamp, and date in a database or JSON file.
+4.  **Informational and Engaging Content:**
+    * Create a new page titled "Vaping Information" or similar, containing:
+        * Vaping basics for beginners.
+        * Safety tips and best practices.
+        * Information about local vaping regulations.
+        * News and updates about Vape Cave.
+    * Establish a blog structure for future content creation.
+5.  **Technical SEO:**
+    * Ensure `robots.txt` and `sitemap.xml` files are up-to-date and accurate.
+    * Create an image sitemap.
+    * Ensure that the website is fast.
+6.  **Admin Dashboard:**
+    * Create a protected admin page accessible via a username and password.
+    * The admin dashboard should display:
+        * Website analytics (e.g., page views, unique visitors, traffic sources).
+        * A table or list of all email sign-ups, including email addresses, discount codes, timestamps, and dates.
+        * A button or link to download the email sign-up data as a CSV or JSON file.
+7.  **Code Management System (Employee Access):**
+    * Create a separate employee login page with username and password authentication.
+    * Upon successful login, employees should be able to:
+        * Enter a discount code.
+        * Scan a QR code.
+        * Mark the code as "used" in the database or JSON file.
+        * The system should prevent used codes from being used again.
+8.  **Data Storage:**
+    * Choose a suitable method for storing data (e.g., a simple JSON file, a lightweight database like SQLite, or a more robust database like PostgreSQL if you anticipate significant growth).
+    * Ensure data is stored securely and in compliance with privacy regulations.
+9.  **Analytics:**
+    * Integrate a basic analytics solution (e.g., using Google Analytics or a simple custom implementation) to track website traffic.
+10. **Security:**
+    * Implement strong password hashing for admin and employee logins.
+    * Protect sensitive data from unauthorized access.
+11. **Time and Date Stamps:**
+    * Implement accurate time and date stamps for all email sign-ups and code usage records.
+
+**Important Notes:**
+
+* Replace all placeholder content with actual business information.
+* Ensure compliance with all relevant laws and regulations.
+* Prioritize user experience and create valuable content.
+* Thoroughly test all implemented features.
