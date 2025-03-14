@@ -267,7 +267,6 @@ const LocationsPage = () => {
                       ]}
                       height="100%"
                       width="100%"
-                      apiKey="AIzaSyAmuEPaYfG1ketf_ZzVnpcjfSe1qdMa3t0"
                     />
                   </div>
                   
@@ -421,7 +420,6 @@ const LocationsPage = () => {
               height="100%"
               width="100%"
               zoom={10}
-              apiKey="AIzaSyAmuEPaYfG1ketf_ZzVnpcjfSe1qdMa3t0"
             />
           </div>
         </div>
