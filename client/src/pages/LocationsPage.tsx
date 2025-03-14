@@ -241,16 +241,13 @@ const LocationsPage = () => {
                         id: location.id,
                         name: location.name,
                         address: location.fullAddress,
-                        position: location.coordinates,
-                        phone: location.phone,
-                        hours: location.hours
+                        position: location.coordinates
                       }]}
                       apiKey={"AIzaSyAmuEPaYfG1ketf_ZzVnpcjfSe1qdMa3t0"}
                       height="100%"
                       width="100%"
                       zoom={15}
-                      activeLocationId={activeLocation === location.id ? location.id : null}
-                      onMarkerClick={(id) => setActiveLocation(id)}
+                      activeLocationId={location.id}
                     />
                   </div>
                   
@@ -392,16 +389,13 @@ const LocationsPage = () => {
                 id: location.id,
                 name: location.name,
                 address: location.fullAddress,
-                position: location.coordinates,
-                phone: location.phone,
-                hours: location.hours
+                position: location.coordinates
               }))}
               apiKey={"AIzaSyAmuEPaYfG1ketf_ZzVnpcjfSe1qdMa3t0"}
               height="100%"
               width="100%"
               zoom={11}
               activeLocationId={activeLocation}
-              onMarkerClick={(id) => setActiveLocation(id)}
             />
             <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-4 rounded-lg shadow z-10">
               <h3 className="font-semibold text-lg mb-2">All Vape Cave Locations</h3>
