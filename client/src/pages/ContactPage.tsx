@@ -146,7 +146,7 @@ const ContactPage = () => {
                     </div>
                     <div>
                       <h4 className="font-medium mb-1">Email Us</h4>
-                      <p className="text-white/80">info@vapecave.com</p>
+                      <p className="text-white/80">vapecavetex@gmail.com</p>
                     </div>
                   </div>
                   
@@ -156,8 +156,8 @@ const ContactPage = () => {
                     </div>
                     <div>
                       <h4 className="font-medium mb-1">Call Us</h4>
-                      <p className="text-white/80">City A: 555-123-4567</p>
-                      <p className="text-white/80">City B: 555-987-6543</p>
+                      <p className="text-white/80">Frisco: (469) 294-0061</p>
+                      <p className="text-white/80">Arlington: (682) 270-0334</p>
                     </div>
                   </div>
                   
@@ -167,8 +167,8 @@ const ContactPage = () => {
                     </div>
                     <div>
                       <h4 className="font-medium mb-1">Business Hours</h4>
-                      <p className="text-white/80">City A: 10 AM - 8 PM (Mon-Sat)</p>
-                      <p className="text-white/80">City B: 11 AM - 9 PM (Mon-Sat)</p>
+                      <p className="text-white/80">Frisco: 10 AM - 8 PM (Mon-Sat)</p>
+                      <p className="text-white/80">Arlington: 11 AM - 9 PM (Mon-Sat)</p>
                       <p className="text-white/80">Both locations closed on Sundays</p>
                     </div>
                   </div>
@@ -179,8 +179,8 @@ const ContactPage = () => {
                     </div>
                     <div>
                       <h4 className="font-medium mb-1">Locations</h4>
-                      <p className="text-white/80">123 Main Street, City A</p>
-                      <p className="text-white/80">456 Oak Avenue, City B</p>
+                      <p className="text-white/80">Frisco: 6958 Main St, Frisco, TX 75033</p>
+                      <p className="text-white/80">Arlington: 4100 S Cooper St, Unit 4108, Arlington, TX 76015</p>
                     </div>
                   </div>
                 </div>

@@ -36,20 +36,20 @@ const LocationsPage = () => {
       id: 1,
       name: "Vape Cave Frisco",
       city: "Frisco",
-      address: "3333 Preston Road",
-      fullAddress: "3333 Preston Road, Frisco, TX 75034",
-      phone: "555-123-4567",
-      hours: "10 AM - 8 PM (Monday - Saturday)",
-      closedDays: "Sunday",
+      address: "6958 Main St",
+      fullAddress: "6958 Main St, Frisco, TX 75033, United States",
+      phone: "(469) 294-0061",
+      hours: "10 AM - 12 AM / 1 AM (Extended hours on weekends)",
+      closedDays: "",
       image: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       coordinates: {
-        lat: 33.1137,
-        lng: -96.8050
+        lat: 33.1562,
+        lng: -96.8236
       },
       googlePlaceId: "ChIJxXjrR3wVkFQRcKK89i-aFDw", // This should be your actual Google Place ID
-      appleMapsLink: "https://maps.apple.com/?address=3333%20Preston%20Road,%20Frisco,%20TX%2075034&ll=33.1137,-96.8050&q=Vape%20Cave%20Frisco",
-      mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3056.2408651289297!2d-96.8050!3d33.1137!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a1983c178c5%3A0xf4f40d590e54a8b0!2s3333%20Preston%20Rd%2C%20Frisco%2C%20TX%2075034!5e0!3m2!1sen!2sus!4v1693311756407!5m2!1sen!2sus",
-      email: "frisco@vapecave.com",
+      appleMapsLink: "https://maps.apple.com/?address=6958%20Main%20St,%20Frisco,%20TX%2075033&ll=33.1562,-96.8236&q=Vape%20Cave%20Frisco",
+      mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3056.2408651289297!2d-96.8236!3d33.1562!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a1983c178c5%3A0xf4f40d590e54a8b0!2s6958%20Main%20St%2C%20Frisco%2C%20TX%2075033!5e0!3m2!1sen!2sus!4v1693311756407!5m2!1sen!2sus",
+      email: "vapecavetex@gmail.com",
       storeCode: "VC-FRISCO",
       openingHours: {
         "Monday": "10:00-20:00",
@@ -65,20 +65,20 @@ const LocationsPage = () => {
       id: 2,
       name: "Vape Cave Arlington",
       city: "Arlington",
-      address: "2500 E Abram St",
-      fullAddress: "2500 E Abram St, Arlington, TX 76010",
-      phone: "555-987-6543",
+      address: "4100 S Cooper St, Unit 4108",
+      fullAddress: "4100 S Cooper St, Unit 4108, Arlington, TX 76015, United States",
+      phone: "(682) 270-0334",
       hours: "11 AM - 9 PM (Monday - Saturday)",
       closedDays: "Sunday",
       image: "https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       coordinates: {
-        lat: 32.7357,
-        lng: -97.0745
+        lat: 32.6870,
+        lng: -97.1365
       },
       googlePlaceId: "ChIJyersF8wXkFQRVQw-oKzhjYI", // This should be your actual Google Place ID
-      appleMapsLink: "https://maps.apple.com/?address=2500%20E%20Abram%20St,%20Arlington,%20TX%2076010&ll=32.7357,-97.0745&q=Vape%20Cave%20Arlington",
-      mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.246781652386!2d-97.0745!3d32.7357!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25cc32c6ee0c9%3A0x618d992cf4076d55!2s2500%20E%20Abram%20St%2C%20Arlington%2C%20TX%2076010!5e0!3m2!1sen!2sus!4v1693311805030!5m2!1sen!2sus",
-      email: "arlington@vapecave.com",
+      appleMapsLink: "https://maps.apple.com/?address=4100%20S%20Cooper%20St,%20Unit%204108,%20Arlington,%20TX%2076015&ll=32.6870,-97.1365&q=Vape%20Cave%20Arlington",
+      mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.246781652386!2d-97.1365!3d32.6870!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25cc32c6ee0c9%3A0x618d992cf4076d55!2s4100%20S%20Cooper%20St,%20Unit%204108,%20Arlington,%20TX%2076015!5e0!3m2!1sen!2sus!4v1693311805030!5m2!1sen!2sus",
+      email: "vapecavetx@gmail.com",
       storeCode: "VC-ARLINGTON",
       openingHours: {
         "Monday": "11:00-21:00",
