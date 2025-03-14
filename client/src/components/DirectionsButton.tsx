@@ -10,6 +10,7 @@ interface DirectionsButtonProps {
   size?: 'sm' | 'md' | 'lg';
   showIcon?: boolean;
   fullWidth?: boolean;
+  plusCode?: string;
 }
 
 /**
