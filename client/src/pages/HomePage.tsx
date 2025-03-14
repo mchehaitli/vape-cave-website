@@ -22,10 +22,13 @@ const HomePage = () => {
         <div className="absolute inset-0 opacity-20 bg-pattern"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col items-center">
-            <div className="w-full max-w-3xl mx-auto text-center">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold font-['Poppins'] mb-6 leading-tight">
-                Premium Vaping <span className="text-primary">Experience</span>
+            <div className="w-full max-w-5xl mx-auto text-center">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold font-['Poppins'] mb-4 leading-tight">
+                Vape into the <span className="text-primary">Future</span>
               </h1>
+              <h2 className="text-xl md:text-2xl mb-8 text-white/80 font-medium max-w-[1100px] mx-auto">
+                Your One Stop Vape Shop for Disposables | E-Liquids | Salts | Delta | THC - A | Glass | Tobacco | Hookah / Shisha | Vaporizers | Mods | and much more
+              </h2>
               <p className="text-lg md:text-xl mb-10 text-white/90 max-w-2xl mx-auto">
                 We are a locally owned business specializing in Vaporizers, E-Liquid, Salt Nic, and many different types of disposable devices. We also carry a wide range of glass pipes and accessories as well as Novelties and Hookahs/Shisha. Basically we carry all your smoking needs!
               </p>
