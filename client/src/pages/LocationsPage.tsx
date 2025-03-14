@@ -176,19 +176,24 @@ const LocationsPage = () => {
       {/* Locations Grid */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold font-['Poppins'] mb-3">Our Store Locations</h2>
+              <div className="h-1 w-24 bg-primary mx-auto rounded-full mb-6"></div>
+              <p className="text-gray-600 max-w-2xl mx-auto">Find your nearest Vape Cave store and visit us to explore our premium selection of vaping products and accessories.</p>
+            </div>
+          </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             {locations.map((location) => (
               <div key={location.id} className="bg-white rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl">
-                <div className="h-72 overflow-hidden relative">
-                  <img 
-                    src={location.image} 
-                    alt={`${location.name} - Vape Cave Location`} 
-                    className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/60 to-transparent"></div>
-                  <div className="absolute bottom-0 left-0 p-6 text-white">
-                    <h2 className="text-2xl font-bold mb-1">{location.name}</h2>
-                    <p className="text-white/90">{location.fullAddress}</p>
+                <div className="p-6 bg-gradient-to-r from-primary/10 to-transparent border-b border-gray-100">
+                  <h2 className="text-3xl font-bold mb-2 text-gray-800">{location.name}</h2>
+                  <p className="text-gray-600 text-lg mb-2">{location.fullAddress}</p>
+                  <div className="flex items-center text-sm text-gray-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p>{location.city === "Frisco" ? "Open until 12:00 AM (1:00 AM on weekends)" : "Open until 11:00 PM daily"}</p>
                   </div>
                 </div>
                 <div className="p-6">
@@ -308,11 +313,12 @@ const LocationsPage = () => {
       </section>
       
       {/* Store Features */}
-      <section className="py-12 bg-white">
+      <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-10">
             <h2 className="text-3xl font-bold font-['Poppins'] mb-3">Why Visit Our Stores?</h2>
-            <p className="text-dark/70 max-w-2xl mx-auto">We offer personalized service and a unique shopping experience at all of our locations.</p>
+            <div className="h-1 w-24 bg-primary mx-auto rounded-full mb-6"></div>
+            <p className="text-gray-600 max-w-2xl mx-auto">We offer personalized service and a unique shopping experience at all of our locations.</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -321,7 +327,7 @@ const LocationsPage = () => {
                 <i className="fas fa-user-friends text-2xl text-primary"></i>
               </div>
               <h3 className="font-['Poppins'] font-semibold text-xl mb-2">Expert Staff</h3>
-              <p className="text-dark/70">Our knowledgeable team can help you find the perfect products for your needs and answer any questions.</p>
+              <p className="text-gray-600">Our knowledgeable team can help you find the perfect products for your needs and answer any questions.</p>
             </div>
             
             <div className="text-center p-6">
@@ -329,7 +335,7 @@ const LocationsPage = () => {
                 <i className="fas fa-box-open text-2xl text-primary"></i>
               </div>
               <h3 className="font-['Poppins'] font-semibold text-xl mb-2">Product Testing</h3>
-              <p className="text-dark/70">Try before you buy with our in-store product testing stations for e-liquids and devices.</p>
+              <p className="text-gray-600">Try before you buy with our in-store product testing stations for e-liquids and devices.</p>
             </div>
             
             <div className="text-center p-6">
@@ -337,7 +343,7 @@ const LocationsPage = () => {
                 <i className="fas fa-tags text-2xl text-primary"></i>
               </div>
               <h3 className="font-['Poppins'] font-semibold text-xl mb-2">Exclusive Offers</h3>
-              <p className="text-dark/70">Visit our stores for special in-store promotions, loyalty rewards, and product bundles.</p>
+              <p className="text-gray-600">Visit our stores for special in-store promotions, loyalty rewards, and product bundles.</p>
             </div>
           </div>
         </div>
