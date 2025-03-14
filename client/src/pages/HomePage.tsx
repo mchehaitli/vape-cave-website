@@ -17,8 +17,8 @@ const HomePage = () => {
       description="Welcome to Vape Cave - your one-stop shop for premium vaping products, e-liquids, and accessories. Visit our stores in Frisco and Arlington, TX."
     >
       {/* Hero Section */}
-      <section id="home" className="bg-gray-900 py-20 md:py-32 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/20 mix-blend-multiply"></div>
+      <section id="home" className="bg-black py-20 md:py-32 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/60 to-primary/10 mix-blend-multiply"></div>
         <div className="absolute inset-0 opacity-20 bg-pattern"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col items-center">
@@ -50,37 +50,37 @@ const HomePage = () => {
       </section>
 
       {/* Featured Products Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold font-['Poppins'] mb-3">Featured Products</h2>
+            <h2 className="text-3xl font-bold font-['Poppins'] mb-3 text-white">Featured Products</h2>
             <div className="h-1 w-24 bg-primary mx-auto rounded-full mb-6"></div>
-            <p className="text-gray-600 max-w-2xl mx-auto">Check out our most popular items and latest additions to our collection.</p>
+            <p className="text-gray-400 max-w-2xl mx-auto">Check out our most popular items and latest additions to our collection.</p>
           </div>
           
           {/* Product Categories Navigation */}
           <div className="flex justify-center mb-12 overflow-x-auto pb-2">
-            <div className="inline-flex bg-gray-100 rounded-lg p-1.5">
+            <div className="inline-flex bg-gray-900 rounded-lg p-1.5">
               <button 
-                className={`px-5 py-2 rounded-md font-medium text-sm md:text-base transition-all duration-200 ${activeCategory === "all" ? "bg-primary text-white shadow-md" : "text-gray-700 hover:text-primary"}`} 
+                className={`px-5 py-2 rounded-md font-medium text-sm md:text-base transition-all duration-200 ${activeCategory === "all" ? "bg-primary text-white shadow-md" : "text-gray-300 hover:text-primary"}`} 
                 onClick={() => setActiveCategory("all")}
               >
                 All
               </button>
               <button 
-                className={`px-5 py-2 rounded-md font-medium text-sm md:text-base transition-all duration-200 ${activeCategory === "devices" ? "bg-primary text-white shadow-md" : "text-gray-700 hover:text-primary"}`} 
+                className={`px-5 py-2 rounded-md font-medium text-sm md:text-base transition-all duration-200 ${activeCategory === "devices" ? "bg-primary text-white shadow-md" : "text-gray-300 hover:text-primary"}`} 
                 onClick={() => setActiveCategory("devices")}
               >
                 Devices
               </button>
               <button 
-                className={`px-5 py-2 rounded-md font-medium text-sm md:text-base transition-all duration-200 ${activeCategory === "e-liquids" ? "bg-primary text-white shadow-md" : "text-gray-700 hover:text-primary"}`} 
+                className={`px-5 py-2 rounded-md font-medium text-sm md:text-base transition-all duration-200 ${activeCategory === "e-liquids" ? "bg-primary text-white shadow-md" : "text-gray-300 hover:text-primary"}`} 
                 onClick={() => setActiveCategory("e-liquids")}
               >
                 E-Liquids
               </button>
               <button 
-                className={`px-5 py-2 rounded-md font-medium text-sm md:text-base transition-all duration-200 ${activeCategory === "accessories" ? "bg-primary text-white shadow-md" : "text-gray-700 hover:text-primary"}`} 
+                className={`px-5 py-2 rounded-md font-medium text-sm md:text-base transition-all duration-200 ${activeCategory === "accessories" ? "bg-primary text-white shadow-md" : "text-gray-300 hover:text-primary"}`} 
                 onClick={() => setActiveCategory("accessories")}
               >
                 Accessories
@@ -93,7 +93,7 @@ const HomePage = () => {
             {filteredProducts.map((product) => (
               <div 
                 key={product.id} 
-                className="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                className="bg-gray-900 border border-gray-700 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
               >
                 <div className="relative overflow-hidden h-56">
                   <img 
@@ -110,10 +110,10 @@ const HomePage = () => {
                   )}
                 </div>
                 <div className="p-5">
-                  <h3 className="font-['Poppins'] font-semibold text-lg mb-2">{product.name}</h3>
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">{product.description}</p>
+                  <h3 className="font-['Poppins'] font-semibold text-lg mb-2 text-white">{product.name}</h3>
+                  <p className="text-gray-400 text-sm mb-4 line-clamp-2">{product.description}</p>
                   <div className="flex justify-between items-center">
-                    <span className="font-bold text-lg">${product.price.toFixed(2)}</span>
+                    <span className="font-bold text-lg text-primary">${product.price.toFixed(2)}</span>
                     <button className="bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-lg transition-colors shadow-sm">
                       Add to Cart
                     </button>
@@ -125,7 +125,7 @@ const HomePage = () => {
           
           <div className="text-center mt-14">
             <Link href="/products">
-              <div className="inline-block bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-md cursor-pointer">
+              <div className="inline-block bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-md cursor-pointer">
                 View All Products
               </div>
             </Link>
@@ -134,17 +134,17 @@ const HomePage = () => {
       </section>
 
       {/* Locations Preview Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold font-['Poppins'] mb-3">Our Locations</h2>
+            <h2 className="text-3xl font-bold font-['Poppins'] mb-3 text-white">Our Locations</h2>
             <div className="h-1 w-24 bg-primary mx-auto rounded-full mb-6"></div>
-            <p className="text-gray-600 max-w-2xl mx-auto">Visit us at one of our convenient locations for personalized service and expert advice.</p>
+            <p className="text-gray-400 max-w-2xl mx-auto">Visit us at one of our convenient locations for personalized service and expert advice.</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             {/* Location 1 */}
-            <div className="bg-white rounded-xl overflow-hidden shadow-lg">
+            <div className="bg-gray-900 border border-gray-700 rounded-xl overflow-hidden shadow-lg">
               <div className="h-64 overflow-hidden">
                 <img 
                   src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
@@ -153,26 +153,26 @@ const HomePage = () => {
                 />
               </div>
               <div className="p-6">
-                <h3 className="font-['Poppins'] font-semibold text-xl mb-3">Frisco Location</h3>
+                <h3 className="font-['Poppins'] font-semibold text-xl mb-3 text-white">Frisco Location</h3>
                 <div className="space-y-3 mb-5">
                   <div className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    <span className="text-gray-700">6958 Main St, Frisco, TX 75033</span>
+                    <span className="text-gray-300">6958 Main St, Frisco, TX 75033</span>
                   </div>
                   <div className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
-                    <span className="text-gray-700">(469) 294-0061</span>
+                    <span className="text-gray-300">(469) 294-0061</span>
                   </div>
                   <div className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span className="text-gray-700">10:00 AM - 12:00 AM (Open 7 days)</span>
+                    <span className="text-gray-300">10:00 AM - 12:00 AM (Open 7 days)</span>
                   </div>
                 </div>
                 
@@ -185,7 +185,7 @@ const HomePage = () => {
             </div>
             
             {/* Location 2 */}
-            <div className="bg-white rounded-xl overflow-hidden shadow-lg">
+            <div className="bg-gray-900 border border-gray-700 rounded-xl overflow-hidden shadow-lg">
               <div className="h-64 overflow-hidden">
                 <img 
                   src="https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
@@ -194,26 +194,26 @@ const HomePage = () => {
                 />
               </div>
               <div className="p-6">
-                <h3 className="font-['Poppins'] font-semibold text-xl mb-3">Arlington Location</h3>
+                <h3 className="font-['Poppins'] font-semibold text-xl mb-3 text-white">Arlington Location</h3>
                 <div className="space-y-3 mb-5">
                   <div className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    <span className="text-gray-700">4100 S Cooper St, Unit 4108, Arlington, TX 76015</span>
+                    <span className="text-gray-300">4100 S Cooper St, Unit 4108, Arlington, TX 76015</span>
                   </div>
                   <div className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
-                    <span className="text-gray-700">(682) 270-0334</span>
+                    <span className="text-gray-300">(682) 270-0334</span>
                   </div>
                   <div className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span className="text-gray-700">10:00 AM - 11:00 PM (Open 7 days)</span>
+                    <span className="text-gray-300">10:00 AM - 11:00 PM (Open 7 days)</span>
                   </div>
                 </div>
                 
@@ -229,15 +229,15 @@ const HomePage = () => {
       </section>
 
       {/* Age Verification Notice */}
-      <section className="py-14 bg-primary/10">
+      <section className="py-14 bg-black">
         <div className="container mx-auto px-4 text-center">
-          <div className="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+          <div className="max-w-3xl mx-auto bg-gray-900 p-8 rounded-xl shadow-lg border border-primary/30">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-primary mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
-            <h2 className="text-2xl font-bold font-['Poppins'] mb-3">Age Verification Required</h2>
-            <p className="text-gray-700 mb-4">Our products are intended for adult smokers aged 21 and over. Proof of age will be required upon purchase both online and in our physical stores.</p>
-            <p className="text-gray-500 text-sm">We strictly adhere to all local, state, and federal regulations regarding the sale of vaping products.</p>
+            <h2 className="text-2xl font-bold font-['Poppins'] mb-3 text-white">Age Verification Required</h2>
+            <p className="text-gray-300 mb-4">Our products are intended for adult smokers aged 21 and over. Proof of age will be required upon purchase both online and in our physical stores.</p>
+            <p className="text-gray-400 text-sm">We strictly adhere to all local, state, and federal regulations regarding the sale of vaping products.</p>
           </div>
         </div>
       </section>
