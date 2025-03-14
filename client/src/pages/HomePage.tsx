@@ -1,16 +1,7 @@
 import { Link } from "wouter";
 import MainLayout from "@/layouts/MainLayout";
-import { products } from "@/data/products";
-import { useState } from "react";
 
 const HomePage = () => {
-  const [activeCategory, setActiveCategory] = useState("all");
-  
-  // Filter products by category
-  const filteredProducts = activeCategory === "all" 
-    ? products.slice(0, 4) // Show only first 4 products on homepage
-    : products.filter(product => product.category === activeCategory).slice(0, 4);
-  
   return (
     <MainLayout
       title="Vape Cave - Premium Vaping Products"
@@ -45,90 +36,6 @@ const HomePage = () => {
                 </Link>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Products Section */}
-      <section className="py-20 bg-dark text-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold font-['Poppins'] mb-3">Featured Products</h2>
-            <div className="h-1 w-24 bg-primary mx-auto rounded-full mb-6"></div>
-            <p className="text-gray-300 max-w-2xl mx-auto">Check out our most popular items and latest additions to our collection.</p>
-          </div>
-          
-          {/* Product Categories Navigation */}
-          <div className="flex justify-center mb-12 overflow-x-auto pb-2">
-            <div className="inline-flex bg-gray-800 rounded-lg p-1.5">
-              <button 
-                className={`px-5 py-2 rounded-md font-medium text-sm md:text-base transition-all duration-200 ${activeCategory === "all" ? "bg-primary text-white shadow-md" : "text-gray-300 hover:text-primary"}`} 
-                onClick={() => setActiveCategory("all")}
-              >
-                All
-              </button>
-              <button 
-                className={`px-5 py-2 rounded-md font-medium text-sm md:text-base transition-all duration-200 ${activeCategory === "devices" ? "bg-primary text-white shadow-md" : "text-gray-300 hover:text-primary"}`} 
-                onClick={() => setActiveCategory("devices")}
-              >
-                Devices
-              </button>
-              <button 
-                className={`px-5 py-2 rounded-md font-medium text-sm md:text-base transition-all duration-200 ${activeCategory === "e-liquids" ? "bg-primary text-white shadow-md" : "text-gray-300 hover:text-primary"}`} 
-                onClick={() => setActiveCategory("e-liquids")}
-              >
-                E-Liquids
-              </button>
-              <button 
-                className={`px-5 py-2 rounded-md font-medium text-sm md:text-base transition-all duration-200 ${activeCategory === "accessories" ? "bg-primary text-white shadow-md" : "text-gray-300 hover:text-primary"}`} 
-                onClick={() => setActiveCategory("accessories")}
-              >
-                Accessories
-              </button>
-            </div>
-          </div>
-          
-          {/* Product Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {filteredProducts.map((product) => (
-              <div 
-                key={product.id} 
-                className="bg-gray-800 border border-gray-700 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-              >
-                <div className="relative overflow-hidden h-56">
-                  <img 
-                    src={product.image} 
-                    alt={product.name} 
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                  />
-                  {product.featured && (
-                    <div className="absolute top-4 right-4">
-                      <span className="inline-block bg-primary text-white text-xs font-semibold rounded-full px-3 py-1.5">
-                        {product.featuredLabel}
-                      </span>
-                    </div>
-                  )}
-                </div>
-                <div className="p-5">
-                  <h3 className="font-['Poppins'] font-semibold text-lg mb-2 text-white">{product.name}</h3>
-                  <p className="text-gray-300 text-sm mb-4 line-clamp-2">{product.description}</p>
-                  <div className="flex justify-between items-center">
-                    <span className="font-bold text-lg text-white">${product.price.toFixed(2)}</span>
-                    <button className="bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-lg transition-colors shadow-sm">
-                      Add to Cart
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          <div className="text-center mt-14">
-            <Link href="/products">
-              <div className="inline-block bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-md cursor-pointer">
-                View All Products
-              </div>
-            </Link>
           </div>
         </div>
       </section>
