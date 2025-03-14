@@ -44,19 +44,19 @@ export const storeLocations: StoreLocation[] = [
     id: 1,
     name: "Vape Cave Frisco",
     city: "Frisco",
-    address: "6958 Main St",
-    fullAddress: "6958 Main St, Frisco, TX 75033, United States",
+    address: "9255 Preston Rd, Suite 100",
+    fullAddress: "9255 Preston Rd, Suite 100, Frisco, TX 75033, United States",
     phone: "(469) 294-0061",
     hours: "10:00 AM - 12:00 AM / 1:00 AM (Extended hours on weekends)",
     closedDays: "",
     image: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     coordinates: {
-      lat: 33.150730,
-      lng: -96.822550
+      lat: 33.1754,
+      lng: -96.8045
     },
     googlePlaceId: "ChIJxXjrR3wVkFQRcKK89i-aFDw",
-    appleMapsLink: "https://maps.apple.com/?address=6958%20Main%20St,%20Unit%20200,%20Frisco,%20TX%20%2075033,%20United%20States&auid=14231591118256703794&ll=33.150849,-96.824392&lsp=9902&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m",
-    mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3056.2408651289297!2d-96.8236!3d33.1562!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a1983c178c5%3A0xf4f40d590e54a8b0!2s6958%20Main%20St%2C%20Frisco%2C%20TX%2075033!5e0!3m2!1sen!2sus!4v1693311756407!5m2!1sen!2sus",
+    appleMapsLink: "https://maps.apple.com/?address=9255%20Preston%20Rd,%20Suite%20100,%20Frisco,%20TX%20%2075033,%20United%20States&ll=33.1754,-96.8045&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m",
+    mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3342.7896675963246!2d-96.80701242377554!3d33.17540087322049!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864c3c8b3a3b0fa9%3A0xfaee0099951b14ba!2s9255%20Preston%20Rd%20Suite%20100%2C%20Frisco%2C%20TX%2075033!5e0!3m2!1sen!2sus!4v1672321759407!5m2!1sen!2sus",
     email: "vapecavetex@gmail.com",
     storeCode: "VC-FRISCO",
     openingHours: {
@@ -110,7 +110,7 @@ export const storeLocations: StoreLocation[] = [
       yelp: "https://yelp.com/biz/vape-cave-frisco"
     },
     description: "Our Frisco location offers a premium selection of vaping products, disposables, Delta 8, THC-A, Delta 9, and more. Our expert staff provides personalized recommendations in a welcoming environment with competitive prices and weekly specials.",
-    neighborhoodInfo: "Located in the heart of Main Street Frisco, our store is just minutes from the Star in Frisco and Frisco Square. Plenty of restaurants and shopping nearby.",
+    neighborhoodInfo: "Located on Preston Road in Frisco, our store is just minutes from Stonebriar Mall and the Star in Frisco. Plenty of restaurants and shopping nearby.",
     amenities: [
       "Expert Staff",
       "Product Testing",
@@ -126,19 +126,19 @@ export const storeLocations: StoreLocation[] = [
     id: 2,
     name: "Vape Cave Arlington",
     city: "Arlington",
-    address: "4100 S Cooper St, Unit 4108",
-    fullAddress: "4100 S Cooper St, Unit 4108, Arlington, TX 76015, United States",
+    address: "1707 E Lamar Blvd, Suite 130",
+    fullAddress: "1707 E Lamar Blvd, Suite 130, Arlington, TX 76006, United States",
     phone: "(682) 270-0334",
     hours: "10:00 AM - 11:00 PM",
     closedDays: "",
     image: "https://images.unsplash.com/photo-1556740772-1a741367b93e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     coordinates: {
-      lat: 32.687070,
-      lng: -97.134800
+      lat: 32.7606,
+      lng: -97.0753
     },
     googlePlaceId: "ChIJ23422NdJSYYRVX94pdZlUGg", 
-    appleMapsLink: "https://maps.apple.com/?address=4100%20S%20Cooper%20St,%20Unit%204108,%20Arlington,%20TX%20%2076015,%20United%20States&auid=1098473437663926&ll=32.687070,-97.134800&lsp=9902&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m",
-    mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.246781652386!2d-97.1365!3d32.6870!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25cc32c6ee0c9%3A0x618d992cf4076d55!2s4100%20S%20Cooper%20St,%20Unit%204108,%20Arlington,%20TX%2076015!5e0!3m2!1sen!2sus!4v1693311805030!5m2!1sen!2sus",
+    appleMapsLink: "https://maps.apple.com/?address=1707%20E%20Lamar%20Blvd,%20Suite%20130,%20Arlington,%20TX%20%2076006,%20United%20States&ll=32.7606,-97.0753&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m",
+    mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3355.8741432881703!2d-97.07786282378937!3d32.76060198068339!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864e7d51e39fbfa5%3A0x8a1da20e66df8aa!2s1707%20E%20Lamar%20Blvd%20%23130%2C%20Arlington%2C%20TX%2076006!5e0!3m2!1sen!2sus!4v1672321865030!5m2!1sen!2sus",
     email: "vapecavetx@gmail.com",
     storeCode: "VC-ARLINGTON",
     openingHours: {
@@ -193,7 +193,7 @@ export const storeLocations: StoreLocation[] = [
       yelp: "https://yelp.com/biz/vape-cave-arlington"
     },
     description: "Our Arlington location features the largest selection of disposable vapes, Delta 8, THC-A, and Delta 9 products in the area. We pride ourselves on excellent customer service, product knowledge, and competitive pricing to ensure you find exactly what you're looking for.",
-    neighborhoodInfo: "Conveniently located on S Cooper Street, just minutes from The Parks Mall and University of Texas at Arlington (UTA). Close to many restaurants and entertainment options.",
+    neighborhoodInfo: "Conveniently located on E Lamar Blvd, just minutes from AT&T Stadium and Globe Life Field. Close to many restaurants and entertainment options.",
     amenities: [
       "Expert Staff",
       "Product Demonstrations",
