@@ -21,13 +21,13 @@ const HomePage = () => {
       <section id="home" className="bg-gray-900 py-16 md:py-28 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/30 mix-blend-multiply"></div>
         <div className="container mx-auto px-4 relative z-10">
-          <div className="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-16">
-            <div className="md:w-1/2 mt-6 md:mt-0">
-              <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-primary/40">
+          <div className="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-12">
+            <div className="md:w-1/2 mt-6 md:mt-0 flex items-center justify-center">
+              <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-primary/40 max-w-[500px] h-auto">
                 <img 
                   src={vapeLounge} 
                   alt="Vape Cave Lounge" 
-                  className="w-full h-auto object-cover"
+                  className="w-full h-full object-cover max-h-[360px]"
                 />
               </div>
             </div>
