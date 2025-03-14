@@ -49,6 +49,12 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
   const apiKey = propApiKey || import.meta.env.GOOGLE_MAPS_API_KEY || '';
   console.log("API Key available:", !!apiKey);
   
+  // Log the URL for debugging domain restriction issues
+  useEffect(() => {
+    console.log("Current page URL:", window.location.href);
+    console.log("Current hostname:", window.location.hostname);
+  }, []);
+  
   // Get the currently active location or the first one
   const activeLocation = locations.find(loc => loc.id === activeLocationId) || locations[0];
   
@@ -78,7 +84,15 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
     
     // Define the callback function to initialize the map
     window.initGoogleMaps = () => {
+      console.log("Google Maps API loaded successfully");
       setMapLoaded(true);
+    };
+    
+    // Add error handling
+    script.onerror = (error) => {
+      console.error("Error loading Google Maps API:", error);
+      console.log("Attempted to load with URL:", script.src);
+      console.log("API key provided:", apiKey ? "Yes (length: " + apiKey.length + ")" : "No");
     };
     
     document.head.appendChild(script);
