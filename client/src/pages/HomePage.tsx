@@ -16,7 +16,7 @@ const HomePage = () => {
       "width": 180,
       "height": 60
     },
-    "description": "Vape Cave offers premium vaping products, e-liquids, disposables, Delta 8, THC-A, and accessories at our convenient Frisco (Plus Code: 552G+86) and Arlington, TX locations. We provide expert advice and a wide selection for all your vaping needs.",
+    "description": "Vape Cave offers premium vaping products, e-liquids, disposables, Delta 8, THC-A, and accessories at our convenient Frisco and Arlington, TX locations. We provide expert advice and a wide selection for all your vaping needs.",
     "sameAs": [
       "https://facebook.com/vapecavetx",
       "https://instagram.com/vapecavetx",
@@ -57,19 +57,13 @@ const HomePage = () => {
           {
             "@type": "Map",
             "name": "Google Maps",
-            "url": "https://www.google.com/maps/search/?api=1&query=552G%2B86+Frisco%2C+Texas",
-            "description": "Find our Frisco vape shop using Google Maps with Plus Code 552G+86"
-          },
-          {
-            "@type": "Map", 
-            "name": "Plus Codes",
-            "url": "https://plus.codes/552G+86_Frisco,_Texas",
-            "description": "Direct link to our Frisco location using Plus Code navigation"
+            "url": "https://maps.app.goo.gl/jzbqUDyvvGHuwyXJ7",
+            "description": "Find our Frisco vape shop using Google Maps"
           },
           {
             "@type": "Map",
             "name": "Apple Maps",
-            "url": "https://maps.apple.com/?address=6958%20Main%20St%20%23200,%20Frisco,%20TX%20%2075033,%20United%20States&ll=33.150730,-96.822550&q=Vape%20Cave",
+            "url": "https://maps.apple.com/?address=6958%20Main%20St,%20Unit%20200,%20Frisco,%20TX%20%2075033,%20United%20States&auid=14231591118256703794&ll=33.150849,-96.824392&lsp=9902&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m",
             "description": "Find our Frisco vape shop on Apple Maps"
           }
         ],

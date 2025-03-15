@@ -63,9 +63,6 @@ const Navigation = () => {
                       }`}
                     >
                       {item.label}
-                      {item.path === "/locations/frisco" && (
-                        <span className="ml-1 text-xs bg-black/20 px-1.5 py-0.5 rounded-sm">552G+86</span>
-                      )}
                     </span>
                   </Link>
                 </li>
@@ -104,9 +101,6 @@ const Navigation = () => {
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {item.label}
-                  {item.path === "/locations/frisco" && (
-                    <span className="ml-2 text-xs bg-black/20 px-1.5 py-0.5 rounded-sm">552G+86</span>
-                  )}
                 </span>
               </Link>
             </li>
