@@ -386,7 +386,7 @@ const FriscoLocationPage: React.FC = () => {
               
               {/* Area Served */}
               <div className="mb-8">
-                <h3 className="text-xl font-semibold mb-4">Areas We Serve</h3>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">Areas We Serve</h3>
                 <p className="text-gray-700 mb-3">
                   Conveniently located to serve customers in:
                 </p>
@@ -405,7 +405,7 @@ const FriscoLocationPage: React.FC = () => {
               {/* Products/Services */}
               <div>
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-3xl font-bold">Products & Services</h2>
+                  <h2 className="text-3xl font-bold text-gray-800">Products & Services</h2>
                   <button 
                     onClick={() => setShowProducts(!showProducts)}
                     className="text-primary hover:text-primary/80"
@@ -432,7 +432,7 @@ const FriscoLocationPage: React.FC = () => {
                     </div>
                     
                     {/* Featured Products at Frisco */}
-                    <h3 className="text-xl font-semibold mb-4">Featured Products at Frisco</h3>
+                    <h3 className="text-xl font-semibold mb-4 text-gray-800">Featured Products at Frisco</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                       {friscoProducts.map((product) => (
                         <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -464,7 +464,7 @@ const FriscoLocationPage: React.FC = () => {
             
             {/* Map & Directions */}
             <div className="lg:col-span-1">
-              <h2 className="text-3xl font-bold mb-6">Location & Directions</h2>
+              <h2 className="text-3xl font-bold mb-6 text-gray-800">Location & Directions</h2>
               
               <div className="bg-gray-50 rounded-lg p-6 mb-6">
                 <h3 className="text-lg font-semibold mb-3">Interactive Map</h3>
@@ -556,7 +556,7 @@ const FriscoLocationPage: React.FC = () => {
       {/* FAQ Section with FAQ Schema */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-8">Frequently Asked Questions</h2>
+          <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">Frequently Asked Questions</h2>
           
           <div 
             className="max-w-3xl mx-auto divide-y"
@@ -566,7 +566,7 @@ const FriscoLocationPage: React.FC = () => {
             {/* FAQ Item 1 */}
             <div className="py-5" itemScope itemType="https://schema.org/Question">
               <div className="flex justify-between cursor-pointer">
-                <h3 className="text-lg font-medium" itemProp="name">What are your hours at the Frisco location?</h3>
+                <h3 className="text-lg font-medium text-gray-800" itemProp="name">What are your hours at the Frisco location?</h3>
               </div>
               <div className="mt-2" itemScope itemType="https://schema.org/Answer">
                 <div itemProp="text">
@@ -581,7 +581,7 @@ const FriscoLocationPage: React.FC = () => {
             {/* FAQ Item 2 */}
             <div className="py-5" itemScope itemType="https://schema.org/Question">
               <div className="flex justify-between cursor-pointer">
-                <h3 className="text-lg font-medium" itemProp="name">What products do you carry at the Frisco location?</h3>
+                <h3 className="text-lg font-medium text-gray-800" itemProp="name">What products do you carry at the Frisco location?</h3>
               </div>
               <div className="mt-2" itemScope itemType="https://schema.org/Answer">
                 <div itemProp="text">
@@ -597,7 +597,7 @@ const FriscoLocationPage: React.FC = () => {
             {/* FAQ Item 3 */}
             <div className="py-5" itemScope itemType="https://schema.org/Question">
               <div className="flex justify-between cursor-pointer">
-                <h3 className="text-lg font-medium" itemProp="name">How do I find your Frisco store using Plus Code?</h3>
+                <h3 className="text-lg font-medium text-gray-800" itemProp="name">How do I find your Frisco store using Plus Code?</h3>
               </div>
               <div className="mt-2" itemScope itemType="https://schema.org/Answer">
                 <div itemProp="text">
@@ -613,7 +613,7 @@ const FriscoLocationPage: React.FC = () => {
             {/* FAQ Item 4 */}
             <div className="py-5" itemScope itemType="https://schema.org/Question">
               <div className="flex justify-between cursor-pointer">
-                <h3 className="text-lg font-medium" itemProp="name">Do you offer any special discounts at the Frisco location?</h3>
+                <h3 className="text-lg font-medium text-gray-800" itemProp="name">Do you offer any special discounts at the Frisco location?</h3>
               </div>
               <div className="mt-2" itemScope itemType="https://schema.org/Answer">
                 <div itemProp="text">
@@ -630,11 +630,11 @@ const FriscoLocationPage: React.FC = () => {
       </section>
       
       {/* Visit Us CTA */}
-      <section className="py-16 bg-primary/20">
+      <section className="py-16 bg-gray-900 text-white">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">Visit Our Frisco Location Today!</h2>
-            <p className="text-gray-600 text-lg mb-8">
+            <h2 className="text-3xl font-bold mb-4">Visit Our Frisco Location Today!</h2>
+            <p className="text-gray-300 text-lg mb-8">
               Experience our friendly atmosphere, knowledgeable staff, and premium selection of vaping products and accessories.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
@@ -649,7 +649,7 @@ const FriscoLocationPage: React.FC = () => {
               />
               <a 
                 href={`tel:${location.phone.replace(/[^0-9]/g, '')}`} 
-                className="bg-dark hover:bg-dark/90 text-white font-bold py-3 px-8 rounded-md"
+                className="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-md shadow-md"
               >
                 Call Us: {location.phone}
               </a>
