@@ -59,49 +59,49 @@ const ContactPage = () => {
             {/* Contact Form */}
             <div className="lg:col-span-3">
               {formSubmitted && (
-                <div className="bg-green-100 border border-green-200 text-green-800 rounded-lg p-4 mb-6">
+                <div className="bg-primary/20 border border-primary/40 text-white rounded-lg p-4 mb-6">
                   <div className="flex items-center">
-                    <i className="fas fa-check-circle text-green-500 mr-2"></i>
+                    <i className="fas fa-check-circle text-primary mr-2"></i>
                     <p>Thank you for your message! We'll get back to you soon.</p>
                   </div>
                 </div>
               )}
               
-              <form className="bg-light p-6 rounded-lg" onSubmit={handleSubmit}>
+              <form className="bg-black p-6 rounded-lg border border-gray-800" onSubmit={handleSubmit}>
                 <div className="mb-4">
-                  <label htmlFor="name" className="block text-dark font-medium mb-2">Your Name</label>
+                  <label htmlFor="name" className="block text-white font-medium mb-2">Your Name</label>
                   <input 
                     type="text" 
                     id="name" 
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-4 py-2 bg-gray-900 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                     required
                   />
                 </div>
                 
                 <div className="mb-4">
-                  <label htmlFor="email" className="block text-dark font-medium mb-2">Email Address</label>
+                  <label htmlFor="email" className="block text-white font-medium mb-2">Email Address</label>
                   <input 
                     type="email" 
                     id="email" 
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-4 py-2 bg-gray-900 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                     required
                   />
                 </div>
                 
                 <div className="mb-4">
-                  <label htmlFor="subject" className="block text-dark font-medium mb-2">Subject</label>
+                  <label htmlFor="subject" className="block text-white font-medium mb-2">Subject</label>
                   <select 
                     id="subject" 
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-4 py-2 bg-gray-900 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                     required
                   >
                     <option value="" disabled>Select a subject</option>
@@ -113,14 +113,14 @@ const ContactPage = () => {
                 </div>
                 
                 <div className="mb-4">
-                  <label htmlFor="message" className="block text-dark font-medium mb-2">Message</label>
+                  <label htmlFor="message" className="block text-white font-medium mb-2">Message</label>
                   <textarea 
                     id="message" 
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
                     rows={5} 
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-4 py-2 bg-gray-900 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                     required
                   ></textarea>
                 </div>
