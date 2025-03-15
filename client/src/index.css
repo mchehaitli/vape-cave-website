@@ -46,7 +46,9 @@
   
   /* Dark themed maps with styling */
   .dark-map {
-    filter: invert(90%) hue-rotate(180deg) brightness(90%) contrast(85%);
+    filter: invert(92%) hue-rotate(180deg) brightness(95%) contrast(85%);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
   
   /* Smooth scroll navigation */
