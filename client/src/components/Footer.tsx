@@ -1,6 +1,8 @@
 import { Link } from "wouter";
 import { useState } from "react";
+import { Helmet } from "react-helmet";
 import Logo from "./Logo";
+import { getFriscoLocation } from "@/data/storeInfo";
 
 const Footer = () => {
   const [email, setEmail] = useState("");

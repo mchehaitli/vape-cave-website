@@ -163,30 +163,67 @@ const LocationsPage = () => {
     >
       {/* SEO Schema.org structured data */}
       <Helmet>
-        <title>Vape Cave Frisco Location | Vape Shop in Frisco, TX | Store Hours & Directions</title>
+        <title>Vape Cave Frisco Location | Vape Shop at 552G+86 | Store Hours & Directions</title>
         <meta name="description" content="Visit our Vape Cave Frisco location (Plus Code: 552G+86) at 6958 Main St #200, Frisco, TX 75033. Open daily 10AM-12AM with premium vaping products, Delta 8, THC-A, disposables, glass, and accessories." />
         <link rel="canonical" href="https://vapecavetx.com/locations" />
+        
+        {/* Open Graph / Facebook */}
         <meta property="og:locale" content="en_US" />
-        <meta property="og:type" content="website" />
+        <meta property="og:type" content="business.business" />
         <meta property="og:title" content="Vape Cave Frisco Location | Plus Code: 552G+86" />
         <meta property="og:description" content="Visit our Vape Cave Frisco location at 6958 Main St #200, Frisco, TX 75033. Find us easily with Plus Code: 552G+86. Premium vapes, Delta 8, THC-A, and more." />
         <meta property="og:url" content="https://vapecavetx.com/locations" />
         <meta property="og:site_name" content="Vape Cave" />
         <meta property="og:image" content="https://vapecavetx.com/storefront-frisco.jpg" />
+        <meta property="business:contact_data:street_address" content="6958 Main St #200" />
+        <meta property="business:contact_data:locality" content="Frisco" />
+        <meta property="business:contact_data:region" content="TX" />
+        <meta property="business:contact_data:postal_code" content="75033" />
+        <meta property="business:contact_data:country_name" content="United States" />
+        <meta property="business:contact_data:email" content="vapecavetex@gmail.com" />
+        <meta property="business:contact_data:phone_number" content="+14692940061" />
+        
+        {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Vape Cave Frisco Location | Plus Code: 552G+86" />
         <meta name="twitter:description" content="Visit our Vape Cave Frisco location with Plus Code: 552G+86. Premium vapes, Delta 8, THC-A, and more." />
-        <meta name="keywords" content="vape store frisco, vape shop frisco tx, vape cave frisco, 552G+86 frisco, frisco vape shop, delta 8 frisco, thc-a frisco, disposable vape frisco, e-liquid frisco, vape products frisco tx" />
+        <meta name="twitter:image" content="https://vapecavetx.com/storefront-frisco.jpg" />
         
-        {/* Location schema data */}
+        {/* Keywords with strong Frisco location focus */}
+        <meta name="keywords" content="vape store frisco, vape shop frisco tx, vape cave frisco, 552G+86 frisco, frisco vape shop, delta 8 frisco, thc-a frisco, disposable vape frisco, e-liquid frisco, vape products frisco tx, frisco vape plus code" />
+        
+        {/* Dublin Core Metadata */}
+        <meta name="DC.title" content="Vape Cave Frisco | 552G+86 | Premium Vape Shop" />
+        <meta name="DC.description" content="Frisco's premium vape shop at 6958 Main St #200 (Plus Code: 552G+86). Offering high-quality vape products, Delta 8, THC-A, and accessories." />
+        <meta name="DC.subject" content="Vape Shop, Frisco, Delta 8, THC-A, Disposable Vapes" />
+        <meta name="DC.creator" content="Vape Cave" />
+        <meta name="DC.type" content="LocalBusiness" />
+        <meta name="DC.format" content="text/html" />
+        <meta name="DC.language" content="en-US" />
+        <meta name="DC.coverage" content="Frisco, Texas, United States" />
+        <meta name="DC.rights" content="Copyright Vape Cave 2023" />
+        
+        {/* Geo meta tags */}
+        <meta name="geo.region" content="US-TX" />
+        <meta name="geo.placename" content="Frisco" />
+        <meta name="geo.position" content="33.150730;-96.822550" />
+        <meta name="ICBM" content="33.150730, -96.822550" />
+        
+        {/* Alternative languages - helpful for international customers */}
+        <link rel="alternate" href="https://vapecavetx.com/locations" hrefLang="en-us" />
+        <link rel="alternate" href="https://vapecavetx.com/es/locations" hrefLang="es" />
+        
+        {/* Location schema data - enhanced and nested with OrganizationAndPlaces pattern */}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Organization",
+            "@id": "https://vapecavetx.com/#organization",
             "name": "Vape Cave",
             "url": "https://vapecavetx.com",
             "logo": "https://vapecavetx.com/logo.png",
             "description": "Vape Cave offers premium vaping products, e-liquids, and accessories at our convenient Frisco and Arlington, TX locations. We specialize in Disposable Vapes, Delta 8, THC-A, Delta 9, pre-rolls, flower, vape pens, and cartridges.",
+            "keywords": "vape shop frisco, 552G+86 frisco, frisco vape shop, delta 8 frisco, thc-a frisco",
             "sameAs": [
               "https://facebook.com/vapecavetx",
               "https://instagram.com/vapecavetx",
@@ -197,7 +234,7 @@ const LocationsPage = () => {
                 "@type": "ContactPoint",
                 "telephone": "+14692940061",
                 "contactType": "customer service",
-                "areaServed": "US",
+                "areaServed": ["Frisco", "Allen", "Plano", "McKinney", "Dallas", "North Texas"],
                 "availableLanguage": "English"
               }
             ],
@@ -206,7 +243,38 @@ const LocationsPage = () => {
               "addressCountry": "US",
               "addressRegion": "TX"
             },
+            "subOrganization": [
+              {
+                "@type": "VapeShop", 
+                "@id": "https://vapecavetx.com/locations/frisco/#shop",
+                "name": "Vape Cave Frisco",
+                "url": "https://vapecavetx.com/locations/frisco",
+                "mainEntityOfPage": "https://vapecavetx.com/locations/frisco"
+              }
+            ],
             "location": storeLocations.map(location => generateLocalBusinessSchema(location))
+          })}
+        </script>
+        
+        {/* BreadcrumbList schema for SEO */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://vapecavetx.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Locations",
+                "item": "https://vapecavetx.com/locations"
+              }
+            ]
           })}
         </script>
       </Helmet>
@@ -355,6 +423,13 @@ const LocationsPage = () => {
                       variant="primary"
                       plusCode={location.plusCode}
                     />
+                    
+                    {location.id === 1 && (
+                      <Link href="/locations/frisco" className="flex-1 bg-primary text-black hover:bg-primary/80 font-medium py-2 px-4 rounded-md flex items-center justify-center">
+                        <i className="fas fa-map-marker-alt mr-2"></i>
+                        View Frisco Details
+                      </Link>
+                    )}
                     
                     <button 
                       onClick={() => setActiveLocation(activeLocation === location.id ? null : location.id)}

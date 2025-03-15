@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { useState, useEffect } from "react";
 import HomePage from "@/pages/HomePage";
 import LocationsPage from "@/pages/LocationsPage";
+import FriscoLocationPage from "@/pages/FriscoLocationPage";
 import ContactPage from "@/pages/ContactPage";
 import NotFound from "@/pages/not-found";
 import AgeVerificationModal from "@/components/AgeVerificationModal";
@@ -14,6 +15,7 @@ function Router() {
     <Switch>
       <Route path="/" component={HomePage} />
       <Route path="/locations" component={LocationsPage} />
+      <Route path="/locations/frisco" component={FriscoLocationPage} />
       <Route path="/contact" component={ContactPage} />
       <Route component={NotFound} />
     </Switch>
