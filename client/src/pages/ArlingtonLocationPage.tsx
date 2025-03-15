@@ -643,24 +643,17 @@ const ArlingtonLocationPage: React.FC = () => {
                   itemType="https://schema.org/Map"
                 >
                   <meta itemProp="url" content={location.googlePlaceId ? `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.fullAddress)}`} />
-                  <GoogleMapsIntegration 
-                    locations={[{
-                      id: location.id,
-                      name: location.name,
-                      address: location.fullAddress,
-                      position: location.coordinates,
-                      googlePlaceId: location.googlePlaceId,
-                      appleMapsLink: location.appleMapsLink,
-                      city: location.city
-                    }]}
-                    height="100%"
+                  {/* Using iframe for reliable map display for Arlington location */}
+                  <iframe
+                    src={location.mapEmbed}
                     width="100%"
-                    zoom={15}
-                    activeLocationId={location.id}
-                    showDirectionsLink={true}
-                    apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
-                    mapType="roadmap"
-                  />
+                    height="100%"
+                    title={`${location.name} Map`}
+                    className="border-0 rounded-lg"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    allowFullScreen
+                  ></iframe>
                 </div>
                 
                 <h3 className="text-lg font-semibold mb-3 text-white">Get Directions</h3>
