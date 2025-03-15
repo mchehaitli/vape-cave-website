@@ -13,6 +13,7 @@ const Navigation = () => {
   const navItems = [
     { label: "Home", path: "/", ariaLabel: "Go to homepage" },
     { label: "Locations", path: "/locations", ariaLabel: "Find our store locations" },
+    { label: "Frisco Store", path: "/locations/frisco", ariaLabel: "Visit our Frisco location at 552G+86", highlight: true },
     { label: "Contact", path: "/contact", ariaLabel: "Contact us" },
   ];
 
@@ -55,9 +56,16 @@ const Navigation = () => {
                         location === item.path 
                           ? 'font-bold after:block after:w-full after:h-0.5 after:bg-black after:mt-1' 
                           : ''
+                      } ${
+                        item.highlight
+                          ? 'bg-black/10 px-3 py-1 rounded-md font-semibold relative after:block after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-black/30' 
+                          : ''
                       }`}
                     >
                       {item.label}
+                      {item.path === "/locations/frisco" && (
+                        <span className="ml-1 text-xs bg-black/20 px-1.5 py-0.5 rounded-sm">552G+86</span>
+                      )}
                     </span>
                   </Link>
                 </li>
@@ -90,10 +98,15 @@ const Navigation = () => {
                   role="menuitem"
                   aria-label={item.ariaLabel}
                   aria-current={location === item.path ? "page" : undefined}
-                  className="block text-black cursor-pointer hover:text-white/90 transition-colors"
+                  className={`block text-black cursor-pointer hover:text-white/90 transition-colors ${
+                    item.highlight ? 'font-semibold' : ''
+                  }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {item.label}
+                  {item.path === "/locations/frisco" && (
+                    <span className="ml-2 text-xs bg-black/20 px-1.5 py-0.5 rounded-sm">552G+86</span>
+                  )}
                 </span>
               </Link>
             </li>

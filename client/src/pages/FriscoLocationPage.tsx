@@ -466,7 +466,14 @@ const FriscoLocationPage: React.FC = () => {
               <h2 className="text-3xl font-bold mb-6">Location & Directions</h2>
               
               <div className="bg-gray-50 rounded-lg p-6 mb-6">
-                <div className="h-96 rounded-lg overflow-hidden mb-4">
+                <h3 className="text-lg font-semibold mb-3">Interactive Map</h3>
+                <div 
+                  className="h-96 rounded-lg overflow-hidden mb-4"
+                  itemProp="hasMap"
+                  itemScope
+                  itemType="https://schema.org/Map"
+                >
+                  <meta itemProp="url" content={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.plusCode || "")}`} />
                   <GoogleMapsIntegration 
                     locations={[{
                       id: location.id,
@@ -481,8 +488,21 @@ const FriscoLocationPage: React.FC = () => {
                     zoom={15}
                     activeLocationId={location.id}
                     showDirectionsLink={true}
+                    apiKey={process.env.GOOGLE_MAPS_API_KEY}
+                    mapType="roadmap"
                   />
                 </div>
+                <p className="text-sm text-gray-600 mb-3">
+                  <strong>Plus Code:</strong> 
+                  <a 
+                    href={`https://plus.codes/${location.plusCode?.replace(/\s+/g, '')}`}
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline ml-2"
+                  >
+                    {location.plusCode}
+                  </a>
+                </p>
                 
                 <div className="space-y-4">
                   <DirectionsButton
