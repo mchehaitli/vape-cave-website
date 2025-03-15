@@ -405,7 +405,7 @@ const LocationsPage = () => {
                       width="100%"
                       height="100%"
                       title={`${location.name} Google Maps`}
-                      className="absolute inset-0 border-0"
+                      className="absolute inset-0 border-0 dark-map-light"
                       loading="lazy"
                       referrerPolicy="no-referrer-when-downgrade"
                       allowFullScreen
