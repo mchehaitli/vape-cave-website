@@ -49,8 +49,8 @@ const LocationsPage = () => {
       "hasMap": [
         {
           "@type": "Map",
-          "url": location.plusCode 
-            ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.plusCode)}`
+          "url": location.googlePlaceId 
+            ? `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}`
             : `https://www.google.com/maps/dir/?api=1&destination=${location.coordinates.lat},${location.coordinates.lng}`
         },
         {
@@ -59,7 +59,7 @@ const LocationsPage = () => {
         },
         {
           "@type": "Map", 
-          "url": `https://plus.codes/${location.plusCode?.replace(/\s+/g, '')}`
+          "url": location.appleMapsLink || `https://maps.apple.com/?q=${location.fullAddress}`
         }
       ],
       "additionalProperty": [

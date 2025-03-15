@@ -69,23 +69,13 @@ const FriscoLocationPage: React.FC = () => {
       "additionalProperty": [
         {
           "@type": "PropertyValue",
-          "name": "plusCode",
-          "value": location.plusCode || ""
-        },
-        {
-          "@type": "PropertyValue",
           "name": "yearEstablished",
           "value": location.yearEstablished
         },
         {
           "@type": "PropertyValue",
-          "name": "googleMapPlusCode",
-          "value": "552G+86 Frisco, Texas"
-        },
-        {
-          "@type": "PropertyValue",
           "name": "googlePlaceId",
-          "value": location.googlePlaceId || ""
+          "value": location.googlePlaceId || "ChIJxXjrR3wVkFQRcKK89i-aFDw"
         },
         {
           "@type": "PropertyValue",
@@ -166,14 +156,14 @@ const FriscoLocationPage: React.FC = () => {
           "@type": "MapAction",
           "target": {
             "@type": "EntryPoint",
-            "urlTemplate": `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.plusCode || "")}`
+            "urlTemplate": location.googlePlaceId ? `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.fullAddress)}`
           }
         },
         {
           "@type": "FindAction",
           "target": {
             "@type": "EntryPoint",
-            "urlTemplate": `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.plusCode || "")}`
+            "urlTemplate": location.googlePlaceId ? `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.fullAddress)}`
           },
           "query-input": "required name=vape shop location"
         }
@@ -341,7 +331,7 @@ const FriscoLocationPage: React.FC = () => {
                       <h3 className="text-lg font-semibold mb-3">Address</h3>
                       <p className="text-gray-700 mb-1">{location.fullAddress}</p>
                       <p className="text-gray-700 mb-4">
-                        <span className="font-medium">Plus Code:</span> {location.plusCode}
+                        <span className="font-medium">Google Place ID:</span> {location.googlePlaceId || "ChIJxXjrR3wVkFQRcKK89i-aFDw"}
                       </p>
                       
                       <h3 className="text-lg font-semibold mb-3">Contact</h3>
@@ -475,14 +465,15 @@ const FriscoLocationPage: React.FC = () => {
                   itemScope
                   itemType="https://schema.org/Map"
                 >
-                  <meta itemProp="url" content={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.plusCode || "")}`} />
+                  <meta itemProp="url" content={location.googlePlaceId ? `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.fullAddress)}`} />
                   <GoogleMapsIntegration 
                     locations={[{
                       id: location.id,
                       name: location.name,
                       address: location.fullAddress,
                       position: location.coordinates,
-                      plusCode: location.plusCode,
+                      googlePlaceId: location.googlePlaceId,
+                      appleMapsLink: location.appleMapsLink,
                       city: location.city
                     }]}
                     height="100%"
