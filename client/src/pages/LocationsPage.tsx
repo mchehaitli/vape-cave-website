@@ -306,11 +306,8 @@ const LocationsPage = () => {
                 }`}
               >
                 <div className="h-60 overflow-hidden relative">
-                  <img 
-                    src={location.image} 
-                    alt={location.name} 
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                  />
+                  <div className="absolute inset-0 bg-gradient-to-b from-gray-800 to-gray-900"></div>
+                  <div className="absolute inset-0 bg-[url('/vapecave-logo.png')] bg-center bg-no-repeat bg-contain opacity-10"></div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
                     <div className="p-6">
                       <h2 className="text-2xl text-white font-bold font-['Poppins'] mb-1">{location.name}</h2>

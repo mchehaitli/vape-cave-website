@@ -359,12 +359,8 @@ const FriscoLocationPage: React.FC = () => {
       {/* Hero Banner */}
       <section className="relative h-72 md:h-96 overflow-hidden bg-gray-900 py-10">
         <div className="absolute inset-0">
-          <img 
-            src={location.image} 
-            alt="Vape Cave Frisco storefront" 
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/20 mix-blend-multiply"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-900 to-black"></div>
+          <div className="absolute inset-0 bg-[url('/vapecave-logo.png')] bg-center bg-no-repeat bg-contain opacity-10"></div>
           <div className="absolute inset-0 opacity-20 bg-pattern"></div>
         </div>
         <div className="container mx-auto px-4 h-full flex flex-col justify-center relative z-10 text-white">

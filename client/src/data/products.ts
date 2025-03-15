@@ -15,7 +15,7 @@ export const products: Product[] = [
     name: "Premium Vape Device",
     description: "Advanced temperature control with long battery life and premium build quality.",
     price: 69.99,
-    image: "https://images.unsplash.com/photo-1595784273075-2c18e73e0a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    image: "/vapecave-logo.png",
     category: "devices",
     featured: true,
     featuredLabel: "Featured"
