@@ -572,9 +572,9 @@ const LocationsPage = () => {
           </div>
           
           <div className="h-[600px] rounded-lg overflow-hidden shadow-xl relative">
-            {/* Using an embedded Google Maps iframe showing both store locations */}
+            {/* Using an embedded Google Maps iframe showing both store locations with pinpoint markers */}
             <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d429850.6001198835!2d-97.23238611490045!3d32.866197817649984!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m3!1m2!1s0x864c3c9e26f9a2d7%3A0x8b26bf31c77df48b!2s6958%20Main%20St%20%23200%2C%20Frisco%2C%20TX%2075033!5e0!3m3!1m2!1s0x864e6377a56ba2c1%3A0x63d3de7c2a26fd3d!2s4100%20S%20Cooper%20St%20%234108%2C%20Arlington%2C%20TX%2076015!5e0" 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d430103.58396207324!2d-97.11869445846414!3d32.80158138242744!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864c3c9e26f9a2d7%3A0x8b26bf31c77df48b!2sVape%20Cave%20Frisco!5e0!3m3!1m2!1s0x864e6377a56ba2c1%3A0x63d3de7c2a26fd3d!2sVape%20Cave%20Arlington!5e0" 
               width="100%" 
               height="100%" 
               className="absolute inset-0 border-0 dark-map"
