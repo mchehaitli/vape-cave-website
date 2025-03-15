@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import MainLayout from "@/layouts/MainLayout";
 
 const HomePage = () => {
-  // Enhanced home page structured data with focus on Frisco location with Google Maps integration
+  // Enhanced home page structured data with focus on Frisco location & Google Maps integration using latest schema.org standards
   const homePageSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -16,11 +16,18 @@ const HomePage = () => {
       "width": 180,
       "height": 60
     },
+    "image": [
+      "https://vapecavetx.com/images/storefront.jpg",
+      "https://vapecavetx.com/images/interior.jpg",
+      "https://vapecavetx.com/images/products.jpg"
+    ],
     "description": "Vape Cave offers premium vaping products, e-liquids, disposables, Delta 8, THC-A, and accessories at our convenient Frisco and Arlington, TX locations. We provide expert advice and a wide selection for all your vaping needs.",
+    "keywords": "vape shop, vape products, delta 8, thc-a, vape frisco tx, vape accessories, vape store near me",
     "sameAs": [
       "https://facebook.com/vapecavetx",
       "https://instagram.com/vapecavetx",
-      "https://twitter.com/vapecavetx"
+      "https://twitter.com/vapecavetx",
+      "https://yelp.com/biz/vape-cave-frisco"
     ],
     "contactPoint": [
       {
