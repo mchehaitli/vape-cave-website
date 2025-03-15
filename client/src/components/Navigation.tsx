@@ -110,7 +110,7 @@ const Navigation = () => {
                           : ''
                       } ${
                         item.highlight
-                          ? 'bg-black/10 px-3 py-1 rounded-md font-semibold relative after:block after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-black/30' 
+                          ? 'font-semibold relative after:block after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-black/60' 
                           : ''
                       }`}
                     >
