@@ -542,33 +542,46 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
             }
           `}
         </script>
-        {/* Standard geo meta tags */}
+        {/* Enhanced geo meta tags - recommended by Google for local SEO */}
         <meta name="geo.position" content={`${friscoLocation.position.lat};${friscoLocation.position.lng}`} />
         <meta name="geo.placename" content="Vape Cave Frisco" />
         <meta name="geo.region" content="US-TX" />
         <meta name="ICBM" content={`${friscoLocation.position.lat}, ${friscoLocation.position.lng}`} />
         
-        {/* Location-specific metadata */}
+        {/* Location-specific metadata with enhanced Google Maps information */}
         <meta name="location-city" content="Frisco" />
         <meta name="location-state" content="Texas" />
         <meta name="location-zipcode" content="75033" />
         <meta name="google-place-id" content={friscoLocation.googlePlaceId || "ChIJxXjrR3wVkFQRcKK89i-aFDw"} />
+        <meta name="place:location:latitude" content={`${friscoLocation.position.lat}`} />
+        <meta name="place:location:longitude" content={`${friscoLocation.position.lng}`} />
         
-        {/* Store information */}
+        {/* Business contact information - enhanced for improved local search */}
         <meta name="business-name" content="Vape Cave Frisco" />
         <meta name="business-type" content="Vape Shop" />
         <meta name="business-phone" content="+14692940061" />
         <meta name="business-email" content="info@vapecavetx.com" />
+        <meta name="business:contact_data:street_address" content="6958 Main St #200" />
+        <meta name="business:contact_data:locality" content="Frisco" />
+        <meta name="business:contact_data:region" content="TX" />
+        <meta name="business:contact_data:postal_code" content="75033" />
+        <meta name="business:contact_data:country_name" content="United States" />
         
-        {/* Product categories */}
+        {/* Enhanced product categories for better product discovery */}
         <meta name="product-category" content="Vapes, E-Liquids, Disposables, Delta 8, THC-A, Smoking Accessories" />
+        <meta name="product-brand" content="Vape Cave, Premium Vape Products" />
+        <meta name="product-availability" content="In Store" />
         
-        {/* Local business schema support */}
+        {/* Dublin Core metadata - for improved structural data recognition */}
         <meta name="DC.title" content="Vape Cave Frisco - Premium Vape Shop" />
         <meta name="DC.description" content="Visit Vape Cave in Frisco, TX for premium vaping products, disposables, Delta 8, THC-A and smoking accessories." />
         <meta name="DC.publisher" content="Vape Cave" />
         <meta name="DC.contributor" content="Frisco Chamber of Commerce" />
         <meta name="DC.coverage" content="Frisco, Plano, Allen, McKinney, North Texas" />
+        <meta name="DC.rights" content="© 2024 Vape Cave, All Rights Reserved" />
+        <meta name="DC.format" content="text/html" />
+        <meta name="DC.language" content="en-US" />
+        <meta name="DC.identifier" content="https://vapecavetx.com/locations/frisco" />
       </Helmet>
       
       <div style={{ height, width }} className="rounded-lg overflow-hidden shadow-lg relative">
