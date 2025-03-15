@@ -362,7 +362,7 @@ const HomePage = () => {
               </div>
             </div>
             
-            {/* Location 2 */}
+            {/* Arlington Location */}
             <div className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700">
               <div className="p-6">
                 <h3 className="font-['Poppins'] font-semibold text-2xl mb-4 text-white">Arlington Location</h3>
@@ -390,19 +390,38 @@ const HomePage = () => {
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
-                    <span className="text-gray-300">(682) 270-0334</span>
+                    <a 
+                      href="tel:+16822700334" 
+                      className="text-gray-300 hover:text-primary transition-colors"
+                    >
+                      (682) 270-0334
+                    </a>
                   </div>
                   <div className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span className="text-gray-300">10:00 AM - 11:00 PM (Open 7 days)</span>
+                    <div className="text-gray-300">
+                      <div>10:00 AM - 11:00 PM</div>
+                      <div className="text-primary/80 text-xs mt-1">Open 7 days a week</div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start mt-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-0.5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">Delta 8</span>
+                      <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">THC-A</span>
+                      <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">Disposables</span>
+                    </div>
                   </div>
                 </div>
                 
                 <Link href="/locations">
                   <div className="inline-block bg-primary hover:bg-primary/90 text-white font-bold py-2 px-6 rounded-lg transition-colors shadow-md cursor-pointer">
-                    View Details
+                    View Arlington Store Details
                   </div>
                 </Link>
                 
@@ -414,6 +433,10 @@ const HomePage = () => {
                 >
                   Get Directions
                 </a>
+                
+                <div className="mt-2 text-xs text-gray-500 italic">
+                  Click any map link for directions to our store
+                </div>
               </div>
             </div>
           </div>
