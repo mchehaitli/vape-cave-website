@@ -571,18 +571,52 @@ const LocationsPage = () => {
             </p>
           </div>
           
-          <div className="h-[600px] rounded-lg overflow-hidden shadow-xl relative">
-            {/* Using an embedded Google Maps iframe showing both store locations with pinpoint markers */}
-            <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d430103.58396207324!2d-97.11869445846414!3d32.80158138242744!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864c3c9e26f9a2d7%3A0x8b26bf31c77df48b!2sVape%20Cave%20Frisco!5e0!3m3!1m2!1s0x864e6377a56ba2c1%3A0x63d3de7c2a26fd3d!2sVape%20Cave%20Arlington!5e0" 
-              width="100%" 
-              height="100%" 
-              className="absolute inset-0 border-0 dark-map"
-              allowFullScreen 
-              loading="lazy" 
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Vape Cave Locations Map"
-            ></iframe>
+          <div className="h-[600px] rounded-lg overflow-hidden shadow-xl relative grid grid-cols-1 md:grid-cols-2">
+            <div className="w-full h-full flex flex-col items-center justify-center bg-black">
+              <div className="p-6 text-center">
+                <h3 className="text-2xl font-bold mb-3 text-white">Frisco Location</h3>
+                <p className="text-gray-300 mb-4">6958 Main St #200, Frisco, TX 75033</p>
+                <iframe 
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3349.8753075683534!2d-96.8250386843087!3d33.15073000000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864c3c9e26f9a2d7%3A0x8b26bf31c77df48b!2s6958%20Main%20St%20%23200%2C%20Frisco%2C%20TX%2075033!5e0!3m2!1sen!2sus!4v1693311756407!5m2!1sen!2sus" 
+                  width="100%" 
+                  height="200" 
+                  className="border-0 rounded-lg mb-4 dark-map-light"
+                  allowFullScreen 
+                  loading="lazy" 
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Vape Cave Frisco Location Map"
+                ></iframe>
+                <a 
+                  href="/locations/frisco" 
+                  className="bg-orange-500 hover:bg-orange-600 text-black font-bold py-2 px-4 rounded-md"
+                >
+                  View Frisco Location
+                </a>
+              </div>
+            </div>
+            
+            <div className="w-full h-full flex flex-col items-center justify-center bg-black">
+              <div className="p-6 text-center">
+                <h3 className="text-2xl font-bold mb-3 text-white">Arlington Location</h3>
+                <p className="text-gray-300 mb-4">4100 S Cooper St #4108, Arlington, TX 76015</p>
+                <iframe 
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3357.926302595539!2d-97.13739482379145!3d32.68707018061235!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864e6377a56ba2c1%3A0x63d3de7c2a26fd3d!2s4100%20S%20Cooper%20St%20%234108%2C%20Arlington%2C%20TX%2076015!5e0!3m2!1sen!2sus!4v1672321865030!5m2!1sen!2sus" 
+                  width="100%" 
+                  height="200" 
+                  className="border-0 rounded-lg mb-4 dark-map-light"
+                  allowFullScreen 
+                  loading="lazy" 
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Vape Cave Arlington Location Map"
+                ></iframe>
+                <a 
+                  href="/locations/arlington" 
+                  className="bg-orange-500 hover:bg-orange-600 text-black font-bold py-2 px-4 rounded-md"
+                >
+                  View Arlington Location
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
