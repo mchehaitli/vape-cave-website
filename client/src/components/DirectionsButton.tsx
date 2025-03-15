@@ -11,8 +11,8 @@ interface DirectionsButtonProps {
   size?: 'sm' | 'md' | 'lg';
   showIcon?: boolean;
   fullWidth?: boolean;
-  plusCode?: string;
-  googlePlaceId?: string; // Add Google Place ID as an optional prop
+  googlePlaceId?: string;
+  appleMapsLink?: string;
 }
 
 /**
@@ -29,8 +29,8 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
   size = 'md',
   showIcon = true,
   fullWidth = false,
-  plusCode,
-  googlePlaceId
+  googlePlaceId,
+  appleMapsLink
 }) => {
   // Detect if the user is on a mobile device
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -38,11 +38,10 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
   // Detect iOS devices to use Apple Maps
   const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
   
-  // Create URL for different platforms with enhanced SEO and Plus Code integration
+  // Create URL for different platforms with enhanced SEO
   const getDirectionsUrl = () => {
-    // Get encoded versions of address and plus code
+    // Get encoded version of address
     const encodedAddress = encodeURIComponent(address);
-    const encodedPlusCode = plusCode ? encodeURIComponent(plusCode) : null;
     
     // Extract city from address for better SEO context
     // Assume city is typically between a comma and the state abbreviation
@@ -50,10 +49,7 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
     const city = cityMatch ? cityMatch[1].trim() : "Frisco"; // Default to Frisco for SEO focus
     
     // Create a more precise query with the location name appended for SEO
-    // Include "vape shop" keywords and Plus Code for better local SEO
-    const enhancedQuery = plusCode 
-      ? `${plusCode} Vape Cave ${city}, Texas - Premium Vape Shop` 
-      : `Vape Cave ${address} - Premium Vape Shop in ${city}`;
+    const enhancedQuery = `Vape Cave ${address} - Premium Vape Shop in ${city}`;
     const encodedEnhancedQuery = encodeURIComponent(enhancedQuery);
     
     // Use provided Google Place ID or default for Frisco location
@@ -62,43 +58,29 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
     const placeId = googlePlaceId || (isFriscoLocation ? defaultFriscoPlaceId : undefined);
     const placeIdParam = placeId ? `&place_id=${placeId}` : "";
     
-    // New approach with enhanced URL parameters for better search indexing
+    // Handle specific platform requirements for map URLs
     if (isIOS && isMobile) {
-      // Enhanced URL scheme for Apple Maps on iOS devices
-      // Using specific format with multiple location identifiers for better iOS 16+ support
-      
-      if (encodedPlusCode) {
-        // For Plus Code locations, combine multiple location identifiers
-        // This creates a more robust Apple Maps link with redundant location data
-        return `https://maps.apple.com/?q=${encodedPlusCode} ${city}&ll=${lat},${lng}&address=${encodedAddress}&t=m&sll=${lat},${lng}`;
-      } else {
-        // Use address + coordinates for maximum compatibility
-        return `https://maps.apple.com/?address=${encodedAddress}&ll=${lat},${lng}&t=m`;
+      // For iOS devices, use Apple Maps with direct link if provided
+      if (appleMapsLink) {
+        return appleMapsLink;
       }
+      // Otherwise, use standard Apple Maps URL
+      return `https://maps.apple.com/?address=${encodedAddress}&ll=${lat},${lng}&t=m`;
     } else if (isMobile) {
-      // Enhanced URL scheme for Google Maps app on Android with SEO fields
-      if (encodedPlusCode) {
-        // Use Plus Code as the primary identifier with enhanced query parameters
-        // Add semantic markup in the query for better search visibility
-        return `https://www.google.com/maps/search/?api=1&query=${encodedEnhancedQuery}${placeIdParam}`;
+      // For other mobile devices, use Google Maps with place ID if available
+      if (placeId) {
+        return `https://www.google.com/maps/place/?q=place_id:${placeId}`;
       } else {
-        // Include both destination and query parameters with travelmode
-        return `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}&query=${encodedEnhancedQuery}&travelmode=driving${placeIdParam}`;
+        // Fallback to standard directions
+        return `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}&travelmode=driving`;
       }
     } else {
-      // Enhanced URL scheme for desktop browsers with maximum indexable parameters
-      if (encodedPlusCode) {
-        // Create a search URL with Plus Code that's optimized for maximum search visibility
-        // This format is highly indexable and includes all necessary location identifiers
-        const enhancedUrl = `https://www.google.com/maps/search/?api=1&query=${encodedEnhancedQuery}${placeIdParam}`;
-        
-        // For desktop users, log the Plus Code usage for analytics
-        console.log(`Plus Code directions requested: ${plusCode} for ${city} location`);
-        
-        return enhancedUrl;
+      // For desktop browsers, use Google Maps with place ID if available
+      if (placeId) {
+        return `https://www.google.com/maps/place/?q=place_id:${placeId}`;
       } else {
-        // Create a directions URL with enhanced metadata
-        return `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}&destination_place_id=${placeId || ""}&travelmode=driving`;
+        // Fallback to standard directions
+        return `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}&travelmode=driving`;
       }
     }
   };
@@ -141,7 +123,7 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
   
   return (
     <>
-      {isFrisco && plusCode && (
+      {isFrisco && googlePlaceId && (
         <Helmet>
           <script type="application/ld+json">
             {`
@@ -149,8 +131,8 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
                 "@context": "https://schema.org",
                 "@type": "VapeShop",
                 "name": "Vape Cave Frisco",
-                "alternateName": ["Vape Cave Smoke & Stuff", "Vape Shop Frisco 552G+86"],
-                "description": "Premium vape shop in Frisco, TX offering a wide selection of vapes, e-liquids, THC-A, Delta 8, and smoking accessories. Located at Plus Code: ${plusCode}.",
+                "alternateName": ["Vape Cave Smoke & Stuff", "Vape Shop Frisco"],
+                "description": "Premium vape shop in Frisco, TX offering a wide selection of vapes, e-liquids, THC-A, Delta 8, and smoking accessories.",
                 "url": "https://vapecavetx.com/locations/frisco",
                 "telephone": "+14692940061",
                 "email": "info@vapecavetx.com",
@@ -193,21 +175,16 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
                   },
                   {
                     "@type": "Map",
-                    "name": "Google Maps with Plus Code",
-                    "url": "https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(plusCode)}",
-                    "description": "Find our Frisco vape shop using Google Maps with Plus Code ${plusCode}"
+                    "name": "Apple Maps",
+                    "url": "${appleMapsLink || `https://maps.apple.com/?address=${encodeURIComponent(address)}&ll=${lat},${lng}&t=m`}",
+                    "description": "Find our Frisco vape shop on Apple Maps"
                   }
                 ],
                 "identifier": [
                   {
                     "@type": "PropertyValue",
-                    "name": "Plus Code",
-                    "value": "${plusCode}"
-                  },
-                  {
-                    "@type": "PropertyValue",
                     "name": "Google Place ID",
-                    "value": "ChIJxXjrR3wVkFQRcKK89i-aFDw"
+                    "value": "${googlePlaceId || "ChIJxXjrR3wVkFQRcKK89i-aFDw"}"
                   }
                 ]
               }
@@ -228,9 +205,8 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
           focus:outline-none focus:ring-2 focus:ring-primary/30 focus:ring-offset-2
           ${className}
         `}
-        aria-label={`Get directions to ${address}${plusCode ? ` (Plus Code: ${plusCode})` : ''}`}
+        aria-label={`Get directions to ${address}`}
         data-location={locationCity}
-        data-plus-code={plusCode || ""}
         data-google-place-id={googlePlaceId || "ChIJxXjrR3wVkFQRcKK89i-aFDw"}
         itemScope
         itemType="https://schema.org/VapeShop"

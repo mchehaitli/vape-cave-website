@@ -422,7 +422,8 @@ const LocationsPage = () => {
                       className="flex-1"
                       buttonText="Get Directions"
                       variant="primary"
-                      plusCode={location.plusCode}
+                      googlePlaceId={location.googlePlaceId}
+                      appleMapsLink={location.appleMapsLink}
                     />
                     
                     {location.id === 1 && (

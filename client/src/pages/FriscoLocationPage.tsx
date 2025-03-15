@@ -303,7 +303,8 @@ const FriscoLocationPage: React.FC = () => {
               buttonText="Get Directions"
               variant="primary"
               showIcon={true}
-              plusCode={location.plusCode}
+              googlePlaceId={location.googlePlaceId}
+              appleMapsLink={location.appleMapsLink}
             />
             <a 
               href={`tel:${location.phone.replace(/[^0-9]/g, '')}`} 
@@ -504,7 +505,6 @@ const FriscoLocationPage: React.FC = () => {
                   >
                     Visit Our Google Business Page
                   </a>
-                  <span className="ml-2 text-xs text-gray-500">(Plus Code: {location.plusCode})</span>
                 </p>
                 
                 <div className="space-y-4">
@@ -518,7 +518,7 @@ const FriscoLocationPage: React.FC = () => {
                     showIcon={true}
                     fullWidth={true}
                     googlePlaceId={location.googlePlaceId}
-                    plusCode={location.plusCode}
+                    appleMapsLink={location.appleMapsLink}
                   />
                   
                   {location.publicTransit && (
@@ -606,8 +606,8 @@ const FriscoLocationPage: React.FC = () => {
                 <div itemProp="text">
                   <p className="text-gray-600">
                     The easiest way to find our Frisco store is to visit our Google Business page by clicking the "Visit Our Google Business Page" 
-                    link on our website. This will show you our exact location, hours, customer reviews, and photos of our store. You can also 
-                    use the Plus Code: 552G+86 Frisco, Texas in Google Maps if needed.
+                    link on our website. This will show you our exact location, hours, customer reviews, and photos of our store. For Apple 
+                    device users, we also provide a direct Apple Maps link for easy navigation.
                   </p>
                 </div>
               </div>
@@ -649,7 +649,7 @@ const FriscoLocationPage: React.FC = () => {
                 variant="primary"
                 showIcon={true}
                 googlePlaceId={location.googlePlaceId}
-                plusCode={location.plusCode}
+                appleMapsLink={location.appleMapsLink}
               />
               <a 
                 href={`tel:${location.phone.replace(/[^0-9]/g, '')}`} 
