@@ -292,23 +292,23 @@ const FriscoLocationPage: React.FC = () => {
   
   return (
     <MainLayout
-      title="Vape Cave Frisco | Premium Vape Shop in Frisco | Premium Vaping Products & Delta 8"
-      description="Visit Vape Cave in Frisco at 6958 Main St #200. Offering premium vape products, Delta 8, THC-A, disposables & accessories. Open daily 10AM-12AM."
+      title="Vape Cave Frisco TX | Best Vape Shop near Main St | Premium Vaping Products"
+      description="Visit Vape Cave at 6958 Main St #200 in Frisco, TX for premium vaping products, Elf Bar, Lost Mary, Geek Vape, Delta 8, THC-A & accessories. Open daily 10AM-12AM."
       canonical="https://vapecavetx.com/locations/frisco"
       ogImage="https://vapecavetx.com/storefront-frisco.jpg"
       structuredData={generateFriscoStructuredData()}
     >
       {/* Additional SEO metadata specific to Frisco location */}
       <Helmet>
-        <title>Vape Cave Frisco | Premium Vape Shop in Frisco | Premium Vaping Products & Delta 8</title>
-        <meta name="description" content="Visit Vape Cave in Frisco at 6958 Main St #200. Offering premium vape products, Delta 8, THC-A, disposables & accessories. Open daily 10AM-12AM." />
+        <title>Vape Cave Frisco | #1 Vape Shop in Frisco TX | Premium Vaping Products, Elf Bar, Lost Mary & Delta 8</title>
+        <meta name="description" content="Looking for the best vape shop in Frisco? Visit Vape Cave at 6958 Main St #200. Offering premium products including Elf Bar, Lost Mary, Geek Vape, Delta 8, THC-A, disposables & CBD. Open daily 10AM-12AM." />
         <link rel="canonical" href="https://vapecavetx.com/locations/frisco" />
         
         {/* Open Graph & Twitter */}
         <meta property="og:locale" content="en_US" />
         <meta property="og:type" content="business.business" />
-        <meta property="og:title" content="Vape Cave Frisco | Premium Vape Shop in Frisco" />
-        <meta property="og:description" content="Visit Vape Cave in Frisco. We offer premium vaping products, Delta 8, THC-A, and more at our convenient 6958 Main St location." />
+        <meta property="og:title" content="Vape Cave Frisco TX | Best Vape Shop for Elf Bar, Lost Mary & Delta 8" />
+        <meta property="og:description" content="Visit the #1 vape shop in Frisco at 6958 Main St #200. We offer premium products including Elf Bar, Lost Mary, GeekVape, Delta 8, THC-A, and more at our convenient Main St location." />
         <meta property="og:url" content="https://vapecavetx.com/locations/frisco" />
         <meta property="og:site_name" content="Vape Cave" />
         <meta property="og:image" content="https://vapecavetx.com/storefront-frisco.jpg" />
@@ -324,17 +324,17 @@ const FriscoLocationPage: React.FC = () => {
         <meta property="business:hours:end" content="24:00" />
         
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Vape Cave Frisco | Premium Vape Shop in Frisco" />
-        <meta name="twitter:description" content="Premium vape shop in Frisco offering Delta 8, THC-A & more at our Main St location. Convenient to Frisco, Allen, and Plano." />
+        <meta name="twitter:title" content="Vape Cave Frisco | #1 Vape Shop in Frisco TX" />
+        <meta name="twitter:description" content="Top-rated vape shop in Frisco offering Elf Bar, Lost Mary, GeekVape, Delta 8, THC-A & more at our Main St location. Convenient to Frisco, Allen, and Plano." />
         <meta name="twitter:image" content="https://vapecavetx.com/storefront-frisco.jpg" />
         
         {/* Location-specific keywords */}
         <meta name="keywords" content="vape shop frisco tx, frisco vape store, vape cave frisco, vape near me frisco, delta 8 frisco, thc-a frisco, vape products frisco, disposable vapes frisco, cbd shop frisco, smoke shop frisco texas, premium vape frisco, vape shop google place id, geekvape frisco, elf bar frisco, lost mary frisco, hyde vape frisco, lost vape frisco, caliburn frisco, delta 10 frisco, hhc frisco, vape shop near me, smoke shop near me, best vape shop frisco" />
         
         {/* Dublin Core Metadata */}
-        <meta name="DC.title" content="Vape Cave Frisco | Premium Vape Shop" />
-        <meta name="DC.description" content="Frisco's premium vape shop at 6958 Main St #200. Offering high-quality vape products, Delta 8, THC-A, and accessories." />
-        <meta name="DC.subject" content="Vape Shop, Frisco, Delta 8, THC-A, Disposable Vapes" />
+        <meta name="DC.title" content="Vape Cave Frisco TX | #1 Vape Shop for Elf Bar, Lost Mary & Delta 8" />
+        <meta name="DC.description" content="Frisco's #1 vape shop at 6958 Main St #200. Offering high-quality products including Elf Bar, Lost Mary, GeekVape, Delta 8, THC-A, and accessories." />
+        <meta name="DC.subject" content="Vape Shop, Frisco, Elf Bar, Lost Mary, GeekVape, Delta 8, THC-A, Disposable Vapes" />
         <meta name="DC.creator" content="Vape Cave" />
         <meta name="DC.type" content="LocalBusiness" />
         <meta name="DC.format" content="text/html" />

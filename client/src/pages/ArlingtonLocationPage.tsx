@@ -371,17 +371,17 @@ const ArlingtonLocationPage: React.FC = () => {
         <meta property="business:hours:end" content="23:00" />
         
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`Vape Cave Arlington | Premium Vape Shop in Arlington`} />
-        <meta name="twitter:description" content={`Premium vape shop in Arlington offering Delta 8, THC-A & more at our Cooper St location. Convenient to Arlington, Fort Worth, and Grand Prairie.`} />
+        <meta name="twitter:title" content={`Vape Cave Arlington | #1 Vape Shop in Arlington TX`} />
+        <meta name="twitter:description" content={`Top-rated vape shop in Arlington offering Elf Bar, Lost Mary, GeekVape, Delta 8, THC-A & more at our Cooper St location. Convenient to Arlington, Fort Worth, and Grand Prairie.`} />
         <meta name="twitter:image" content="/vapecave-logo.png" />
         
         {/* Location-specific keywords */}
         <meta name="keywords" content="vape shop arlington tx, arlington vape store, vape cave arlington, vape near me arlington, delta 8 arlington, thc-a arlington, vape products arlington, disposable vapes arlington, cbd shop arlington, smoke shop arlington texas, premium vape arlington, vape shop google place id, geekvape arlington, elf bar arlington, lost mary arlington, hyde vape arlington, lost vape arlington, caliburn arlington, delta 10 arlington, hhc arlington, vape shop near me, smoke shop near me, best vape shop arlington" />
         
         {/* Dublin Core Metadata */}
-        <meta name="DC.title" content="Vape Cave Arlington | Premium Vape Shop" />
-        <meta name="DC.description" content={`Arlington's premium vape shop at ${location.address}. Offering high-quality vape products, Delta 8, THC-A, and accessories.`} />
-        <meta name="DC.subject" content="Vape Shop, Arlington, Delta 8, THC-A, Disposable Vapes" />
+        <meta name="DC.title" content="Vape Cave Arlington TX | #1 Vape Shop for Elf Bar, Lost Mary & Delta 8" />
+        <meta name="DC.description" content={`Arlington's #1 vape shop at ${location.address}. Offering high-quality products including Elf Bar, Lost Mary, GeekVape, Delta 8, THC-A, and accessories.`} />
+        <meta name="DC.subject" content="Vape Shop, Arlington, Elf Bar, Lost Mary, GeekVape, Delta 8, THC-A, Disposable Vapes" />
         <meta name="DC.creator" content="Vape Cave" />
         <meta name="DC.type" content="LocalBusiness" />
         <meta name="DC.format" content="text/html" />
