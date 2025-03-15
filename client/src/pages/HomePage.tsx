@@ -238,6 +238,11 @@ const HomePage = () => {
                     Frisco Store
                   </div>
                 </Link>
+                <Link href="/locations/arlington">
+                  <div className="bg-primary/30 hover:bg-primary/40 border border-primary/50 text-white font-bold py-4 px-10 rounded-lg transition-all duration-300 cursor-pointer backdrop-blur-sm hover:shadow-lg hover:-translate-y-1">
+                    Arlington Store
+                  </div>
+                </Link>
               </div>
             </div>
           </div>
@@ -437,7 +442,7 @@ const HomePage = () => {
                 </div>
                 
                 <div className="flex flex-wrap gap-4 mb-2">
-                  <Link href="/locations">
+                  <Link href="/locations/arlington">
                     <div className="inline-block bg-primary hover:bg-primary/90 text-white font-bold py-2 px-6 rounded-lg transition-colors shadow-md cursor-pointer">
                       View Arlington Store Details
                     </div>
