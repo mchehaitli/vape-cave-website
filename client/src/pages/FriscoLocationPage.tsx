@@ -192,11 +192,23 @@ const FriscoLocationPage: React.FC = () => {
           "description": product.description,
           "image": product.image,
           "category": product.category,
+          "brand": {
+            "@type": "Brand",
+            "name": product.name.includes("Elf Bar") ? "Elf Bar" : 
+                    product.name.includes("Lost Mary") ? "Lost Mary" : 
+                    product.name.includes("Geek") ? "GeekVape" : 
+                    product.name.includes("Hyde") ? "Hyde" : 
+                    product.name.includes("Caliburn") ? "Uwell Caliburn" : 
+                    "Vape Cave"
+          },
           "offers": {
             "@type": "Offer",
             "price": product.price.toFixed(2),
             "priceCurrency": "USD",
             "availability": "https://schema.org/InStock",
+            "availabilityStarts": "2023-01-01T00:00:00-06:00",
+            "priceValidUntil": "2025-12-31",
+            "url": "https://vapecavetx.com/products",
             "availableAtOrFrom": {
               "@type": "VapeShop",
               "name": location.name,
@@ -204,10 +216,26 @@ const FriscoLocationPage: React.FC = () => {
                 "@type": "PostalAddress",
                 "streetAddress": location.address,
                 "addressLocality": location.city,
-                "addressRegion": "TX"
+                "addressRegion": "TX",
+                "postalCode": postalCode,
+                "addressCountry": "US"
               }
             }
-          }
+          },
+          "sku": `VC-${product.id}`,
+          "mpn": `VCC-${product.id}-${product.category.replace(/\s+/g, '-').toLowerCase()}`,
+          "additionalProperty": [
+            {
+              "@type": "PropertyValue",
+              "name": "Age Restriction",
+              "value": "21+"
+            },
+            {
+              "@type": "PropertyValue",
+              "name": "Product Type",
+              "value": product.category
+            }
+          ]
         }
       })),
       "potentialAction": [
