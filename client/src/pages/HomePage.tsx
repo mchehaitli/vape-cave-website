@@ -341,20 +341,22 @@ const HomePage = () => {
                   </div>
                 </div>
                 
-                <Link href="/locations/frisco">
-                  <div className="inline-block bg-primary hover:bg-primary/90 text-white font-bold py-2 px-6 rounded-lg transition-colors shadow-md cursor-pointer">
-                    View Frisco Store Details
-                  </div>
-                </Link>
-                
-                <a 
-                  href="https://maps.app.goo.gl/jzbqUDyvvGHuwyXJ7" 
-                  target="_blank"
-                  rel="noopener noreferrer" 
-                  className="inline-block bg-transparent border border-primary text-primary hover:bg-primary/10 font-bold py-2 px-6 rounded-lg transition-colors shadow-md cursor-pointer ml-2"
-                >
-                  Get Directions
-                </a>
+                <div className="flex flex-wrap gap-4 mb-2">
+                  <Link href="/locations/frisco">
+                    <div className="inline-block bg-primary hover:bg-primary/90 text-white font-bold py-2 px-6 rounded-lg transition-colors shadow-md cursor-pointer">
+                      View Frisco Store Details
+                    </div>
+                  </Link>
+                  
+                  <a 
+                    href="https://maps.app.goo.gl/jzbqUDyvvGHuwyXJ7" 
+                    target="_blank"
+                    rel="noopener noreferrer" 
+                    className="inline-block bg-transparent border border-primary text-primary hover:bg-primary/10 font-bold py-2 px-6 rounded-lg transition-colors shadow-md cursor-pointer"
+                  >
+                    Get Directions
+                  </a>
+                </div>
                 
                 <div className="mt-2 text-xs text-gray-500 italic">
                   Click any map link for directions to our store
@@ -419,20 +421,22 @@ const HomePage = () => {
                   </div>
                 </div>
                 
-                <Link href="/locations">
-                  <div className="inline-block bg-primary hover:bg-primary/90 text-white font-bold py-2 px-6 rounded-lg transition-colors shadow-md cursor-pointer">
-                    View Arlington Store Details
-                  </div>
-                </Link>
-                
-                <a 
-                  href="https://maps.app.goo.gl/7RRoEeD3uzANmdhZA" 
-                  target="_blank"
-                  rel="noopener noreferrer" 
-                  className="inline-block bg-transparent border border-primary text-primary hover:bg-primary/10 font-bold py-2 px-6 rounded-lg transition-colors shadow-md cursor-pointer ml-2"
-                >
-                  Get Directions
-                </a>
+                <div className="flex flex-wrap gap-4 mb-2">
+                  <Link href="/locations">
+                    <div className="inline-block bg-primary hover:bg-primary/90 text-white font-bold py-2 px-6 rounded-lg transition-colors shadow-md cursor-pointer">
+                      View Arlington Store Details
+                    </div>
+                  </Link>
+                  
+                  <a 
+                    href="https://maps.app.goo.gl/7RRoEeD3uzANmdhZA" 
+                    target="_blank"
+                    rel="noopener noreferrer" 
+                    className="inline-block bg-transparent border border-primary text-primary hover:bg-primary/10 font-bold py-2 px-6 rounded-lg transition-colors shadow-md cursor-pointer"
+                  >
+                    Get Directions
+                  </a>
+                </div>
                 
                 <div className="mt-2 text-xs text-gray-500 italic">
                   Click any map link for directions to our store
