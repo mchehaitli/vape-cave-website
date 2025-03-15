@@ -644,7 +644,7 @@ const FriscoLocationPage: React.FC = () => {
                   {location.acceptedPayments.map((payment, index) => (
                     <span 
                       key={index} 
-                      className="bg-white border border-gray-200 text-sm py-1 px-3 rounded-full"
+                      className="bg-white border border-gray-300 text-gray-700 text-sm py-1 px-3 rounded-full shadow-sm"
                     >
                       {payment}
                     </span>
