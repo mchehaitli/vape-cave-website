@@ -237,6 +237,11 @@ export const getFriscoLocation = (): StoreLocation => {
   return storeLocations.find(location => location.id === 1) || storeLocations[0];
 };
 
+// Get the Arlington location (for convenience in SEO-focused components)
+export const getArlingtonLocation = (): StoreLocation => {
+  return storeLocations.find(location => location.id === 2) || storeLocations[1];
+};
+
 // Generate a structured data representation for a location
 export const generateStructuredDataForLocation = (location: StoreLocation) => {
   // Format phone for structured data (remove non-digits and add country code)
