@@ -129,18 +129,23 @@ const Navigation = () => {
           <div className="scroll-nav-container pt-2 pb-1 border-t border-black/10 mt-2">
             <div className="container mx-auto">
               <nav aria-label="Page Section Navigation">
-                <ul className="flex flex-wrap justify-center space-x-2 text-sm">
+                <ul className="flex flex-wrap justify-center space-x-3 text-sm">
                   {scrollNavItems.map((item) => (
                     <li key={item.sectionId}>
                       <button
                         type="button"
                         onClick={() => scrollToSection(item.sectionId)}
-                        className={`scroll-nav-link text-black ${
-                          activeSection === item.sectionId ? 'active' : ''
+                        className={`px-3 py-1 rounded-full transition-all duration-300 ${
+                          activeSection === item.sectionId 
+                            ? 'bg-black text-white font-medium shadow-md transform scale-105' 
+                            : 'bg-black/5 text-black hover:bg-black/10'
                         }`}
                         aria-label={item.ariaLabel}
                         aria-current={activeSection === item.sectionId ? "location" : undefined}
                       >
+                        {activeSection === item.sectionId && (
+                          <span className="inline-block mr-1">•</span>
+                        )}
                         {item.label}
                       </button>
                     </li>
@@ -198,11 +203,16 @@ const Navigation = () => {
                     <button
                       type="button"
                       onClick={() => scrollToSection(item.sectionId)}
-                      className={`text-sm bg-black/5 px-3 py-1 rounded-full text-black hover:bg-black/10 transition-colors ${
-                        activeSection === item.sectionId ? 'bg-primary/20 text-primary font-medium' : ''
+                      className={`text-sm px-3 py-1 rounded-full transition-all duration-300 ${
+                        activeSection === item.sectionId 
+                          ? 'bg-black text-white font-medium shadow-md' 
+                          : 'bg-black/5 text-black hover:bg-black/10'
                       }`}
                       aria-label={item.ariaLabel}
                     >
+                      {activeSection === item.sectionId && (
+                        <span className="inline-block mr-1">•</span>
+                      )}
                       {item.label}
                     </button>
                   </li>

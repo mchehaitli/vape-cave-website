@@ -1,8 +1,34 @@
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { Helmet } from "react-helmet";
 import MainLayout from "@/layouts/MainLayout";
 
 const HomePage = () => {
+  // State for scroll-to-top button visibility
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  
+  // Effect to handle scroll events
+  useEffect(() => {
+    const handleScroll = () => {
+      // Show button when scrolled down 300px
+      setShowScrollTop(window.scrollY > 300);
+    };
+    
+    // Add scroll event listener
+    window.addEventListener('scroll', handleScroll);
+    
+    // Clean up the event listener
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+  
+  // Function to scroll to top
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+  
   // Enhanced home page structured data with focus on Frisco location & Google Maps integration using latest schema.org standards
   const homePageSchema = {
     "@context": "https://schema.org",
@@ -560,6 +586,19 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+      
+      {/* Scroll to top button */}
+      {showScrollTop && (
+        <button 
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 bg-primary hover:bg-primary/90 text-white p-3 rounded-full shadow-lg transition-all duration-300 z-50 flex items-center justify-center"
+          aria-label="Scroll to top"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+          </svg>
+        </button>
+      )}
     </MainLayout>
   );
 };
