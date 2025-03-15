@@ -43,9 +43,8 @@ const HomePage = () => {
       "height": 60
     },
     "image": [
-      "https://vapecavetx.com/images/storefront.jpg",
-      "https://vapecavetx.com/images/interior.jpg",
-      "https://vapecavetx.com/images/products.jpg"
+      "https://vapecavetx.com/vapecave-logo.png",
+      "https://vapecavetx.com/vapecave-logo.svg"
     ],
     "description": "Vape Cave offers premium vaping products, e-liquids, disposables, Delta 8, THC-A, and accessories at our convenient Frisco and Arlington, TX locations. We provide expert advice and a wide selection for all your vaping needs.",
     "keywords": "vape shop, vape products, delta 8, thc-a, vape frisco tx, vape accessories, vape store near me",
@@ -225,7 +224,7 @@ const HomePage = () => {
         <meta property="og:url" content="https://vapecavetx.com/" />
         <meta property="og:title" content="Vape Cave Frisco | Premium Vape Shop on Main Street" />
         <meta property="og:description" content="Visit Vape Cave in Frisco at 6958 Main St #200 for premium vaping products, expert advice, and a wide selection for all your vaping needs." />
-        <meta property="og:image" content="https://vapecavetx.com/og-image.jpg" />
+        <meta property="og:image" content="https://vapecavetx.com/vapecave-logo.png" />
         
         {/* Structured data for search engines */}
         <script type="application/ld+json">
@@ -289,7 +288,7 @@ const HomePage = () => {
         <meta itemProp="identifier" content="ChIJxXjrR3wVkFQRcKK89i-aFDw" />
         <meta itemProp="alternateName" content="Vape Cave Frisco Main Street" />
         <meta itemProp="description" content="Premier vape shop in Frisco, TX with a wide selection of vaping products, disposables, delta 8, and THC-A products. Conveniently located at 6958 Main St #200." />
-        <meta itemProp="image" content="https://vapecavetx.com/frisco-location.jpg" />
+        <meta itemProp="image" content="https://vapecavetx.com/vapecave-logo.png" />
         <meta itemProp="url" content="https://vapecavetx.com/locations/frisco" />
         <meta itemProp="priceRange" content="$$" />
         <meta itemProp="telephone" content="+14692940061" />
@@ -442,7 +441,7 @@ const HomePage = () => {
         <meta itemProp="identifier" content="ChIJ23422NdJSYYRVX94pdZlUGg" />
         <meta itemProp="alternateName" content="Vape Cave Arlington Cooper Street" />
         <meta itemProp="description" content="Premier vape shop in Arlington, TX with the largest selection of disposable vapes, Delta 8, THC-A, and accessories. Conveniently located at 4100 S Cooper St #4108." />
-        <meta itemProp="image" content="https://vapecavetx.com/arlington-location.jpg" />
+        <meta itemProp="image" content="https://vapecavetx.com/vapecave-logo.png" />
         <meta itemProp="url" content="https://vapecavetx.com/locations/arlington" />
         <meta itemProp="priceRange" content="$$" />
         <meta itemProp="telephone" content="+16822700334" />
