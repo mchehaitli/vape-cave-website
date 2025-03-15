@@ -49,8 +49,8 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
   const [markers, setMarkers] = useState<any[]>([]);
   
   // Use API key from props if provided, otherwise from environment variables
-  // Using the imported process.env for server-side environment variables
-  const apiKey = propApiKey || import.meta.env.VITE_GOOGLE_MAPS_API_KEY || process.env.GOOGLE_MAPS_API_KEY || '';
+  // Using import.meta.env for client-side environment variables in Vite
+  const apiKey = propApiKey || import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '';
   
   // Add structured data for maps integration using react-helmet
   useEffect(() => {
