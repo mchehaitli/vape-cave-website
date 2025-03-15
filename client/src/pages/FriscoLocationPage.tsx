@@ -665,7 +665,7 @@ const FriscoLocationPage: React.FC = () => {
       </section>
       
       {/* FAQ Section with FAQ Schema */}
-      <section className="py-14 bg-gradient-to-r from-primary/10 to-primary/5 text-white">
+      <section className="py-14 bg-darker text-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold font-['Poppins'] mb-3">Frequently Asked Questions</h2>
