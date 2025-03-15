@@ -170,10 +170,16 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
   // Get the currently active location or the first one
   const activeLocation = locations.find(loc => loc.id === activeLocationId) || locations[0];
   
-  // Initialize Google Maps when the component mounts
+  // Initialize Google Maps when the component mounts with improved error handling and API key validation
   useEffect(() => {
+    // Validate API key exists - important for SEO optimization
+    if (!apiKey || apiKey.trim() === '') {
+      console.warn("Google Maps API key is missing or invalid. Maps functionality may be limited.");
+    }
+    
     // Check if the Google Maps API is already loaded
     if (window.google && window.google.maps) {
+      console.log("Google Maps already loaded, initializing map");
       initializeMap();
       return;
     }
@@ -183,44 +189,74 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
     if (existingScript) {
       // If script is already loading, we just need to wait for it
       window.initGoogleMaps = () => {
+        console.log("Google Maps loaded via existing script");
         setMapLoaded(true);
       };
       return;
     }
     
-    // Load the Google Maps API script
+    // Create a unique callback name to avoid conflicts with other instances
+    const callbackName = `initGoogleMaps_${Date.now().toString(36)}`;
+    
+    // Load the Google Maps API script with enhanced options
     const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initGoogleMaps`;
+    
+    // Add optional libraries and configuration
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=${callbackName}&libraries=places&v=quarterly`;
     script.async = true;
     script.defer = true;
     
     // Define the callback function to initialize the map
-    window.initGoogleMaps = () => {
+    (window as any)[callbackName] = () => {
       console.log("Google Maps API loaded successfully");
       setMapLoaded(true);
+      
+      // Cleanup the callback after it's called
+      setTimeout(() => {
+        if ((window as any)[callbackName]) {
+          delete (window as any)[callbackName];
+        }
+      }, 1000);
     };
     
-    // Add error handling
+    // Enhanced error handling with troubleshooting information
     script.onerror = (error) => {
       console.error("Error loading Google Maps API:", error);
-      console.log("Attempted to load with URL:", script.src);
-      console.log("API key provided:", apiKey ? "Yes (length: " + apiKey.length + ")" : "No");
+      console.log("Attempted to load with URL:", script.src.replace(apiKey, "API_KEY_REDACTED"));
+      console.log("API key provided:", apiKey ? `Yes (length: ${apiKey.length}, starts with: ${apiKey.substring(0, 3)}...)` : "No");
+      console.log("Current hostname:", window.location.hostname);
+      console.log("Current protocol:", window.location.protocol);
+      
+      // Attempt to load a fallback static map in case of API failure
+      if (mapRef.current) {
+        mapRef.current.innerHTML = `
+          <div style="text-align: center; padding: 20px;">
+            <p>Interactive map failed to load.</p>
+            <img src="https://maps.googleapis.com/maps/api/staticmap?center=${
+              activeLocation ? `${activeLocation.position.lat},${activeLocation.position.lng}` : "33.150730,-96.822550"
+            }&zoom=13&size=600x400&markers=color:orange%7C${
+              activeLocation ? `${activeLocation.position.lat},${activeLocation.position.lng}` : "33.150730,-96.822550"
+            }&key=${apiKey}" alt="Static Map of Location" style="max-width: 100%; border-radius: 8px; margin-top: 10px;" />
+          </div>
+        `;
+      }
     };
     
     document.head.appendChild(script);
     
-    // Cleanup function to remove the script
+    // Enhanced cleanup function
     return () => {
       // Only remove the script and callback if this component added it
       if (document.head.contains(script)) {
         document.head.removeChild(script);
       }
-      // TypeScript-friendly way to remove an optional property
-      if ('initGoogleMaps' in window) {
-        delete (window as any).initGoogleMaps;
+      
+      // TypeScript-friendly way to remove callback
+      if ((window as any)[callbackName]) {
+        delete (window as any)[callbackName];
       }
     };
-  }, [apiKey]);
+  }, [apiKey, activeLocation]);
   
   // Initialize the map when the API is loaded
   useEffect(() => {
