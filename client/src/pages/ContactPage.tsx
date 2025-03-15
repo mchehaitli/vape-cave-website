@@ -39,8 +39,8 @@ const ContactPage = () => {
   
   return (
     <MainLayout
-      title="Contact Vape Cave Frisco | Plus Code: 552G+86 | Phone, Email & Directions"
-      description="Get in touch with Vape Cave Frisco (Plus Code: 552G+86) for premium vaping products, Delta 8, THC-A, and more. Visit our store at 6958 Main St #200, Frisco, TX or call (469) 294-0061."
+      title="Contact Vape Cave Frisco | Premium Vape Shop | Phone, Email & Directions"
+      description="Get in touch with Vape Cave Frisco for premium vaping products, Delta 8, THC-A, and more. Visit our store at 6958 Main St #200, Frisco, TX or call (469) 294-0061."
     >
       {/* Contact Header */}
       <section className="bg-black py-10 text-white">
@@ -181,11 +181,11 @@ const ContactPage = () => {
                       <h4 className="font-medium mb-1">Locations</h4>
                       <div>
                         <p className="text-gray-300">Frisco: 6958 Main St, Frisco, TX 75033</p>
-                        <p className="text-primary/80 text-xs mt-1">Plus Code: 552G+86 Frisco, Texas</p>
+                        <p className="text-primary/80 text-xs mt-1">Google Place ID: ChIJxXjrR3wVkFQRcKK89i-aFDw</p>
                       </div>
                       <div className="mt-2">
                         <p className="text-gray-300">Arlington: 4100 S Cooper St, Unit 4108, Arlington, TX 76015</p>
-                        <p className="text-primary/80 text-xs mt-1">Plus Code: MVJ7+7W Arlington, Texas</p>
+                        <p className="text-primary/80 text-xs mt-1">See website for directions</p>
                       </div>
                     </div>
                   </div>
