@@ -1,10 +1,56 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import Logo from "./Logo";
 
 const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [location] = useLocation();
+  const [activeSection, setActiveSection] = useState<string | null>(null);
+
+  // Function to scroll to section
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setActiveSection(sectionId);
+      setMobileMenuOpen(false);
+    }
+  };
+
+  // Listen for scroll events to highlight active section
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 100; // Add offset for header height
+
+      // Find all section elements
+      const sections = document.querySelectorAll('section[id]');
+      
+      // Find the current section in view
+      let currentSection: string | null = null;
+      sections.forEach((section) => {
+        const sectionTop = (section as HTMLElement).offsetTop;
+        const sectionHeight = (section as HTMLElement).offsetHeight;
+        
+        if (
+          scrollPosition >= sectionTop &&
+          scrollPosition < sectionTop + sectionHeight
+        ) {
+          currentSection = section.id;
+        }
+      });
+      
+      if (currentSection !== activeSection) {
+        setActiveSection(currentSection);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Call once on mount
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [activeSection]);
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -16,6 +62,13 @@ const Navigation = () => {
     { label: "Arlington Store", path: "/locations/arlington", ariaLabel: "Visit our Arlington TX location", highlight: true },
     { label: "Contact", path: "/contact", ariaLabel: "Contact us" },
   ];
+  
+  // Scroll navigation items (only show on homepage)
+  const scrollNavItems = location === "/" ? [
+    { label: "Frisco Location", sectionId: "frisco-location", ariaLabel: "Scroll to Frisco location" },
+    { label: "Arlington Location", sectionId: "arlington-location", ariaLabel: "Scroll to Arlington location" },
+    { label: "Age Verification", sectionId: "age-verification", ariaLabel: "Scroll to age verification information" },
+  ] : [];
 
   return (
     <header className="bg-primary sticky top-0 z-50 shadow-lg backdrop-blur-sm bg-opacity-95">
@@ -70,6 +123,33 @@ const Navigation = () => {
             </ul>
           </nav>
         </div>
+        
+        {/* Scroll Navigation (only on homepage) */}
+        {location === "/" && scrollNavItems.length > 0 && (
+          <div className="scroll-nav-container pt-2 pb-1 border-t border-black/10 mt-2">
+            <div className="container mx-auto">
+              <nav aria-label="Page Section Navigation">
+                <ul className="flex flex-wrap justify-center space-x-2 text-sm">
+                  {scrollNavItems.map((item) => (
+                    <li key={item.sectionId}>
+                      <button
+                        type="button"
+                        onClick={() => scrollToSection(item.sectionId)}
+                        className={`scroll-nav-link text-black ${
+                          activeSection === item.sectionId ? 'active' : ''
+                        }`}
+                        aria-label={item.ariaLabel}
+                        aria-current={activeSection === item.sectionId ? "location" : undefined}
+                      >
+                        {item.label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Mobile Navigation with Improved Accessibility */}
@@ -83,29 +163,54 @@ const Navigation = () => {
             : 'max-h-0 opacity-0 overflow-hidden'
         }`}
       >
-        <ul className="container mx-auto px-4 py-3 font-['Poppins'] font-medium" role="menu">
-          {navItems.map((item, index) => (
-            <li 
-              key={item.path} 
-              role="none"
-              className={index < navItems.length - 1 ? "py-2 border-b border-black/10" : "py-2"}
-            >
-              <Link href={item.path}>
-                <span
-                  role="menuitem"
-                  aria-label={item.ariaLabel}
-                  aria-current={location === item.path ? "page" : undefined}
-                  className={`block text-black cursor-pointer hover:text-white/90 transition-colors ${
-                    item.highlight ? 'font-semibold' : ''
-                  }`}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {item.label}
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <div className="container mx-auto px-4 py-3 font-['Poppins'] font-medium">
+          <ul className="mb-2" role="menu">
+            {navItems.map((item, index) => (
+              <li 
+                key={item.path} 
+                role="none"
+                className={index < navItems.length - 1 ? "py-2 border-b border-black/10" : "py-2"}
+              >
+                <Link href={item.path}>
+                  <span
+                    role="menuitem"
+                    aria-label={item.ariaLabel}
+                    aria-current={location === item.path ? "page" : undefined}
+                    className={`block text-black cursor-pointer hover:text-white/90 transition-colors ${
+                      item.highlight ? 'font-semibold' : ''
+                    }`}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {item.label}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          
+          {/* Mobile Scroll Navigation (only on homepage) */}
+          {location === "/" && scrollNavItems.length > 0 && (
+            <div className="pt-2 border-t border-black/10">
+              <h3 className="text-xs font-semibold text-black/70 mb-2">Jump to section:</h3>
+              <ul className="flex flex-wrap gap-2" role="menu">
+                {scrollNavItems.map((item) => (
+                  <li key={item.sectionId} role="none">
+                    <button
+                      type="button"
+                      onClick={() => scrollToSection(item.sectionId)}
+                      className={`text-sm bg-black/5 px-3 py-1 rounded-full text-black hover:bg-black/10 transition-colors ${
+                        activeSection === item.sectionId ? 'bg-primary/20 text-primary font-medium' : ''
+                      }`}
+                      aria-label={item.ariaLabel}
+                    >
+                      {item.label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );

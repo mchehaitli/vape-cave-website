@@ -548,7 +548,7 @@ const HomePage = () => {
       </section>
 
       {/* Age Verification Notice */}
-      <section className="py-14 bg-darker">
+      <section className="py-14 bg-darker" id="age-verification">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto bg-black p-8 rounded-xl shadow-lg border border-gray-800">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-primary mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
