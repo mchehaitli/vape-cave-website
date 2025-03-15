@@ -58,8 +58,8 @@ const Navigation = () => {
 
   const navItems = [
     { label: "Home", path: "/", ariaLabel: "Go to homepage" },
-    { label: "Frisco Store", path: "/locations/frisco", ariaLabel: "Visit our Frisco TX location", highlight: true },
-    { label: "Arlington Store", path: "/locations/arlington", ariaLabel: "Visit our Arlington TX location", highlight: true },
+    { label: "Frisco Store", path: "/locations/frisco", ariaLabel: "Visit our Frisco TX location" },
+    { label: "Arlington Store", path: "/locations/arlington", ariaLabel: "Visit our Arlington TX location" },
     { label: "Contact", path: "/contact", ariaLabel: "Contact us" },
   ];
   
@@ -104,14 +104,10 @@ const Navigation = () => {
                       role="menuitem"
                       aria-label={item.ariaLabel}
                       aria-current={location === item.path ? "page" : undefined}
-                      className={`text-black hover:text-white transition-colors cursor-pointer ${
+                      className={`text-black hover:text-white transition-colors cursor-pointer font-medium relative ${
                         location === item.path 
-                          ? 'font-bold after:block after:w-full after:h-0.5 after:bg-black after:mt-1' 
-                          : ''
-                      } ${
-                        item.highlight
-                          ? 'font-semibold relative after:block after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-black/60' 
-                          : ''
+                          ? 'font-bold after:block after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-black'
+                          : 'after:block after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-black hover:after:w-full after:transition-all after:duration-300'
                       }`}
                     >
                       {item.label}
@@ -180,9 +176,7 @@ const Navigation = () => {
                     role="menuitem"
                     aria-label={item.ariaLabel}
                     aria-current={location === item.path ? "page" : undefined}
-                    className={`block text-black cursor-pointer hover:text-white/90 transition-colors ${
-                      item.highlight ? 'font-semibold' : ''
-                    }`}
+                    className="block text-black cursor-pointer hover:text-white/90 transition-colors font-medium"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {item.label}
