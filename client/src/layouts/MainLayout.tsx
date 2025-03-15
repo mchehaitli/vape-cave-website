@@ -30,7 +30,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
     "@type": "Organization",
     "@id": "https://vapecavetx.com/#organization",
     "name": "Vape Cave",
-    "alternateName": ["Vape Cave Frisco", "Vape Cave Smoke & Stuff"],
+    "alternateName": ["Vape Cave Frisco", "Vape Cave Smoke & Stuff", "552G+86 Vape Shop"],
     "url": "https://vapecavetx.com",
     "logo": {
       "@type": "ImageObject",
@@ -39,10 +39,19 @@ const MainLayout: React.FC<MainLayoutProps> = ({
       "height": 60
     },
     "description": "Premium vaping products and accessories at Vape Cave Frisco (Plus Code: 552G+86). Visit our convenient locations in Frisco and Arlington, TX or shop online.",
+    "slogan": "Your Premier Destination for Premium Vaping Products in Frisco, TX",
+    "keywords": "vape shop frisco, 552G+86 frisco, frisco vape shop, delta 8 frisco, thc-a frisco, disposable vape frisco, vape products frisco tx, vape cave frisco",
+    "founder": {
+      "@type": "Person",
+      "name": "Vape Cave Founder",
+      "jobTitle": "CEO"
+    },
+    "foundingDate": "2019",
     "sameAs": [
       "https://facebook.com/vapecavetx",
       "https://instagram.com/vapecavetx",
-      "https://twitter.com/vapecavetx"
+      "https://twitter.com/vapecavetx",
+      "https://yelp.com/biz/vape-cave-frisco"
     ],
     "contactPoint": [
       {
@@ -90,7 +99,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({
       {
         "@type": "VapeShop",
         "name": "Vape Cave Frisco",
-        "url": "https://vapecavetx.com/locations/1",
+        "url": "https://vapecavetx.com/locations/frisco",
+        "image": "https://vapecavetx.com/storefront-frisco.jpg",
+        "priceRange": "$$",
         "address": {
           "@type": "PostalAddress",
           "streetAddress": "6958 Main St #200",
@@ -105,31 +116,120 @@ const MainLayout: React.FC<MainLayoutProps> = ({
           "longitude": -96.822550
         },
         "telephone": "+14692940061",
-        "additionalProperty": {
-          "@type": "PropertyValue",
-          "name": "plusCode",
-          "value": "552G+86 Frisco, Texas"
-        },
-        "hasMap": "https://plus.codes/552G+86_Frisco,_Texas"
+        "email": "vapecavetex@gmail.com",
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Sunday"],
+            "opens": "10:00",
+            "closes": "24:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Friday", "Saturday"],
+            "opens": "10:00",
+            "closes": "01:00"
+          }
+        ],
+        "additionalProperty": [
+          {
+            "@type": "PropertyValue",
+            "name": "plusCode",
+            "value": "552G+86 Frisco, Texas"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "googlePlaceId",
+            "value": "ChIJxXjrR3wVkFQRcKK89i-aFDw"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "yearEstablished",
+            "value": "2019"
+          }
+        ],
+        "hasMap": [
+          {
+            "@type": "Map",
+            "url": "https://plus.codes/552G+86_Frisco,_Texas"
+          },
+          {
+            "@type": "Map",
+            "url": "https://www.google.com/maps/search/?api=1&query=552G%2B86%20Frisco%2C%20Texas"
+          }
+        ],
+        "areaServed": ["Frisco", "Allen", "Plano", "McKinney", "North Texas"],
+        "amenityFeature": [
+          {
+            "@type": "LocationFeatureSpecification",
+            "name": "Expert Staff",
+            "value": true
+          },
+          {
+            "@type": "LocationFeatureSpecification",
+            "name": "Free Parking",
+            "value": true
+          },
+          {
+            "@type": "LocationFeatureSpecification",
+            "name": "ADA Accessible",
+            "value": true
+          }
+        ],
+        "specialOpeningHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "validFrom": "2023-12-24",
+          "validThrough": "2023-12-24",
+          "opens": "10:00",
+          "closes": "18:00"
+        }
       }
     ],
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": canonicalUrl
+      "@id": canonicalUrl,
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": ["h1", "h2", ".speakable"]
+      }
     },
-    "potentialAction": {
-      "@type": "FindAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": "https://vapecavetx.com/locations",
-        "inLanguage": "en-US",
-        "actionPlatform": [
-          "http://schema.org/DesktopWebPlatform",
-          "http://schema.org/IOSPlatform",
-          "http://schema.org/AndroidPlatform"
-        ]
+    "potentialAction": [
+      {
+        "@type": "FindAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://vapecavetx.com/locations",
+          "inLanguage": "en-US",
+          "actionPlatform": [
+            "http://schema.org/DesktopWebPlatform",
+            "http://schema.org/IOSPlatform",
+            "http://schema.org/AndroidPlatform"
+          ]
+        },
+        "query-input": "required name=search_term_string"
       },
-      "query-input": "required name=search_term_string"
+      {
+        "@type": "ViewAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://vapecavetx.com/locations/frisco"
+        },
+        "name": "View Frisco Store Details"
+      },
+      {
+        "@type": "MapAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.google.com/maps/search/?api=1&query=552G%2B86%20Frisco%2C%20Texas"
+        },
+        "name": "Get Directions to Frisco Store"
+      }
+    ],
+    "brand": {
+      "@type": "Brand",
+      "name": "Vape Cave",
+      "logo": "https://vapecavetx.com/logo.png",
+      "slogan": "Premium Vaping Products & Accessories"
     }
   };
 
