@@ -278,11 +278,15 @@ const LocationsPage = () => {
       </Helmet>
 
       {/* Locations Header */}
-      <section className="bg-gradient-to-r from-primary/80 to-primary/20 py-16 text-white">
-        <div className="container mx-auto px-4">
+      <section className="relative h-72 overflow-hidden bg-gray-900 py-16 text-white">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-r from-black to-gray-900 mix-blend-multiply"></div>
+          <div className="absolute inset-0 opacity-20 bg-pattern"></div>
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold font-['Poppins'] mb-4">Our Locations</h1>
-            <div className="h-1 w-24 bg-white mx-auto rounded-full mb-6"></div>
+            <div className="h-1 w-24 bg-orange-500 mx-auto rounded-full mb-6"></div>
             <p className="text-white/90 max-w-2xl mx-auto text-lg">
               Visit us at one of our convenient locations for personalized service and expert advice on our premium selection of vaping products, disposables, Delta 8, THC-A, and more.
             </p>
@@ -291,14 +295,14 @@ const LocationsPage = () => {
       </section>
       
       {/* Locations Grid */}
-      <section className="py-12 bg-light">
+      <section className="py-12 bg-gradient-to-r from-black to-gray-900 text-white">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {storeLocations.map((location) => (
               <div 
                 key={location.id}
-                className={`bg-white rounded-lg shadow-md overflow-hidden border ${
-                  activeLocation === location.id ? 'border-primary' : 'border-gray-200'
+                className={`bg-gray-800 rounded-lg shadow-md overflow-hidden border ${
+                  activeLocation === location.id ? 'border-orange-500' : 'border-gray-700'
                 }`}
               >
                 <div className="h-60 overflow-hidden relative">
@@ -318,47 +322,47 @@ const LocationsPage = () => {
                 <div className="p-6">
                   {/* Store Information */}
                   <div className="mb-6">
-                    <h3 className="text-lg font-semibold font-['Poppins'] text-gray-800 mb-4">Store Information</h3>
+                    <h3 className="text-lg font-semibold font-['Poppins'] text-white mb-4">Store Information</h3>
                     
                     <div className="space-y-3">
                       <div className="flex">
-                        <div className="text-primary mr-3">
+                        <div className="text-orange-500 mr-3">
                           <i className="fas fa-phone"></i>
                         </div>
                         <div>
-                          <p className="text-sm text-gray-600">Phone</p>
-                          <p className="font-medium text-gray-800">{location.phone}</p>
+                          <p className="text-sm text-gray-400">Phone</p>
+                          <p className="font-medium text-gray-200">{location.phone}</p>
                         </div>
                       </div>
                       
                       <div className="flex">
-                        <div className="text-primary mr-3">
+                        <div className="text-orange-500 mr-3">
                           <i className="fas fa-clock"></i>
                         </div>
                         <div>
-                          <p className="text-sm text-gray-600">Hours</p>
-                          <p className="font-medium text-gray-800">{location.hours}</p>
+                          <p className="text-sm text-gray-400">Hours</p>
+                          <p className="font-medium text-gray-200">{location.hours}</p>
                         </div>
                       </div>
                       
                       <div className="flex">
-                        <div className="text-primary mr-3">
+                        <div className="text-orange-500 mr-3">
                           <i className="fas fa-envelope"></i>
                         </div>
                         <div>
-                          <p className="text-sm text-gray-600">Email</p>
-                          <p className="font-medium text-gray-800">{location.email}</p>
+                          <p className="text-sm text-gray-400">Email</p>
+                          <p className="font-medium text-gray-200">{location.email}</p>
                         </div>
                       </div>
                       
                       {location.googlePlaceId && (
                         <div className="flex">
-                          <div className="text-primary mr-3">
+                          <div className="text-orange-500 mr-3">
                             <i className="fas fa-map-marker-alt"></i>
                           </div>
                           <div>
-                            <p className="text-sm text-gray-600">Google Place ID</p>
-                            <p className="font-medium text-gray-800">{location.googlePlaceId}</p>
+                            <p className="text-sm text-gray-400">Google Place ID</p>
+                            <p className="font-medium text-gray-200">{location.googlePlaceId}</p>
                           </div>
                         </div>
                       )}
@@ -367,12 +371,12 @@ const LocationsPage = () => {
                   
                   {/* Hours of Operation */}
                   <div className="mb-6">
-                    <h3 className="text-lg font-semibold font-['Poppins'] text-gray-800 mb-4" id="store-hours">Hours of Operation</h3>
+                    <h3 className="text-lg font-semibold font-['Poppins'] text-white mb-4" id="store-hours">Hours of Operation</h3>
                     <div className="grid grid-cols-2 gap-2">
                       {Object.entries(location.openingHours).map(([day, hours]) => (
-                        <div key={day} className="flex justify-between py-1 border-b border-gray-100">
-                          <span className="font-medium text-gray-800">{day}</span>
-                          <span className="text-gray-600">{hours}</span>
+                        <div key={day} className="flex justify-between py-1 border-b border-gray-700">
+                          <span className="font-medium text-gray-200">{day}</span>
+                          <span className="text-gray-400">{hours}</span>
                         </div>
                       ))}
                     </div>
@@ -380,12 +384,12 @@ const LocationsPage = () => {
                   
                   {/* Featured Products Section */}
                   <div className="mb-6">
-                    <h3 className="text-lg font-semibold font-['Poppins'] text-gray-800 mb-4">Featured Products</h3>
+                    <h3 className="text-lg font-semibold font-['Poppins'] text-white mb-4">Featured Products</h3>
                     <div className="flex flex-wrap gap-2">
                       {location.services.slice(0, 6).map((service, index) => (
                         <span 
                           key={index} 
-                          className="bg-primary/10 text-primary text-xs font-medium py-1 px-3 rounded-full"
+                          className="bg-orange-500/20 text-orange-500 text-xs font-medium py-1 px-3 rounded-full"
                         >
                           {service}
                         </span>
@@ -442,7 +446,7 @@ const LocationsPage = () => {
                     
                     <button 
                       onClick={() => setActiveLocation(activeLocation === location.id ? null : location.id)}
-                      className="flex-1 border border-primary text-primary hover:bg-primary/10 font-medium py-2 px-4 rounded-md flex items-center justify-center"
+                      className="flex-1 border border-orange-500 text-orange-500 hover:bg-orange-500/10 font-medium py-2 px-4 rounded-md flex items-center justify-center"
                     >
                       <i className="fas fa-info-circle mr-2"></i>
                       {activeLocation === location.id ? 'Hide Details' : 'More Details'}
