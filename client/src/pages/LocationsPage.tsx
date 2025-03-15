@@ -457,17 +457,17 @@ const LocationsPage = () => {
                 {/* Expanded Details (show when active) */}
                 {activeLocation === location.id && (
                   <div className="p-6 pt-0">
-                    <div className="h-px bg-gray-200 my-6"></div>
+                    <div className="h-px bg-gray-700 my-6"></div>
                     
                     <div className="space-y-6">
                       <div>
-                        <h3 className="text-lg font-semibold font-['Poppins'] text-gray-800 mb-3">Get In Touch</h3>
-                        <p className="text-gray-600 mb-4">
+                        <h3 className="text-lg font-semibold font-['Poppins'] text-white mb-3">Get In Touch</h3>
+                        <p className="text-gray-400 mb-4">
                           Have questions about our products or services? Contact us directly at this location for personalized assistance.
                         </p>
                         <a 
                           href={`tel:${location.phone.replace(/[^0-9]/g, '')}`} 
-                          className="text-primary hover:underline font-medium flex items-center"
+                          className="text-orange-500 hover:underline font-medium flex items-center"
                         >
                           <i className="fas fa-phone-alt mr-2"></i>
                           Call Us Now
@@ -475,16 +475,16 @@ const LocationsPage = () => {
                       </div>
                       
                       <div>
-                        <h3 className="text-lg font-semibold font-['Poppins'] text-gray-800 mb-3">About This Location</h3>
-                        <p className="text-gray-600">
+                        <h3 className="text-lg font-semibold font-['Poppins'] text-white mb-3">About This Location</h3>
+                        <p className="text-gray-400">
                           {location.description}
                         </p>
                       </div>
                       
                       {location.neighborhoodInfo && (
                         <div>
-                          <h3 className="text-lg font-semibold font-['Poppins'] text-gray-800 mb-3">Neighborhood Information</h3>
-                          <p className="text-gray-600">
+                          <h3 className="text-lg font-semibold font-['Poppins'] text-white mb-3">Neighborhood Information</h3>
+                          <p className="text-gray-400">
                             {location.neighborhoodInfo}
                           </p>
                         </div>
@@ -492,53 +492,53 @@ const LocationsPage = () => {
                       
                       {location.parking && (
                         <div className="flex items-start">
-                          <div className="bg-primary/20 p-2 rounded-full mr-3 mt-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <div className="bg-orange-500/20 p-2 rounded-full mr-3 mt-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                             </svg>
                           </div>
                           <div>
-                            <h4 className="font-medium text-gray-800 mb-1">Parking Available</h4>
-                            <p className="text-gray-600">{location.parking}</p>
+                            <h4 className="font-medium text-white mb-1">Parking Available</h4>
+                            <p className="text-gray-400">{location.parking}</p>
                           </div>
                         </div>
                       )}
                       
                       {location.publicTransit && (
                         <div className="flex items-start">
-                          <div className="bg-primary/20 p-2 rounded-full mr-3 mt-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <div className="bg-orange-500/20 p-2 rounded-full mr-3 mt-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                           </div>
                           <div>
-                            <h4 className="font-medium text-gray-800 mb-1">Public Transit</h4>
-                            <p className="text-gray-600">{location.publicTransit}</p>
+                            <h4 className="font-medium text-white mb-1">Public Transit</h4>
+                            <p className="text-gray-400">{location.publicTransit}</p>
                           </div>
                         </div>
                       )}
                       
                       <div>
-                        <h3 className="text-lg font-semibold font-['Poppins'] text-gray-800 mb-3">Products We Offer</h3>
+                        <h3 className="text-lg font-semibold font-['Poppins'] text-white mb-3">Products We Offer</h3>
                         <div className="grid grid-cols-2 gap-2">
                           {location.services.map((service, index) => (
                             <div key={index} className="flex items-center gap-2">
-                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                               </svg>
-                              <span className="text-gray-700">{service}</span>
+                              <span className="text-gray-300">{service}</span>
                             </div>
                           ))}
                         </div>
                       </div>
                       
                       <div>
-                        <h3 className="text-lg font-semibold font-['Poppins'] text-gray-800 mb-3">Payment Methods</h3>
+                        <h3 className="text-lg font-semibold font-['Poppins'] text-white mb-3">Payment Methods</h3>
                         <div className="flex flex-wrap gap-2">
                           {location.acceptedPayments.map((payment, index) => (
                             <span 
                               key={index} 
-                              className="bg-gray-100 text-gray-700 text-xs font-medium py-1 px-3 rounded-full"
+                              className="bg-gray-700 text-gray-300 text-xs font-medium py-1 px-3 rounded-full"
                             >
                               {payment}
                             </span>
@@ -590,23 +590,23 @@ const LocationsPage = () => {
       </section>
       
       {/* Visit Us CTA */}
-      <section className="py-16 bg-primary/10">
+      <section className="py-16 bg-black">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold font-['Poppins'] text-gray-800 mb-4">Come Visit Us Today!</h2>
-            <p className="text-gray-600 text-lg mb-8">
+            <h2 className="text-3xl font-bold font-['Poppins'] text-white mb-4">Come Visit Us Today!</h2>
+            <p className="text-gray-400 text-lg mb-8">
               Experience our friendly atmosphere, knowledgeable staff, and premium selection of vaping products, disposables, Delta 8, THC-A, Delta 9, and more at a location near you.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <a 
                 href="#store-hours" 
-                className="bg-primary hover:bg-primary/90 text-black font-bold py-3 px-8 rounded-md"
+                className="bg-orange-500 hover:bg-orange-600 text-black font-bold py-3 px-8 rounded-md"
               >
                 View Store Hours
               </a>
               <a 
                 href="tel:4692940061" 
-                className="bg-dark hover:bg-dark/90 text-white font-bold py-3 px-8 rounded-md"
+                className="bg-gray-800 hover:bg-gray-700 border border-orange-500 text-white font-bold py-3 px-8 rounded-md"
               >
                 Call Us Now
               </a>
