@@ -649,7 +649,7 @@ const ArlingtonLocationPage: React.FC = () => {
                     width="100%"
                     height="100%"
                     title={`${location.name} Map`}
-                    className="border-0 rounded-lg"
+                    className="border-0 rounded-lg dark-map"
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                     allowFullScreen

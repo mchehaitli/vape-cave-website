@@ -574,7 +574,7 @@ const LocationsPage = () => {
           <div className="h-[600px] rounded-lg overflow-hidden shadow-xl relative">
             {/* Using an embedded Google Maps iframe for maximum reliability */}
             <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d215127.12768244176!2d-97.0055676!3d32.8661978!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864e9cec90c4f8d3%3A0xa3e1b4a2c728b55c!2sDallas-Fort%20Worth%20Metropolitan%20Area%2C%20TX!5e0!3m2!1sen!2sus!4v1672321922233!5m2!1sen!2sus&mode=dark" 
+              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d215127.12768244176!2d-97.0055676!3d32.8661978!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864e9cec90c4f8d3%3A0xa3e1b4a2c728b55c!2sDallas-Fort%20Worth%20Metropolitan%20Area%2C%20TX!5e0!3m2!1sen!2sus!4v1672321922233!5m2!1sen!2sus" 
               width="100%" 
               height="100%" 
               className="absolute inset-0 border-0"
