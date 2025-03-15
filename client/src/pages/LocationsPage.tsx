@@ -149,56 +149,51 @@ const LocationsPage = () => {
 
   return (
     <MainLayout
-      title="Vape Cave Frisco Location | Vape Shop in Frisco, TX | Store Hours & Directions"
-      description="Visit our Vape Cave Frisco location at 6958 Main St #200, Frisco, TX 75033. Open daily 10AM-12AM with premium vaping products, Delta 8, THC-A, disposables, glass, and accessories."
+      title="Vape Cave Store Locations | Premium Vape Shops in Frisco & Arlington, TX | Store Hours & Directions"
+      description="Visit our Vape Cave locations in Frisco and Arlington, TX. Both stores offer premium vaping products, Delta 8, THC-A, disposables, glass, and accessories. Find directions and store hours for both locations."
     >
       {/* SEO Schema.org structured data */}
       <Helmet>
-        <title>Vape Cave Frisco Location | Vape Shop in Frisco, TX | Store Hours & Directions</title>
-        <meta name="description" content="Visit our Vape Cave Frisco location at 6958 Main St #200, Frisco, TX 75033. Open daily 10AM-12AM with premium vaping products, Delta 8, THC-A, disposables, glass, and accessories." />
+        <title>Vape Cave Store Locations | Premium Vape Shops in Frisco & Arlington, TX | Store Hours & Directions</title>
+        <meta name="description" content="Visit our Vape Cave locations in Frisco (6958 Main St #200) and Arlington (4100 S Cooper St #4108). Both stores offer premium vaping products, Delta 8, THC-A, disposables, and accessories." />
         <link rel="canonical" href="https://vapecavetx.com/locations" />
         
         {/* Open Graph / Facebook */}
         <meta property="og:locale" content="en_US" />
         <meta property="og:type" content="business.business" />
-        <meta property="og:title" content="Vape Cave Frisco Location | Premium Vape Shop in Frisco" />
-        <meta property="og:description" content="Visit our Vape Cave Frisco location at 6958 Main St #200, Frisco, TX 75033. Premium vapes, Delta 8, THC-A, and more available at our convenient Frisco location." />
+        <meta property="og:title" content="Vape Cave Store Locations | Premium Vape Shops in DFW" />
+        <meta property="og:description" content="Find our Vape Cave locations in Frisco and Arlington, TX. Both stores offer premium vapes, Delta 8, THC-A, and more at our convenient Dallas-Fort Worth locations." />
         <meta property="og:url" content="https://vapecavetx.com/locations" />
         <meta property="og:site_name" content="Vape Cave" />
-        <meta property="og:image" content="https://vapecavetx.com/storefront-frisco.jpg" />
-        <meta property="business:contact_data:street_address" content="6958 Main St #200" />
-        <meta property="business:contact_data:locality" content="Frisco" />
-        <meta property="business:contact_data:region" content="TX" />
-        <meta property="business:contact_data:postal_code" content="75033" />
+        <meta property="og:image" content="https://vapecavetx.com/vapecave-logo.png" />
         <meta property="business:contact_data:country_name" content="United States" />
-        <meta property="business:contact_data:email" content="vapecavetex@gmail.com" />
-        <meta property="business:contact_data:phone_number" content="+14692940061" />
+        <meta property="business:contact_data:email" content="vapecavetx@gmail.com" />
         
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Vape Cave Frisco Location | Premium Vape Shop in Frisco" />
-        <meta name="twitter:description" content="Visit our Vape Cave Frisco location in Frisco, TX. Premium vapes, Delta 8, THC-A, and more at our convenient Frisco store." />
-        <meta name="twitter:image" content="https://vapecavetx.com/storefront-frisco.jpg" />
+        <meta name="twitter:title" content="Vape Cave Store Locations | Find Us in Frisco & Arlington" />
+        <meta name="twitter:description" content="Visit our Vape Cave locations in Frisco and Arlington, TX. Premium vapes, Delta 8, THC-A, and more at our convenient DFW stores." />
+        <meta name="twitter:image" content="https://vapecavetx.com/vapecave-logo.png" />
         
-        {/* Keywords with strong Frisco location focus */}
-        <meta name="keywords" content="vape store frisco, vape shop frisco tx, vape cave frisco, frisco vape shop, delta 8 frisco, thc-a frisco, disposable vape frisco, e-liquid frisco, vape products frisco tx, premium vape shop frisco" />
+        {/* Keywords for both locations */}
+        <meta name="keywords" content="vape shop frisco, vape shop arlington, vape cave frisco, vape cave arlington, delta 8 frisco, delta 8 arlington, thc-a frisco, thc-a arlington, premium vape shop dallas-fort worth, vape stores dfw" />
         
         {/* Dublin Core Metadata */}
-        <meta name="DC.title" content="Vape Cave Frisco | Premium Vape Shop in Frisco, TX" />
-        <meta name="DC.description" content="Frisco's premium vape shop at 6958 Main St #200. Offering high-quality vape products, Delta 8, THC-A, and accessories." />
-        <meta name="DC.subject" content="Vape Shop, Frisco, Delta 8, THC-A, Disposable Vapes" />
+        <meta name="DC.title" content="Vape Cave Store Locations | Premium Vape Shops in Dallas-Fort Worth" />
+        <meta name="DC.description" content="Visit our premium vape shops in Frisco and Arlington. Both locations offer high-quality vape products, Delta 8, THC-A, and accessories." />
+        <meta name="DC.subject" content="Vape Shop, Frisco, Arlington, Delta 8, THC-A, Disposable Vapes" />
         <meta name="DC.creator" content="Vape Cave" />
         <meta name="DC.type" content="LocalBusiness" />
         <meta name="DC.format" content="text/html" />
         <meta name="DC.language" content="en-US" />
-        <meta name="DC.coverage" content="Frisco, Texas, United States" />
+        <meta name="DC.coverage" content="Dallas-Fort Worth, Texas, United States" />
         <meta name="DC.rights" content="Copyright Vape Cave 2023" />
         
-        {/* Geo meta tags */}
+        {/* Geo meta tags - Using central DFW coordinates */}
         <meta name="geo.region" content="US-TX" />
-        <meta name="geo.placename" content="Frisco" />
-        <meta name="geo.position" content="33.150730;-96.822550" />
-        <meta name="ICBM" content="33.150730, -96.822550" />
+        <meta name="geo.placename" content="Dallas-Fort Worth" />
+        <meta name="geo.position" content="32.7767;-96.7970" />
+        <meta name="ICBM" content="32.7767, -96.7970" />
         
         {/* Alternative languages - helpful for international customers */}
         <link rel="alternate" href="https://vapecavetx.com/locations" hrefLang="en-us" />
