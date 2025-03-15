@@ -12,6 +12,7 @@ interface DirectionsButtonProps {
   showIcon?: boolean;
   fullWidth?: boolean;
   plusCode?: string;
+  googlePlaceId?: string; // Add Google Place ID as an optional prop
 }
 
 /**
@@ -28,7 +29,8 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
   size = 'md',
   showIcon = true,
   fullWidth = false,
-  plusCode
+  plusCode,
+  googlePlaceId
 }) => {
   // Detect if the user is on a mobile device
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -54,10 +56,11 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
       : `Vape Cave ${address} - Premium Vape Shop in ${city}`;
     const encodedEnhancedQuery = encodeURIComponent(enhancedQuery);
     
-    // Add Google Place ID if this is the Frisco location
+    // Use provided Google Place ID or default for Frisco location
+    const defaultFriscoPlaceId = "ChIJxXjrR3wVkFQRcKK89i-aFDw";
     const isFriscoLocation = city === "Frisco" || address.includes("Frisco") || address.includes("75033");
-    const googlePlaceId = isFriscoLocation ? "ChIJxXjrR3wVkFQRcKK89i-aFDw" : undefined;
-    const placeIdParam = googlePlaceId ? `&place_id=${googlePlaceId}` : "";
+    const placeId = googlePlaceId || (isFriscoLocation ? defaultFriscoPlaceId : undefined);
+    const placeIdParam = placeId ? `&place_id=${placeId}` : "";
     
     // New approach with enhanced URL parameters for better search indexing
     if (isIOS && isMobile) {
@@ -95,7 +98,7 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
         return enhancedUrl;
       } else {
         // Create a directions URL with enhanced metadata
-        return `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}&destination_place_id=${googlePlaceId || ""}&travelmode=driving`;
+        return `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}&destination_place_id=${placeId || ""}&travelmode=driving`;
       }
     }
   };
@@ -228,7 +231,7 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
         aria-label={`Get directions to ${address}${plusCode ? ` (Plus Code: ${plusCode})` : ''}`}
         data-location={locationCity}
         data-plus-code={plusCode || ""}
-        data-google-place-id="ChIJxXjrR3wVkFQRcKK89i-aFDw"
+        data-google-place-id={googlePlaceId || "ChIJxXjrR3wVkFQRcKK89i-aFDw"}
         itemScope
         itemType="https://schema.org/VapeShop"
         itemProp="hasMap"

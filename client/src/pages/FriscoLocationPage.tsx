@@ -496,10 +496,13 @@ const FriscoLocationPage: React.FC = () => {
                 <p className="text-sm text-gray-600 mb-3">
                   <strong>Plus Code:</strong> 
                   <a 
-                    href={`https://plus.codes/${location.plusCode?.replace(/\s+/g, '')}`}
+                    href={location.googlePlaceId 
+                        ? `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}` 
+                        : `https://plus.codes/${location.plusCode?.replace(/\s+/g, '')}`}
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-primary hover:underline ml-2"
+                    aria-label={`Find ${location.name} on Google Maps using Plus Code ${location.plusCode}`}
                   >
                     {location.plusCode}
                   </a>
