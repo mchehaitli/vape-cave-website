@@ -287,11 +287,12 @@ const FriscoLocationPage: React.FC = () => {
             alt="Vape Cave Frisco storefront" 
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/20 mix-blend-multiply"></div>
+          <div className="absolute inset-0 bg-black/50"></div>
         </div>
         <div className="container mx-auto px-4 h-full flex flex-col justify-center relative z-10 text-white">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">Vape Cave Frisco</h1>
-          <p className="text-xl md:text-2xl max-w-xl">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 drop-shadow-lg">Vape Cave Frisco</h1>
+          <p className="text-xl md:text-2xl max-w-xl drop-shadow-md">
             Frisco's premier destination for premium vaping products, Delta 8, THC-A, and more.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
@@ -306,7 +307,7 @@ const FriscoLocationPage: React.FC = () => {
             />
             <a 
               href={`tel:${location.phone.replace(/[^0-9]/g, '')}`} 
-              className="bg-white text-primary hover:bg-primary/10 font-medium py-2 px-6 rounded-md flex items-center"
+              className="bg-white text-primary hover:bg-primary/10 font-medium py-2 px-6 rounded-md flex items-center shadow-sm"
             >
               <i className="fas fa-phone mr-2"></i>
               Call Us
@@ -316,13 +317,13 @@ const FriscoLocationPage: React.FC = () => {
       </section>
 
       {/* Location Information */}
-      <section className="py-12 bg-white">
+      <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Store Info */}
             <div className="lg:col-span-2">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-3xl font-bold">Store Information</h2>
+                <h2 className="text-3xl font-bold text-gray-800">Store Information</h2>
                 <button 
                   onClick={() => setShowDetails(!showDetails)}
                   className="text-primary hover:text-primary/80"
