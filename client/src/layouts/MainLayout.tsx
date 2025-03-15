@@ -30,7 +30,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
     "@type": "Organization",
     "@id": "https://vapecavetx.com/#organization",
     "name": "Vape Cave",
-    "alternateName": ["Vape Cave Frisco", "Vape Cave Smoke & Stuff", "552G+86 Vape Shop"],
+    "alternateName": ["Vape Cave Frisco", "Vape Cave Smoke & Stuff", "Premium Vape Shop Frisco"],
     "url": "https://vapecavetx.com",
     "logo": {
       "@type": "ImageObject",
@@ -38,9 +38,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({
       "width": 180,
       "height": 60
     },
-    "description": "Premium vaping products and accessories at Vape Cave Frisco (Plus Code: 552G+86). Visit our convenient locations in Frisco and Arlington, TX or shop online.",
+    "description": "Premium vaping products and accessories at Vape Cave Frisco. Visit our convenient locations in Frisco and Arlington, TX or shop online.",
     "slogan": "Your Premier Destination for Premium Vaping Products in Frisco, TX",
-    "keywords": "vape shop frisco, 552G+86 frisco, frisco vape shop, delta 8 frisco, thc-a frisco, disposable vape frisco, vape products frisco tx, vape cave frisco",
+    "keywords": "vape shop frisco, premium vaping products frisco, frisco vape shop, delta 8 frisco, thc-a frisco, disposable vape frisco, vape products frisco tx, vape cave frisco",
     "founder": {
       "@type": "Person",
       "name": "Vape Cave Founder",
@@ -134,11 +134,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         "additionalProperty": [
           {
             "@type": "PropertyValue",
-            "name": "plusCode",
-            "value": "552G+86 Frisco, Texas"
-          },
-          {
-            "@type": "PropertyValue",
             "name": "googlePlaceId",
             "value": "ChIJxXjrR3wVkFQRcKK89i-aFDw"
           },
@@ -151,11 +146,11 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         "hasMap": [
           {
             "@type": "Map",
-            "url": "https://plus.codes/552G+86_Frisco,_Texas"
+            "url": "https://www.google.com/maps/place/?q=place_id:ChIJxXjrR3wVkFQRcKK89i-aFDw"
           },
           {
             "@type": "Map",
-            "url": "https://www.google.com/maps/search/?api=1&query=552G%2B86%20Frisco%2C%20Texas"
+            "url": "https://www.google.com/maps/search/?api=1&query=Vape+Cave+Frisco+TX"
           }
         ],
         "areaServed": ["Frisco", "Allen", "Plano", "McKinney", "North Texas"],
@@ -220,7 +215,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         "@type": "MapAction",
         "target": {
           "@type": "EntryPoint",
-          "urlTemplate": "https://www.google.com/maps/search/?api=1&query=552G%2B86%20Frisco%2C%20Texas"
+          "urlTemplate": "https://www.google.com/maps/place/?q=place_id:ChIJxXjrR3wVkFQRcKK89i-aFDw"
         },
         "name": "Get Directions to Frisco Store"
       }

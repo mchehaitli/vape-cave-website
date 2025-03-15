@@ -220,7 +220,7 @@ const FriscoLocationPage: React.FC = () => {
         <meta name="twitter:image" content="https://vapecavetx.com/storefront-frisco.jpg" />
         
         {/* Location-specific keywords */}
-        <meta name="keywords" content="vape shop frisco tx, frisco vape store, vape cave frisco, vape near me frisco, delta 8 frisco, thc-a frisco, vape products frisco, disposable vapes frisco, cbd shop frisco, smoke shop frisco texas, premium vape frisco" />
+        <meta name="keywords" content="vape shop frisco tx, frisco vape store, vape cave frisco, vape near me frisco, delta 8 frisco, thc-a frisco, vape products frisco, disposable vapes frisco, cbd shop frisco, smoke shop frisco texas, premium vape frisco, vape shop google place id" />
         
         {/* Dublin Core Metadata */}
         <meta name="DC.title" content="Vape Cave Frisco | Premium Vape Shop" />
