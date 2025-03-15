@@ -501,44 +501,6 @@ const ArlingtonLocationPage: React.FC = () => {
                 </div>
               )}
             </div>
-            
-            <div className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700 p-6 mb-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold text-white">Popular Products</h3>
-                <button 
-                  onClick={() => setShowProducts(!showProducts)}
-                  className="text-primary hover:text-primary/80"
-                  aria-expanded={showProducts}
-                >
-                  {showProducts ? 'Hide Products' : 'Show Products'}
-                </button>
-              </div>
-              
-              {showProducts && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {arlingtonProducts.map((product) => (
-                    <div key={product.id} className="bg-medium/50 rounded-lg p-3 hover:bg-medium/80 transition-all border border-gray-700">
-                      <div className="aspect-square bg-gray-900 rounded-md mb-2 overflow-hidden">
-                        <img 
-                          src={product.image} 
-                          alt={product.name} 
-                          className="w-full h-full object-cover"
-                          loading="lazy"
-                        />
-                      </div>
-                      <h3 className="font-medium text-white">{product.name}</h3>
-                      <p className="text-sm text-gray-300 line-clamp-2">{product.description}</p>
-                      <p className="mt-1 font-bold text-primary">${product.price.toFixed(2)}</p>
-                      {product.featured && (
-                        <span className="inline-block mt-2 bg-primary/20 text-primary-foreground text-xs py-1 px-2 rounded-full border border-primary/30">
-                          {product.featuredLabel || "Popular"}
-                        </span>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
           </div>
           
           {/* Map & Directions */}
