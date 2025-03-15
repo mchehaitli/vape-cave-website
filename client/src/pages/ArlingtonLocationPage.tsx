@@ -630,68 +630,63 @@ const ArlingtonLocationPage: React.FC = () => {
           </div>
         </div>
         
-        {/* Products & Services Section */}
-        <div className="mt-16 max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold font-['Poppins'] mb-3">Products & Services</h2>
-            <div className="h-1 w-24 bg-primary mx-auto rounded-full mb-6"></div>
-            <p className="text-gray-300 max-w-2xl mx-auto">Discover our premium selection of vaping products and accessories at our Arlington location.</p>
+        {/* Products/Services */}
+        <div>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold font-['Poppins'] text-white">Products & Services</h2>
+            <button 
+              onClick={() => setShowProducts(!showProducts)}
+              className="text-primary hover:text-primary/80"
+              aria-expanded={showProducts}
+            >
+              {showProducts ? 'Hide Products' : 'Show Products'}
+            </button>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {arlingtonProducts.map((product) => (
-              <div key={product.id} className="bg-medium/50 rounded-xl overflow-hidden shadow-lg border border-gray-700 hover:bg-medium/80 transition-all">
-                <div className="aspect-square bg-gray-900 overflow-hidden">
-                  <img 
-                    src={product.image} 
-                    alt={product.name} 
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="p-4">
-                  <h3 className="font-bold text-white text-lg mb-1">{product.name}</h3>
-                  <p className="text-gray-300 text-sm mb-2 line-clamp-2">{product.description}</p>
-                  <div className="flex justify-between items-center">
-                    <p className="text-primary font-bold">${product.price.toFixed(2)}</p>
-                    {product.featured && (
-                      <span className="bg-primary/20 text-white text-xs py-1 px-2 rounded-full border border-primary/30">
-                        {product.featuredLabel || "Popular"}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Services */}
-            <div className="bg-medium rounded-xl p-6 border border-gray-700">
-              <h3 className="text-xl font-bold text-white mb-4">Our Services</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {showProducts && (
+            <div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 {location.services.map((service, index) => (
-                  <div key={index} className="flex items-center">
-                    <span className="text-primary mr-2 text-lg">✓</span>
-                    <span className="text-gray-300">{service}</span>
+                  <div key={index} className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700 p-4 flex items-center">
+                    <div className="bg-primary/20 text-gray-700 rounded-full p-3 mr-4 border border-gray-300">
+                      <i className="fas fa-check"></i>
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-white">{service}</h4>
+                      <p className="text-sm text-gray-300">Available in-store</p>
+                    </div>
                   </div>
                 ))}
               </div>
-            </div>
-            
-            {/* Amenities */}
-            <div className="bg-medium rounded-xl p-6 border border-gray-700">
-              <h3 className="text-xl font-bold text-white mb-4">Store Amenities</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {location.amenities.map((amenity, index) => (
-                  <div key={index} className="flex items-center">
-                    <span className="text-primary mr-2 text-lg">✓</span>
-                    <span className="text-gray-300">{amenity}</span>
+              
+              {/* Featured Products at Arlington */}
+              <h3 className="text-xl font-semibold mb-4 text-white">Featured Products at Arlington</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                {arlingtonProducts.map((product) => (
+                  <div key={product.id} className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700">
+                    <div className="h-40 overflow-hidden">
+                      <img 
+                        src={product.image} 
+                        alt={product.name} 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="p-4">
+                      <h4 className="font-medium mb-1 text-white">{product.name}</h4>
+                      <p className="text-sm text-gray-300 mb-2">{product.category}</p>
+                      <p className="font-bold text-primary">${product.price.toFixed(2)}</p>
+                    </div>
                   </div>
                 ))}
               </div>
+              
+              <div className="text-center">
+                <Link href="/products" className="text-primary hover:text-primary/80 font-medium">
+                  View All Products →
+                </Link>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
       
