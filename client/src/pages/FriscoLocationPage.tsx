@@ -354,29 +354,7 @@ const FriscoLocationPage: React.FC = () => {
         <link rel="alternate" href="https://vapecavetx.com/es/locations/frisco" hrefLang="es" />
       </Helmet>
 
-      {/* Breadcrumb Navigation */}
-      <nav className="bg-gray-100 py-2 px-4" aria-label="Breadcrumb">
-        <ol className="flex text-sm" itemScope itemType="https://schema.org/BreadcrumbList">
-          <li className="flex items-center" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-            <Link href="/" className="text-primary hover:text-primary/80">
-              <span itemProp="name">Home</span>
-            </Link>
-            <meta itemProp="position" content="1" />
-            <span className="mx-2">/</span>
-          </li>
-          <li className="flex items-center" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-            <Link href="/locations" className="text-primary hover:text-primary/80">
-              <span itemProp="name">Locations</span>
-            </Link>
-            <meta itemProp="position" content="2" />
-            <span className="mx-2">/</span>
-          </li>
-          <li className="text-gray-600" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-            <span itemProp="name">Frisco</span>
-            <meta itemProp="position" content="3" />
-          </li>
-        </ol>
-      </nav>
+
 
       {/* Hero Banner */}
       <section className="relative h-72 md:h-96 overflow-hidden bg-gray-900 py-10">
