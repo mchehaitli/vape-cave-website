@@ -232,6 +232,7 @@ const HomePage = () => {
           {JSON.stringify(homePageSchema)}
         </script>
       </Helmet>
+      
       {/* Hero Section */}
       <section id="home" className="bg-gray-900 py-20 md:py-32 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/20 mix-blend-multiply"></div>
@@ -346,8 +347,6 @@ const HomePage = () => {
         </div>
       </section>
 
-
-
       {/* Featured Frisco Location Section - Enhance SEO importance */}
       <section 
         className="py-14 bg-gradient-to-r from-black to-gray-900 text-white" 
@@ -393,7 +392,7 @@ const HomePage = () => {
         >
           <div className="flex flex-col md:flex-row items-center gap-8">
             <motion.div 
-              className="md:w-1/2"
+              className="md:w-1/2 order-2 md:order-1"
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.2 }}
@@ -406,7 +405,7 @@ const HomePage = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
               >
-                Find Us Easily in Frisco
+                Visit Us in Downtown Frisco
               </motion.h2>
               <motion.div 
                 className="h-1 w-24 bg-primary rounded-full mb-6"
@@ -422,7 +421,7 @@ const HomePage = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.4 }}
               >
-                Our Frisco location is conveniently accessible at <span className="text-primary font-semibold">6958 Main St #200, Frisco, TX 75033</span>.
+                Our Frisco location is conveniently located at <span className="text-primary font-semibold">6958 Main St #200, Frisco, TX 75033</span>. 
                 Use our direct Google Maps or Apple Maps links below to navigate to our store with ease.
               </motion.p>
               
@@ -441,7 +440,7 @@ const HomePage = () => {
                     show: {
                       opacity: 1,
                       transition: {
-                        staggerChildren: 0.15
+                        staggerChildren: 0.12
                       }
                     }
                   }}
@@ -459,7 +458,7 @@ const HomePage = () => {
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    Convenient Main Street location with ample parking
+                    Located in the heart of downtown Frisco
                   </motion.li>
                   <motion.li 
                     className="flex items-start"
@@ -471,7 +470,7 @@ const HomePage = () => {
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    Expert staff providing personalized recommendations
+                    Knowledgeable staff to guide your selections
                   </motion.li>
                   <motion.li 
                     className="flex items-start"
@@ -483,7 +482,31 @@ const HomePage = () => {
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    Extensive selection of premium products
+                    Latest products always in stock
+                  </motion.li>
+                  <motion.li 
+                    className="flex items-start"
+                    variants={{
+                      hidden: { opacity: 0, x: -10 },
+                      show: { opacity: 1, x: 0 }
+                    }}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Extended hours on Friday and Saturday (open until 1AM)
+                  </motion.li>
+                  <motion.li 
+                    className="flex items-start"
+                    variants={{
+                      hidden: { opacity: 0, x: -10 },
+                      show: { opacity: 1, x: 0 }
+                    }}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Ample parking available
                   </motion.li>
                 </motion.ul>
               </motion.div>
@@ -573,92 +596,98 @@ const HomePage = () => {
                 </motion.a>
               </motion.div>
             </motion.div>
-            
             <motion.div 
-              className="md:w-1/2 bg-black/30 p-6 rounded-xl border border-primary/20"
+              className="md:w-1/2 order-1 md:order-2"
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.7, delay: 0.3 }}
             >
-              <motion.h3 
-                className="text-xl font-semibold mb-4 text-center"
+              <motion.div 
+                className="bg-black/30 p-6 rounded-xl border border-primary/20"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.4 }}
               >
-                Quick Information
-              </motion.h3>
-              <motion.div 
-                className="grid grid-cols-1 md:grid-cols-2 gap-4"
-                variants={{
-                  hidden: { opacity: 0 },
-                  show: {
-                    opacity: 1,
-                    transition: {
-                      staggerChildren: 0.1
+                <motion.h3 
+                  className="text-xl font-semibold mb-4 text-center"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.5 }}
+                >
+                  Quick Information
+                </motion.h3>
+                <motion.div 
+                  className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                  variants={{
+                    hidden: { opacity: 0 },
+                    show: {
+                      opacity: 1,
+                      transition: {
+                        staggerChildren: 0.1
+                      }
                     }
-                  }
-                }}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true }}
-              >
-                <motion.div 
-                  className="bg-black/40 p-4 rounded-lg border border-gray-800"
-                  variants={{
-                    hidden: { opacity: 0, y: 20 },
-                    show: { opacity: 1, y: 0 }
                   }}
-                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true }}
                 >
-                  <h4 className="text-primary font-semibold mb-2">Location</h4>
-                  <p className="text-gray-300 text-sm">6958 Main St #200, Frisco, TX 75033</p>
-                  <p className="text-primary/80 text-xs mt-1">Main Street Shopping Area</p>
-                </motion.div>
-                
-                <motion.div 
-                  className="bg-black/40 p-4 rounded-lg border border-gray-800"
-                  variants={{
-                    hidden: { opacity: 0, y: 20 },
-                    show: { opacity: 1, y: 0 }
-                  }}
-                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                >
-                  <h4 className="text-primary font-semibold mb-2">Hours</h4>
-                  <p className="text-gray-300 text-sm">Mon-Thu, Sun: 10AM - 12AM</p>
-                  <p className="text-gray-300 text-sm">Fri-Sat: 10AM - 1AM</p>
-                  <p className="text-primary/80 text-xs mt-1">Open 7 days a week</p>
-                </motion.div>
-                
-                <motion.div 
-                  className="bg-black/40 p-4 rounded-lg border border-gray-800"
-                  variants={{
-                    hidden: { opacity: 0, y: 20 },
-                    show: { opacity: 1, y: 0 }
-                  }}
-                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                >
-                  <h4 className="text-primary font-semibold mb-2">Contact</h4>
-                  <p className="text-gray-300 text-sm">(469) 294-0061</p>
-                  <p className="text-primary/80 text-xs mt-1">vapecavetx@gmail.com</p>
-                </motion.div>
-                
-                <motion.div 
-                  className="bg-black/40 p-4 rounded-lg border border-gray-800"
-                  variants={{
-                    hidden: { opacity: 0, y: 20 },
-                    show: { opacity: 1, y: 0 }
-                  }}
-                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                >
-                  <h4 className="text-primary font-semibold mb-2">Specialties</h4>
-                  <div className="flex flex-wrap gap-1">
-                    <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">Delta 8</span>
-                    <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">THC-A</span>
-                    <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">Disposables</span>
-                  </div>
+                  <motion.div 
+                    className="bg-black/40 p-4 rounded-lg border border-gray-800"
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      show: { opacity: 1, y: 0 }
+                    }}
+                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                  >
+                    <h4 className="text-primary font-semibold mb-2">Location</h4>
+                    <p className="text-gray-300 text-sm">6958 Main St #200, Frisco, TX 75033</p>
+                    <p className="text-primary/80 text-xs mt-1">Downtown Frisco</p>
+                  </motion.div>
+                  
+                  <motion.div 
+                    className="bg-black/40 p-4 rounded-lg border border-gray-800"
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      show: { opacity: 1, y: 0 }
+                    }}
+                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                  >
+                    <h4 className="text-primary font-semibold mb-2">Hours</h4>
+                    <p className="text-gray-300 text-sm">Sun-Thu: 10AM - 12AM</p>
+                    <p className="text-gray-300 text-sm">Fri-Sat: 10AM - 1AM</p>
+                  </motion.div>
+                  
+                  <motion.div 
+                    className="bg-black/40 p-4 rounded-lg border border-gray-800"
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      show: { opacity: 1, y: 0 }
+                    }}
+                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                  >
+                    <h4 className="text-primary font-semibold mb-2">Contact</h4>
+                    <p className="text-gray-300 text-sm">(469) 294-0061</p>
+                    <p className="text-primary/80 text-xs mt-1">vapecavetx@gmail.com</p>
+                  </motion.div>
+                  
+                  <motion.div 
+                    className="bg-black/40 p-4 rounded-lg border border-gray-800"
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      show: { opacity: 1, y: 0 }
+                    }}
+                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                  >
+                    <h4 className="text-primary font-semibold mb-2">Specialties</h4>
+                    <div className="flex flex-wrap gap-1">
+                      <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">Delta 8</span>
+                      <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">THC-A</span>
+                      <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">Disposables</span>
+                    </div>
+                  </motion.div>
                 </motion.div>
               </motion.div>
             </motion.div>
@@ -702,121 +731,304 @@ const HomePage = () => {
           <meta itemProp="latitude" content="32.687070" />
           <meta itemProp="longitude" content="-97.134800" />
         </div>
-        <div className="container mx-auto px-4">
+        <motion.div 
+          className="container mx-auto px-4"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6 }}
+        >
           <div className="flex flex-col md:flex-row items-center gap-8">
-            <div className="md:w-1/2 order-2 md:order-1">
-              <h2 className="text-3xl font-bold font-['Poppins'] mb-3">
+            <motion.div 
+              className="md:w-1/2 order-2 md:order-1"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+            >
+              <motion.h2 
+                className="text-3xl font-bold font-['Poppins'] mb-3"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+              >
                 Find Us Easily in Arlington
-              </h2>
-              <div className="h-1 w-24 bg-primary rounded-full mb-6"></div>
-              <p className="text-gray-300 mb-6">
+              </motion.h2>
+              <motion.div 
+                className="h-1 w-24 bg-primary rounded-full mb-6"
+                initial={{ width: 0 }}
+                whileInView={{ width: 96 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+              ></motion.div>
+              <motion.p 
+                className="text-gray-300 mb-6"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+              >
                 Our Arlington location is conveniently accessible at <span className="text-primary font-semibold">4100 S Cooper St #4108, Arlington, TX 76015</span>.
                 Use our direct Google Maps or Apple Maps links below to navigate to our store with ease.
-              </p>
+              </motion.p>
               
-              <div className="mb-8">
+              <motion.div 
+                className="mb-8"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+              >
                 <h3 className="text-xl font-semibold mb-3">Why Visit Our Arlington Location?</h3>
-                <ul className="space-y-2 text-gray-300">
-                  <li className="flex items-start">
+                <motion.ul 
+                  className="space-y-2 text-gray-300"
+                  variants={{
+                    hidden: { opacity: 0 },
+                    show: {
+                      opacity: 1,
+                      transition: {
+                        staggerChildren: 0.12
+                      }
+                    }
+                  }}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true }}
+                >
+                  <motion.li 
+                    className="flex items-start"
+                    variants={{
+                      hidden: { opacity: 0, x: -10 },
+                      show: { opacity: 1, x: 0 }
+                    }}
+                  >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     Near The Parks Mall with ample free parking
-                  </li>
-                  <li className="flex items-start">
+                  </motion.li>
+                  <motion.li 
+                    className="flex items-start"
+                    variants={{
+                      hidden: { opacity: 0, x: -10 },
+                      show: { opacity: 1, x: 0 }
+                    }}
+                  >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     Expert staff offering product demonstrations
-                  </li>
-                  <li className="flex items-start">
+                  </motion.li>
+                  <motion.li 
+                    className="flex items-start"
+                    variants={{
+                      hidden: { opacity: 0, x: -10 },
+                      show: { opacity: 1, x: 0 }
+                    }}
+                  >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     Largest selection of disposables in the area
-                  </li>
-                  <li className="flex items-start">
+                  </motion.li>
+                  <motion.li 
+                    className="flex items-start"
+                    variants={{
+                      hidden: { opacity: 0, x: -10 },
+                      show: { opacity: 1, x: 0 }
+                    }}
+                  >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     Special discounts for military and first responders
-                  </li>
-                  <li className="flex items-start">
+                  </motion.li>
+                  <motion.li 
+                    className="flex items-start"
+                    variants={{
+                      hidden: { opacity: 0, x: -10 },
+                      show: { opacity: 1, x: 0 }
+                    }}
+                  >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     Open daily from 10:00 AM to 11:00 PM
-                  </li>
-                </ul>
-              </div>
+                  </motion.li>
+                </motion.ul>
+              </motion.div>
               
-              <div className="flex flex-wrap gap-3">
-                <a 
+              <motion.div 
+                className="flex flex-wrap gap-3"
+                variants={{
+                  hidden: { opacity: 0 },
+                  show: {
+                    opacity: 1,
+                    transition: {
+                      staggerChildren: 0.1
+                    }
+                  }
+                }}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true }}
+              >
+                <motion.a 
                   href="https://maps.app.goo.gl/7RRoEeD3uzANmdhZA" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-flex items-center bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded transition-colors"
+                  variants={{
+                    hidden: { opacity: 0, y: 10 },
+                    show: { opacity: 1, y: 0 }
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
                   </svg>
                   Google Maps
-                </a>
-                <a 
+                </motion.a>
+                <motion.a 
                   href="https://maps.apple.com/?address=4100%20S%20Cooper%20St%20%234108,%20Arlington,%20TX%20%2076015,%20United%20States&ll=32.687070,-97.134800&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-flex items-center bg-white/10 hover:bg-white/20 border border-white/30 text-white px-4 py-2 rounded transition-colors"
+                  variants={{
+                    hidden: { opacity: 0, y: 10 },
+                    show: { opacity: 1, y: 0 }
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                   Apple Maps
-                </a>
-                <Link
-                  href="/locations/arlington"
-                  className="inline-flex items-center bg-primary/30 hover:bg-primary/40 border border-primary/50 text-white px-4 py-2 rounded transition-colors"
+                </motion.a>
+                <motion.div
+                  variants={{
+                    hidden: { opacity: 0, y: 10 },
+                    show: { opacity: 1, y: 0 }
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  More Store Info
-                </Link>
-                <a
+                  <Link
+                    href="/locations/arlington"
+                    className="inline-flex items-center bg-primary/30 hover:bg-primary/40 border border-primary/50 text-white px-4 py-2 rounded transition-colors"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    More Store Info
+                  </Link>
+                </motion.div>
+                <motion.a
                   href="tel:+16822700334"
                   className="inline-flex items-center bg-white/10 hover:bg-white/20 border border-white/30 text-white px-4 py-2 rounded transition-colors"
+                  variants={{
+                    hidden: { opacity: 0, y: 10 },
+                    show: { opacity: 1, y: 0 }
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
                   Call Now
-                </a>
-              </div>
-            </div>
-            <div className="md:w-1/2 order-1 md:order-2">
-              <div className="bg-black/30 p-6 rounded-xl border border-primary/20">
-                <h3 className="text-xl font-semibold mb-4 text-center">Quick Information</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-black/40 p-4 rounded-lg border border-gray-800">
+                </motion.a>
+              </motion.div>
+            </motion.div>
+            <motion.div 
+              className="md:w-1/2 order-1 md:order-2"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+            >
+              <motion.div 
+                className="bg-black/30 p-6 rounded-xl border border-primary/20"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+              >
+                <motion.h3 
+                  className="text-xl font-semibold mb-4 text-center"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.5 }}
+                >
+                  Quick Information
+                </motion.h3>
+                <motion.div 
+                  className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                  variants={{
+                    hidden: { opacity: 0 },
+                    show: {
+                      opacity: 1,
+                      transition: {
+                        staggerChildren: 0.1
+                      }
+                    }
+                  }}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true }}
+                >
+                  <motion.div 
+                    className="bg-black/40 p-4 rounded-lg border border-gray-800"
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      show: { opacity: 1, y: 0 }
+                    }}
+                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                  >
                     <h4 className="text-primary font-semibold mb-2">Location</h4>
                     <p className="text-gray-300 text-sm">4100 S Cooper St #4108, Arlington, TX 76015</p>
                     <p className="text-primary/80 text-xs mt-1">Near The Parks Mall at Arlington</p>
-                  </div>
+                  </motion.div>
                   
-                  <div className="bg-black/40 p-4 rounded-lg border border-gray-800">
+                  <motion.div 
+                    className="bg-black/40 p-4 rounded-lg border border-gray-800"
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      show: { opacity: 1, y: 0 }
+                    }}
+                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                  >
                     <h4 className="text-primary font-semibold mb-2">Hours</h4>
                     <p className="text-gray-300 text-sm">Every Day: 10AM - 11PM</p>
                     <p className="text-primary/80 text-xs mt-1">Open 7 days a week</p>
-                  </div>
+                  </motion.div>
                   
-                  <div className="bg-black/40 p-4 rounded-lg border border-gray-800">
+                  <motion.div 
+                    className="bg-black/40 p-4 rounded-lg border border-gray-800"
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      show: { opacity: 1, y: 0 }
+                    }}
+                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                  >
                     <h4 className="text-primary font-semibold mb-2">Contact</h4>
                     <p className="text-gray-300 text-sm">(682) 270-0334</p>
                     <p className="text-primary/80 text-xs mt-1">vapecavetx@gmail.com</p>
-                  </div>
+                  </motion.div>
                   
-                  <div className="bg-black/40 p-4 rounded-lg border border-gray-800">
+                  <motion.div 
+                    className="bg-black/40 p-4 rounded-lg border border-gray-800"
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      show: { opacity: 1, y: 0 }
+                    }}
+                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                  >
                     <h4 className="text-primary font-semibold mb-2">Specialties</h4>
                     <div className="flex flex-wrap gap-1">
                       <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">Delta 8</span>
@@ -824,39 +1036,85 @@ const HomePage = () => {
                       <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">Disposables</span>
                       <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">Kratom</span>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+                  </motion.div>
+                </motion.div>
+              </motion.div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Age Verification Notice */}
       <section className="py-14 bg-darker" id="age-verification">
         <div className="container mx-auto px-4 text-center">
-          <div className="max-w-3xl mx-auto bg-black p-8 rounded-xl shadow-lg border border-gray-800">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-primary mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <motion.div 
+            className="max-w-3xl mx-auto bg-black p-8 rounded-xl shadow-lg border border-gray-800"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+          >
+            <motion.svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              className="h-12 w-12 text-primary mx-auto mb-4" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+              initial={{ scale: 0.8, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-            <h2 className="text-2xl font-bold font-['Poppins'] mb-3 text-white">Age Verification Required</h2>
-            <p className="text-gray-300 mb-4">Our products are intended for adult smokers aged 21 and over. Proof of age will be required upon purchase both online and in our physical stores.</p>
-            <p className="text-gray-400 text-sm">We strictly adhere to all local, state, and federal regulations regarding the sale of vaping products.</p>
-          </div>
+            </motion.svg>
+            <motion.h2 
+              className="text-2xl font-bold font-['Poppins'] mb-3 text-white"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              Age Verification Required
+            </motion.h2>
+            <motion.p 
+              className="text-gray-300 mb-4"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
+              Our products are intended for adult smokers aged 21 and over. Proof of age will be required upon purchase both online and in our physical stores.
+            </motion.p>
+            <motion.p 
+              className="text-gray-400 text-sm"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              We strictly adhere to all local, state, and federal regulations regarding the sale of vaping products.
+            </motion.p>
+          </motion.div>
         </div>
       </section>
       
       {/* Scroll to top button */}
       {showScrollTop && (
-        <button 
+        <motion.button 
           onClick={scrollToTop}
           className="fixed bottom-6 right-6 bg-primary hover:bg-primary/90 text-white p-3 rounded-full shadow-lg transition-all duration-300 z-50 flex items-center justify-center"
           aria-label="Scroll to top"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.8, opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
           </svg>
-        </button>
+        </motion.button>
       )}
     </MainLayout>
   );
