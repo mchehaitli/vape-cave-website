@@ -1,5 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet";
+import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
@@ -274,7 +275,15 @@ const MainLayout: React.FC<MainLayoutProps> = ({
       </Helmet>
       
       <Navigation />
-      <main className="flex-grow">{children}</main>
+      <main className="flex-grow">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+        >
+          {children}
+        </motion.div>
+      </main>
       <Footer />
     </div>
   );

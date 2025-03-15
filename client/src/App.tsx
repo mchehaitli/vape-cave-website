@@ -3,6 +3,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { useState, useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
 import HomePage from "@/pages/HomePage";
 import LocationsPage from "@/pages/LocationsPage";
 import FriscoLocationPage from "@/pages/FriscoLocationPage";
@@ -10,13 +11,17 @@ import ArlingtonLocationPage from "@/pages/ArlingtonLocationPage";
 import ContactPage from "@/pages/ContactPage";
 import NotFound from "@/pages/not-found";
 import AgeVerificationModal from "@/components/AgeVerificationModal";
+import PageTransition from "@/components/PageTransition";
 
-// Custom hook to scroll to top on route changes
+// Custom hook to scroll to top on route changes with smooth animation
 function useScrollToTop() {
   const [location] = useLocation();
   
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   }, [location]);
   
   return null;
@@ -26,15 +31,22 @@ function Router() {
   // Use the scroll-to-top hook
   useScrollToTop();
   
+  // Get current location for AnimatePresence
+  const [location] = useLocation();
+  
   return (
-    <Switch>
-      <Route path="/" component={HomePage} />
-      <Route path="/locations" component={LocationsPage} />
-      <Route path="/locations/frisco" component={FriscoLocationPage} />
-      <Route path="/locations/arlington" component={ArlingtonLocationPage} />
-      <Route path="/contact" component={ContactPage} />
-      <Route component={NotFound} />
-    </Switch>
+    <AnimatePresence mode="wait">
+      <PageTransition key={location}>
+        <Switch>
+          <Route path="/" component={HomePage} />
+          <Route path="/locations" component={LocationsPage} />
+          <Route path="/locations/frisco" component={FriscoLocationPage} />
+          <Route path="/locations/arlington" component={ArlingtonLocationPage} />
+          <Route path="/contact" component={ContactPage} />
+          <Route component={NotFound} />
+        </Switch>
+      </PageTransition>
+    </AnimatePresence>
   );
 }
 

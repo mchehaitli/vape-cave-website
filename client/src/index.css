@@ -81,4 +81,50 @@
   .scroll-indicator.visible {
     opacity: 1;
   }
+  
+  /* Page transition effects */
+  .page-transition-wrapper {
+    position: relative;
+    overflow: hidden;
+    min-height: 100%;
+  }
+  
+  .page-transition-fade-in {
+    animation: fadeIn 0.5s ease-in-out forwards;
+  }
+  
+  .page-transition-slide-up {
+    animation: slideUp 0.5s ease-in-out forwards;
+  }
+  
+  .page-transition-slide-from-right {
+    animation: slideFromRight 0.5s ease-in-out forwards;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideUp {
+    from { 
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideFromRight {
+    from { 
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to { 
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
 }
