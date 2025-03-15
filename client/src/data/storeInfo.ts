@@ -49,7 +49,7 @@ export const storeLocations: StoreLocation[] = [
     phone: "(469) 294-0061",
     hours: "10:00 AM - 12:00 AM / 1:00 AM (Extended hours on weekends)",
     closedDays: "",
-    image: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    image: "/vapecave-logo.png",
     coordinates: {
       lat: 33.150730,
       lng: -96.822550
@@ -131,7 +131,7 @@ export const storeLocations: StoreLocation[] = [
     phone: "(682) 270-0334",
     hours: "10:00 AM - 11:00 PM",
     closedDays: "",
-    image: "https://images.unsplash.com/photo-1556740772-1a741367b93e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    image: "/vapecave-logo.png",
     coordinates: {
       lat: 32.687070,
       lng: -97.134800
