@@ -572,9 +572,9 @@ const LocationsPage = () => {
           </div>
           
           <div className="h-[600px] rounded-lg overflow-hidden shadow-xl relative">
-            {/* Using an embedded Google Maps iframe for maximum reliability */}
+            {/* Using an embedded Google Maps iframe showing both store locations */}
             <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d215127.12768244176!2d-97.0055676!3d32.8661978!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864e9cec90c4f8d3%3A0xa3e1b4a2c728b55c!2sDallas-Fort%20Worth%20Metropolitan%20Area%2C%20TX!5e0!3m2!1sen!2sus!4v1672321922233!5m2!1sen!2sus" 
+              src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d429850.6001198835!2d-97.23238611490045!3d32.866197817649984!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m3!1m2!1s0x864c3c9e26f9a2d7%3A0x8b26bf31c77df48b!2s6958%20Main%20St%20%23200%2C%20Frisco%2C%20TX%2075033!5e0!3m3!1m2!1s0x864e6377a56ba2c1%3A0x63d3de7c2a26fd3d!2s4100%20S%20Cooper%20St%20%234108%2C%20Arlington%2C%20TX%2076015!5e0" 
               width="100%" 
               height="100%" 
               className="absolute inset-0 border-0 dark-map"
