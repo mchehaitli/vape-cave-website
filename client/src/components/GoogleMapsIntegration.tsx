@@ -37,6 +37,14 @@ interface GoogleMapsIntegrationProps {
   apiKey?: string; // Allow direct passing of API key
 }
 
+// Extend Window interface to include Google Maps initialization
+declare global {
+  interface Window {
+    initGoogleMaps?: () => void;
+    google?: any;
+  }
+}
+
 // Using Google Maps API for enhanced maps functionality
 const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
   locations,
@@ -53,6 +61,14 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
   const [map, setMap] = useState<any>(null);
   const [markers, setMarkers] = useState<any[]>([]);
   
+  // Get the active location from the activeLocationId or default to the first location
+  const activeLocationObject = locations.find(loc => loc.id === activeLocationId) || locations[0];
+  
+  // Extract location information safely
+  const locationCity = activeLocationObject?.city || "";
+  const locationName = activeLocationObject ? `Vape Cave ${locationCity}` : "Vape Cave";
+  const locationId = activeLocationObject?.id || 1;
+  
   // Use API key from props if provided, otherwise from environment variables
   // Using import.meta.env for client-side environment variables in Vite
   const apiKey = propApiKey || import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '';
@@ -66,7 +82,7 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
     
     // Extract city name from address (assuming format like "address, City, State ZIP")
     const cityMatch = currentLocation.address.match(/,\s*([^,]+),\s*[A-Z]{2}/);
-    const locationCity = currentLocation.city || (cityMatch ? cityMatch[1].trim() : "");
+    const cityName = currentLocation.city || (cityMatch ? cityMatch[1].trim() : "");
     
     // Create a more precise hasMap URL with Google Place ID or Address for better discoverability
     const hasMapUrl = currentLocation.googlePlaceId 
@@ -85,12 +101,12 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
     const structuredData = {
       "@context": "https://schema.org",
       "@type": "VapeShop",
-      "name": `Vape Cave ${locationCity}`,
-      "description": `Premium vape shop in ${locationCity}, TX offering a wide selection of vapes, e-liquids, THC-A, Delta 8, and smoking accessories.`,
+      "name": `Vape Cave ${cityName}`,
+      "description": `Premium vape shop in ${cityName}, TX offering a wide selection of vapes, e-liquids, THC-A, Delta 8, and smoking accessories.`,
       "address": {
         "@type": "PostalAddress",
         "streetAddress": streetAddress,
-        "addressLocality": locationCity,
+        "addressLocality": cityName,
         "addressRegion": "TX",
         "postalCode": postalCode,
         "addressCountry": "US"
@@ -101,7 +117,7 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
         "longitude": currentLocation.position.lng
       },
       "hasMap": hasMapUrl,
-      "url": `https://vapecavetx.com/locations/${locationCity.toLowerCase()}`,
+      "url": `https://vapecavetx.com/locations/${cityName.toLowerCase()}`,
       "sameAs": [
         "https://www.facebook.com/vapecavetx",
         "https://www.instagram.com/vapecavetx/"
@@ -122,9 +138,6 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
     console.log("Current page URL:", window.location.href);
     console.log("Current hostname:", window.location.hostname);
   }, []);
-  
-  // Get the currently active location or the first one
-  const activeLocation = locations.find(loc => loc.id === activeLocationId) || locations[0];
   
   // Initialize Google Maps when the component mounts with improved error handling and API key validation
   useEffect(() => {
@@ -189,9 +202,9 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
           <div style="text-align: center; padding: 20px;">
             <p>Interactive map failed to load.</p>
             <img src="https://maps.googleapis.com/maps/api/staticmap?center=${
-              activeLocation ? `${activeLocation.position.lat},${activeLocation.position.lng}` : "33.150730,-96.822550"
+              activeLocationObject ? `${activeLocationObject.position.lat},${activeLocationObject.position.lng}` : "33.150730,-96.822550"
             }&zoom=13&size=600x400&markers=color:orange%7C${
-              activeLocation ? `${activeLocation.position.lat},${activeLocation.position.lng}` : "33.150730,-96.822550"
+              activeLocationObject ? `${activeLocationObject.position.lat},${activeLocationObject.position.lng}` : "33.150730,-96.822550"
             }&key=${apiKey}" alt="Static Map of Location" style="max-width: 100%; border-radius: 8px; margin-top: 10px;" />
           </div>
         `;
@@ -212,7 +225,7 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
         delete (window as any)[callbackName];
       }
     };
-  }, [apiKey, activeLocation]);
+  }, [apiKey, activeLocationObject]);
   
   // Initialize the map when the API is loaded
   useEffect(() => {
@@ -223,13 +236,13 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
   
   // Update the map when the active location changes
   useEffect(() => {
-    if (map && activeLocation && window.google && window.google.maps) {
-      map.setCenter(activeLocation.position);
+    if (map && activeLocationObject && window.google && window.google.maps) {
+      map.setCenter(activeLocationObject.position);
       
       // Highlight the active marker
       markers.forEach(marker => {
-        const locationId = Number(marker.get('locationId'));
-        if (locationId === activeLocation.id) {
+        const markerLocationId = Number(marker.get('locationId'));
+        if (markerLocationId === activeLocationObject.id) {
           marker.setAnimation(window.google.maps.Animation.BOUNCE);
           setTimeout(() => {
             marker.setAnimation(null);
@@ -237,7 +250,7 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
         }
       });
     }
-  }, [activeLocation, map, markers]);
+  }, [activeLocationObject, map, markers]);
   
   // Initialize the map
   const initializeMap = () => {
@@ -247,7 +260,7 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
     
     // Create the map
     const newMap = new google.maps.Map(mapRef.current, {
-      center: activeLocation ? activeLocation.position : { lat: 39.8, lng: -98.5 },
+      center: activeLocationObject ? activeLocationObject.position : { lat: 39.8, lng: -98.5 },
       zoom,
       mapTypeId: mapType,
       mapTypeControl: true,
@@ -361,9 +374,9 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
   
   // Fallback to iframe embed if Google Maps API isn't available
   const renderFallbackMap = () => {
-    const embedUrl = activeLocation?.position 
-      ? `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3056.2408651289297!2d${activeLocation.position.lng}!3d${activeLocation.position.lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDA5JzAyLjYiTiA5NsKwNDknMjYuMiJX!5e0!3m2!1sen!2sus!4v1693311756407!5m2!1sen!2sus`
-      : 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3056.2408651289297!2d-96.8236!3d33.1562!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a1983c178c5%3A0xf4f40d590e54a8b0!2s6958%20Main%20St%2C%20Frisco%2C%20TX%2075033!5e0!3m2!1sen!2sus!4v1693311756407!5m2!1sen!2sus';
+    const embedUrl = activeLocationObject?.position 
+      ? `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3056.2408651289297!2d${activeLocationObject.position.lng}!3d${activeLocationObject.position.lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDA5JzAyLjYiTiA5NsKwNDknMjYuMiJX!5e0!3m2!1sen!2sus!4v1693311756407!5m2!1sen!2sus`
+      : 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3056.2408651289297!2d-96.8236!3d33.1562!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDA5JzAyLjYiTiA5NsKwNDknMjYuMiJX!5e0!3m2!1sen!2sus!4v1693311756407!5m2!1sen!2sus';
     
     return (
       <div className="relative">
@@ -380,14 +393,6 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
       </div>
     );
   };
-  
-  // Get the active location from the activeLocationId or default to the first location
-  const activeLocationObject = locations.find(loc => loc.id === activeLocationId) || locations[0];
-  
-  // Extract location information safely
-  const locationCity = activeLocationObject?.city || "";
-  const locationName = activeLocationObject ? `Vape Cave ${locationCity}` : "Vape Cave";
-  const locationId = activeLocationObject?.id || 1;
   
   return (
     <>
@@ -411,7 +416,7 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
                 "streetAddress": "${activeLocationObject?.address || ""}",
                 "addressLocality": "${locationCity}",
                 "addressRegion": "TX", 
-                "postalCode": "${activeLocationObject?.address?.match(/\d{5}(?![\d-])/) || ""}",
+                "postalCode": "${activeLocationObject?.address?.match(/\\d{5}(?![\\d-])/) || ""}",
                 "addressCountry": "US"
               },
               "geo": {
@@ -436,13 +441,13 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
                 {
                   "@type": "Map",
                   "name": "Google Maps Navigation",
-                  "url": "https://www.google.com/maps/place/?q=place_id:${currentLocation?.googlePlaceId || ""}",
+                  "url": "https://www.google.com/maps/place/?q=place_id:${activeLocationObject?.googlePlaceId || ""}",
                   "description": "Find our ${locationCity} vape shop using Google Maps"
                 },
                 {
                   "@type": "Map",
                   "name": "Apple Maps Navigation",
-                  "url": "${currentLocation?.appleMapsLink || `https://maps.apple.com/?address=${encodeURIComponent(currentLocation?.address || '')}&ll=${currentLocation?.position?.lat || 0},${currentLocation?.position?.lng || 0}`}",
+                  "url": "${activeLocationObject?.appleMapsLink || `https://maps.apple.com/?address=${encodeURIComponent(activeLocationObject?.address || '')}&ll=${activeLocationObject?.position?.lat || 0},${activeLocationObject?.position?.lng || 0}`}",
                   "description": "Navigate to Vape Cave ${locationCity} using Apple Maps"
                 }
               ],
@@ -470,7 +475,7 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
                 {
                   "@type": "PropertyValue",
                   "name": "Google Place ID",
-                  "value": "${currentLocation?.googlePlaceId || ""}"
+                  "value": "${activeLocationObject?.googlePlaceId || ""}"
                 }
               ],
               "specialOpeningHoursSpecification": {
@@ -499,28 +504,28 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
           `}
         </script>
         {/* Enhanced geo meta tags - recommended by Google for local SEO */}
-        <meta name="geo.position" content={`${currentLocation?.position?.lat || 0};${currentLocation?.position?.lng || 0}`} />
+        <meta name="geo.position" content={`${activeLocationObject?.position?.lat || 0};${activeLocationObject?.position?.lng || 0}`} />
         <meta name="geo.placename" content={`Vape Cave ${locationCity}`} />
         <meta name="geo.region" content="US-TX" />
-        <meta name="ICBM" content={`${currentLocation?.position?.lat || 0}, ${currentLocation?.position?.lng || 0}`} />
+        <meta name="ICBM" content={`${activeLocationObject?.position?.lat || 0}, ${activeLocationObject?.position?.lng || 0}`} />
         
         {/* Location-specific metadata with enhanced Google Maps information */}
         <meta name="location-city" content={locationCity} />
         <meta name="location-state" content="Texas" />
-        <meta name="location-zipcode" content={`${currentLocation?.fullAddress?.match(/\d{5}(?![\d-])/) || ""}`} />
-        <meta name="google-place-id" content={currentLocation?.googlePlaceId || ""} />
-        <meta name="place:location:latitude" content={`${currentLocation?.position?.lat || 0}`} />
-        <meta name="place:location:longitude" content={`${currentLocation?.position?.lng || 0}`} />
+        <meta name="location-zipcode" content={`${activeLocationObject?.address?.match(/\d{5}(?![\d-])/) || ""}`} />
+        <meta name="google-place-id" content={activeLocationObject?.googlePlaceId || ""} />
+        <meta name="place:location:latitude" content={`${activeLocationObject?.position?.lat || 0}`} />
+        <meta name="place:location:longitude" content={`${activeLocationObject?.position?.lng || 0}`} />
         
         {/* Business contact information - enhanced for improved local search */}
         <meta name="business-name" content={`Vape Cave ${locationCity}`} />
         <meta name="business-type" content="Vape Shop" />
-        <meta name="business-phone" content={currentLocation?.phone ? `+1${currentLocation.phone.replace(/[^0-9]/g, '')}` : ""} />
-        <meta name="business-email" content={currentLocation?.email || "info@vapecavetx.com"} />
-        <meta name="business:contact_data:street_address" content={currentLocation?.address || ""} />
+        <meta name="business-phone" content={activeLocationObject?.phone ? `+1${activeLocationObject.phone.replace(/[^0-9]/g, '')}` : ""} />
+        <meta name="business-email" content={activeLocationObject?.email || "info@vapecavetx.com"} />
+        <meta name="business:contact_data:street_address" content={activeLocationObject?.address || ""} />
         <meta name="business:contact_data:locality" content={locationCity} />
         <meta name="business:contact_data:region" content="TX" />
-        <meta name="business:contact_data:postal_code" content={`${currentLocation?.fullAddress?.match(/\d{5}(?![\d-])/) || ""}`} />
+        <meta name="business:contact_data:postal_code" content={`${activeLocationObject?.address?.match(/\d{5}(?![\d-])/) || ""}`} />
         <meta name="business:contact_data:country_name" content="United States" />
         
         {/* Enhanced product categories for better product discovery */}
@@ -547,20 +552,18 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
           renderFallbackMap()
         )}
         
-        {showDirectionsLink && activeLocation && (
-          <div className="bg-white/80 text-xs p-2 absolute bottom-0 right-0 rounded-tl-lg shadow-md z-10">
+        {showDirectionsLink && activeLocationObject && (
+          <div className="absolute bottom-4 right-4 z-10">
             <a 
-              href={activeLocation.googlePlaceId 
-                ? `https://www.google.com/maps/place/?q=place_id:${activeLocation.googlePlaceId}`
-                : `https://www.google.com/maps/dir/?api=1&destination=${activeLocation.position.lat},${activeLocation.position.lng}`
-              }
-              target="_blank" 
+              href={activeLocationObject.googlePlaceId 
+                ? `https://www.google.com/maps/place/?q=place_id:${activeLocationObject.googlePlaceId}`
+                : `https://www.google.com/maps/dir/?api=1&destination=${activeLocationObject.position.lat},${activeLocationObject.position.lng}`}
+              target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center text-primary font-semibold hover:underline"
-              title="Get directions to this location"
+              className="bg-white hover:bg-orange-100 text-orange-500 font-bold py-2 px-4 rounded-full shadow-lg flex items-center transition-all duration-300 ease-in-out"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" />
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
               </svg>
               Get Directions
             </a>
@@ -570,13 +573,5 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
     </>
   );
 };
-
-// Add typings to the global window object
-declare global {
-  interface Window {
-    initGoogleMaps?: () => void;
-    google?: any;
-  }
-}
 
 export default GoogleMapsIntegration;
