@@ -136,8 +136,7 @@ export const storeLocations: StoreLocation[] = [
       lat: 32.687070,
       lng: -97.134800
     },
-    googlePlaceId: "ChIJ23422NdJSYYRVX94pdZlUGg", 
-    plusCode: "MVJ7+7W Arlington, Texas",
+    googlePlaceId: "ChIJ23422NdJSYYRVX94pdZlUGg",
     appleMapsLink: "https://maps.apple.com/?address=4100%20S%20Cooper%20St%20%234108,%20Arlington,%20TX%20%2076015,%20United%20States&ll=32.687070,-97.134800&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m",
     mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3357.926302595539!2d-97.13739482379145!3d32.68707018061235!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864e6377a56ba2c1%3A0x63d3de7c2a26fd3d!2s4100%20S%20Cooper%20St%20%234108%2C%20Arlington%2C%20TX%2076015!5e0!3m2!1sen!2sus!4v1672321865030!5m2!1sen!2sus",
     email: "vapecavetx@gmail.com",
@@ -227,16 +226,10 @@ export const getFormattedLocationsForMap = () => {
     name: loc.name,
     address: loc.fullAddress,
     position: loc.coordinates,
-    plusCode: loc.plusCode, // Include Plus Code for more precise navigation
+    googlePlaceId: loc.googlePlaceId, // Include Google Place ID for direct linking
+    appleMapsLink: loc.appleMapsLink, // Include Apple Maps link for iOS devices
     city: loc.city // Include city for better location context
   }));
-};
-
-// Helper function to get a location by Plus Code
-export const getLocationByPlusCode = (plusCode: string): StoreLocation | undefined => {
-  return storeLocations.find(location => 
-    location.plusCode?.toLowerCase().includes(plusCode.toLowerCase())
-  );
 };
 
 // Get the Frisco location (for convenience in SEO-focused components)
@@ -274,7 +267,7 @@ export const generateStructuredDataForLocation = (location: StoreLocation) => {
       "latitude": location.coordinates.lat,
       "longitude": location.coordinates.lng
     },
-    "hasMap": location.plusCode ? `https://plus.codes/${location.plusCode.replace(/\s+/g, '')}` : undefined,
+    "hasMap": location.googlePlaceId ? `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}` : undefined,
     "openingHoursSpecification": Object.entries(location.openingHours).map(([day, hours]) => {
       const parts = hours.split(' - ');
       return {
@@ -286,8 +279,8 @@ export const generateStructuredDataForLocation = (location: StoreLocation) => {
     }),
     "additionalProperty": [{
       "@type": "PropertyValue",
-      "name": "Plus Code",
-      "value": location.plusCode || ""
+      "name": "Google Place ID",
+      "value": location.googlePlaceId || ""
     }]
   };
 };
