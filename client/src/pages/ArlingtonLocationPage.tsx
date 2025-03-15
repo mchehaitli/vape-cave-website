@@ -70,9 +70,7 @@ const ArlingtonLocationPage: React.FC = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight text-white">
-                <span className="font-['Poppins']">Vape Cave</span> Arlington
-              </h1>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 drop-shadow-lg font-['Poppins']">Vape Cave Arlington</h1>
               <div className="h-1 w-24 bg-primary rounded-full mb-6"></div>
               <p className="text-xl mb-6 text-gray-300">Your premier destination for premium vaping products in Arlington, Texas.</p>
               
@@ -390,7 +388,7 @@ const ArlingtonLocationPage: React.FC = () => {
                     
                     {/* Featured Products at Arlington */}
                     <h3 className="text-xl font-semibold mb-4 text-white">Featured Products at Arlington</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                       {arlingtonProducts.map((product) => (
                         <div key={product.id} className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700">
                           <div className="h-40 overflow-hidden">
@@ -401,16 +399,9 @@ const ArlingtonLocationPage: React.FC = () => {
                             />
                           </div>
                           <div className="p-4">
-                            <h4 className="font-medium text-white mb-1">{product.name}</h4>
-                            <p className="text-sm text-gray-300 mb-2">{product.description}</p>
-                            <div className="flex justify-between items-center">
-                              <span className="text-primary font-bold">${product.price.toFixed(2)}</span>
-                              {product.featuredLabel && (
-                                <span className="bg-primary text-white text-xs px-2 py-1 rounded">
-                                  {product.featuredLabel}
-                                </span>
-                              )}
-                            </div>
+                            <h4 className="font-medium mb-1 text-white">{product.name}</h4>
+                            <p className="text-sm text-gray-300 mb-2">{product.category}</p>
+                            <p className="font-bold text-primary">${product.price.toFixed(2)}</p>
                           </div>
                         </div>
                       ))}
