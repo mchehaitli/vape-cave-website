@@ -14,6 +14,7 @@ const Navigation = () => {
     { label: "Home", path: "/", ariaLabel: "Go to homepage" },
     { label: "Locations", path: "/locations", ariaLabel: "Find our store locations" },
     { label: "Frisco Store", path: "/locations/frisco", ariaLabel: "Visit our Frisco TX location", highlight: true },
+    { label: "Arlington Store", path: "/locations/arlington", ariaLabel: "Visit our Arlington TX location", highlight: true },
     { label: "Contact", path: "/contact", ariaLabel: "Contact us" },
   ];
 
