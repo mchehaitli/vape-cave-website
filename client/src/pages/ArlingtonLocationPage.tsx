@@ -378,16 +378,53 @@ const ArlingtonLocationPage: React.FC = () => {
         </ol>
       </nav>
       
+      {/* Hero Banner */}
+      <section className="relative h-72 md:h-96 overflow-hidden bg-gray-900 py-10">
+        <div className="absolute inset-0">
+          <img 
+            src={location.image} 
+            alt="Vape Cave Arlington storefront" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/20 mix-blend-multiply"></div>
+          <div className="absolute inset-0 opacity-20 bg-pattern"></div>
+        </div>
+        <div className="container mx-auto px-4 h-full flex flex-col justify-center relative z-10 text-white">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 drop-shadow-lg font-['Poppins']">Vape Cave Arlington</h1>
+          <p className="text-xl md:text-2xl max-w-xl drop-shadow-md text-white/90">
+            Arlington's premier destination for premium vaping products, Delta 8, THC-A, and more.
+          </p>
+          <div className="flex flex-wrap gap-3 mt-6">
+            <DirectionsButton
+              address={location.fullAddress}
+              lat={location.coordinates.lat}
+              lng={location.coordinates.lng}
+              buttonText="Get Directions"
+              className="bg-primary hover:bg-primary/90 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300"
+              googlePlaceId={location.googlePlaceId}
+            />
+            <a 
+              href={`tel:${location.phone.replace(/[^0-9]/g, '')}`} 
+              className="bg-white/20 hover:bg-white/30 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 backdrop-blur-sm"
+            >
+              Call Us: {location.phone}
+            </a>
+          </div>
+        </div>
+      </section>
+      
       {/* Main content with store information */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left column: Store image and details */}
-          <div>
-            <div className="rounded-lg overflow-hidden shadow-lg mb-6">
-              <img 
-                src={location.image} 
-                alt={`${location.name} storefront in ${location.city}, TX`} 
-                className="w-full h-auto object-cover"
+      <section className="py-12 bg-dark text-white">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Left column: Store information */}
+            <div>
+              <h2 className="text-2xl font-bold font-['Poppins'] mb-6 text-white">About Our Arlington Store</h2>
+              <div className="rounded-lg overflow-hidden shadow-lg mb-6">
+                <img 
+                  src={location.image} 
+                  alt={`${location.name} storefront in ${location.city}, TX`} 
+                  className="w-full h-auto object-cover"
                 width="800"
                 height="600"
               />
@@ -564,7 +601,9 @@ const ArlingtonLocationPage: React.FC = () => {
               </div>
             </div>
           </div>
+          {/* Close the right column div */}
         </div>
+        {/* Close the grid container div */}
         
         <div className="mt-12">
           <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Areas We Serve</h2>
@@ -577,6 +616,7 @@ const ArlingtonLocationPage: React.FC = () => {
           </div>
         </div>
       </div>
+      </section>
     </MainLayout>
   );
 };
