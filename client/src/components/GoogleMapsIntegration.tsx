@@ -9,7 +9,8 @@ interface Location {
     lat: number;
     lng: number;
   };
-  plusCode?: string; // Add optional Plus Code field
+  googlePlaceId?: string; // Google Place ID for direct linking
+  appleMapsLink?: string; // Direct Apple Maps link
   city?: string; // Add optional city for better location context
 }
 
@@ -61,9 +62,9 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
     const cityMatch = friscoLocation.address.match(/,\s*([^,]+),\s*[A-Z]{2}/);
     const locationCity = friscoLocation.city || (cityMatch ? cityMatch[1].trim() : "Frisco");
     
-    // Create a more precise hasMap URL with the Plus Code for better discoverability
-    const hasMapUrl = friscoLocation.plusCode 
-      ? `https://plus.codes/${friscoLocation.plusCode}`
+    // Create a more precise hasMap URL with Google Place ID or Address for better discoverability
+    const hasMapUrl = friscoLocation.googlePlaceId 
+      ? `https://www.google.com/maps/place/?q=place_id:${friscoLocation.googlePlaceId}`
       : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(friscoLocation.address)}`;
       
     // Split address into components for more structured markup
