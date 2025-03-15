@@ -571,6 +571,7 @@ const LocationsPage = () => {
               height="100%"
               width="100%"
               zoom={10}
+              apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
             />
           </div>
         </div>
