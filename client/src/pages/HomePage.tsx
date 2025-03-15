@@ -136,15 +136,9 @@ const HomePage = () => {
         "openingHoursSpecification": [
           {
             "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Sunday"],
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
             "opens": "10:00",
-            "closes": "24:00"
-          },
-          {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Friday", "Saturday"],
-            "opens": "10:00",
-            "closes": "01:00"
+            "closes": "23:00"
           }
         ]
       }
