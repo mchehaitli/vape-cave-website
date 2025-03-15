@@ -725,18 +725,38 @@ const HomePage = () => {
                 </a>
               </div>
             </div>
-            <div className="md:w-1/2 mb-6 md:mb-0 order-1 md:order-2">
-              <div className="rounded-lg overflow-hidden shadow-xl border border-gray-700 h-full">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3357.926302595539!2d-97.13739482379145!3d32.68707018061235!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864e6377a56ba2c1%3A0x63d3de7c2a26fd3d!2s4100%20S%20Cooper%20St%20%234108%2C%20Arlington%2C%20TX%2076015!5e0!3m2!1sen!2sus!4v1672321865030!5m2!1sen!2sus"
-                  width="100%"
-                  height="450"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  title="Arlington Store Location Map"
-                  referrerPolicy="no-referrer-when-downgrade"
-                ></iframe>
+            <div className="md:w-1/2 order-1 md:order-2">
+              <div className="bg-black/30 p-6 rounded-xl border border-primary/20">
+                <h3 className="text-xl font-semibold mb-4 text-center">Quick Information</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-black/40 p-4 rounded-lg border border-gray-800">
+                    <h4 className="text-primary font-semibold mb-2">Location</h4>
+                    <p className="text-gray-300 text-sm">4100 S Cooper St #4108, Arlington, TX 76015</p>
+                    <p className="text-primary/80 text-xs mt-1">Near The Parks Mall at Arlington</p>
+                  </div>
+                  
+                  <div className="bg-black/40 p-4 rounded-lg border border-gray-800">
+                    <h4 className="text-primary font-semibold mb-2">Hours</h4>
+                    <p className="text-gray-300 text-sm">Every Day: 10AM - 11PM</p>
+                    <p className="text-primary/80 text-xs mt-1">Open 7 days a week</p>
+                  </div>
+                  
+                  <div className="bg-black/40 p-4 rounded-lg border border-gray-800">
+                    <h4 className="text-primary font-semibold mb-2">Contact</h4>
+                    <p className="text-gray-300 text-sm">(682) 270-0334</p>
+                    <p className="text-primary/80 text-xs mt-1">vapecavetx@gmail.com</p>
+                  </div>
+                  
+                  <div className="bg-black/40 p-4 rounded-lg border border-gray-800">
+                    <h4 className="text-primary font-semibold mb-2">Specialties</h4>
+                    <div className="flex flex-wrap gap-1">
+                      <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">Delta 8</span>
+                      <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">THC-A</span>
+                      <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">Disposables</span>
+                      <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">Kratom</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
