@@ -209,7 +209,7 @@ const LocationsPage = () => {
             "url": "https://vapecavetx.com",
             "logo": "https://vapecavetx.com/logo.png",
             "description": "Vape Cave offers premium vaping products, e-liquids, and accessories at our convenient Frisco and Arlington, TX locations. We specialize in Disposable Vapes, Delta 8, THC-A, Delta 9, pre-rolls, flower, vape pens, and cartridges.",
-            "keywords": "vape shop frisco, premium vape frisco, frisco vape shop, delta 8 frisco, thc-a frisco",
+            "keywords": "vape shop frisco, vape shop arlington, premium vape frisco, premium vape arlington, frisco vape shop, arlington vape shop, delta 8 frisco, delta 8 arlington, thc-a frisco, thc-a arlington, vape dallas fort worth, vape shop dfw",
             "sameAs": [
               "https://facebook.com/vapecavetx",
               "https://instagram.com/vapecavetx",
@@ -221,6 +221,13 @@ const LocationsPage = () => {
                 "telephone": "+14692940061",
                 "contactType": "customer service",
                 "areaServed": ["Frisco", "Allen", "Plano", "McKinney", "Dallas", "North Texas"],
+                "availableLanguage": "English"
+              },
+              {
+                "@type": "ContactPoint",
+                "telephone": "+16822700334",
+                "contactType": "customer service",
+                "areaServed": ["Arlington", "Fort Worth", "Grand Prairie", "Mansfield", "Dallas", "North Texas"],
                 "availableLanguage": "English"
               }
             ],
@@ -236,6 +243,13 @@ const LocationsPage = () => {
                 "name": "Vape Cave Frisco",
                 "url": "https://vapecavetx.com/locations/frisco",
                 "mainEntityOfPage": "https://vapecavetx.com/locations/frisco"
+              },
+              {
+                "@type": "VapeShop", 
+                "@id": "https://vapecavetx.com/locations/arlington/#shop",
+                "name": "Vape Cave Arlington",
+                "url": "https://vapecavetx.com/locations/arlington",
+                "mainEntityOfPage": "https://vapecavetx.com/locations/arlington"
               }
             ],
             "location": storeLocations.map(location => generateLocalBusinessSchema(location))
