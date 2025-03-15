@@ -151,19 +151,19 @@ const HomePage = () => {
         "@type": "FindAction",
         "target": {
           "@type": "EntryPoint",
-          "urlTemplate": "https://www.google.com/maps/search/?api=1&query=552G%2B86+Frisco%2C+Texas"
+          "urlTemplate": "https://maps.app.goo.gl/jzbqUDyvvGHuwyXJ7"
         },
-        "description": "Find directions to our Frisco store using Google Maps Plus Code",
+        "description": "Find directions to our Frisco store using Google Maps",
         "query-input": "required name=location"
       },
       {
         "@type": "FindAction",
         "target": {
           "@type": "EntryPoint",
-          "urlTemplate": "https://plus.codes/552G+86_Frisco,_Texas"
+          "urlTemplate": "https://maps.apple.com/?address=6958%20Main%20St,%20Unit%20200,%20Frisco,%20TX%20%2075033,%20United%20States&auid=14231591118256703794&ll=33.150849,-96.824392&lsp=9902&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m"
         },
-        "description": "Use Plus Code to find our Frisco location",
-        "query-input": "required name=pluscode"
+        "description": "Find our Frisco location using Apple Maps",
+        "query-input": "required name=location"
       },
       {
         "@type": "SearchAction",
@@ -239,7 +239,7 @@ const HomePage = () => {
                 </Link>
                 <Link href="/locations/frisco">
                   <div className="bg-primary/30 hover:bg-primary/40 border border-primary/50 text-white font-bold py-4 px-10 rounded-lg transition-all duration-300 cursor-pointer backdrop-blur-sm hover:shadow-lg hover:-translate-y-1">
-                    Frisco Store (552G+86)
+                    Frisco Store
                   </div>
                 </Link>
               </div>
@@ -267,7 +267,7 @@ const HomePage = () => {
               data-location="frisco"
             >
               <div className="p-6">
-                <h3 className="font-['Poppins'] font-semibold text-2xl mb-4 text-white" itemProp="name">Frisco Location (552G+86)</h3>
+                <h3 className="font-['Poppins'] font-semibold text-2xl mb-4 text-white" itemProp="name">Frisco Location</h3>
                 <div className="space-y-3 mb-5">
                   <div className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -337,7 +337,7 @@ const HomePage = () => {
                 </Link>
                 
                 <a 
-                  href="https://www.google.com/maps/search/?api=1&query=552G%2B86+Frisco%2C+Texas" 
+                  href="https://maps.app.goo.gl/jzbqUDyvvGHuwyXJ7" 
                   target="_blank"
                   rel="noopener noreferrer" 
                   className="inline-block bg-transparent border border-primary text-primary hover:bg-primary/10 font-bold py-2 px-6 rounded-lg transition-colors shadow-md cursor-pointer ml-2"
@@ -400,9 +400,9 @@ const HomePage = () => {
         itemProp="departments"
       >
         <meta itemProp="name" content="Vape Cave Frisco" />
-        <meta itemProp="identifier" content="552G+86 Frisco, Texas" />
-        <meta itemProp="alternateName" content="Vape Cave at 552G+86" />
-        <meta itemProp="description" content="Premier vape shop in Frisco, TX with a wide selection of vaping products, disposables, delta 8, and THC-A products. Easy to find using Plus Code 552G+86 Frisco, Texas." />
+        <meta itemProp="identifier" content="ChIJxXjrR3wVkFQRcKK89i-aFDw" />
+        <meta itemProp="alternateName" content="Vape Cave Frisco Main Street" />
+        <meta itemProp="description" content="Premier vape shop in Frisco, TX with a wide selection of vaping products, disposables, delta 8, and THC-A products. Conveniently located at 6958 Main St #200." />
         <meta itemProp="image" content="https://vapecavetx.com/frisco-location.jpg" />
         <meta itemProp="url" content="https://vapecavetx.com/locations/frisco" />
         <meta itemProp="priceRange" content="$$" />
@@ -431,35 +431,34 @@ const HomePage = () => {
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="md:w-1/2">
               <h2 className="text-3xl font-bold font-['Poppins'] mb-3">
-                Find Us Easily at 552G+86 Frisco
+                Find Us Easily in Frisco
               </h2>
               <div className="h-1 w-24 bg-primary rounded-full mb-6"></div>
               <p className="text-gray-300 mb-6">
-                Our Frisco location is conveniently accessible using Google Maps Plus Code navigation.
-                Simply enter <span className="text-primary font-semibold">552G+86 Frisco, Texas</span> in
-                your maps app to find us instantly - no complicated address needed!
+                Our Frisco location is conveniently accessible at <span className="text-primary font-semibold">6958 Main St #200, Frisco, TX 75033</span>.
+                Use our direct Google Maps or Apple Maps links below to navigate to our store with ease.
               </p>
               
               <div className="mb-8">
-                <h3 className="text-xl font-semibold mb-3">Why use Plus Codes?</h3>
+                <h3 className="text-xl font-semibold mb-3">Why Visit Our Frisco Location?</h3>
                 <ul className="space-y-2 text-gray-300">
                   <li className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    Pinpoint accuracy, even in complex shopping areas
+                    Convenient Main Street location with ample parking
                   </li>
                   <li className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    Works with Google Maps, Apple Maps and other navigation apps
+                    Expert staff providing personalized recommendations
                   </li>
                   <li className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    Shorter than a full address - easier to remember and share
+                    Extensive selection of premium products
                   </li>
                 </ul>
               </div>
@@ -471,7 +470,7 @@ const HomePage = () => {
                   </div>
                 </Link>
                 <a 
-                  href="https://www.google.com/maps/search/?api=1&query=552G%2B86+Frisco%2C+Texas" 
+                  href="https://maps.app.goo.gl/jzbqUDyvvGHuwyXJ7" 
                   target="_blank"
                   rel="noopener noreferrer" 
                   className="inline-block bg-white/10 hover:bg-white/20 text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-md cursor-pointer"
@@ -492,7 +491,7 @@ const HomePage = () => {
                 <div className="bg-black/40 p-4 rounded-lg border border-gray-800">
                   <h4 className="text-primary font-semibold mb-2">Location</h4>
                   <p className="text-gray-300 text-sm">6958 Main St #200, Frisco, TX 75033</p>
-                  <p className="text-primary/80 text-xs mt-1">Plus Code: 552G+86 Frisco, Texas</p>
+                  <p className="text-primary/80 text-xs mt-1">Main Street Shopping Area</p>
                 </div>
                 
                 <div className="bg-black/40 p-4 rounded-lg border border-gray-800">
