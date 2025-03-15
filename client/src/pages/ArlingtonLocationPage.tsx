@@ -437,85 +437,88 @@ const ArlingtonLocationPage: React.FC = () => {
               </div>
               
               {showDetails && (
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-700">Address</h3>
-                    <p className="text-gray-600">{location.address}</p>
-                    <p className="text-gray-600">{location.city}, TX 76015</p>
-                    <div className="mt-2">
-                      <DirectionsButton 
-                        address={location.fullAddress}
-                        lat={location.coordinates.lat}
-                        lng={location.coordinates.lng}
-                        googlePlaceId={location.googlePlaceId}
-                        appleMapsLink={location.appleMapsLink}
-                        buttonText="Get Directions"
-                        variant="primary"
-                        showIcon={true}
-                      />
+                <div className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700 p-6 mb-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <h3 className="text-lg font-semibold mb-3 text-white">Address</h3>
+                      <p className="text-gray-300 mb-1">{location.fullAddress}</p>
+                      <p className="text-gray-300 mb-4">
+                        <span className="font-medium">Google Place ID:</span> {location.googlePlaceId || "ChIJ23422NdJSYYRVX94pdZlUGg"}
+                      </p>
+                      
+                      <h3 className="text-lg font-semibold mb-3 text-white">Contact</h3>
+                      <p className="text-gray-300 mb-1">
+                        <span className="font-medium">Phone:</span> {location.phone}
+                      </p>
+                      <p className="text-gray-300 mb-4">
+                        <span className="font-medium">Email:</span> {location.email}
+                      </p>
+                      
+                      <h3 className="text-lg font-semibold mb-3 text-white">Neighborhood</h3>
+                      <p className="text-gray-300 mb-4">{location.neighborhoodInfo}</p>
+                    </div>
+                    
+                    <div>
+                      <h3 className="text-lg font-semibold mb-3 text-white">Hours of Operation</h3>
+                      <div className="space-y-2">
+                        {Object.entries(location.openingHours).map(([day, hours]) => (
+                          <div key={day} className="flex justify-between py-1 border-b border-gray-700">
+                            <span className="font-medium text-white">{day}</span>
+                            <span className="text-gray-300">{hours}</span>
+                          </div>
+                        ))}
+                      </div>
+                      
+                      <div className="mt-6">
+                        <h3 className="text-lg font-semibold mb-3 text-white">Amenities</h3>
+                        <div className="flex flex-wrap gap-2">
+                          {location.amenities.map((amenity, index) => (
+                            <span 
+                              key={index} 
+                              className="bg-primary/20 text-white text-sm py-1 px-3 rounded-full border border-gray-700"
+                            >
+                              {amenity}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   </div>
                   
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-700">Contact</h3>
-                    <p className="text-gray-600">Phone: <a href={`tel:${location.phone}`} className="text-primary hover:underline">{location.phone}</a></p>
-                    <p className="text-gray-600">Email: <a href={`mailto:${location.email}`} className="text-primary hover:underline">{location.email}</a></p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-700">Hours of Operation</h3>
-                    <div className="grid grid-cols-2 gap-2">
-                      {Object.entries(location.openingHours).map(([day, hours]) => (
-                        <div key={day} className="text-gray-600">
-                          <span className="font-medium">{day}:</span> {hours}
-                        </div>
+                  <div className="mt-6 pt-6 border-t border-gray-700">
+                    <h3 className="text-lg font-semibold mb-3 text-white">Services Offered</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {location.services.map((service, index) => (
+                        <span 
+                          key={index} 
+                          className="bg-primary/20 text-white text-sm py-1 px-3 rounded-full border border-gray-700"
+                        >
+                          {service}
+                        </span>
                       ))}
                     </div>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-700">Payments Accepted</h3>
-                    <p className="text-gray-600">{location.acceptedPayments.join(", ")}</p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-700">Parking</h3>
-                    <p className="text-gray-600">{location.parking}</p>
-                  </div>
-                  
-                  {location.publicTransit && (
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-700">Public Transportation</h3>
-                      <p className="text-gray-600">{location.publicTransit}</p>
-                    </div>
-                  )}
-                  
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-700">ADA Accessibility</h3>
-                    <p className="text-gray-600">Our store is fully ADA accessible.</p>
                   </div>
                 </div>
               )}
             </div>
             
-            {/* Featured Products Section */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700 p-6 mb-6">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold text-gray-800">Featured Products</h2>
+                <h3 className="text-lg font-semibold text-white">Popular Products</h3>
                 <button 
                   onClick={() => setShowProducts(!showProducts)}
                   className="text-primary hover:text-primary/80"
                   aria-expanded={showProducts}
                 >
-                  {showProducts ? 'Hide' : 'Show'}
+                  {showProducts ? 'Hide Products' : 'Show Products'}
                 </button>
               </div>
               
               {showProducts && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {arlingtonProducts.map((product) => (
-                    <div key={product.id} className="border rounded-lg p-3 hover:shadow-md transition-shadow">
-                      <div className="aspect-square bg-gray-100 rounded-md mb-2 overflow-hidden">
+                    <div key={product.id} className="bg-medium/50 rounded-lg p-3 hover:bg-medium/80 transition-all border border-gray-700">
+                      <div className="aspect-square bg-gray-900 rounded-md mb-2 overflow-hidden">
                         <img 
                           src={product.image} 
                           alt={product.name} 
@@ -523,9 +526,14 @@ const ArlingtonLocationPage: React.FC = () => {
                           loading="lazy"
                         />
                       </div>
-                      <h3 className="font-medium text-gray-800">{product.name}</h3>
-                      <p className="text-sm text-gray-500 line-clamp-2">{product.description}</p>
+                      <h3 className="font-medium text-white">{product.name}</h3>
+                      <p className="text-sm text-gray-300 line-clamp-2">{product.description}</p>
                       <p className="mt-1 font-bold text-primary">${product.price.toFixed(2)}</p>
+                      {product.featured && (
+                        <span className="inline-block mt-2 bg-primary/20 text-primary-foreground text-xs py-1 px-2 rounded-full border border-primary/30">
+                          {product.featuredLabel || "Popular"}
+                        </span>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -533,65 +541,79 @@ const ArlingtonLocationPage: React.FC = () => {
             </div>
           </div>
           
-          {/* Right column: Map, services */}
-          <div>
-            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">Store Location</h2>
-              <div className="h-[400px] mb-4 rounded-md overflow-hidden">
+          {/* Map & Directions */}
+          <div className="lg:col-span-1">
+            <h2 className="text-2xl font-bold font-['Poppins'] mb-6 text-white">Location & Directions</h2>
+            
+            <div className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700 p-6 mb-6">
+              <h3 className="text-lg font-semibold mb-3 text-white">Interactive Map</h3>
+              <div 
+                className="h-96 rounded-lg overflow-hidden mb-4"
+                itemProp="hasMap"
+                itemScope
+                itemType="https://schema.org/Map"
+              >
+                <meta itemProp="url" content={location.googlePlaceId ? `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.fullAddress)}`} />
                 <GoogleMapsIntegration 
-                  locations={getFormattedLocationsForMap()}
-                  activeLocationId={2}
+                  locations={[{
+                    id: location.id,
+                    name: location.name,
+                    address: location.fullAddress,
+                    position: location.coordinates,
+                    googlePlaceId: location.googlePlaceId,
+                    appleMapsLink: location.appleMapsLink,
+                    city: location.city
+                  }]}
+                  height="100%"
+                  width="100%"
                   zoom={15}
+                  activeLocationId={location.id}
                   showDirectionsLink={true}
-                  height="400px"
+                  apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
+                  mapType="roadmap"
                 />
               </div>
-              <p className="text-gray-600 mb-4">
-                {location.neighborhoodInfo}
-              </p>
+              
+              <h3 className="text-lg font-semibold mb-3 text-white">Get Directions</h3>
               <DirectionsButton 
                 address={location.fullAddress}
                 lat={location.coordinates.lat}
                 lng={location.coordinates.lng}
+                buttonText="Navigate to Store"
+                variant="primary"
+                fullWidth={true}
+                showIcon={true}
                 googlePlaceId={location.googlePlaceId}
                 appleMapsLink={location.appleMapsLink}
-                buttonText="Get Directions"
-                variant="outline"
-                showIcon={true}
-                fullWidth={true}
               />
-            </div>
-            
-            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">Available Services</h2>
-              <div className="grid grid-cols-2 gap-2">
-                {location.services.map((service, index) => (
-                  <div key={index} className="flex items-center">
-                    <span className="text-primary mr-2">✓</span>
-                    <span className="text-gray-700">{service}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">About Vape Cave Arlington</h2>
-              <p className="text-gray-600 mb-4">
-                {location.description}
-              </p>
-              <p className="text-gray-600 mb-2">
-                <span className="font-semibold">Established:</span> {location.yearEstablished}
-              </p>
-              <div className="mt-4">
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">Store Amenities</h3>
-                <div className="grid grid-cols-2 gap-2">
-                  {location.amenities.map((amenity, index) => (
-                    <div key={index} className="flex items-center">
-                      <span className="text-primary mr-2">✓</span>
-                      <span className="text-gray-700">{amenity}</span>
-                    </div>
-                  ))}
+              
+              {location.publicTransit && (
+                <div className="mt-4">
+                  <h3 className="text-lg font-semibold mb-2 text-white">Public Transportation</h3>
+                  <p className="text-gray-300 text-sm">{location.publicTransit}</p>
                 </div>
+              )}
+              
+              {location.parking && (
+                <div className="mt-4">
+                  <h3 className="text-lg font-semibold mb-2 text-white">Parking Information</h3>
+                  <p className="text-gray-300 text-sm">{location.parking}</p>
+                </div>
+              )}
+            </div>
+            
+            {/* Payment Methods */}
+            <div className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700 p-6">
+              <h3 className="text-lg font-semibold mb-4 text-white">Accepted Payment Methods</h3>
+              <div className="flex flex-wrap gap-2">
+                {location.acceptedPayments.map((payment, index) => (
+                  <span 
+                    key={index} 
+                    className="bg-primary/10 text-white text-sm py-1 px-3 rounded-full border border-gray-700"
+                  >
+                    {payment}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
@@ -605,6 +627,131 @@ const ArlingtonLocationPage: React.FC = () => {
                 {area}
               </span>
             ))}
+          </div>
+        </div>
+      </section>
+      
+      {/* FAQ Section with FAQ Schema */}
+      <section className="py-14 bg-gradient-to-r from-primary/10 to-primary/5 text-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold font-['Poppins'] mb-3">Frequently Asked Questions</h2>
+            <div className="h-1 w-24 bg-primary mx-auto rounded-full mb-6"></div>
+            <p className="text-gray-300 max-w-2xl mx-auto">Find answers to the most common questions about our Arlington location.</p>
+          </div>
+          
+          <div 
+            className="max-w-3xl mx-auto divide-y divide-gray-700"
+            itemScope 
+            itemType="https://schema.org/FAQPage"
+          >
+            {/* FAQ Item 1 */}
+            <div className="py-5" itemScope itemType="https://schema.org/Question">
+              <div className="flex justify-between cursor-pointer">
+                <h3 className="text-lg font-medium text-white" itemProp="name">What are your hours at the Arlington location?</h3>
+              </div>
+              <div className="mt-2" itemScope itemType="https://schema.org/Answer">
+                <div itemProp="text">
+                  <p className="text-gray-300">
+                    Our Arlington store is open from 10:00 AM to 11:00 PM Monday through Sunday. 
+                    We're ready to serve you every day of the week!
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            {/* FAQ Item 2 */}
+            <div className="py-5" itemScope itemType="https://schema.org/Question">
+              <div className="flex justify-between cursor-pointer">
+                <h3 className="text-lg font-medium text-white" itemProp="name">What products do you carry at the Arlington location?</h3>
+              </div>
+              <div className="mt-2" itemScope itemType="https://schema.org/Answer">
+                <div itemProp="text">
+                  <p className="text-gray-300">
+                    Our Arlington store offers a wide range of vaping products including premium e-liquids, 
+                    disposable vapes, mods, tanks, coils, Delta 8, THC-A products, and various accessories. 
+                    We pride ourselves on carrying high-quality brands and products to meet all your vaping needs.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            {/* FAQ Item 3 */}
+            <div className="py-5" itemScope itemType="https://schema.org/Question">
+              <div className="flex justify-between cursor-pointer">
+                <h3 className="text-lg font-medium text-white" itemProp="name">Do you offer any discounts or loyalty programs?</h3>
+              </div>
+              <div className="mt-2" itemScope itemType="https://schema.org/Answer">
+                <div itemProp="text">
+                  <p className="text-gray-300">
+                    Yes! We have a customer loyalty program where you earn points with every purchase. 
+                    We also offer military and student discounts with valid ID. Additionally, we run 
+                    seasonal promotions and special deals that we announce on our social media channels.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            {/* FAQ Item 4 */}
+            <div className="py-5" itemScope itemType="https://schema.org/Question">
+              <div className="flex justify-between cursor-pointer">
+                <h3 className="text-lg font-medium text-white" itemProp="name">Is there parking available at your Arlington location?</h3>
+              </div>
+              <div className="mt-2" itemScope itemType="https://schema.org/Answer">
+                <div itemProp="text">
+                  <p className="text-gray-300">
+                    Yes, we have ample free parking available in the shopping center where our Arlington store is located. 
+                    You'll find our store easily accessible from S Cooper St with convenient parking right out front.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            {/* FAQ Item 5 */}
+            <div className="py-5" itemScope itemType="https://schema.org/Question">
+              <div className="flex justify-between cursor-pointer">
+                <h3 className="text-lg font-medium text-white" itemProp="name">Do you offer any expert advice for beginners?</h3>
+              </div>
+              <div className="mt-2" itemScope itemType="https://schema.org/Answer">
+                <div itemProp="text">
+                  <p className="text-gray-300">
+                    Absolutely! Our knowledgeable staff at the Arlington location is always ready to help beginners 
+                    find the right products for their needs. We can provide guidance on getting started with vaping, 
+                    product selection, and proper usage. Don't hesitate to ask our friendly team any questions you may have.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Visit Us CTA */}
+      <section className="py-14 bg-darker">
+        <div className="container mx-auto px-4 text-center">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-3xl font-bold font-['Poppins'] mb-4 text-white">Visit Our Arlington Location Today!</h2>
+            <p className="text-gray-300 text-lg mb-8">
+              Experience our friendly atmosphere, knowledgeable staff, and premium selection of vaping products and accessories.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <DirectionsButton
+                address={location.fullAddress}
+                lat={location.coordinates.lat}
+                lng={location.coordinates.lng}
+                buttonText="Get Directions"
+                variant="primary"
+                showIcon={true}
+                googlePlaceId={location.googlePlaceId}
+                appleMapsLink={location.appleMapsLink}
+              />
+              <a 
+                href={`tel:${location.phone.replace(/[^0-9]/g, '')}`} 
+                className="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 backdrop-blur-sm hover:shadow-lg"
+              >
+                Call Us: {location.phone}
+              </a>
+            </div>
           </div>
         </div>
       </section>
