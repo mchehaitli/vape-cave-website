@@ -385,6 +385,14 @@ const HomePage = () => {
                         >
                           View on Google Maps
                         </a>
+                        <a 
+                          href="https://maps.apple.com/?address=4100%20S%20Cooper%20St,%20Unit%204108,%20Arlington,%20TX%2076015,%20United%20States&ll=32.680856,-97.134544&lsp=9902&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="hover:text-primary transition-colors ml-2"
+                        >
+                          View on Apple Maps
+                        </a>
                       </span>
                     </div>
                   </div>
