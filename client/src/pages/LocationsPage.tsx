@@ -16,23 +16,23 @@ const LocationsPage = () => {
     // Format phone for structured data (remove non-digits and add country code)
     const formattedPhone = "+1" + location.phone.replace(/[^0-9]/g, '');
     
-    // Enhanced schema specifically for the Frisco location (or other locations)
-    const isFrisco = location.id === 1;
+    // Enhanced schema for each location with equal treatment
+    const locationName = location.city.toLowerCase();
     
     const schema = {
       "@context": "https://schema.org",
       "@type": "VapeShop", // More specific type for better SEO
-      "@id": `https://vapecavetx.com/locations/${location.id}`,
+      "@id": `https://vapecavetx.com/locations/${locationName}`,
       "name": location.name,
-      "alternateName": isFrisco ? "Vape Cave Frisco - Premium Vape Shop" : undefined,
-      "url": `https://vapecavetx.com/locations/${location.id}`,
+      "alternateName": `Vape Cave ${location.city} - Premium Vape Shop`,
+      "url": `https://vapecavetx.com/locations/${locationName}`,
       "logo": "https://vapecavetx.com/logo.png",
       "image": location.image,
       "telephone": formattedPhone,
       "email": location.email,
       "description": location.description,
       "areaServed": location.areaServed,
-      "slogan": isFrisco ? "Frisco's premier destination for quality vaping products and accessories" : undefined,
+      "slogan": `${location.city}'s premier destination for quality vaping products and accessories`,
       "address": {
         "@type": "PostalAddress",
         "streetAddress": location.address,
@@ -90,9 +90,7 @@ const LocationsPage = () => {
       "publicAccess": true,
       "isAccessibleForFree": true,
       "smokingAllowed": true,
-      "keywords": isFrisco 
-        ? "vape shop frisco, delta 8 frisco, thc-a frisco, main street frisco, frisco vape shop, vape products frisco tx, vaping frisco, smoke shop frisco, vape accessories frisco" 
-        : "vape shop, e-cigarettes, e-liquids, vaping accessories, " + location.services.join(", ").toLowerCase(),
+      "keywords": `vape shop ${location.city.toLowerCase()}, delta 8 ${location.city.toLowerCase()}, thc-a ${location.city.toLowerCase()}, ${location.city.toLowerCase()} vape shop, vape products ${location.city.toLowerCase()} tx, vaping ${location.city.toLowerCase()}, smoke shop ${location.city.toLowerCase()}, vape accessories ${location.city.toLowerCase()}`,
       "amenityFeature": location.amenities.map(amenity => ({
         "@type": "LocationFeatureSpecification",
         "name": amenity,
@@ -107,7 +105,7 @@ const LocationsPage = () => {
           "@type": "ViewAction", 
           "target": {
             "@type": "EntryPoint",
-            "urlTemplate": `https://vapecavetx.com/locations/${location.id}`
+            "urlTemplate": `https://vapecavetx.com/locations/${location.city.toLowerCase()}`
           }
         },
         {
@@ -141,8 +139,8 @@ const LocationsPage = () => {
     return schema;
   };
 
-  // Set Frisco location (ID 1) as active by default for better SEO and user experience
-  const [activeLocation, setActiveLocation] = useState<number | null>(1);
+  // Don't set any location as active by default to avoid favoring one location over another
+  const [activeLocation, setActiveLocation] = useState<number | null>(null);
   
   // Get properly formatted locations for Google Maps
   const mapLocations = getFormattedLocationsForMap();
