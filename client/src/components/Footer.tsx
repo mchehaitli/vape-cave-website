@@ -177,12 +177,7 @@ const Footer = () => {
                 </svg>
                 <span className="text-white/70">vapecavetx@gmail.com</span>
               </li>
-              <li className="flex items-start mt-6">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span className="text-white/70">Customer Service Hours:<br />Mon-Fri: 9:00 AM - 5:00 PM</span>
-              </li>
+
             </ul>
           </div>
           
