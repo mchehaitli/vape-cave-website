@@ -727,7 +727,7 @@ const ArlingtonLocationPage: React.FC = () => {
             {/* FAQ Item 1 */}
             <div className="py-5" itemScope itemType="https://schema.org/Question">
               <div className="flex justify-between cursor-pointer">
-                <h3 className="text-lg font-medium text-white" itemProp="name">What are your hours at the Arlington location?</h3>
+                <h3 className="text-lg font-medium text-primary" itemProp="name">What are your hours at the Arlington location?</h3>
               </div>
               <div className="mt-2" itemScope itemType="https://schema.org/Answer">
                 <div itemProp="text">
@@ -742,7 +742,7 @@ const ArlingtonLocationPage: React.FC = () => {
             {/* FAQ Item 2 */}
             <div className="py-5" itemScope itemType="https://schema.org/Question">
               <div className="flex justify-between cursor-pointer">
-                <h3 className="text-lg font-medium text-white" itemProp="name">What products do you carry at the Arlington location?</h3>
+                <h3 className="text-lg font-medium text-primary" itemProp="name">What products do you carry at the Arlington location?</h3>
               </div>
               <div className="mt-2" itemScope itemType="https://schema.org/Answer">
                 <div itemProp="text">
@@ -758,7 +758,7 @@ const ArlingtonLocationPage: React.FC = () => {
             {/* FAQ Item 3 */}
             <div className="py-5" itemScope itemType="https://schema.org/Question">
               <div className="flex justify-between cursor-pointer">
-                <h3 className="text-lg font-medium text-white" itemProp="name">Do you offer any discounts or loyalty programs?</h3>
+                <h3 className="text-lg font-medium text-primary" itemProp="name">Do you offer any discounts or loyalty programs?</h3>
               </div>
               <div className="mt-2" itemScope itemType="https://schema.org/Answer">
                 <div itemProp="text">
@@ -774,7 +774,7 @@ const ArlingtonLocationPage: React.FC = () => {
             {/* FAQ Item 4 */}
             <div className="py-5" itemScope itemType="https://schema.org/Question">
               <div className="flex justify-between cursor-pointer">
-                <h3 className="text-lg font-medium text-white" itemProp="name">Is there parking available at your Arlington location?</h3>
+                <h3 className="text-lg font-medium text-primary" itemProp="name">Is there parking available at your Arlington location?</h3>
               </div>
               <div className="mt-2" itemScope itemType="https://schema.org/Answer">
                 <div itemProp="text">
@@ -789,7 +789,7 @@ const ArlingtonLocationPage: React.FC = () => {
             {/* FAQ Item 5 */}
             <div className="py-5" itemScope itemType="https://schema.org/Question">
               <div className="flex justify-between cursor-pointer">
-                <h3 className="text-lg font-medium text-white" itemProp="name">Do you offer any expert advice for beginners?</h3>
+                <h3 className="text-lg font-medium text-primary" itemProp="name">Do you offer any expert advice for beginners?</h3>
               </div>
               <div className="mt-2" itemScope itemType="https://schema.org/Answer">
                 <div itemProp="text">
