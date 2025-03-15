@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import MainLayout from "@/layouts/MainLayout";
 
 const HomePage = () => {
-  // Enhanced home page structured data with focus on Frisco location and Plus Code
+  // Enhanced home page structured data with focus on Frisco location with Google Maps integration
   const homePageSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -263,7 +263,7 @@ const HomePage = () => {
               className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700" 
               itemScope 
               itemType="https://schema.org/VapeShop"
-              data-plus-code="552G+86"
+              data-google-place-id="ChIJxXjrR3wVkFQRcKK89i-aFDw"
               data-location="frisco"
             >
               <div className="p-6">
@@ -283,16 +283,24 @@ const HomePage = () => {
                       </span>
                       <span className="text-gray-400 text-xs mt-1 block">
                         <a 
-                          href="https://plus.codes/552G+86_Frisco,_Texas" 
+                          href="https://maps.app.goo.gl/jzbqUDyvvGHuwyXJ7" 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="hover:text-primary transition-colors"
                           itemProp="hasMap"
                         >
-                          Plus Code: 552G+86 Frisco, Texas
+                          View on Google Maps
+                        </a>
+                        <a 
+                          href="https://maps.apple.com/?address=6958%20Main%20St,%20Unit%20200,%20Frisco,%20TX%20%2075033,%20United%20States&auid=14231591118256703794&ll=33.150849,-96.824392&lsp=9902&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="hover:text-primary transition-colors ml-2"
+                        >
+                          View on Apple Maps
                         </a>
                       </span>
-                      <meta itemProp="identifier" content="552G+86 Frisco, Texas" />
+                      <meta itemProp="identifier" content="ChIJxXjrR3wVkFQRcKK89i-aFDw" />
                       <meta itemProp="google-place-id" content="ChIJxXjrR3wVkFQRcKK89i-aFDw" />
                     </div>
                   </div>
@@ -346,7 +354,7 @@ const HomePage = () => {
                 </a>
                 
                 <div className="mt-2 text-xs text-gray-500 italic">
-                  Search "552G+86" on Google Maps to find us
+                  Click any map link for directions to our store
                 </div>
               </div>
             </div>
@@ -363,7 +371,16 @@ const HomePage = () => {
                     </svg>
                     <div>
                       <span className="text-gray-300 block">4100 S Cooper St, Unit 4108, Arlington, TX 76015</span>
-                      <span className="text-gray-400 text-xs mt-1 block">Plus Code: MVJ7+7W Arlington, Texas</span>
+                      <span className="text-gray-400 text-xs mt-1 block">
+                        <a 
+                          href="https://maps.app.goo.gl/7RRoEeD3uzANmdhZA" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="hover:text-primary transition-colors"
+                        >
+                          View on Google Maps
+                        </a>
+                      </span>
                     </div>
                   </div>
                   <div className="flex items-start">
@@ -385,6 +402,15 @@ const HomePage = () => {
                     View Details
                   </div>
                 </Link>
+                
+                <a 
+                  href="https://maps.app.goo.gl/7RRoEeD3uzANmdhZA" 
+                  target="_blank"
+                  rel="noopener noreferrer" 
+                  className="inline-block bg-transparent border border-primary text-primary hover:bg-primary/10 font-bold py-2 px-6 rounded-lg transition-colors shadow-md cursor-pointer ml-2"
+                >
+                  Get Directions
+                </a>
               </div>
             </div>
           </div>
