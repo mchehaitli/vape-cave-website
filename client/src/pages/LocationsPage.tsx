@@ -398,23 +398,39 @@ const LocationsPage = () => {
                   </div>
                   
                   {/* Map */}
-                  <div className="mb-6 h-72 rounded-lg overflow-hidden">
-                    <GoogleMapsIntegration 
-                      locations={[
-                        {
-                          id: location.id,
-                          name: location.name,
-                          address: location.fullAddress,
-                          position: location.coordinates,
-                          googlePlaceId: location.googlePlaceId,
-                          appleMapsLink: location.appleMapsLink,
-                          city: location.city
-                        }
-                      ]}
-                      height="100%"
-                      width="100%"
-                      apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
-                    />
+                  <div className="mb-6 h-72 rounded-lg overflow-hidden relative">
+                    {location.id === 2 ? (
+                      <>
+                        {/* Arlington location uses iframe for better reliability */}
+                        <iframe
+                          src={location.mapEmbed}
+                          width="100%"
+                          height="100%"
+                          title={`${location.name} Google Maps`}
+                          className="absolute inset-0 border-0"
+                          loading="lazy"
+                          referrerPolicy="no-referrer-when-downgrade"
+                          allowFullScreen
+                        ></iframe>
+                      </>
+                    ) : (
+                      <GoogleMapsIntegration 
+                        locations={[
+                          {
+                            id: location.id,
+                            name: location.name,
+                            address: location.fullAddress,
+                            position: location.coordinates,
+                            googlePlaceId: location.googlePlaceId,
+                            appleMapsLink: location.appleMapsLink,
+                            city: location.city
+                          }
+                        ]}
+                        height="100%"
+                        width="100%"
+                        apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
+                      />
+                    )}
                   </div>
                   
                   {/* Action Buttons */}
@@ -577,14 +593,18 @@ const LocationsPage = () => {
             </p>
           </div>
           
-          <div className="h-[600px] rounded-lg overflow-hidden shadow-xl">
-            <GoogleMapsIntegration 
-              locations={mapLocations}
-              height="100%"
-              width="100%"
-              zoom={10}
-              apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
-            />
+          <div className="h-[600px] rounded-lg overflow-hidden shadow-xl relative">
+            {/* Using an embedded Google Maps iframe for maximum reliability */}
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d215127.12768244176!2d-97.0055676!3d32.8661978!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864e9cec90c4f8d3%3A0xa3e1b4a2c728b55c!2sDallas-Fort%20Worth%20Metropolitan%20Area%2C%20TX!5e0!3m2!1sen!2sus!4v1672321922233!5m2!1sen!2sus" 
+              width="100%" 
+              height="100%" 
+              className="absolute inset-0 border-0"
+              allowFullScreen 
+              loading="lazy" 
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Vape Cave Locations Map"
+            ></iframe>
           </div>
         </div>
       </section>
