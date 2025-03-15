@@ -67,7 +67,6 @@ const Navigation = () => {
   const scrollNavItems = location === "/" ? [
     { label: "Frisco Location", sectionId: "frisco-location", ariaLabel: "Scroll to Frisco location" },
     { label: "Arlington Location", sectionId: "arlington-location", ariaLabel: "Scroll to Arlington location" },
-    { label: "Age Verification", sectionId: "age-verification", ariaLabel: "Scroll to age verification information" },
   ] : [];
 
   return (
