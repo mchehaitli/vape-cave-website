@@ -48,8 +48,8 @@ const Footer = () => {
       "additionalProperty": [
         {
           "@type": "PropertyValue",
-          "name": "plusCode",
-          "value": "552G+86 Frisco, Texas"
+          "name": "googlePlaceId",
+          "value": frisco.googlePlaceId || ""
         }
       ],
       "openingHoursSpecification": [
@@ -76,11 +76,11 @@ const Footer = () => {
       "hasMap": [
         {
           "@type": "Map",
-          "url": `https://plus.codes/${frisco.plusCode?.replace(/\s+/g, '')}`
+          "url": frisco.googlePlaceId ? `https://www.google.com/maps/place/?q=place_id:${frisco.googlePlaceId}` : `https://www.google.com/maps/dir/?api=1&destination=${frisco.coordinates.lat},${frisco.coordinates.lng}`
         },
         {
           "@type": "Map",
-          "url": `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(frisco.plusCode || "")}`
+          "url": frisco.appleMapsLink || `https://maps.apple.com/?q=${encodeURIComponent(frisco.fullAddress)}`
         }
       ]
     };
@@ -174,7 +174,7 @@ const Footer = () => {
                 <div>
                   <Link href="/locations/frisco">
                     <span className="text-white/70 hover:text-primary/80 block">6958 Main St, Frisco, TX 75033</span>
-                    <span className="text-primary/80 hover:text-primary text-xs mt-1 block">Plus Code: 552G+86 Frisco, Texas</span>
+                    <span className="text-primary/80 hover:text-primary text-xs mt-1 block">Find us on Google Maps</span>
                   </Link>
                 </div>
               </li>
@@ -210,7 +210,7 @@ const Footer = () => {
                 </svg>
                 <div>
                   <span className="text-white/70 block">4100 S Cooper St, Unit 4108, Arlington, TX 76015</span>
-                  <span className="text-primary/80 text-xs mt-1 block">Plus Code: MVJ7+7W Arlington, Texas</span>
+                  <span className="text-primary/80 text-xs mt-1 block">Find us on Google Maps</span>
                 </div>
               </li>
               <li className="flex items-start">

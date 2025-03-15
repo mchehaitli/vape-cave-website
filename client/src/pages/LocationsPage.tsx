@@ -65,11 +65,6 @@ const LocationsPage = () => {
       "additionalProperty": [
         {
           "@type": "PropertyValue",
-          "name": "plusCode",
-          "value": location.plusCode || ""
-        },
-        {
-          "@type": "PropertyValue",
           "name": "yearEstablished",
           "value": location.yearEstablished
         },
@@ -123,8 +118,8 @@ const LocationsPage = () => {
           "@type": "MapAction",
           "target": {
             "@type": "EntryPoint",
-            "urlTemplate": location.plusCode 
-              ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.plusCode)}`
+            "urlTemplate": location.googlePlaceId 
+              ? `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}`
               : `https://www.google.com/maps/dir/?api=1&destination=${location.coordinates.lat},${location.coordinates.lng}`
           }
         },
@@ -132,8 +127,8 @@ const LocationsPage = () => {
           "@type": "FindAction",
           "target": {
             "@type": "EntryPoint",
-            "urlTemplate": location.plusCode 
-              ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.plusCode)}`
+            "urlTemplate": location.googlePlaceId 
+              ? `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}`
               : `https://www.google.com/maps/search/?api=1&query=${location.city}+vape+shop`
           },
           "query-input": "required name=vape shop location"
@@ -353,14 +348,14 @@ const LocationsPage = () => {
                         </div>
                       </div>
                       
-                      {location.plusCode && (
+                      {location.googlePlaceId && (
                         <div className="flex">
                           <div className="text-primary mr-3">
                             <i className="fas fa-map-marker-alt"></i>
                           </div>
                           <div>
-                            <p className="text-sm text-gray-600">Plus Code</p>
-                            <p className="font-medium text-gray-800">{location.plusCode}</p>
+                            <p className="text-sm text-gray-600">Google Place ID</p>
+                            <p className="font-medium text-gray-800">{location.googlePlaceId}</p>
                           </div>
                         </div>
                       )}
@@ -404,7 +399,9 @@ const LocationsPage = () => {
                           name: location.name,
                           address: location.fullAddress,
                           position: location.coordinates,
-                          plusCode: location.plusCode
+                          googlePlaceId: location.googlePlaceId,
+                          appleMapsLink: location.appleMapsLink,
+                          city: location.city
                         }
                       ]}
                       height="100%"
