@@ -96,9 +96,9 @@ const Footer = () => {
       </Helmet>
       
       <div className="container mx-auto px-4 py-12">        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Social Media Links */}
-          <div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+          {/* Column 1: Social Media Links */}
+          <div className="lg:col-span-2">
             <h4 className="font-['Poppins'] font-semibold text-xl mb-4">Connect With Us</h4>
             <div className="flex space-x-6 mb-4">
               <a href="#" className="text-white/70 hover:text-primary transition-colors">
@@ -123,11 +123,9 @@ const Footer = () => {
               </a>
             </div>
             <p className="text-white/70">Follow us on social media for the latest updates, promotions, and vaping news.</p>
-          </div>
-          
-          {/* Column 2: Quick Links */}
-          <div>
-            <h4 className="font-['Poppins'] font-semibold text-xl mb-4">Quick Links</h4>
+            
+            {/* Quick Links Section */}
+            <h4 className="font-['Poppins'] font-semibold text-xl mt-8 mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li>
                 <Link href="/">
@@ -159,6 +157,31 @@ const Footer = () => {
               </li>
               <li>
                 <span className="text-white/70 hover:text-primary transition-colors cursor-pointer">FAQs</span>
+              </li>
+            </ul>
+          </div>
+          
+          {/* Column 2: Main Contact */}
+          <div>
+            <h4 className="font-['Poppins'] font-semibold text-xl mb-4">Main Contact</h4>
+            <ul className="space-y-3">
+              <li className="flex items-start">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                <span className="text-white/70">(469) 294-0061</span>
+              </li>
+              <li className="flex items-start">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <span className="text-white/70">vapecavetx@gmail.com</span>
+              </li>
+              <li className="flex items-start mt-6">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span className="text-white/70">Customer Service Hours:<br />Mon-Fri: 9:00 AM - 5:00 PM</span>
               </li>
             </ul>
           </div>
@@ -204,14 +227,14 @@ const Footer = () => {
             </ul>
           </div>
           
-          {/* Column 4: Arlington Location & Contact */}
+          {/* Column 4: Arlington Location */}
           <div>
             <h4 className="font-['Poppins'] font-semibold text-xl mb-4">
               <Link href="/locations/arlington" className="hover:text-primary/90">
                 Arlington Location
               </Link>
             </h4>
-            <ul className="space-y-3 mb-6">
+            <ul className="space-y-3">
               <li className="flex items-start">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -241,22 +264,6 @@ const Footer = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <span className="text-white/70">Open 7 days a week</span>
-              </li>
-            </ul>
-            
-            <h4 className="font-['Poppins'] font-semibold text-xl mb-4">Main Contact</h4>
-            <ul className="space-y-3">
-              <li className="flex items-start">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-                <span className="text-white/70">(469) 294-0061</span>
-              </li>
-              <li className="flex items-start">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                <span className="text-white/70">vapecavetx@gmail.com</span>
               </li>
             </ul>
           </div>
