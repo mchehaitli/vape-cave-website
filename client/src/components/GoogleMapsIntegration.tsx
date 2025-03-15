@@ -5,6 +5,7 @@ interface Location {
   id: number;
   name: string;
   address: string;
+  fullAddress?: string; // Full address with city, state, zip
   position: {
     lat: number;
     lng: number;
@@ -12,6 +13,9 @@ interface Location {
   googlePlaceId?: string; // Google Place ID for direct linking
   appleMapsLink?: string; // Direct Apple Maps link
   city?: string; // Add optional city for better location context
+  email?: string; // Email for the location
+  phone?: string; // Phone number for the location
+  image?: string; // Image URL for the location
 }
 
 // Define MapTypeId enum since we can't access google.maps before it's loaded
@@ -377,13 +381,13 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
     );
   };
   
-  // Get the current location from the props
-  const currentLocation = locations[0];
+  // Get the active location from the activeLocationId or default to the first location
+  const activeLocationObject = locations.find(loc => loc.id === activeLocationId) || locations[0];
   
   // Extract location information safely
-  const locationCity = currentLocation?.city || "";
-  const locationName = currentLocation ? `Vape Cave ${locationCity}` : "Vape Cave";
-  const locationId = currentLocation?.id || 1;
+  const locationCity = activeLocationObject?.city || "";
+  const locationName = activeLocationObject ? `Vape Cave ${locationCity}` : "Vape Cave";
+  const locationId = activeLocationObject?.id || 1;
   
   return (
     <>
@@ -404,25 +408,25 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
               "url": "https://vapecavetx.com/locations/${locationCity.toLowerCase()}",
               "address": {
                 "@type": "PostalAddress",
-                "streetAddress": "${currentLocation?.address || ""}",
+                "streetAddress": "${activeLocationObject?.address || ""}",
                 "addressLocality": "${locationCity}",
                 "addressRegion": "TX", 
-                "postalCode": "${currentLocation?.address?.match(/\d{5}(?![\d-])/) || ""}",
+                "postalCode": "${activeLocationObject?.address?.match(/\d{5}(?![\d-])/) || ""}",
                 "addressCountry": "US"
               },
               "geo": {
                 "@type": "GeoCoordinates",
-                "latitude": ${currentLocation?.position?.lat || 0},
-                "longitude": ${currentLocation?.position?.lng || 0},
+                "latitude": ${activeLocationObject?.position?.lat || 0},
+                "longitude": ${activeLocationObject?.position?.lng || 0},
                 "name": "Vape Cave ${locationCity} Coordinates"
               },
-              "telephone": "${currentLocation?.phone?.replace(/[^0-9]/g, '') ? '+1' + currentLocation.phone.replace(/[^0-9]/g, '') : ''}",
+              "telephone": "${activeLocationObject?.phone?.replace(/[^0-9]/g, '') ? '+1' + activeLocationObject.phone.replace(/[^0-9]/g, '') : ''}",
               "email": "info@vapecavetx.com",
               "image": "https://vapecavetx.com/vapecave-logo.png",
               "logo": "https://vapecavetx.com/vapecave-logo.png",
               "photo": {
                 "@type": "ImageObject",
-                "contentUrl": "${currentLocation?.image || ''}",
+                "contentUrl": "${activeLocationObject?.image || ''}",
                 "description": "Interior of Vape Cave ${locationCity} store"
               },
               "currenciesAccepted": "USD",
