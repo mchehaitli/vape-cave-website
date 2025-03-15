@@ -494,18 +494,17 @@ const FriscoLocationPage: React.FC = () => {
                   />
                 </div>
                 <p className="text-sm text-gray-600 mb-3">
-                  <strong>Plus Code:</strong> 
+                  <strong>Google Business:</strong> 
                   <a 
-                    href={location.googlePlaceId 
-                        ? `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}` 
-                        : `https://plus.codes/${location.plusCode?.replace(/\s+/g, '')}`}
+                    href={`https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}`}
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-primary hover:underline ml-2"
-                    aria-label={`Find ${location.name} on Google Maps using Plus Code ${location.plusCode}`}
+                    aria-label={`Find ${location.name} on Google Maps Business Page`}
                   >
-                    {location.plusCode}
+                    Visit Our Google Business Page
                   </a>
+                  <span className="ml-2 text-xs text-gray-500">(Plus Code: {location.plusCode})</span>
                 </p>
                 
                 <div className="space-y-4">
@@ -518,6 +517,7 @@ const FriscoLocationPage: React.FC = () => {
                     variant="primary"
                     showIcon={true}
                     fullWidth={true}
+                    googlePlaceId={location.googlePlaceId}
                     plusCode={location.plusCode}
                   />
                   
@@ -600,14 +600,14 @@ const FriscoLocationPage: React.FC = () => {
             {/* FAQ Item 3 */}
             <div className="py-5" itemScope itemType="https://schema.org/Question">
               <div className="flex justify-between cursor-pointer">
-                <h3 className="text-lg font-medium text-gray-800" itemProp="name">How do I find your Frisco store using Plus Code?</h3>
+                <h3 className="text-lg font-medium text-gray-800" itemProp="name">How do I find your Frisco store online?</h3>
               </div>
               <div className="mt-2" itemScope itemType="https://schema.org/Answer">
                 <div itemProp="text">
                   <p className="text-gray-600">
-                    You can easily find our Frisco store using the Plus Code: 552G+86 Frisco, Texas. 
-                    Simply enter this code in Google Maps or your preferred navigation app that supports Plus Codes, 
-                    and you'll be directed straight to our location.
+                    The easiest way to find our Frisco store is to visit our Google Business page by clicking the "Visit Our Google Business Page" 
+                    link on our website. This will show you our exact location, hours, customer reviews, and photos of our store. You can also 
+                    use the Plus Code: 552G+86 Frisco, Texas in Google Maps if needed.
                   </p>
                 </div>
               </div>
@@ -648,6 +648,7 @@ const FriscoLocationPage: React.FC = () => {
                 buttonText="Get Directions"
                 variant="primary"
                 showIcon={true}
+                googlePlaceId={location.googlePlaceId}
                 plusCode={location.plusCode}
               />
               <a 

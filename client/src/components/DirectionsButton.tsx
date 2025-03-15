@@ -187,15 +187,15 @@ const DirectionsButton: React.FC<DirectionsButtonProps> = ({
                 "hasMap": [
                   {
                     "@type": "Map",
-                    "name": "Google Maps with Plus Code",
-                    "url": "https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(plusCode)}",
-                    "description": "Find our Frisco vape shop using Google Maps with Plus Code ${plusCode}"
+                    "name": "Google Business Page",
+                    "url": "https://www.google.com/maps/place/?q=place_id:${googlePlaceId || "ChIJxXjrR3wVkFQRcKK89i-aFDw"}",
+                    "description": "Find our Frisco vape shop on our official Google Business page"
                   },
                   {
                     "@type": "Map",
-                    "name": "Plus Codes Direct",
-                    "url": "https://plus.codes/${plusCode.replace(/\\s+/g, '')}",
-                    "description": "Direct link to our location using Plus Code navigation"
+                    "name": "Google Maps with Plus Code",
+                    "url": "https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(plusCode)}",
+                    "description": "Find our Frisco vape shop using Google Maps with Plus Code ${plusCode}"
                   }
                 ],
                 "identifier": [
