@@ -49,7 +49,8 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
   const [markers, setMarkers] = useState<any[]>([]);
   
   // Use API key from props if provided, otherwise from environment variables
-  const apiKey = propApiKey || import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '';
+  // Using the imported process.env for server-side environment variables
+  const apiKey = propApiKey || import.meta.env.VITE_GOOGLE_MAPS_API_KEY || process.env.GOOGLE_MAPS_API_KEY || '';
   
   // Add structured data for maps integration using react-helmet
   useEffect(() => {
@@ -422,6 +423,7 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
                 "@type": "WebPage",
                 "@id": "https://vapecavetx.com/locations/frisco/"
               },
+              "url": "https://vapecavetx.com/locations/frisco",
               "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "6958 Main St #200",
@@ -482,7 +484,6 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
                   "closes": "01:00"
                 }
               ],
-              "url": "https://vapecavetx.com/locations/frisco",
               "sameAs": [
                 "https://www.facebook.com/vapecavetx",
                 "https://www.instagram.com/vapecavetx/"
