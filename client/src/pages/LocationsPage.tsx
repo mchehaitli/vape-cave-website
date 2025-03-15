@@ -426,6 +426,13 @@ const LocationsPage = () => {
                       </Link>
                     )}
                     
+                    {location.id === 2 && (
+                      <Link href="/locations/arlington" className="flex-1 bg-primary text-black hover:bg-primary/80 font-medium py-2 px-4 rounded-md flex items-center justify-center">
+                        <i className="fas fa-map-marker-alt mr-2"></i>
+                        View Arlington Details
+                      </Link>
+                    )}
+                    
                     <button 
                       onClick={() => setActiveLocation(activeLocation === location.id ? null : location.id)}
                       className="flex-1 border border-primary text-primary hover:bg-primary/10 font-medium py-2 px-4 rounded-md flex items-center justify-center"
@@ -532,7 +539,7 @@ const LocationsPage = () => {
                     {/* Additional Call-to-Action Button */}
                     <div className="mt-6">
                       <Link 
-                        to={`/locations/${location.id}`} 
+                        href={`/locations/${location.city.toLowerCase()}`} 
                         className="w-full bg-dark hover:bg-dark/90 text-white font-medium py-3 px-4 rounded-md flex items-center justify-center"
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
