@@ -136,9 +136,15 @@ const HomePage = () => {
         "openingHoursSpecification": [
           {
             "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Sunday"],
             "opens": "10:00",
-            "closes": "23:00"
+            "closes": "24:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Friday", "Saturday"],
+            "opens": "10:00",
+            "closes": "01:00"
           }
         ]
       }
@@ -312,14 +318,15 @@ const HomePage = () => {
                       (469) 294-0061
                     </a>
                   </div>
-                  <div className="flex items-start" itemProp="openingHoursSpecification" itemScope itemType="https://schema.org/OpeningHoursSpecification">
+                  <div className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span className="text-gray-300">
-                      <span itemProp="opens">10:00 AM</span> - <span itemProp="closes">12:00 AM</span> (Open 7 days)
-                    </span>
-                    <meta itemProp="dayOfWeek" content="Monday Tuesday Wednesday Thursday Friday Saturday Sunday" />
+                    <div className="text-gray-300">
+                      <div>Mon-Thu, Sun: 10AM - 12AM</div>
+                      <div>Fri-Sat: 10AM - 1AM</div>
+                      <div className="text-primary/80 text-xs mt-1">Open 7 days a week</div>
+                    </div>
                   </div>
                   
                   <div className="flex items-start mt-2">
@@ -518,7 +525,8 @@ const HomePage = () => {
                 
                 <div className="bg-black/40 p-4 rounded-lg border border-gray-800">
                   <h4 className="text-primary font-semibold mb-2">Hours</h4>
-                  <p className="text-gray-300 text-sm">Mon-Sun: 10:00 AM - 12:00 AM</p>
+                  <p className="text-gray-300 text-sm">Mon-Thu, Sun: 10AM - 12AM</p>
+                  <p className="text-gray-300 text-sm">Fri-Sat: 10AM - 1AM</p>
                   <p className="text-primary/80 text-xs mt-1">Open 7 days a week</p>
                 </div>
                 
