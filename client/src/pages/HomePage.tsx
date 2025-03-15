@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { Helmet } from "react-helmet";
+import { motion } from "framer-motion";
 import MainLayout from "@/layouts/MainLayout";
 
 const HomePage = () => {
@@ -236,41 +237,112 @@ const HomePage = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/20 mix-blend-multiply"></div>
         <div className="absolute inset-0 opacity-20 bg-pattern"></div>
         <div className="container mx-auto px-4 relative z-10">
-          <div className="flex flex-col items-center">
-            <div className="w-full max-w-5xl mx-auto text-center">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold font-['Poppins'] mb-4 leading-tight">
+          <motion.div 
+            className="flex flex-col items-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7 }}
+          >
+            <motion.div 
+              className="w-full max-w-5xl mx-auto text-center"
+              variants={{
+                hidden: { opacity: 0 },
+                show: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.2
+                  }
+                }
+              }}
+              initial="hidden"
+              animate="show"
+            >
+              <motion.h1 
+                className="text-5xl md:text-6xl lg:text-7xl font-bold font-['Poppins'] mb-4 leading-tight"
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+                }}
+              >
                 Vape into the <span className="text-primary">Future</span>
-              </h1>
-              <h2 className="text-xl md:text-2xl lg:text-3xl mb-8 text-white/90 font-medium max-w-[1100px] mx-auto leading-relaxed">
+              </motion.h1>
+              <motion.h2 
+                className="text-xl md:text-2xl lg:text-3xl mb-8 text-white/90 font-medium max-w-[1100px] mx-auto leading-relaxed"
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  show: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.1, ease: "easeOut" } }
+                }}
+              >
                 Your One Stop Vape Shop for <span className="text-primary font-semibold">Disposables</span> | <span className="text-primary font-semibold">E-Liquids</span> | <span className="text-primary font-semibold">Salts</span> | <span className="text-primary font-semibold">Delta</span> | <span className="text-primary font-semibold">THC - A</span> | <span className="text-primary font-semibold">Glass</span> | <span className="text-primary font-semibold">Tobacco</span> | <span className="text-primary font-semibold">Hookah / Shisha</span> | <span className="text-primary font-semibold">Vaporizers</span> | <span className="text-primary font-semibold">Mods</span> | and much more
-              </h2>
-              <p className="text-base md:text-lg mb-10 text-white/80 max-w-2xl mx-auto">
+              </motion.h2>
+              <motion.p 
+                className="text-base md:text-lg mb-10 text-white/80 max-w-2xl mx-auto"
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  show: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2, ease: "easeOut" } }
+                }}
+              >
                 We are a locally owned business specializing in Vaporizers, E-Liquid, Salt Nic, and many different types of disposable devices. We also carry a wide range of glass pipes and accessories as well as Novelties and Hookahs/Shisha. Basically we carry all your smoking needs!
-              </p>
-              <div className="flex flex-wrap justify-center gap-5 mt-8">
-                <Link href="/products">
-                  <div className="bg-primary hover:bg-primary/90 text-white font-bold py-4 px-10 rounded-lg transition-all duration-300 shadow-lg cursor-pointer hover:shadow-xl hover:-translate-y-1">
-                    Shop Now
-                  </div>
-                </Link>
-                <Link href="/locations">
-                  <div className="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold py-4 px-10 rounded-lg transition-all duration-300 cursor-pointer backdrop-blur-sm hover:shadow-lg hover:-translate-y-1">
-                    Find Our Stores
-                  </div>
-                </Link>
-                <Link href="/locations/frisco">
-                  <div className="bg-primary/30 hover:bg-primary/40 border border-primary/50 text-white font-bold py-4 px-10 rounded-lg transition-all duration-300 cursor-pointer backdrop-blur-sm hover:shadow-lg hover:-translate-y-1">
-                    Frisco Store
-                  </div>
-                </Link>
-                <Link href="/locations/arlington">
-                  <div className="bg-primary/30 hover:bg-primary/40 border border-primary/50 text-white font-bold py-4 px-10 rounded-lg transition-all duration-300 cursor-pointer backdrop-blur-sm hover:shadow-lg hover:-translate-y-1">
-                    Arlington Store
-                  </div>
-                </Link>
-              </div>
-            </div>
-          </div>
+              </motion.p>
+              <motion.div 
+                className="flex flex-wrap justify-center gap-5 mt-8"
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  show: { 
+                    opacity: 1, 
+                    y: 0, 
+                    transition: { 
+                      duration: 0.4, 
+                      delay: 0.3, 
+                      ease: "easeOut",
+                      staggerChildren: 0.1
+                    } 
+                  }
+                }}
+              >
+                <motion.div variants={{
+                  hidden: { opacity: 0, y: 10 },
+                  show: { opacity: 1, y: 0 }
+                }}>
+                  <Link href="/products">
+                    <div className="bg-primary hover:bg-primary/90 text-white font-bold py-4 px-10 rounded-lg transition-all duration-300 shadow-lg cursor-pointer hover:shadow-xl hover:-translate-y-1">
+                      Shop Now
+                    </div>
+                  </Link>
+                </motion.div>
+                <motion.div variants={{
+                  hidden: { opacity: 0, y: 10 },
+                  show: { opacity: 1, y: 0 }
+                }}>
+                  <Link href="/locations">
+                    <div className="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold py-4 px-10 rounded-lg transition-all duration-300 cursor-pointer backdrop-blur-sm hover:shadow-lg hover:-translate-y-1">
+                      Find Our Stores
+                    </div>
+                  </Link>
+                </motion.div>
+                <motion.div variants={{
+                  hidden: { opacity: 0, y: 10 },
+                  show: { opacity: 1, y: 0 }
+                }}>
+                  <Link href="/locations/frisco">
+                    <div className="bg-primary/30 hover:bg-primary/40 border border-primary/50 text-white font-bold py-4 px-10 rounded-lg transition-all duration-300 cursor-pointer backdrop-blur-sm hover:shadow-lg hover:-translate-y-1">
+                      Frisco Store
+                    </div>
+                  </Link>
+                </motion.div>
+                <motion.div variants={{
+                  hidden: { opacity: 0, y: 10 },
+                  show: { opacity: 1, y: 0 }
+                }}>
+                  <Link href="/locations/arlington">
+                    <div className="bg-primary/30 hover:bg-primary/40 border border-primary/50 text-white font-bold py-4 px-10 rounded-lg transition-all duration-300 cursor-pointer backdrop-blur-sm hover:shadow-lg hover:-translate-y-1">
+                      Arlington Store
+                    </div>
+                  </Link>
+                </motion.div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
@@ -312,121 +384,286 @@ const HomePage = () => {
           <meta itemProp="latitude" content="33.150730" />
           <meta itemProp="longitude" content="-96.822550" />
         </div>
-        <div className="container mx-auto px-4">
+        <motion.div 
+          className="container mx-auto px-4"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6 }}
+        >
           <div className="flex flex-col md:flex-row items-center gap-8">
-            <div className="md:w-1/2">
-              <h2 className="text-3xl font-bold font-['Poppins'] mb-3">
+            <motion.div 
+              className="md:w-1/2"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+            >
+              <motion.h2 
+                className="text-3xl font-bold font-['Poppins'] mb-3"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+              >
                 Find Us Easily in Frisco
-              </h2>
-              <div className="h-1 w-24 bg-primary rounded-full mb-6"></div>
-              <p className="text-gray-300 mb-6">
+              </motion.h2>
+              <motion.div 
+                className="h-1 w-24 bg-primary rounded-full mb-6"
+                initial={{ width: 0 }}
+                whileInView={{ width: 96 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+              ></motion.div>
+              <motion.p 
+                className="text-gray-300 mb-6"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+              >
                 Our Frisco location is conveniently accessible at <span className="text-primary font-semibold">6958 Main St #200, Frisco, TX 75033</span>.
                 Use our direct Google Maps or Apple Maps links below to navigate to our store with ease.
-              </p>
+              </motion.p>
               
-              <div className="mb-8">
+              <motion.div 
+                className="mb-8"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+              >
                 <h3 className="text-xl font-semibold mb-3">Why Visit Our Frisco Location?</h3>
-                <ul className="space-y-2 text-gray-300">
-                  <li className="flex items-start">
+                <motion.ul 
+                  className="space-y-2 text-gray-300"
+                  variants={{
+                    hidden: { opacity: 0 },
+                    show: {
+                      opacity: 1,
+                      transition: {
+                        staggerChildren: 0.15
+                      }
+                    }
+                  }}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true }}
+                >
+                  <motion.li 
+                    className="flex items-start"
+                    variants={{
+                      hidden: { opacity: 0, x: -10 },
+                      show: { opacity: 1, x: 0 }
+                    }}
+                  >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     Convenient Main Street location with ample parking
-                  </li>
-                  <li className="flex items-start">
+                  </motion.li>
+                  <motion.li 
+                    className="flex items-start"
+                    variants={{
+                      hidden: { opacity: 0, x: -10 },
+                      show: { opacity: 1, x: 0 }
+                    }}
+                  >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     Expert staff providing personalized recommendations
-                  </li>
-                  <li className="flex items-start">
+                  </motion.li>
+                  <motion.li 
+                    className="flex items-start"
+                    variants={{
+                      hidden: { opacity: 0, x: -10 },
+                      show: { opacity: 1, x: 0 }
+                    }}
+                  >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     Extensive selection of premium products
-                  </li>
-                </ul>
-              </div>
+                  </motion.li>
+                </motion.ul>
+              </motion.div>
               
-              <div className="flex flex-wrap gap-3">
-                <a 
+              <motion.div 
+                className="flex flex-wrap gap-3"
+                variants={{
+                  hidden: { opacity: 0 },
+                  show: {
+                    opacity: 1,
+                    transition: {
+                      staggerChildren: 0.1
+                    }
+                  }
+                }}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true }}
+              >
+                <motion.a 
                   href="https://maps.app.goo.gl/jzbqUDyvvGHuwyXJ7" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-flex items-center bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded transition-colors"
+                  variants={{
+                    hidden: { opacity: 0, y: 10 },
+                    show: { opacity: 1, y: 0 }
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
                   </svg>
                   Google Maps
-                </a>
-                <a 
+                </motion.a>
+                <motion.a 
                   href="https://maps.apple.com/?address=6958%20Main%20St,%20Unit%20200,%20Frisco,%20TX%20%2075033,%20United%20States&auid=14231591118256703794&ll=33.150849,-96.824392&lsp=9902&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-flex items-center bg-white/10 hover:bg-white/20 border border-white/30 text-white px-4 py-2 rounded transition-colors"
+                  variants={{
+                    hidden: { opacity: 0, y: 10 },
+                    show: { opacity: 1, y: 0 }
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                   Apple Maps
-                </a>
-                <Link
-                  href="/locations/frisco"
-                  className="inline-flex items-center bg-primary/30 hover:bg-primary/40 border border-primary/50 text-white px-4 py-2 rounded transition-colors"
+                </motion.a>
+                <motion.div
+                  variants={{
+                    hidden: { opacity: 0, y: 10 },
+                    show: { opacity: 1, y: 0 }
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  More Store Info
-                </Link>
-                <a
+                  <Link
+                    href="/locations/frisco"
+                    className="inline-flex items-center bg-primary/30 hover:bg-primary/40 border border-primary/50 text-white px-4 py-2 rounded transition-colors"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    More Store Info
+                  </Link>
+                </motion.div>
+                <motion.a
                   href="tel:+14692940061"
                   className="inline-flex items-center bg-white/10 hover:bg-white/20 border border-white/30 text-white px-4 py-2 rounded transition-colors"
+                  variants={{
+                    hidden: { opacity: 0, y: 10 },
+                    show: { opacity: 1, y: 0 }
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
                   Call Now
-                </a>
-              </div>
-            </div>
+                </motion.a>
+              </motion.div>
+            </motion.div>
             
-            <div className="md:w-1/2 bg-black/30 p-6 rounded-xl border border-primary/20">
-              <h3 className="text-xl font-semibold mb-4 text-center">Quick Information</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-black/40 p-4 rounded-lg border border-gray-800">
+            <motion.div 
+              className="md:w-1/2 bg-black/30 p-6 rounded-xl border border-primary/20"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+            >
+              <motion.h3 
+                className="text-xl font-semibold mb-4 text-center"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+              >
+                Quick Information
+              </motion.h3>
+              <motion.div 
+                className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                variants={{
+                  hidden: { opacity: 0 },
+                  show: {
+                    opacity: 1,
+                    transition: {
+                      staggerChildren: 0.1
+                    }
+                  }
+                }}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true }}
+              >
+                <motion.div 
+                  className="bg-black/40 p-4 rounded-lg border border-gray-800"
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    show: { opacity: 1, y: 0 }
+                  }}
+                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                >
                   <h4 className="text-primary font-semibold mb-2">Location</h4>
                   <p className="text-gray-300 text-sm">6958 Main St #200, Frisco, TX 75033</p>
                   <p className="text-primary/80 text-xs mt-1">Main Street Shopping Area</p>
-                </div>
+                </motion.div>
                 
-                <div className="bg-black/40 p-4 rounded-lg border border-gray-800">
+                <motion.div 
+                  className="bg-black/40 p-4 rounded-lg border border-gray-800"
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    show: { opacity: 1, y: 0 }
+                  }}
+                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                >
                   <h4 className="text-primary font-semibold mb-2">Hours</h4>
                   <p className="text-gray-300 text-sm">Mon-Thu, Sun: 10AM - 12AM</p>
                   <p className="text-gray-300 text-sm">Fri-Sat: 10AM - 1AM</p>
                   <p className="text-primary/80 text-xs mt-1">Open 7 days a week</p>
-                </div>
+                </motion.div>
                 
-                <div className="bg-black/40 p-4 rounded-lg border border-gray-800">
+                <motion.div 
+                  className="bg-black/40 p-4 rounded-lg border border-gray-800"
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    show: { opacity: 1, y: 0 }
+                  }}
+                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                >
                   <h4 className="text-primary font-semibold mb-2">Contact</h4>
                   <p className="text-gray-300 text-sm">(469) 294-0061</p>
                   <p className="text-primary/80 text-xs mt-1">vapecavetx@gmail.com</p>
-                </div>
+                </motion.div>
                 
-                <div className="bg-black/40 p-4 rounded-lg border border-gray-800">
+                <motion.div 
+                  className="bg-black/40 p-4 rounded-lg border border-gray-800"
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    show: { opacity: 1, y: 0 }
+                  }}
+                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                >
                   <h4 className="text-primary font-semibold mb-2">Specialties</h4>
                   <div className="flex flex-wrap gap-1">
                     <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">Delta 8</span>
                     <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">THC-A</span>
                     <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">Disposables</span>
                   </div>
-                </div>
-              </div>
-            </div>
+                </motion.div>
+              </motion.div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Featured Arlington Location Section - Enhance SEO importance */}
