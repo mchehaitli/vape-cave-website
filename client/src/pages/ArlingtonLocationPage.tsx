@@ -629,6 +629,70 @@ const ArlingtonLocationPage: React.FC = () => {
             ))}
           </div>
         </div>
+        
+        {/* Products & Services Section */}
+        <div className="mt-16 max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold font-['Poppins'] mb-3">Products & Services</h2>
+            <div className="h-1 w-24 bg-primary mx-auto rounded-full mb-6"></div>
+            <p className="text-gray-300 max-w-2xl mx-auto">Discover our premium selection of vaping products and accessories at our Arlington location.</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {arlingtonProducts.map((product) => (
+              <div key={product.id} className="bg-medium/50 rounded-xl overflow-hidden shadow-lg border border-gray-700 hover:bg-medium/80 transition-all">
+                <div className="aspect-square bg-gray-900 overflow-hidden">
+                  <img 
+                    src={product.image} 
+                    alt={product.name} 
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold text-white text-lg mb-1">{product.name}</h3>
+                  <p className="text-gray-300 text-sm mb-2 line-clamp-2">{product.description}</p>
+                  <div className="flex justify-between items-center">
+                    <p className="text-primary font-bold">${product.price.toFixed(2)}</p>
+                    {product.featured && (
+                      <span className="bg-primary/20 text-white text-xs py-1 px-2 rounded-full border border-primary/30">
+                        {product.featuredLabel || "Popular"}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Services */}
+            <div className="bg-medium rounded-xl p-6 border border-gray-700">
+              <h3 className="text-xl font-bold text-white mb-4">Our Services</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {location.services.map((service, index) => (
+                  <div key={index} className="flex items-center">
+                    <span className="text-primary mr-2 text-lg">✓</span>
+                    <span className="text-gray-300">{service}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            {/* Amenities */}
+            <div className="bg-medium rounded-xl p-6 border border-gray-700">
+              <h3 className="text-xl font-bold text-white mb-4">Store Amenities</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {location.amenities.map((amenity, index) => (
+                  <div key={index} className="flex items-center">
+                    <span className="text-primary mr-2 text-lg">✓</span>
+                    <span className="text-gray-300">{amenity}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
       
       {/* FAQ Section with FAQ Schema */}
