@@ -13,7 +13,7 @@ const Navigation = () => {
   const navItems = [
     { label: "Home", path: "/", ariaLabel: "Go to homepage" },
     { label: "Locations", path: "/locations", ariaLabel: "Find our store locations" },
-    { label: "Frisco Store", path: "/locations/frisco", ariaLabel: "Visit our Frisco location at 552G+86", highlight: true },
+    { label: "Frisco Store", path: "/locations/frisco", ariaLabel: "Visit our Frisco TX location", highlight: true },
     { label: "Contact", path: "/contact", ariaLabel: "Contact us" },
   ];
 
