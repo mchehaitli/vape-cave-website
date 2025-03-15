@@ -478,7 +478,7 @@ const FriscoLocationPage: React.FC = () => {
                           {location.amenities.map((amenity, index) => (
                             <span 
                               key={index} 
-                              className="bg-primary/20 text-primary text-xs font-medium py-1 px-3 rounded-full"
+                              className="bg-black/30 text-white text-xs font-medium py-1 px-3 rounded-full border border-gray-800"
                             >
                               {amenity}
                             </span>
