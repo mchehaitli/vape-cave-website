@@ -68,11 +68,7 @@ const LocationsPage = () => {
           "name": "yearEstablished",
           "value": location.yearEstablished
         },
-        isFrisco ? {
-          "@type": "PropertyValue",
-          "name": "googleMapPlusCode",
-          "value": "552G+86 Frisco, Texas"
-        } : undefined,
+        // Removed Plus Code reference for enhanced SEO with direct map links
         {
           "@type": "PropertyValue",
           "name": "googlePlaceId",
@@ -95,7 +91,7 @@ const LocationsPage = () => {
       "isAccessibleForFree": true,
       "smokingAllowed": true,
       "keywords": isFrisco 
-        ? "vape shop frisco, delta 8 frisco, thc-a frisco, 552G+86, frisco vape shop, vape products frisco tx, vaping frisco, smoke shop frisco, vape accessories frisco" 
+        ? "vape shop frisco, delta 8 frisco, thc-a frisco, main street frisco, frisco vape shop, vape products frisco tx, vaping frisco, smoke shop frisco, vape accessories frisco" 
         : "vape shop, e-cigarettes, e-liquids, vaping accessories, " + location.services.join(", ").toLowerCase(),
       "amenityFeature": location.amenities.map(amenity => ({
         "@type": "LocationFeatureSpecification",
