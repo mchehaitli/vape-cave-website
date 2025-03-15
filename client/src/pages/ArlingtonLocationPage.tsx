@@ -66,157 +66,38 @@ const ArlingtonLocationPage: React.FC = () => {
       </Helmet>
       
       {/* Hero Section with Specific Arlington Information */}
-      <section className="pt-24 pb-16 bg-gradient-to-r from-primary/20 to-primary/5 text-white">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 drop-shadow-lg font-['Poppins']">Vape Cave Arlington</h1>
-              <div className="h-1 w-24 bg-primary rounded-full mb-6"></div>
-              <p className="text-xl mb-6 text-gray-300">Your premier destination for premium vaping products in Arlington, Texas.</p>
-              
-              <div className="bg-medium p-4 rounded-lg border border-gray-700 mb-6">
-                <div className="flex flex-col">
-                  <div className="flex items-start mb-3">
-                    <div className="text-primary mr-3 mt-1">
-                      <i className="fas fa-map-marker-alt"></i>
-                    </div>
-                    <div>
-                      <h3 className="font-medium text-white">Address:</h3>
-                      <address className="not-italic text-gray-300">
-                        <span itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
-                          <span itemProp="streetAddress">{location.address}</span>,{" "}
-                          <span itemProp="addressLocality">{location.city}</span>,{" "}
-                          <span itemProp="addressRegion">TX</span>
-                        </span>
-                      </address>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start mb-3">
-                    <div className="text-primary mr-3 mt-1">
-                      <i className="fas fa-phone-alt"></i>
-                    </div>
-                    <div>
-                      <h3 className="font-medium text-white">Phone:</h3>
-                      <a 
-                        href={`tel:${location.phone.replace(/[^0-9]/g, '')}`} 
-                        className="text-gray-300 hover:text-primary transition-colors"
-                        itemProp="telephone"
-                      >
-                        {location.phone}
-                      </a>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start">
-                    <div className="text-primary mr-3 mt-1">
-                      <i className="fas fa-clock"></i>
-                    </div>
-                    <div>
-                      <h3 className="font-medium text-white">Store Hours:</h3>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 text-gray-300">
-                        <div>
-                          <div itemProp="openingHoursSpecification" itemScope itemType="https://schema.org/OpeningHoursSpecification">
-                            <meta itemProp="dayOfWeek" content="Monday" />
-                            <meta itemProp="opens" content="10:00" />
-                            <meta itemProp="closes" content="23:00" />
-                            <div><span className="font-medium">Mon:</span> {location.openingHours.Monday}</div>
-                          </div>
-                          <div itemProp="openingHoursSpecification" itemScope itemType="https://schema.org/OpeningHoursSpecification">
-                            <meta itemProp="dayOfWeek" content="Tuesday" />
-                            <meta itemProp="opens" content="10:00" />
-                            <meta itemProp="closes" content="23:00" />
-                            <div><span className="font-medium">Tue:</span> {location.openingHours.Tuesday}</div>
-                          </div>
-                          <div itemProp="openingHoursSpecification" itemScope itemType="https://schema.org/OpeningHoursSpecification">
-                            <meta itemProp="dayOfWeek" content="Wednesday" />
-                            <meta itemProp="opens" content="10:00" />
-                            <meta itemProp="closes" content="23:00" />
-                            <div><span className="font-medium">Wed:</span> {location.openingHours.Wednesday}</div>
-                          </div>
-                          <div itemProp="openingHoursSpecification" itemScope itemType="https://schema.org/OpeningHoursSpecification">
-                            <meta itemProp="dayOfWeek" content="Thursday" />
-                            <meta itemProp="opens" content="10:00" />
-                            <meta itemProp="closes" content="23:00" />
-                            <div><span className="font-medium">Thu:</span> {location.openingHours.Thursday}</div>
-                          </div>
-                        </div>
-                        <div>
-                          <div itemProp="openingHoursSpecification" itemScope itemType="https://schema.org/OpeningHoursSpecification">
-                            <meta itemProp="dayOfWeek" content="Friday" />
-                            <meta itemProp="opens" content="10:00" />
-                            <meta itemProp="closes" content="23:00" />
-                            <div><span className="font-medium">Fri:</span> {location.openingHours.Friday}</div>
-                          </div>
-                          <div itemProp="openingHoursSpecification" itemScope itemType="https://schema.org/OpeningHoursSpecification">
-                            <meta itemProp="dayOfWeek" content="Saturday" />
-                            <meta itemProp="opens" content="10:00" />
-                            <meta itemProp="closes" content="23:00" />
-                            <div><span className="font-medium">Sat:</span> {location.openingHours.Saturday}</div>
-                          </div>
-                          <div itemProp="openingHoursSpecification" itemScope itemType="https://schema.org/OpeningHoursSpecification">
-                            <meta itemProp="dayOfWeek" content="Sunday" />
-                            <meta itemProp="opens" content="10:00" />
-                            <meta itemProp="closes" content="23:00" />
-                            <div><span className="font-medium">Sun:</span> {location.openingHours.Sunday}</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="flex flex-wrap gap-4">
-                <DirectionsButton
-                  address={location.fullAddress}
-                  lat={location.coordinates.lat}
-                  lng={location.coordinates.lng}
-                  buttonText="Get Directions"
-                  variant="primary"
-                  size="lg"
-                  showIcon={true}
-                  googlePlaceId={location.googlePlaceId}
-                  appleMapsLink={location.appleMapsLink}
-                />
-                <a 
-                  href={`tel:${location.phone.replace(/[^0-9]/g, '')}`} 
-                  className="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 backdrop-blur-sm hover:shadow-lg"
-                >
-                  Call Us
-                </a>
-              </div>
-            </div>
-            
-            <div className="relative">
-              <div className="bg-gradient-to-r from-orange-600 to-primary absolute -top-5 -left-5 h-32 w-32 rounded-full blur-[70px] opacity-80"></div>
-              <div className="bg-gradient-to-r from-primary to-orange-500 absolute -bottom-10 -right-10 h-40 w-40 rounded-full blur-[70px] opacity-70"></div>
-              <div className="relative z-10 bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700">
-                <div className="h-96">
-                  <img 
-                    src={location.image || "/src/assets/images/vape-lounge.jpg"} 
-                    alt={`Vape Cave ${location.city} Store`} 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="p-6">
-                  <h2 className="text-2xl font-bold font-['Poppins'] text-white mb-2">Welcome to our Arlington Store</h2>
-                  <p className="text-gray-300 mb-4">
-                    {location.description}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {location.amenities.map((amenity, index) => (
-                      <span 
-                        key={index} 
-                        className="bg-primary/10 text-white text-sm py-1 px-3 rounded-full border border-gray-700"
-                      >
-                        {amenity}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
+      <section className="relative h-72 md:h-96 overflow-hidden bg-gray-900 py-10">
+        <div className="absolute inset-0">
+          <img 
+            src={location.image} 
+            alt="Vape Cave Arlington storefront" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/20 mix-blend-multiply"></div>
+          <div className="absolute inset-0 opacity-20 bg-pattern"></div>
+        </div>
+        <div className="container mx-auto px-4 h-full flex flex-col justify-center relative z-10 text-white">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 drop-shadow-lg font-['Poppins']">Vape Cave Arlington</h1>
+          <div className="h-1 w-24 bg-primary rounded-full mb-6"></div>
+          <p className="text-xl md:text-2xl max-w-2xl drop-shadow-md">Your premier destination for premium vaping products in Arlington, Texas.</p>
+          <div className="mt-8 flex flex-wrap gap-4">
+            <DirectionsButton
+              address={location.fullAddress}
+              lat={location.coordinates.lat}
+              lng={location.coordinates.lng}
+              buttonText="Get Directions"
+              variant="primary"
+              size="lg"
+              showIcon={true}
+              googlePlaceId={location.googlePlaceId}
+              appleMapsLink={location.appleMapsLink}
+            />
+            <a 
+              href={`tel:${location.phone.replace(/[^0-9]/g, '')}`} 
+              className="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 backdrop-blur-sm hover:shadow-lg"
+            >
+              Call Us: {location.phone}
+            </a>
           </div>
         </div>
       </section>
