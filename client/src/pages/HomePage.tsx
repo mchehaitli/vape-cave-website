@@ -253,7 +253,7 @@ const HomePage = () => {
 
       {/* Featured Frisco Location Section - Enhance SEO importance */}
       <section 
-        className="py-14 bg-gradient-to-r from-primary/10 to-primary/5 text-white" 
+        className="py-14 bg-gradient-to-r from-black to-gray-900 text-white" 
         id="frisco-location" 
         itemScope 
         itemType="https://schema.org/VapeShop"
@@ -383,7 +383,7 @@ const HomePage = () => {
 
       {/* Featured Arlington Location Section - Enhance SEO importance */}
       <section 
-        className="py-14 bg-gradient-to-r from-primary/5 to-primary/10 text-white" 
+        className="py-14 bg-gradient-to-r from-gray-900 to-black text-white" 
         id="arlington-location" 
         itemScope 
         itemType="https://schema.org/VapeShop"
