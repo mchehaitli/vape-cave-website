@@ -237,7 +237,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         <title>{title}</title>
         <meta name="description" content={description} />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="keywords" content="vape shop frisco, 552G+86 frisco, frisco vape shop, delta 8 frisco, thc-a frisco, disposable vape frisco, vape products frisco tx, vaping frisco, frisco vaporizer shop, vape cave frisco" />
+        <meta name="keywords" content="vape shop frisco, premium vaping products frisco, frisco vape shop, delta 8 frisco, thc-a frisco, disposable vape frisco, vape products frisco tx, vaping frisco, frisco vaporizer shop, vape cave frisco" />
         <meta name="author" content="Vape Cave" />
         <meta name="robots" content="index, follow" />
         <meta name="geo.position" content="33.150730;-96.822550" />

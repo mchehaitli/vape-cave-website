@@ -72,7 +72,7 @@ const Footer = () => {
         frisco.socialProfiles?.twitter,
         frisco.socialProfiles?.yelp
       ],
-      "keywords": "vape shop frisco, 552G+86 frisco, frisco vape shop, delta 8 frisco, thc-a frisco",
+      "keywords": "vape shop frisco, premium vape shop frisco, frisco vape shop, delta 8 frisco, thc-a frisco",
       "hasMap": [
         {
           "@type": "Map",
