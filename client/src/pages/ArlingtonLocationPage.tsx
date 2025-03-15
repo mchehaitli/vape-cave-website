@@ -416,29 +416,23 @@ const ArlingtonLocationPage: React.FC = () => {
       {/* Main content with store information */}
       <section className="py-12 bg-dark text-white">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Left column: Store information */}
-            <div>
-              <h2 className="text-2xl font-bold font-['Poppins'] mb-6 text-white">About Our Arlington Store</h2>
-              <div className="rounded-lg overflow-hidden shadow-lg mb-6">
-                <img 
-                  src={location.image} 
-                  alt={`${location.name} storefront in ${location.city}, TX`} 
-                  className="w-full h-auto object-cover"
-                width="800"
-                height="600"
-              />
-            </div>
-            
-            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold text-gray-800">Store Details</h2>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold font-['Poppins'] mb-3">Store Information</h2>
+            <div className="h-1 w-24 bg-primary mx-auto rounded-full mb-6"></div>
+            <p className="text-gray-300 max-w-2xl mx-auto">All the details you need about our Arlington location.</p>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Store Info */}
+            <div className="lg:col-span-2">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold font-['Poppins'] text-white">Location Details</h2>
                 <button 
                   onClick={() => setShowDetails(!showDetails)}
                   className="text-primary hover:text-primary/80"
                   aria-expanded={showDetails}
                 >
-                  {showDetails ? 'Hide' : 'Show'}
+                  {showDetails ? 'Hide Details' : 'Show Details'}
                 </button>
               </div>
               
@@ -601,21 +595,18 @@ const ArlingtonLocationPage: React.FC = () => {
               </div>
             </div>
           </div>
-          {/* Close the right column div */}
         </div>
-        {/* Close the grid container div */}
         
         <div className="mt-12">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Areas We Serve</h2>
+          <h2 className="text-2xl font-bold text-white mb-6 text-center">Areas We Serve</h2>
           <div className="flex flex-wrap justify-center gap-4">
             {location.areaServed.map((area, index) => (
-              <span key={index} className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full">
+              <span key={index} className="bg-primary/10 text-white px-3 py-1 rounded-full border border-gray-700">
                 {area}
               </span>
             ))}
           </div>
         </div>
-      </div>
       </section>
     </MainLayout>
   );
