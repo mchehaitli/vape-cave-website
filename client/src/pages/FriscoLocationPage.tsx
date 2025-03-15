@@ -108,7 +108,7 @@ const FriscoLocationPage: React.FC = () => {
       "publicAccess": true,
       "isAccessibleForFree": true,
       "smokingAllowed": true,
-      "keywords": "vape shop frisco, delta 8 frisco, thc-a frisco, 552G+86, frisco vape shop, vape products frisco tx, vaping frisco, smoke shop frisco, vape accessories frisco, premium vape products frisco, cbd frisco tx",
+      "keywords": "vape shop frisco, delta 8 frisco, thc-a frisco, premium vape frisco, frisco vape shop, vape products frisco tx, vaping frisco, smoke shop frisco, vape accessories frisco, premium vape products frisco, cbd frisco tx",
       "amenityFeature": location.amenities.map(amenity => ({
         "@type": "LocationFeatureSpecification",
         "name": amenity,
@@ -183,16 +183,16 @@ const FriscoLocationPage: React.FC = () => {
   
   return (
     <MainLayout
-      title="Vape Cave Frisco | Vape Shop at 552G+86 | Premium Vaping Products & Delta 8"
-      description="Visit Vape Cave in Frisco (Plus Code: 552G+86) at 6958 Main St #200. Offering premium vape products, Delta 8, THC-A, disposables & accessories. Open daily 10AM-12AM."
+      title="Vape Cave Frisco | Premium Vape Shop in Frisco | Premium Vaping Products & Delta 8"
+      description="Visit Vape Cave in Frisco at 6958 Main St #200. Offering premium vape products, Delta 8, THC-A, disposables & accessories. Open daily 10AM-12AM."
       canonical="https://vapecavetx.com/locations/frisco"
       ogImage="https://vapecavetx.com/storefront-frisco.jpg"
       structuredData={generateFriscoStructuredData()}
     >
       {/* Additional SEO metadata specific to Frisco location */}
       <Helmet>
-        <title>Vape Cave Frisco | Vape Shop at 552G+86 | Premium Vaping Products & Delta 8</title>
-        <meta name="description" content="Visit Vape Cave in Frisco (Plus Code: 552G+86) at 6958 Main St #200. Offering premium vape products, Delta 8, THC-A, disposables & accessories. Open daily 10AM-12AM." />
+        <title>Vape Cave Frisco | Premium Vape Shop in Frisco | Premium Vaping Products & Delta 8</title>
+        <meta name="description" content="Visit Vape Cave in Frisco at 6958 Main St #200. Offering premium vape products, Delta 8, THC-A, disposables & accessories. Open daily 10AM-12AM." />
         <link rel="canonical" href="https://vapecavetx.com/locations/frisco" />
         
         {/* Open Graph & Twitter */}

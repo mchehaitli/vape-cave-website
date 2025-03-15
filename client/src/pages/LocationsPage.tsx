@@ -154,19 +154,19 @@ const LocationsPage = () => {
   return (
     <MainLayout
       title="Vape Cave Frisco Location | Vape Shop in Frisco, TX | Store Hours & Directions"
-      description="Visit our Vape Cave Frisco location (Plus Code: 552G+86) at 6958 Main St #200, Frisco, TX 75033. Open daily 10AM-12AM with premium vaping products, Delta 8, THC-A, disposables, glass, and accessories."
+      description="Visit our Vape Cave Frisco location at 6958 Main St #200, Frisco, TX 75033. Open daily 10AM-12AM with premium vaping products, Delta 8, THC-A, disposables, glass, and accessories."
     >
       {/* SEO Schema.org structured data */}
       <Helmet>
-        <title>Vape Cave Frisco Location | Vape Shop at 552G+86 | Store Hours & Directions</title>
-        <meta name="description" content="Visit our Vape Cave Frisco location (Plus Code: 552G+86) at 6958 Main St #200, Frisco, TX 75033. Open daily 10AM-12AM with premium vaping products, Delta 8, THC-A, disposables, glass, and accessories." />
+        <title>Vape Cave Frisco Location | Vape Shop in Frisco, TX | Store Hours & Directions</title>
+        <meta name="description" content="Visit our Vape Cave Frisco location at 6958 Main St #200, Frisco, TX 75033. Open daily 10AM-12AM with premium vaping products, Delta 8, THC-A, disposables, glass, and accessories." />
         <link rel="canonical" href="https://vapecavetx.com/locations" />
         
         {/* Open Graph / Facebook */}
         <meta property="og:locale" content="en_US" />
         <meta property="og:type" content="business.business" />
-        <meta property="og:title" content="Vape Cave Frisco Location | Plus Code: 552G+86" />
-        <meta property="og:description" content="Visit our Vape Cave Frisco location at 6958 Main St #200, Frisco, TX 75033. Find us easily with Plus Code: 552G+86. Premium vapes, Delta 8, THC-A, and more." />
+        <meta property="og:title" content="Vape Cave Frisco Location | Premium Vape Shop in Frisco" />
+        <meta property="og:description" content="Visit our Vape Cave Frisco location at 6958 Main St #200, Frisco, TX 75033. Premium vapes, Delta 8, THC-A, and more available at our convenient Frisco location." />
         <meta property="og:url" content="https://vapecavetx.com/locations" />
         <meta property="og:site_name" content="Vape Cave" />
         <meta property="og:image" content="https://vapecavetx.com/storefront-frisco.jpg" />
@@ -180,16 +180,16 @@ const LocationsPage = () => {
         
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Vape Cave Frisco Location | Plus Code: 552G+86" />
-        <meta name="twitter:description" content="Visit our Vape Cave Frisco location with Plus Code: 552G+86. Premium vapes, Delta 8, THC-A, and more." />
+        <meta name="twitter:title" content="Vape Cave Frisco Location | Premium Vape Shop in Frisco" />
+        <meta name="twitter:description" content="Visit our Vape Cave Frisco location in Frisco, TX. Premium vapes, Delta 8, THC-A, and more at our convenient Frisco store." />
         <meta name="twitter:image" content="https://vapecavetx.com/storefront-frisco.jpg" />
         
         {/* Keywords with strong Frisco location focus */}
-        <meta name="keywords" content="vape store frisco, vape shop frisco tx, vape cave frisco, 552G+86 frisco, frisco vape shop, delta 8 frisco, thc-a frisco, disposable vape frisco, e-liquid frisco, vape products frisco tx, frisco vape plus code" />
+        <meta name="keywords" content="vape store frisco, vape shop frisco tx, vape cave frisco, frisco vape shop, delta 8 frisco, thc-a frisco, disposable vape frisco, e-liquid frisco, vape products frisco tx, premium vape shop frisco" />
         
         {/* Dublin Core Metadata */}
-        <meta name="DC.title" content="Vape Cave Frisco | 552G+86 | Premium Vape Shop" />
-        <meta name="DC.description" content="Frisco's premium vape shop at 6958 Main St #200 (Plus Code: 552G+86). Offering high-quality vape products, Delta 8, THC-A, and accessories." />
+        <meta name="DC.title" content="Vape Cave Frisco | Premium Vape Shop in Frisco, TX" />
+        <meta name="DC.description" content="Frisco's premium vape shop at 6958 Main St #200. Offering high-quality vape products, Delta 8, THC-A, and accessories." />
         <meta name="DC.subject" content="Vape Shop, Frisco, Delta 8, THC-A, Disposable Vapes" />
         <meta name="DC.creator" content="Vape Cave" />
         <meta name="DC.type" content="LocalBusiness" />
@@ -218,7 +218,7 @@ const LocationsPage = () => {
             "url": "https://vapecavetx.com",
             "logo": "https://vapecavetx.com/logo.png",
             "description": "Vape Cave offers premium vaping products, e-liquids, and accessories at our convenient Frisco and Arlington, TX locations. We specialize in Disposable Vapes, Delta 8, THC-A, Delta 9, pre-rolls, flower, vape pens, and cartridges.",
-            "keywords": "vape shop frisco, 552G+86 frisco, frisco vape shop, delta 8 frisco, thc-a frisco",
+            "keywords": "vape shop frisco, premium vape frisco, frisco vape shop, delta 8 frisco, thc-a frisco",
             "sameAs": [
               "https://facebook.com/vapecavetx",
               "https://instagram.com/vapecavetx",
