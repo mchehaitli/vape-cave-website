@@ -560,7 +560,7 @@ const ArlingtonLocationPage: React.FC = () => {
                   {location.areaServed.map((area, index) => (
                     <span 
                       key={index} 
-                      className="bg-black/30 text-white text-sm py-1 px-3 rounded-full border border-gray-800"
+                      className="bg-black/30 text-primary text-sm py-1 px-3 rounded-full border border-gray-800"
                     >
                       {area}
                     </span>
@@ -698,7 +698,7 @@ const ArlingtonLocationPage: React.FC = () => {
                   {location.acceptedPayments.map((payment, index) => (
                     <span 
                       key={index} 
-                      className="bg-black/30 text-white text-sm py-1 px-3 rounded-full border border-gray-800"
+                      className="bg-black/30 text-primary text-sm py-1 px-3 rounded-full border border-gray-800"
                     >
                       {payment}
                     </span>
