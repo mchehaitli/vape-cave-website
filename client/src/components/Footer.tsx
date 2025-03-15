@@ -14,8 +14,87 @@ const Footer = () => {
     setEmail("");
   };
 
+  // Get Frisco location data for structured data
+  const frisco = getFriscoLocation();
+  
+  // Generate LocalBusiness JSON-LD for footer
+  const generateLocalBusinessSchema = () => {
+    return {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "@id": "https://vapecavetx.com/locations/frisco#business",
+      "name": "Vape Cave Frisco",
+      "image": frisco.image,
+      "url": "https://vapecavetx.com/locations/frisco",
+      "telephone": "+14692940061",
+      "email": "vapecavetex@gmail.com",
+      "priceRange": "$$",
+      "description": frisco.description,
+      "currenciesAccepted": "USD",
+      "paymentAccepted": frisco.acceptedPayments.join(", "),
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "6958 Main St #200",
+        "addressLocality": "Frisco",
+        "addressRegion": "TX",
+        "postalCode": "75033",
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": frisco.coordinates.lat,
+        "longitude": frisco.coordinates.lng
+      },
+      "additionalProperty": [
+        {
+          "@type": "PropertyValue",
+          "name": "plusCode",
+          "value": "552G+86 Frisco, Texas"
+        }
+      ],
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Sunday"],
+          "opens": "10:00",
+          "closes": "24:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Friday", "Saturday"],
+          "opens": "10:00",
+          "closes": "01:00"
+        }
+      ],
+      "sameAs": [
+        frisco.socialProfiles?.facebook,
+        frisco.socialProfiles?.instagram,
+        frisco.socialProfiles?.twitter,
+        frisco.socialProfiles?.yelp
+      ],
+      "keywords": "vape shop frisco, 552G+86 frisco, frisco vape shop, delta 8 frisco, thc-a frisco",
+      "hasMap": [
+        {
+          "@type": "Map",
+          "url": `https://plus.codes/${frisco.plusCode?.replace(/\s+/g, '')}`
+        },
+        {
+          "@type": "Map",
+          "url": `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(frisco.plusCode || "")}`
+        }
+      ]
+    };
+  };
+
   return (
     <footer className="bg-dark text-white">
+      {/* LocalBusiness JSON-LD Schema for SEO */}
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(generateLocalBusinessSchema())}
+        </script>
+      </Helmet>
+      
       <div className="container mx-auto px-4 py-12">        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Social Media Links */}
@@ -81,7 +160,11 @@ const Footer = () => {
           
           {/* Column 3: Frisco Location */}
           <div>
-            <h4 className="font-['Poppins'] font-semibold text-xl mb-4">Frisco Location</h4>
+            <h4 className="font-['Poppins'] font-semibold text-xl mb-4">
+              <Link href="/locations/frisco" className="hover:text-primary/90">
+                Frisco Location
+              </Link>
+            </h4>
             <ul className="space-y-3">
               <li className="flex items-start">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -89,8 +172,10 @@ const Footer = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
                 <div>
-                  <span className="text-white/70 block">6958 Main St, Frisco, TX 75033</span>
-                  <span className="text-primary/80 text-xs mt-1 block">Plus Code: 552G+86 Frisco, Texas</span>
+                  <Link href="/locations/frisco">
+                    <span className="text-white/70 hover:text-primary/80 block">6958 Main St, Frisco, TX 75033</span>
+                    <span className="text-primary/80 hover:text-primary text-xs mt-1 block">Plus Code: 552G+86 Frisco, Texas</span>
+                  </Link>
                 </div>
               </li>
               <li className="flex items-start">

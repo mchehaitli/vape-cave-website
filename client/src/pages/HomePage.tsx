@@ -243,6 +243,11 @@ const HomePage = () => {
                     Find Our Stores
                   </div>
                 </Link>
+                <Link href="/locations/frisco">
+                  <div className="bg-primary/30 hover:bg-primary/40 border border-primary/50 text-white font-bold py-4 px-10 rounded-lg transition-all duration-300 cursor-pointer backdrop-blur-sm hover:shadow-lg hover:-translate-y-1">
+                    Frisco Store (552G+86)
+                  </div>
+                </Link>
               </div>
             </div>
           </div>
@@ -331,9 +336,9 @@ const HomePage = () => {
                   </div>
                 </div>
                 
-                <Link href="/locations">
+                <Link href="/locations/frisco">
                   <div className="inline-block bg-primary hover:bg-primary/90 text-white font-bold py-2 px-6 rounded-lg transition-colors shadow-md cursor-pointer">
-                    View Store Details
+                    View Frisco Store Details
                   </div>
                 </Link>
                 
@@ -386,6 +391,136 @@ const HomePage = () => {
                     View Details
                   </div>
                 </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Frisco Location Section - Enhance SEO importance */}
+      <section 
+        className="py-14 bg-gradient-to-r from-primary/10 to-primary/5 text-white" 
+        id="frisco-location" 
+        itemScope 
+        itemType="https://schema.org/VapeShop"
+        itemProp="departments"
+      >
+        <meta itemProp="name" content="Vape Cave Frisco" />
+        <meta itemProp="identifier" content="552G+86 Frisco, Texas" />
+        <meta itemProp="alternateName" content="Vape Cave at 552G+86" />
+        <meta itemProp="description" content="Premier vape shop in Frisco, TX with a wide selection of vaping products, disposables, delta 8, and THC-A products. Easy to find using Plus Code 552G+86 Frisco, Texas." />
+        <meta itemProp="image" content="https://vapecavetx.com/frisco-location.jpg" />
+        <meta itemProp="url" content="https://vapecavetx.com/locations/frisco" />
+        <meta itemProp="priceRange" content="$$" />
+        <meta itemProp="telephone" content="+14692940061" />
+        <meta itemProp="email" content="vapecavetx@gmail.com" />
+        <div 
+          itemProp="address" 
+          itemScope 
+          itemType="https://schema.org/PostalAddress"
+        >
+          <meta itemProp="streetAddress" content="6958 Main St #200" />
+          <meta itemProp="addressLocality" content="Frisco" />
+          <meta itemProp="addressRegion" content="TX" />
+          <meta itemProp="postalCode" content="75033" />
+          <meta itemProp="addressCountry" content="US" />
+        </div>
+        <div 
+          itemProp="geo" 
+          itemScope 
+          itemType="https://schema.org/GeoCoordinates"
+        >
+          <meta itemProp="latitude" content="33.150730" />
+          <meta itemProp="longitude" content="-96.822550" />
+        </div>
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row items-center gap-8">
+            <div className="md:w-1/2">
+              <h2 className="text-3xl font-bold font-['Poppins'] mb-3">
+                Find Us Easily at 552G+86 Frisco
+              </h2>
+              <div className="h-1 w-24 bg-primary rounded-full mb-6"></div>
+              <p className="text-gray-300 mb-6">
+                Our Frisco location is conveniently accessible using Google Maps Plus Code navigation.
+                Simply enter <span className="text-primary font-semibold">552G+86 Frisco, Texas</span> in
+                your maps app to find us instantly - no complicated address needed!
+              </p>
+              
+              <div className="mb-8">
+                <h3 className="text-xl font-semibold mb-3">Why use Plus Codes?</h3>
+                <ul className="space-y-2 text-gray-300">
+                  <li className="flex items-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Pinpoint accuracy, even in complex shopping areas
+                  </li>
+                  <li className="flex items-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Works with Google Maps, Apple Maps and other navigation apps
+                  </li>
+                  <li className="flex items-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Shorter than a full address - easier to remember and share
+                  </li>
+                </ul>
+              </div>
+              
+              <div className="flex flex-wrap gap-4">
+                <Link href="/locations/frisco">
+                  <div className="inline-block bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-md cursor-pointer">
+                    Visit Our Frisco Store
+                  </div>
+                </Link>
+                <a 
+                  href="https://www.google.com/maps/search/?api=1&query=552G%2B86+Frisco%2C+Texas" 
+                  target="_blank"
+                  rel="noopener noreferrer" 
+                  className="inline-block bg-white/10 hover:bg-white/20 text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-md cursor-pointer"
+                >
+                  <span className="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                    </svg>
+                    Open in Maps
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+            <div className="md:w-1/2 bg-black/30 p-6 rounded-xl border border-primary/20">
+              <h3 className="text-xl font-semibold mb-4 text-center">Quick Information</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-black/40 p-4 rounded-lg border border-gray-800">
+                  <h4 className="text-primary font-semibold mb-2">Location</h4>
+                  <p className="text-gray-300 text-sm">6958 Main St #200, Frisco, TX 75033</p>
+                  <p className="text-primary/80 text-xs mt-1">Plus Code: 552G+86 Frisco, Texas</p>
+                </div>
+                
+                <div className="bg-black/40 p-4 rounded-lg border border-gray-800">
+                  <h4 className="text-primary font-semibold mb-2">Hours</h4>
+                  <p className="text-gray-300 text-sm">Mon-Sun: 10:00 AM - 12:00 AM</p>
+                  <p className="text-primary/80 text-xs mt-1">Open 7 days a week</p>
+                </div>
+                
+                <div className="bg-black/40 p-4 rounded-lg border border-gray-800">
+                  <h4 className="text-primary font-semibold mb-2">Contact</h4>
+                  <p className="text-gray-300 text-sm">(469) 294-0061</p>
+                  <p className="text-primary/80 text-xs mt-1">vapecavetx@gmail.com</p>
+                </div>
+                
+                <div className="bg-black/40 p-4 rounded-lg border border-gray-800">
+                  <h4 className="text-primary font-semibold mb-2">Specialties</h4>
+                  <div className="flex flex-wrap gap-1">
+                    <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">Delta 8</span>
+                    <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">THC-A</span>
+                    <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">Disposables</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
