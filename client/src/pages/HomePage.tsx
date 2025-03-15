@@ -272,8 +272,8 @@ const HomePage = () => {
                     </svg>
                     <div itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
                       <span className="text-gray-300 block">
-                        <span itemProp="streetAddress">6958 Main St #200</span>, 
-                        <span itemProp="addressLocality">Frisco</span>, 
+                        <span itemProp="streetAddress">6958 Main St #200</span>,&nbsp;
+                        <span itemProp="addressLocality">Frisco</span>,&nbsp;
                         <span itemProp="addressRegion">TX</span>&nbsp;
                         <span itemProp="postalCode">75033</span>
                       </span>
@@ -377,8 +377,8 @@ const HomePage = () => {
                     </svg>
                     <div itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
                       <span className="text-gray-300 block">
-                        <span itemProp="streetAddress">4100 S Cooper St, Unit 4108</span>, 
-                        <span itemProp="addressLocality">Arlington</span>, 
+                        <span itemProp="streetAddress">4100 S Cooper St, Unit 4108</span>,&nbsp;
+                        <span itemProp="addressLocality">Arlington</span>,&nbsp;
                         <span itemProp="addressRegion">TX</span>&nbsp;
                         <span itemProp="postalCode">76015</span>
                       </span>
