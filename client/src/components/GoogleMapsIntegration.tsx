@@ -401,9 +401,9 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
               "@context": "https://schema.org",
               "@type": "VapeShop",
               "@id": "https://vapecavetx.com/locations/frisco/#vapeshop",
-              "name": "Vape Cave Frisco (552G+86)",
-              "alternateName": ["Vape Cave Smoke & Stuff", "Vape Shop Frisco 552G+86", "Frisco Vape Store"],
-              "description": "Premium vape shop in Frisco, TX (Plus Code: 552G+86) offering a wide selection of vapes, e-liquids, THC-A, Delta 8, disposables, and smoking accessories. Located on Main Street with convenient parking.",
+              "name": "Vape Cave Frisco",
+              "alternateName": ["Vape Cave Smoke & Stuff", "Vape Shop Frisco", "Frisco Vape Store"],
+              "description": "Premium vape shop in Frisco, TX offering a wide selection of vapes, e-liquids, THC-A, Delta 8, disposables, and smoking accessories. Located on Main Street with convenient parking.",
               "mainEntityOfPage": {
                 "@type": "WebPage",
                 "@id": "https://vapecavetx.com/locations/frisco/"
@@ -421,7 +421,7 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
                 "@type": "GeoCoordinates",
                 "latitude": ${friscoLocation.position.lat},
                 "longitude": ${friscoLocation.position.lng},
-                "name": "Vape Cave Frisco 552G+86 Coordinates"
+                "name": "Vape Cave Frisco Coordinates"
               },
               "telephone": "+14692940061",
               "email": "info@vapecavetx.com",
@@ -430,7 +430,7 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
               "photo": {
                 "@type": "ImageObject",
                 "contentUrl": "https://vapecavetx.com/images/vape-cave-frisco-interior.jpg",
-                "description": "Interior of Vape Cave Frisco store at Plus Code 552G+86"
+                "description": "Interior of Vape Cave Frisco store"
               },
               "currenciesAccepted": "USD",
               "paymentAccepted": "Cash, Credit Card, Debit Card, Apple Pay, Google Pay",
@@ -438,15 +438,9 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
               "hasMap": [
                 {
                   "@type": "Map",
-                  "name": "Google Maps with Plus Code",
-                  "url": "https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(friscoLocation.plusCode || "552G+86 Frisco, Texas")}&place_id=ChIJxXjrR3wVkFQRcKK89i-aFDw",
-                  "description": "Find our Frisco vape shop using Google Maps with Plus Code 552G+86"
-                },
-                {
-                  "@type": "Map",
-                  "name": "Plus Codes Direct Navigation",
-                  "url": "https://plus.codes/${(friscoLocation.plusCode || "552G+86_Frisco,_Texas").replace(/\\s+/g, '')}",
-                  "description": "Direct link to our Frisco vape shop using Plus Code navigation (552G+86)"
+                  "name": "Google Maps Navigation",
+                  "url": "https://www.google.com/maps/place/?q=place_id:${friscoLocation.googlePlaceId || "ChIJxXjrR3wVkFQRcKK89i-aFDw"}",
+                  "description": "Find our Frisco vape shop using Google Maps"
                 },
                 {
                   "@type": "Map",
@@ -476,11 +470,6 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
               "areaServed": ["Frisco", "Allen", "Plano", "McKinney", "North Texas"],
               "priceRange": "$$",
               "additionalProperty": [
-                {
-                  "@type": "PropertyValue",
-                  "name": "Plus Code",
-                  "value": "${friscoLocation.plusCode || "552G+86 Frisco, Texas"}"
-                },
                 {
                   "@type": "PropertyValue",
                   "name": "Google Place ID",
@@ -519,7 +508,7 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
         </script>
         {/* Standard geo meta tags */}
         <meta name="geo.position" content={`${friscoLocation.position.lat};${friscoLocation.position.lng}`} />
-        <meta name="geo.placename" content="Vape Cave Frisco (552G+86)" />
+        <meta name="geo.placename" content="Vape Cave Frisco" />
         <meta name="geo.region" content="US-TX" />
         <meta name="ICBM" content={`${friscoLocation.position.lat}, ${friscoLocation.position.lng}`} />
         
@@ -539,8 +528,8 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
         <meta name="product-category" content="Vapes, E-Liquids, Disposables, Delta 8, THC-A, Smoking Accessories" />
         
         {/* Local business schema support */}
-        <meta name="DC.title" content="Vape Cave Frisco - Premium Vape Shop at 552G+86" />
-        <meta name="DC.description" content="Visit Vape Cave at Plus Code 552G+86 in Frisco, TX for premium vaping products, disposables, Delta 8, THC-A and smoking accessories." />
+        <meta name="DC.title" content="Vape Cave Frisco - Premium Vape Shop" />
+        <meta name="DC.description" content="Visit Vape Cave in Frisco, TX for premium vaping products, disposables, Delta 8, THC-A and smoking accessories." />
         <meta name="DC.publisher" content="Vape Cave" />
         <meta name="DC.contributor" content="Frisco Chamber of Commerce" />
         <meta name="DC.coverage" content="Frisco, Plano, Allen, McKinney, North Texas" />

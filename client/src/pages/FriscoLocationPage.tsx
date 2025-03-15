@@ -55,7 +55,7 @@ const FriscoLocationPage: React.FC = () => {
       "hasMap": [
         {
           "@type": "Map",
-          "url": `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.plusCode || "")}`
+          "url": location.googlePlaceId ? `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}` : ""
         },
         {
           "@type": "Map",
@@ -63,7 +63,7 @@ const FriscoLocationPage: React.FC = () => {
         },
         {
           "@type": "Map", 
-          "url": `https://plus.codes/${location.plusCode?.replace(/\s+/g, '')}`
+          "url": location.appleMapsLink || ""
         }
       ],
       "additionalProperty": [
