@@ -425,8 +425,7 @@ const HomePage = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <div className="text-gray-300">
-                      <div>Mon-Thu, Sun: 10AM - 12AM</div>
-                      <div>Fri-Sat: 10AM - 1AM</div>
+                      <div>10:00 AM - 11:00 PM</div>
                       <div className="text-primary/80 text-xs mt-1">Open 7 days a week</div>
                     </div>
                   </div>
