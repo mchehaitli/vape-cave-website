@@ -280,7 +280,7 @@ const HomePage = () => {
                       <span className="text-gray-300 block">
                         <span itemProp="streetAddress">6958 Main St #200</span>, 
                         <span itemProp="addressLocality">Frisco</span>, 
-                        <span itemProp="addressRegion">TX</span> 
+                        <span itemProp="addressRegion">TX</span>&nbsp;
                         <span itemProp="postalCode">75033</span>
                       </span>
                       <span className="text-gray-400 text-xs mt-1 block">
@@ -365,7 +365,14 @@ const HomePage = () => {
             </div>
             
             {/* Arlington Location */}
-            <div className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700">
+            <div 
+              className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700"
+              itemScope 
+              itemType="https://schema.org/VapeShop"
+            >
+              <meta itemProp="name" content="Vape Cave Arlington" />
+              <meta itemProp="alternateName" content="Vape Cave Arlington Cooper St" />
+              <meta itemProp="priceRange" content="$$" />
               <div className="p-6">
                 <h3 className="font-['Poppins'] font-semibold text-2xl mb-4 text-white">Arlington Location</h3>
                 <div className="space-y-3 mb-5">
@@ -374,8 +381,13 @@ const HomePage = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    <div>
-                      <span className="text-gray-300 block">4100 S Cooper St, Unit 4108, Arlington, TX 76015</span>
+                    <div itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
+                      <span className="text-gray-300 block">
+                        <span itemProp="streetAddress">4100 S Cooper St, Unit 4108</span>, 
+                        <span itemProp="addressLocality">Arlington</span>, 
+                        <span itemProp="addressRegion">TX</span>&nbsp;
+                        <span itemProp="postalCode">76015</span>
+                      </span>
                       <span className="text-gray-400 text-xs mt-1 block">
                         <a 
                           href="https://maps.app.goo.gl/7RRoEeD3uzANmdhZA" 
@@ -403,6 +415,7 @@ const HomePage = () => {
                     <a 
                       href="tel:+16822700334" 
                       className="text-gray-300 hover:text-primary transition-colors"
+                      itemProp="telephone"
                     >
                       (682) 270-0334
                     </a>
@@ -412,7 +425,8 @@ const HomePage = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <div className="text-gray-300">
-                      <div>10:00 AM - 11:00 PM</div>
+                      <div>Mon-Thu, Sun: 10AM - 12AM</div>
+                      <div>Fri-Sat: 10AM - 1AM</div>
                       <div className="text-primary/80 text-xs mt-1">Open 7 days a week</div>
                     </div>
                   </div>
@@ -421,7 +435,7 @@ const HomePage = () => {
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-0.5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2" itemProp="makesOffer" itemScope itemType="https://schema.org/Offer">
                       <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">Delta 8</span>
                       <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">THC-A</span>
                       <span className="inline-block text-xs bg-primary/20 rounded-full px-2 py-1 text-primary">Disposables</span>
