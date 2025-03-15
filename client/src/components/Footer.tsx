@@ -140,8 +140,13 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/locations">
-                  <span className="text-white/70 hover:text-primary transition-colors cursor-pointer">Locations</span>
+                <Link href="/locations/frisco">
+                  <span className="text-white/70 hover:text-primary transition-colors cursor-pointer">Frisco Store</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/locations/arlington">
+                  <span className="text-white/70 hover:text-primary transition-colors cursor-pointer">Arlington Store</span>
                 </Link>
               </li>
               <li>
@@ -201,7 +206,11 @@ const Footer = () => {
           
           {/* Column 4: Arlington Location & Contact */}
           <div>
-            <h4 className="font-['Poppins'] font-semibold text-xl mb-4">Arlington Location</h4>
+            <h4 className="font-['Poppins'] font-semibold text-xl mb-4">
+              <Link href="/locations/arlington" className="hover:text-primary/90">
+                Arlington Location
+              </Link>
+            </h4>
             <ul className="space-y-3 mb-6">
               <li className="flex items-start">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -209,8 +218,10 @@ const Footer = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
                 <div>
-                  <span className="text-white/70 block">4100 S Cooper St, Unit 4108, Arlington, TX 76015</span>
-                  <span className="text-primary/80 text-xs mt-1 block">Find us on Google Maps</span>
+                  <Link href="/locations/arlington">
+                    <span className="text-white/70 hover:text-primary/80 block">4100 S Cooper St, Unit 4108, Arlington, TX 76015</span>
+                    <span className="text-primary/80 hover:text-primary text-xs mt-1 block">Find us on Google Maps</span>
+                  </Link>
                 </div>
               </li>
               <li className="flex items-start">
