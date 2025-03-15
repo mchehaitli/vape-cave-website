@@ -484,7 +484,7 @@ const ArlingtonLocationPage: React.FC = () => {
                             {location.amenities.map((amenity, index) => (
                               <span 
                                 key={index} 
-                                className="bg-black/30 text-white text-sm py-1 px-3 rounded-full border border-gray-800"
+                                className="bg-black/30 text-primary text-sm py-1 px-3 rounded-full border border-gray-800"
                               >
                                 {amenity}
                               </span>
