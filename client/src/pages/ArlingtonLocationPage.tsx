@@ -580,59 +580,66 @@ const ArlingtonLocationPage: React.FC = () => {
             </div>
           </div>
         </div>
-        
-        <div className="mt-12">
-          <h2 className="text-2xl font-bold text-white mb-6 text-center">Areas We Serve</h2>
-          <div className="flex flex-wrap justify-center gap-4">
-            {location.areaServed.map((area, index) => (
-              <span key={index} className="bg-primary/10 text-white px-3 py-1 rounded-full border border-gray-700">
-                {area}
-              </span>
-            ))}
-          </div>
-        </div>
-        
-        {/* Products/Services */}
-        <div>
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold font-['Poppins'] text-white">Products & Services</h2>
-            <button 
-              onClick={() => setShowProducts(!showProducts)}
-              className="text-primary hover:text-primary/80"
-              aria-expanded={showProducts}
-            >
-              {showProducts ? 'Hide Products' : 'Show Products'}
-            </button>
-          </div>
-          
-          {showProducts && (
-            <div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                {location.services.map((service, index) => (
-                  <div key={index} className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700 p-4 flex items-center">
-                    <div className="bg-primary/20 text-gray-700 rounded-full p-3 mr-4 border border-gray-300">
-                      <i className="fas fa-check"></i>
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-white">{service}</h4>
-                      <p className="text-sm text-gray-300">Available in-store</p>
-                    </div>
-                  </div>
-                ))}
+
+              {/* Area Served */}
+              <div className="mb-8">
+                <h3 className="text-xl font-semibold mb-4 text-white">Areas We Serve</h3>
+                <p className="text-gray-300 mb-3">
+                  Conveniently located to serve customers in:
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {location.areaServed.map((area, index) => (
+                    <span 
+                      key={index} 
+                      className="bg-primary/20 text-gray-700 text-sm py-1 px-3 rounded-full border border-gray-300"
+                    >
+                      {area}
+                    </span>
+                  ))}
+                </div>
               </div>
               
-              {/* Featured Products at Arlington */}
-              <h3 className="text-xl font-semibold mb-4 text-white">Featured Products at Arlington</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                {arlingtonProducts.map((product) => (
-                  <div key={product.id} className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700">
-                    <div className="h-40 overflow-hidden">
-                      <img 
-                        src={product.image} 
-                        alt={product.name} 
-                        className="w-full h-full object-cover"
-                      />
+              {/* Products/Services */}
+              <div>
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold font-['Poppins'] text-white">Products & Services</h2>
+                  <button 
+                    onClick={() => setShowProducts(!showProducts)}
+                    className="text-primary hover:text-primary/80"
+                    aria-expanded={showProducts}
+                  >
+                    {showProducts ? 'Hide Products' : 'Show Products'}
+                  </button>
+                </div>
+                
+                {showProducts && (
+                  <div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                      {location.services.map((service, index) => (
+                        <div key={index} className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700 p-4 flex items-center">
+                          <div className="bg-primary/20 text-gray-700 rounded-full p-3 mr-4 border border-gray-300">
+                            <i className="fas fa-check"></i>
+                          </div>
+                          <div>
+                            <h4 className="font-medium text-white">{service}</h4>
+                            <p className="text-sm text-gray-300">Available in-store</p>
+                          </div>
+                        </div>
+                      ))}
                     </div>
+                    
+                    {/* Featured Products at Arlington */}
+                    <h3 className="text-xl font-semibold mb-4 text-white">Featured Products at Arlington</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                      {arlingtonProducts.map((product) => (
+                        <div key={product.id} className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700">
+                          <div className="h-40 overflow-hidden">
+                            <img 
+                              src={product.image} 
+                              alt={product.name} 
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
                     <div className="p-4">
                       <h4 className="font-medium mb-1 text-white">{product.name}</h4>
                       <p className="text-sm text-gray-300 mb-2">{product.category}</p>
