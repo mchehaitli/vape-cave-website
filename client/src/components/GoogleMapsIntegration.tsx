@@ -55,101 +55,53 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
   
   // Add structured data for maps integration using react-helmet
   useEffect(() => {
-    // Create structured data focusing on the Frisco location if it exists
-    const friscoLocation = locations.find(loc => loc.id === 1) || locations[0];
+    // Use the first provided location or the active location if specified
+    const currentLocation = locations[0];
+    
+    if (!currentLocation) return; // Safety check
     
     // Extract city name from address (assuming format like "address, City, State ZIP")
-    const cityMatch = friscoLocation.address.match(/,\s*([^,]+),\s*[A-Z]{2}/);
-    const locationCity = friscoLocation.city || (cityMatch ? cityMatch[1].trim() : "Frisco");
+    const cityMatch = currentLocation.address.match(/,\s*([^,]+),\s*[A-Z]{2}/);
+    const locationCity = currentLocation.city || (cityMatch ? cityMatch[1].trim() : "");
     
     // Create a more precise hasMap URL with Google Place ID or Address for better discoverability
-    const hasMapUrl = friscoLocation.googlePlaceId 
-      ? `https://www.google.com/maps/place/?q=place_id:${friscoLocation.googlePlaceId}`
-      : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(friscoLocation.address)}`;
+    const hasMapUrl = currentLocation.googlePlaceId 
+      ? `https://www.google.com/maps/place/?q=place_id:${currentLocation.googlePlaceId}`
+      : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(currentLocation.address)}`;
       
     // Split address into components for more structured markup
-    const addressParts = friscoLocation.address.split(',').map(part => part.trim());
+    const addressParts = currentLocation.address.split(',').map(part => part.trim());
     const streetAddress = addressParts[0];
     
-    // Create more comprehensive structured data for SEO
+    // Create dynamic postal code based on address
+    const postalCodeMatch = currentLocation.address.match(/\d{5}(?![\d-])/);
+    const postalCode = postalCodeMatch ? postalCodeMatch[0] : "";
+    
+    // Create more comprehensive structured data for SEO - dynamically based on the location
     const structuredData = {
       "@context": "https://schema.org",
       "@type": "VapeShop",
-      "name": "Vape Cave Frisco",
-      "description": "Premium vape shop in Frisco, TX offering a wide selection of vapes, e-liquids, THC-A, Delta 8, and smoking accessories.",
+      "name": `Vape Cave ${locationCity}`,
+      "description": `Premium vape shop in ${locationCity}, TX offering a wide selection of vapes, e-liquids, THC-A, Delta 8, and smoking accessories.`,
       "address": {
         "@type": "PostalAddress",
         "streetAddress": streetAddress,
-        "addressLocality": "Frisco",
+        "addressLocality": locationCity,
         "addressRegion": "TX",
-        "postalCode": "75033",
+        "postalCode": postalCode,
         "addressCountry": "US"
       },
       "geo": {
         "@type": "GeoCoordinates",
-        "latitude": friscoLocation.position.lat,
-        "longitude": friscoLocation.position.lng
+        "latitude": currentLocation.position.lat,
+        "longitude": currentLocation.position.lng
       },
-      "telephone": "(469) 294-0061",
       "hasMap": hasMapUrl,
-      "openingHoursSpecification": [
-        {
-          "@type": "OpeningHoursSpecification",
-          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Sunday"],
-          "opens": "10:00",
-          "closes": "24:00"
-        },
-        {
-          "@type": "OpeningHoursSpecification",
-          "dayOfWeek": ["Friday", "Saturday"],
-          "opens": "10:00",
-          "closes": "01:00"
-        }
-      ],
-      "url": "https://vapecavetx.com/locations/frisco",
+      "url": `https://vapecavetx.com/locations/${locationCity.toLowerCase()}`,
       "sameAs": [
         "https://www.facebook.com/vapecavetx",
         "https://www.instagram.com/vapecavetx/"
-      ],
-      "areaServed": ["Frisco", "Allen", "Plano", "McKinney", "North Texas"],
-      "priceRange": "$$",
-      "paymentAccepted": "Cash, Credit Card",
-      "additionalProperty": [
-        {
-          "@type": "PropertyValue",
-          "name": "Google Place ID",
-          "value": friscoLocation.googlePlaceId || "ChIJxXjrR3wVkFQRcKK89i-aFDw"
-        },
-        {
-          "@type": "PropertyValue",
-          "name": "Year Established",
-          "value": "2019"
-        }
-      ],
-      "amenityFeature": [
-        {
-          "@type": "LocationFeatureSpecification",
-          "name": "Free Parking",
-          "value": true
-        },
-        {
-          "@type": "LocationFeatureSpecification",
-          "name": "Wheelchair Accessible",
-          "value": true
-        }
-      ],
-      "publicAccess": true,
-      "smokingAllowed": false,
-      "isAccessibleForFree": true,
-      "maximumAttendeeCapacity": 25,
-      "specialOpeningHoursSpecification": {
-        "@type": "OpeningHoursSpecification",
-        "validFrom": "2025-01-01",
-        "validThrough": "2025-12-31",
-        "dayOfWeek": "http://schema.org/PublicHolidays",
-        "opens": "10:00",
-        "closes": "20:00"
-      }
+      ]
     };
     
     // Using Helmet for structured data instead of direct DOM manipulation
@@ -425,8 +377,13 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
     );
   };
   
-  // Create structured data focusing on the Frisco location if it exists
-  const friscoLocation = locations.find(loc => loc.id === 1) || locations[0];
+  // Get the current location from the props
+  const currentLocation = locations[0];
+  
+  // Extract location information safely
+  const locationCity = currentLocation?.city || "";
+  const locationName = currentLocation ? `Vape Cave ${locationCity}` : "Vape Cave";
+  const locationId = currentLocation?.id || 1;
   
   return (
     <>
@@ -436,37 +393,37 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
             {
               "@context": "https://schema.org",
               "@type": "VapeShop",
-              "@id": "https://vapecavetx.com/locations/frisco/#vapeshop",
-              "name": "Vape Cave Frisco",
-              "alternateName": ["Vape Cave Smoke & Stuff", "Vape Shop Frisco", "Frisco Vape Store"],
-              "description": "Premium vape shop in Frisco, TX offering a wide selection of vapes, e-liquids, THC-A, Delta 8, disposables, and smoking accessories. Located on Main Street with convenient parking.",
+              "@id": "https://vapecavetx.com/locations/${locationCity.toLowerCase()}/#vapeshop",
+              "name": "${locationName}",
+              "alternateName": ["Vape Cave Smoke & Stuff", "Vape Shop ${locationCity}", "${locationCity} Vape Store"],
+              "description": "Premium vape shop in ${locationCity}, TX offering a wide selection of vapes, e-liquids, THC-A, Delta 8, disposables, and smoking accessories.",
               "mainEntityOfPage": {
                 "@type": "WebPage",
-                "@id": "https://vapecavetx.com/locations/frisco/"
+                "@id": "https://vapecavetx.com/locations/${locationCity.toLowerCase()}/"
               },
-              "url": "https://vapecavetx.com/locations/frisco",
+              "url": "https://vapecavetx.com/locations/${locationCity.toLowerCase()}",
               "address": {
                 "@type": "PostalAddress",
-                "streetAddress": "6958 Main St #200",
-                "addressLocality": "Frisco",
+                "streetAddress": "${currentLocation?.address || ""}",
+                "addressLocality": "${locationCity}",
                 "addressRegion": "TX", 
-                "postalCode": "75033",
+                "postalCode": "${currentLocation?.address?.match(/\d{5}(?![\d-])/) || ""}",
                 "addressCountry": "US"
               },
               "geo": {
                 "@type": "GeoCoordinates",
-                "latitude": ${friscoLocation.position.lat},
-                "longitude": ${friscoLocation.position.lng},
-                "name": "Vape Cave Frisco Coordinates"
+                "latitude": ${currentLocation?.position?.lat || 0},
+                "longitude": ${currentLocation?.position?.lng || 0},
+                "name": "Vape Cave ${locationCity} Coordinates"
               },
-              "telephone": "+14692940061",
+              "telephone": "${currentLocation?.phone?.replace(/[^0-9]/g, '') ? '+1' + currentLocation.phone.replace(/[^0-9]/g, '') : ''}",
               "email": "info@vapecavetx.com",
-              "image": "https://vapecavetx.com/images/vape-cave-frisco-storefront.jpg",
-              "logo": "https://vapecavetx.com/logo.png",
+              "image": "https://vapecavetx.com/vapecave-logo.png",
+              "logo": "https://vapecavetx.com/vapecave-logo.png",
               "photo": {
                 "@type": "ImageObject",
-                "contentUrl": "https://vapecavetx.com/images/vape-cave-frisco-interior.jpg",
-                "description": "Interior of Vape Cave Frisco store"
+                "contentUrl": "${currentLocation?.image || ''}",
+                "description": "Interior of Vape Cave ${locationCity} store"
               },
               "currenciesAccepted": "USD",
               "paymentAccepted": "Cash, Credit Card, Debit Card, Apple Pay, Google Pay",
@@ -475,14 +432,14 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
                 {
                   "@type": "Map",
                   "name": "Google Maps Navigation",
-                  "url": "https://www.google.com/maps/place/?q=place_id:${friscoLocation.googlePlaceId || "ChIJxXjrR3wVkFQRcKK89i-aFDw"}",
-                  "description": "Find our Frisco vape shop using Google Maps"
+                  "url": "https://www.google.com/maps/place/?q=place_id:${currentLocation?.googlePlaceId || ""}",
+                  "description": "Find our ${locationCity} vape shop using Google Maps"
                 },
                 {
                   "@type": "Map",
                   "name": "Apple Maps Navigation",
-                  "url": "https://maps.apple.com/?address=${encodeURIComponent("6958 Main St #200, Frisco, TX 75033")}&ll=${friscoLocation.position.lat},${friscoLocation.position.lng}",
-                  "description": "Navigate to Vape Cave Frisco using Apple Maps"
+                  "url": "${currentLocation?.appleMapsLink || `https://maps.apple.com/?address=${encodeURIComponent(currentLocation?.address || '')}&ll=${currentLocation?.position?.lat || 0},${currentLocation?.position?.lng || 0}`}",
+                  "description": "Navigate to Vape Cave ${locationCity} using Apple Maps"
                 }
               ],
               "openingHoursSpecification": [
@@ -503,18 +460,13 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
                 "https://www.facebook.com/vapecavetx",
                 "https://www.instagram.com/vapecavetx/"
               ],
-              "areaServed": ["Frisco", "Allen", "Plano", "McKinney", "North Texas"],
+              "areaServed": ["${locationCity}", "Dallas-Fort Worth", "North Texas"],
               "priceRange": "$$",
               "additionalProperty": [
                 {
                   "@type": "PropertyValue",
                   "name": "Google Place ID",
-                  "value": "ChIJxXjrR3wVkFQRcKK89i-aFDw"
-                },
-                {
-                  "@type": "PropertyValue",
-                  "name": "Year Established",
-                  "value": "2019"
+                  "value": "${currentLocation?.googlePlaceId || ""}"
                 }
               ],
               "specialOpeningHoursSpecification": {
@@ -543,28 +495,28 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
           `}
         </script>
         {/* Enhanced geo meta tags - recommended by Google for local SEO */}
-        <meta name="geo.position" content={`${friscoLocation.position.lat};${friscoLocation.position.lng}`} />
-        <meta name="geo.placename" content="Vape Cave Frisco" />
+        <meta name="geo.position" content={`${currentLocation?.position?.lat || 0};${currentLocation?.position?.lng || 0}`} />
+        <meta name="geo.placename" content={`Vape Cave ${locationCity}`} />
         <meta name="geo.region" content="US-TX" />
-        <meta name="ICBM" content={`${friscoLocation.position.lat}, ${friscoLocation.position.lng}`} />
+        <meta name="ICBM" content={`${currentLocation?.position?.lat || 0}, ${currentLocation?.position?.lng || 0}`} />
         
         {/* Location-specific metadata with enhanced Google Maps information */}
-        <meta name="location-city" content="Frisco" />
+        <meta name="location-city" content={locationCity} />
         <meta name="location-state" content="Texas" />
-        <meta name="location-zipcode" content="75033" />
-        <meta name="google-place-id" content={friscoLocation.googlePlaceId || "ChIJxXjrR3wVkFQRcKK89i-aFDw"} />
-        <meta name="place:location:latitude" content={`${friscoLocation.position.lat}`} />
-        <meta name="place:location:longitude" content={`${friscoLocation.position.lng}`} />
+        <meta name="location-zipcode" content={`${currentLocation?.fullAddress?.match(/\d{5}(?![\d-])/) || ""}`} />
+        <meta name="google-place-id" content={currentLocation?.googlePlaceId || ""} />
+        <meta name="place:location:latitude" content={`${currentLocation?.position?.lat || 0}`} />
+        <meta name="place:location:longitude" content={`${currentLocation?.position?.lng || 0}`} />
         
         {/* Business contact information - enhanced for improved local search */}
-        <meta name="business-name" content="Vape Cave Frisco" />
+        <meta name="business-name" content={`Vape Cave ${locationCity}`} />
         <meta name="business-type" content="Vape Shop" />
-        <meta name="business-phone" content="+14692940061" />
-        <meta name="business-email" content="info@vapecavetx.com" />
-        <meta name="business:contact_data:street_address" content="6958 Main St #200" />
-        <meta name="business:contact_data:locality" content="Frisco" />
+        <meta name="business-phone" content={currentLocation?.phone ? `+1${currentLocation.phone.replace(/[^0-9]/g, '')}` : ""} />
+        <meta name="business-email" content={currentLocation?.email || "info@vapecavetx.com"} />
+        <meta name="business:contact_data:street_address" content={currentLocation?.address || ""} />
+        <meta name="business:contact_data:locality" content={locationCity} />
         <meta name="business:contact_data:region" content="TX" />
-        <meta name="business:contact_data:postal_code" content="75033" />
+        <meta name="business:contact_data:postal_code" content={`${currentLocation?.fullAddress?.match(/\d{5}(?![\d-])/) || ""}`} />
         <meta name="business:contact_data:country_name" content="United States" />
         
         {/* Enhanced product categories for better product discovery */}
@@ -573,15 +525,15 @@ const GoogleMapsIntegration: React.FC<GoogleMapsIntegrationProps> = ({
         <meta name="product-availability" content="In Store" />
         
         {/* Dublin Core metadata - for improved structural data recognition */}
-        <meta name="DC.title" content="Vape Cave Frisco - Premium Vape Shop" />
-        <meta name="DC.description" content="Visit Vape Cave in Frisco, TX for premium vaping products, disposables, Delta 8, THC-A and smoking accessories." />
+        <meta name="DC.title" content={`Vape Cave ${locationCity} - Premium Vape Shop`} />
+        <meta name="DC.description" content={`Visit Vape Cave in ${locationCity}, TX for premium vaping products, disposables, Delta 8, THC-A and smoking accessories.`} />
         <meta name="DC.publisher" content="Vape Cave" />
-        <meta name="DC.contributor" content="Frisco Chamber of Commerce" />
-        <meta name="DC.coverage" content="Frisco, Plano, Allen, McKinney, North Texas" />
+        <meta name="DC.contributor" content={`${locationCity} Chamber of Commerce`} />
+        <meta name="DC.coverage" content={`${locationCity}, Texas, United States`} />
         <meta name="DC.rights" content="© 2024 Vape Cave, All Rights Reserved" />
         <meta name="DC.format" content="text/html" />
         <meta name="DC.language" content="en-US" />
-        <meta name="DC.identifier" content="https://vapecavetx.com/locations/frisco" />
+        <meta name="DC.identifier" content={`https://vapecavetx.com/locations/${locationCity.toLowerCase()}`} />
       </Helmet>
       
       <div style={{ height, width }} className="rounded-lg overflow-hidden shadow-lg relative">
