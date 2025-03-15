@@ -1,414 +1,224 @@
-import React, { useState } from "react";
-import MainLayout from "@/layouts/MainLayout";
-import { Helmet } from "react-helmet";
-import { Link } from "wouter";
-import GoogleMapsIntegration from "@/components/GoogleMapsIntegration";
-import DirectionsButton from "@/components/DirectionsButton";
-import { getArlingtonLocation, getFormattedLocationsForMap } from "@/data/storeInfo";
-import { products } from "@/data/products";
-
 /**
  * Dedicated page for the Arlington location with enhanced SEO
  * This page focuses on the Arlington store specifically to improve local search visibility
  */
+import React, { useState } from 'react';
+import { Link } from 'wouter';
+import { Helmet } from "react-helmet";
+import MainLayout from '@/layouts/MainLayout';
+import { 
+  getArlingtonLocation, 
+  generateStructuredDataForLocation 
+} from '@/data/storeInfo';
+import { products } from '@/data/products';
+import GoogleMapsIntegration from '@/components/GoogleMapsIntegration';
+import DirectionsButton from '@/components/DirectionsButton';
+
 const ArlingtonLocationPage: React.FC = () => {
   const location = getArlingtonLocation();
-  const arlingtonProducts = products.filter(p => p.featured).slice(0, 4); // Display featured products at Arlington location
+  const structuredData = generateStructuredDataForLocation(location);
   
-  // Create enhanced structured data specifically for Arlington location with maximum Google-recommended properties
-  const generateArlingtonStructuredData = () => {
-    // Parse postal code from address
-    const zipCodeMatch = location.fullAddress.match(/\d{5}(?![\d-])/);
-    const postalCode = zipCodeMatch ? zipCodeMatch[0] : "";
-    
-    // Format phone for structured data (remove non-digits and add country code)
-    const formattedPhone = "+1" + location.phone.replace(/[^0-9]/g, '');
-    
-    // Format hours for structured data - convert to ISO 8601 format
-    const formatOpeningHours = (hours: string) => {
-      if (hours === "Closed") return null;
-      
-      // Convert time like "10:00 AM" to 24-hour format
-      const timeRegex = /(\d+):(\d+)\s*(AM|PM)/i;
-      const match = hours.match(timeRegex);
-      
-      if (!match) return hours;
-      
-      let hour = parseInt(match[1], 10);
-      const minute = match[2];
-      const period = match[3].toUpperCase();
-      
-      // Convert to 24-hour format
-      if (period === "PM" && hour < 12) {
-        hour += 12;
-      } else if (period === "AM" && hour === 12) {
-        hour = 0;
-      }
-      
-      return `${hour.toString().padStart(2, '0')}:${minute}`;
-    };
-    
-    // Enhanced schema specifically for Arlington with maximal detail
-    // Using all recommended properties from Google for LocalBusiness entities
-    return {
-      "@context": "https://schema.org",
-      "@type": "VapeShop",
-      "@id": "https://vapecavetx.com/locations/arlington",
-      "name": location.name,
-      "alternateName": "Vape Cave Arlington - Premium Vape Shop",
-      "url": "https://vapecavetx.com/locations/arlington",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://vapecavetx.com/logo.png",
-        "width": "180",
-        "height": "60"
-      },
-      "image": [
-        location.image,
-        "https://vapecavetx.com/storefront-arlington.jpg",
-        "https://vapecavetx.com/interior-arlington.jpg"
-      ],
-      "telephone": formattedPhone,
-      "email": location.email,
-      "description": location.description,
-      "areaServed": {
-        "@type": "GeoCircle",
-        "geoMidpoint": {
-          "@type": "GeoCoordinates",
-          "latitude": location.coordinates.lat,
-          "longitude": location.coordinates.lng
-        },
-        "geoRadius": "15000" // 15km radius around store
-      },
-      "slogan": "Arlington's premier destination for quality vaping products and accessories",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": location.address,
-        "addressLocality": location.city,
-        "addressRegion": "TX",
-        "postalCode": postalCode,
-        "addressCountry": "US"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": location.coordinates.lat,
-        "longitude": location.coordinates.lng,
-        "name": "Vape Cave Arlington Location Coordinates"
-      },
-      "hasMap": [
-        {
-          "@type": "Map",
-          "url": location.googlePlaceId ? 
-            `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}` : 
-            `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.fullAddress)}`
-        },
-        {
-          "@type": "Map",
-          "url": location.mapEmbed
-        },
-        {
-          "@type": "Map", 
-          "url": location.appleMapsLink || ""
-        }
-      ],
-      "additionalProperty": [
-        {
-          "@type": "PropertyValue",
-          "name": "yearEstablished",
-          "value": location.yearEstablished
-        },
-        {
-          "@type": "PropertyValue",
-          "name": "googlePlaceId",
-          "value": location.googlePlaceId || "ChIJ23422NdJSYYRVX94pdZlUGg"
-        },
-        {
-          "@type": "PropertyValue",
-          "name": "businessType",
-          "value": "Vape and Smoke Shop"
-        },
-        {
-          "@type": "PropertyValue",
-          "name": "neighborhoodInfo",
-          "value": location.neighborhoodInfo || ""
-        },
-        {
-          "@type": "PropertyValue",
-          "name": "parkingAvailability",
-          "value": location.parking || ""
-        },
-        {
-          "@type": "PropertyValue",
-          "name": "publicTransportation",
-          "value": location.publicTransit || ""
-        },
-        {
-          "@type": "PropertyValue",
-          "name": "storeCode",
-          "value": location.storeCode || "VC-ARLINGTON"
-        }
-      ],
-      "openingHoursSpecification": Object.entries(location.openingHours).map(([day, hours]) => {
-        const parts = hours.split(' - ');
-        const openTime = formatOpeningHours(parts[0]);
-        const closeTime = formatOpeningHours(parts[1] === "Closed" ? "00:00" : parts[1]);
-        
-        return {
-          "@type": "OpeningHoursSpecification",
-          "dayOfWeek": `https://schema.org/${day}`,
-          "opens": openTime,
-          "closes": closeTime
-        };
-      }),
-      "specialOpeningHoursSpecification": {
-        "@type": "OpeningHoursSpecification",
-        "validFrom": "2025-01-01",
-        "validThrough": "2025-12-31",
-        "dayOfWeek": "https://schema.org/PublicHolidays",
-        "opens": "10:00",
-        "closes": "20:00"
-      },
-      "priceRange": location.priceRange,
-      "paymentAccepted": location.acceptedPayments.join(", "),
-      "currenciesAccepted": "USD",
-      "publicAccess": true,
-      "isAccessibleForFree": true,
-      "smokingAllowed": false,
-      "keywords": "vape shop arlington, delta 8 arlington, thc-a arlington, premium vape arlington, arlington vape shop, vape products arlington tx, vaping arlington, smoke shop arlington, vape accessories arlington, premium vape products arlington, cbd arlington tx",
-      "amenityFeature": location.amenities.map(amenity => ({
-        "@type": "LocationFeatureSpecification",
-        "name": amenity,
-        "value": true
-      })),
-      "department": location.services.map(service => ({
-        "@type": "Department",
-        "name": service
-      })),
-      "makesOffer": arlingtonProducts.map(product => ({
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Product",
-          "name": product.name,
-          "description": product.description,
-          "image": product.image,
-          "category": product.category,
-          "offers": {
-            "@type": "Offer",
-            "price": product.price.toFixed(2),
-            "priceCurrency": "USD",
-            "availability": "https://schema.org/InStock",
-            "availableAtOrFrom": {
-              "@type": "VapeShop",
-              "name": location.name,
-              "address": {
-                "@type": "PostalAddress",
-                "streetAddress": location.address,
-                "addressLocality": location.city,
-                "addressRegion": "TX"
-              }
-            }
-          }
-        }
-      })),
-      "potentialAction": [
-        {
-          "@type": "ViewAction", 
-          "target": {
-            "@type": "EntryPoint",
-            "urlTemplate": "https://vapecavetx.com/locations/arlington"
-          }
-        },
-        {
-          "@type": "MapAction",
-          "target": {
-            "@type": "EntryPoint",
-            "urlTemplate": location.googlePlaceId ? 
-              `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}` : 
-              `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.fullAddress)}`
-          }
-        },
-        {
-          "@type": "FindAction",
-          "target": {
-            "@type": "EntryPoint",
-            "urlTemplate": location.googlePlaceId ? 
-              `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}` : 
-              `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.fullAddress)}`
-          },
-          "query-input": "required name=vape shop location"
-        }
-      ],
-      "sameAs": [
-        location.socialProfiles?.facebook,
-        location.socialProfiles?.instagram,
-        location.socialProfiles?.twitter,
-        location.socialProfiles?.yelp
-      ].filter(Boolean),
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.7",
-        "ratingCount": "98",
-        "bestRating": "5",
-        "worstRating": "1"
-      },
-      "review": [
-        {
-          "@type": "Review",
-          "author": {
-            "@type": "Person",
-            "name": "David T."
-          },
-          "datePublished": "2024-01-28",
-          "reviewRating": {
-            "@type": "Rating",
-            "ratingValue": "5",
-            "bestRating": "5",
-            "worstRating": "1"
-          },
-          "reviewBody": "Best vape shop in Arlington! Great selection of Delta 8 products and the staff are very knowledgeable."
-        },
-        {
-          "@type": "Review",
-          "author": {
-            "@type": "Person",
-            "name": "Jessica K."
-          },
-          "datePublished": "2023-12-15",
-          "reviewRating": {
-            "@type": "Rating",
-            "ratingValue": "4",
-            "bestRating": "5",
-            "worstRating": "1"
-          },
-          "reviewBody": "Good location in the shopping center with friendly staff and competitive prices. Would recommend."
-        }
-      ]
-    };
-  };
-
-  // Local state for toggling sections
-  const [showDetails, setShowDetails] = useState<boolean>(true);
-  const [showProducts, setShowProducts] = useState<boolean>(true);
+  // Toggle states for accordion-like sections
+  const [showDetails, setShowDetails] = useState(true);
+  const [showProducts, setShowProducts] = useState(true);
+  
+  // Filter products for Arlington location (example of location-specific products)
+  const arlingtonProducts = products.filter(product => 
+    product.featured || product.category === "Popular"
+  ).slice(0, 6);
+  
+  // Additional SEO tags for Arlington location
+  const canonicalUrl = "https://vapecave.com/locations/arlington";
   
   return (
     <MainLayout
-      title="Vape Cave Arlington | Premium Vape Shop in Arlington | Premium Vaping Products & Delta 8"
-      description="Visit Vape Cave in Arlington at 4100 S Cooper St #4108. Offering premium vape products, Delta 8, THC-A, disposables & accessories. Open daily 10AM-11PM."
-      canonical="https://vapecavetx.com/locations/arlington"
-      ogImage="https://vapecavetx.com/storefront-arlington.jpg"
-      structuredData={generateArlingtonStructuredData()}
+      title={`Vape Cave Arlington, TX - Premium Vape Shop in ${location.city}`}
+      description={`Visit Vape Cave in Arlington, TX for premium vaping products, accessories, and expert advice. Located at ${location.address}, we offer the best selection in ${location.city}.`}
+      canonical={canonicalUrl}
+      ogImage="/vapecave-logo.png"
+      structuredData={structuredData}
     >
-      {/* Additional SEO metadata specific to Arlington location */}
       <Helmet>
-        <title>Vape Cave Arlington | Premium Vape Shop in Arlington | Premium Vaping Products & Delta 8</title>
-        <meta name="description" content="Visit Vape Cave in Arlington at 4100 S Cooper St #4108. Offering premium vape products, Delta 8, THC-A, disposables & accessories. Open daily 10AM-11PM." />
-        <link rel="canonical" href="https://vapecavetx.com/locations/arlington" />
-        
-        {/* Open Graph & Twitter */}
-        <meta property="og:locale" content="en_US" />
-        <meta property="og:type" content="business.business" />
-        <meta property="og:title" content="Vape Cave Arlington | Premium Vape Shop in Arlington" />
-        <meta property="og:description" content="Visit Vape Cave in Arlington. We offer premium vaping products, Delta 8, THC-A, and more at our convenient 4100 S Cooper St location." />
-        <meta property="og:url" content="https://vapecavetx.com/locations/arlington" />
-        <meta property="og:site_name" content="Vape Cave" />
-        <meta property="og:image" content="https://vapecavetx.com/storefront-arlington.jpg" />
-        <meta property="business:contact_data:street_address" content="4100 S Cooper St #4108" />
-        <meta property="business:contact_data:locality" content="Arlington" />
-        <meta property="business:contact_data:region" content="TX" />
-        <meta property="business:contact_data:postal_code" content="76015" />
-        <meta property="business:contact_data:country_name" content="United States" />
-        <meta property="business:contact_data:email" content="vapecavetx@gmail.com" />
-        <meta property="business:contact_data:phone_number" content="+16822700334" />
-        <meta property="business:hours:day" content="monday" />
-        <meta property="business:hours:start" content="10:00" />
-        <meta property="business:hours:end" content="23:00" />
-        
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Vape Cave Arlington | Premium Vape Shop in Arlington" />
-        <meta name="twitter:description" content="Premium vape shop in Arlington offering Delta 8, THC-A & more at our Cooper St location. Convenient to Arlington, Grand Prairie, and Mansfield." />
-        <meta name="twitter:image" content="https://vapecavetx.com/storefront-arlington.jpg" />
-        
-        {/* Location-specific keywords */}
-        <meta name="keywords" content="vape shop arlington tx, arlington vape store, vape cave arlington, vape near me arlington, delta 8 arlington, thc-a arlington, vape products arlington, disposable vapes arlington, cbd shop arlington, smoke shop arlington texas, premium vape arlington, vape shop google place id" />
-        
-        {/* Dublin Core Metadata */}
-        <meta name="DC.title" content="Vape Cave Arlington | Premium Vape Shop" />
-        <meta name="DC.description" content="Arlington's premium vape shop at 4100 S Cooper St #4108. Offering high-quality vape products, Delta 8, THC-A, and accessories." />
-        <meta name="DC.subject" content="Vape Shop, Arlington, Delta 8, THC-A, Disposable Vapes" />
-        <meta name="DC.creator" content="Vape Cave" />
-        <meta name="DC.type" content="LocalBusiness" />
-        <meta name="DC.format" content="text/html" />
-        <meta name="DC.language" content="en-US" />
-        <meta name="DC.coverage" content="Arlington, Texas, United States" />
-        <meta name="DC.rights" content="Copyright Vape Cave 2023" />
-        <meta name="DC.identifier" content="https://vapecavetx.com/locations/arlington" />
-        
-        {/* Geo meta tags */}
+        {/* Additional meta tags specific to Arlington location */}
+        <meta name="geo.position" content={`${location.coordinates.lat};${location.coordinates.lng}`} />
+        <meta name="geo.placename" content={`Vape Cave ${location.city}`} />
         <meta name="geo.region" content="US-TX" />
-        <meta name="geo.placename" content="Arlington" />
-        <meta name="geo.position" content="32.687070;-97.134800" />
-        <meta name="ICBM" content="32.687070, -97.134800" />
+        <meta name="ICBM" content={`${location.coordinates.lat}, ${location.coordinates.lng}`} />
         
-        {/* Alternative languages - helpful for international customers */}
-        <link rel="alternate" href="https://vapecavetx.com/locations/arlington" hrefLang="en-us" />
-        <link rel="alternate" href="https://vapecavetx.com/es/locations/arlington" hrefLang="es" />
+        {/* Open Graph tags */}
+        <meta property="og:type" content="business.business" />
+        <meta property="og:title" content={`Vape Cave Arlington - Premium Vape Shop in ${location.city}, TX`} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:image" content="/vapecave-logo.png" />
+        <meta property="og:description" content={`Visit our Arlington vape shop for premium products and expert advice. Located at ${location.address}.`} />
+        <meta property="og:site_name" content="Vape Cave" />
+        <meta property="business:contact_data:street_address" content={location.address} />
+        <meta property="business:contact_data:locality" content={location.city} />
+        <meta property="business:contact_data:region" content="TX" />
+        <meta property="business:contact_data:postal_code" content="76013" />
+        <meta property="business:contact_data:country_name" content="USA" />
+        
+        {/* Twitter Card tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`Vape Cave Arlington - Premium Vape Shop in ${location.city}`} />
+        <meta name="twitter:description" content={`Visit our Arlington vape shop for premium products and expert advice. Located at ${location.address}.`} />
+        <meta name="twitter:image" content="/vapecave-logo.png" />
       </Helmet>
-
-      {/* Breadcrumb Navigation */}
-      <nav className="bg-gray-100 py-2 px-4" aria-label="Breadcrumb">
-        <ol className="flex text-sm" itemScope itemType="https://schema.org/BreadcrumbList">
-          <li className="flex items-center" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-            <Link href="/" className="text-primary hover:text-primary/80">
-              <span itemProp="name">Home</span>
-            </Link>
-            <meta itemProp="position" content="1" />
-            <span className="mx-2">/</span>
-          </li>
-          <li className="flex items-center" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-            <Link href="/locations" className="text-primary hover:text-primary/80">
-              <span itemProp="name">Locations</span>
-            </Link>
-            <meta itemProp="position" content="2" />
-            <span className="mx-2">/</span>
-          </li>
-          <li className="text-gray-600" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-            <span itemProp="name">Arlington</span>
-            <meta itemProp="position" content="3" />
-          </li>
-        </ol>
-      </nav>
       
-      {/* Hero Banner */}
-      <section className="relative h-72 md:h-96 overflow-hidden bg-gray-900 py-10">
-        <div className="absolute inset-0">
-          <img 
-            src={location.image} 
-            alt="Vape Cave Arlington storefront" 
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/20 mix-blend-multiply"></div>
-          <div className="absolute inset-0 opacity-20 bg-pattern"></div>
-        </div>
-        <div className="container mx-auto px-4 h-full flex flex-col justify-center relative z-10 text-white">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 drop-shadow-lg font-['Poppins']">Vape Cave Arlington</h1>
-          <p className="text-xl md:text-2xl max-w-xl drop-shadow-md text-white/90">
-            Arlington's premier destination for premium vaping products, Delta 8, THC-A, and more.
-          </p>
-          <div className="flex flex-wrap gap-3 mt-6">
-            <DirectionsButton
-              address={location.fullAddress}
-              lat={location.coordinates.lat}
-              lng={location.coordinates.lng}
-              buttonText="Get Directions"
-              className="bg-primary hover:bg-primary/90 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300"
-              googlePlaceId={location.googlePlaceId}
-            />
-            <a 
-              href={`tel:${location.phone.replace(/[^0-9]/g, '')}`} 
-              className="bg-white/20 hover:bg-white/30 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 backdrop-blur-sm"
-            >
-              Call Us: {location.phone}
-            </a>
+      {/* Hero Section with Specific Arlington Information */}
+      <section className="pt-24 pb-16 bg-gradient-to-r from-primary/20 to-primary/5 text-white">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight text-white">
+                <span className="font-['Poppins']">Vape Cave</span> Arlington
+              </h1>
+              <div className="h-1 w-24 bg-primary rounded-full mb-6"></div>
+              <p className="text-xl mb-6 text-gray-300">Your premier destination for premium vaping products in Arlington, Texas.</p>
+              
+              <div className="bg-medium p-4 rounded-lg border border-gray-700 mb-6">
+                <div className="flex flex-col">
+                  <div className="flex items-start mb-3">
+                    <div className="text-primary mr-3 mt-1">
+                      <i className="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div>
+                      <h3 className="font-medium text-white">Address:</h3>
+                      <address className="not-italic text-gray-300">
+                        <span itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
+                          <span itemProp="streetAddress">{location.address}</span>,{" "}
+                          <span itemProp="addressLocality">{location.city}</span>,{" "}
+                          <span itemProp="addressRegion">TX</span>
+                        </span>
+                      </address>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start mb-3">
+                    <div className="text-primary mr-3 mt-1">
+                      <i className="fas fa-phone-alt"></i>
+                    </div>
+                    <div>
+                      <h3 className="font-medium text-white">Phone:</h3>
+                      <a 
+                        href={`tel:${location.phone.replace(/[^0-9]/g, '')}`} 
+                        className="text-gray-300 hover:text-primary transition-colors"
+                        itemProp="telephone"
+                      >
+                        {location.phone}
+                      </a>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <div className="text-primary mr-3 mt-1">
+                      <i className="fas fa-clock"></i>
+                    </div>
+                    <div>
+                      <h3 className="font-medium text-white">Store Hours:</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 text-gray-300">
+                        <div>
+                          <div itemProp="openingHoursSpecification" itemScope itemType="https://schema.org/OpeningHoursSpecification">
+                            <meta itemProp="dayOfWeek" content="Monday" />
+                            <meta itemProp="opens" content="10:00" />
+                            <meta itemProp="closes" content="23:00" />
+                            <div><span className="font-medium">Mon:</span> {location.openingHours.Monday}</div>
+                          </div>
+                          <div itemProp="openingHoursSpecification" itemScope itemType="https://schema.org/OpeningHoursSpecification">
+                            <meta itemProp="dayOfWeek" content="Tuesday" />
+                            <meta itemProp="opens" content="10:00" />
+                            <meta itemProp="closes" content="23:00" />
+                            <div><span className="font-medium">Tue:</span> {location.openingHours.Tuesday}</div>
+                          </div>
+                          <div itemProp="openingHoursSpecification" itemScope itemType="https://schema.org/OpeningHoursSpecification">
+                            <meta itemProp="dayOfWeek" content="Wednesday" />
+                            <meta itemProp="opens" content="10:00" />
+                            <meta itemProp="closes" content="23:00" />
+                            <div><span className="font-medium">Wed:</span> {location.openingHours.Wednesday}</div>
+                          </div>
+                          <div itemProp="openingHoursSpecification" itemScope itemType="https://schema.org/OpeningHoursSpecification">
+                            <meta itemProp="dayOfWeek" content="Thursday" />
+                            <meta itemProp="opens" content="10:00" />
+                            <meta itemProp="closes" content="23:00" />
+                            <div><span className="font-medium">Thu:</span> {location.openingHours.Thursday}</div>
+                          </div>
+                        </div>
+                        <div>
+                          <div itemProp="openingHoursSpecification" itemScope itemType="https://schema.org/OpeningHoursSpecification">
+                            <meta itemProp="dayOfWeek" content="Friday" />
+                            <meta itemProp="opens" content="10:00" />
+                            <meta itemProp="closes" content="23:00" />
+                            <div><span className="font-medium">Fri:</span> {location.openingHours.Friday}</div>
+                          </div>
+                          <div itemProp="openingHoursSpecification" itemScope itemType="https://schema.org/OpeningHoursSpecification">
+                            <meta itemProp="dayOfWeek" content="Saturday" />
+                            <meta itemProp="opens" content="10:00" />
+                            <meta itemProp="closes" content="23:00" />
+                            <div><span className="font-medium">Sat:</span> {location.openingHours.Saturday}</div>
+                          </div>
+                          <div itemProp="openingHoursSpecification" itemScope itemType="https://schema.org/OpeningHoursSpecification">
+                            <meta itemProp="dayOfWeek" content="Sunday" />
+                            <meta itemProp="opens" content="10:00" />
+                            <meta itemProp="closes" content="23:00" />
+                            <div><span className="font-medium">Sun:</span> {location.openingHours.Sunday}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex flex-wrap gap-4">
+                <DirectionsButton
+                  address={location.fullAddress}
+                  lat={location.coordinates.lat}
+                  lng={location.coordinates.lng}
+                  buttonText="Get Directions"
+                  variant="primary"
+                  size="lg"
+                  showIcon={true}
+                  googlePlaceId={location.googlePlaceId}
+                  appleMapsLink={location.appleMapsLink}
+                />
+                <a 
+                  href={`tel:${location.phone.replace(/[^0-9]/g, '')}`} 
+                  className="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 backdrop-blur-sm hover:shadow-lg"
+                >
+                  Call Us
+                </a>
+              </div>
+            </div>
+            
+            <div className="relative">
+              <div className="bg-gradient-to-r from-orange-600 to-primary absolute -top-5 -left-5 h-32 w-32 rounded-full blur-[70px] opacity-80"></div>
+              <div className="bg-gradient-to-r from-primary to-orange-500 absolute -bottom-10 -right-10 h-40 w-40 rounded-full blur-[70px] opacity-70"></div>
+              <div className="relative z-10 bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700">
+                <div className="h-96">
+                  <img 
+                    src={location.image || "/src/assets/images/vape-lounge.jpg"} 
+                    alt={`Vape Cave ${location.city} Store`} 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-6">
+                  <h2 className="text-2xl font-bold font-['Poppins'] text-white mb-2">Welcome to our Arlington Store</h2>
+                  <p className="text-gray-300 mb-4">
+                    {location.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {location.amenities.map((amenity, index) => (
+                      <span 
+                        key={index} 
+                        className="bg-primary/10 text-white text-sm py-1 px-3 rounded-full border border-gray-700"
+                      >
+                        {amenity}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -440,147 +250,97 @@ const ArlingtonLocationPage: React.FC = () => {
                 <div className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700 p-6 mb-8">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <h3 className="text-lg font-semibold mb-3 text-white">Address</h3>
-                      <p className="text-gray-300 mb-1">{location.fullAddress}</p>
+                      <h3 className="text-lg font-semibold mb-4 text-white">About This Location</h3>
                       <p className="text-gray-300 mb-4">
-                        <span className="font-medium">Google Place ID:</span> {location.googlePlaceId || "ChIJ23422NdJSYYRVX94pdZlUGg"}
-                      </p>
-                      
-                      <h3 className="text-lg font-semibold mb-3 text-white">Contact</h3>
-                      <p className="text-gray-300 mb-1">
-                        <span className="font-medium">Phone:</span> {location.phone}
+                        {location.description}
                       </p>
                       <p className="text-gray-300 mb-4">
-                        <span className="font-medium">Email:</span> {location.email}
+                        Established in {location.yearEstablished}, our Arlington store has been serving the local community with premium vaping products and exceptional service.
                       </p>
                       
-                      <h3 className="text-lg font-semibold mb-3 text-white">Neighborhood</h3>
-                      <p className="text-gray-300 mb-4">{location.neighborhoodInfo}</p>
+                      {location.neighborhoodInfo && (
+                        <div className="mb-4">
+                          <h4 className="font-medium mb-2 text-white">Neighborhood</h4>
+                          <p className="text-gray-300">{location.neighborhoodInfo}</p>
+                        </div>
+                      )}
                     </div>
                     
                     <div>
-                      <h3 className="text-lg font-semibold mb-3 text-white">Hours of Operation</h3>
-                      <div className="space-y-2">
-                        {Object.entries(location.openingHours).map(([day, hours]) => (
-                          <div key={day} className="flex justify-between py-1 border-b border-gray-700">
-                            <span className="font-medium text-white">{day}</span>
-                            <span className="text-gray-300">{hours}</span>
+                      <h3 className="text-lg font-semibold mb-4 text-white">Store Features</h3>
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-medium mb-2 text-white">Amenities</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {location.amenities.map((amenity, index) => (
+                              <span 
+                                key={index} 
+                                className="bg-primary/10 text-white text-sm py-1 px-3 rounded-full border border-gray-700"
+                              >
+                                {amenity}
+                              </span>
+                            ))}
                           </div>
-                        ))}
-                      </div>
-                      
-                      <div className="mt-6">
-                        <h3 className="text-lg font-semibold mb-3 text-white">Amenities</h3>
-                        <div className="flex flex-wrap gap-2">
-                          {location.amenities.map((amenity, index) => (
-                            <span 
-                              key={index} 
-                              className="bg-primary/20 text-white text-sm py-1 px-3 rounded-full border border-gray-700"
-                            >
-                              {amenity}
-                            </span>
-                          ))}
                         </div>
+                        
+                        <div>
+                          <h4 className="font-medium mb-2 text-white">Price Range</h4>
+                          <span className="text-gray-300">{location.priceRange}</span>
+                        </div>
+                        
+                        {location.socialProfiles && (
+                          <div>
+                            <h4 className="font-medium mb-2 text-white">Follow Us</h4>
+                            <div className="flex space-x-4">
+                              {location.socialProfiles.facebook && (
+                                <a 
+                                  href={location.socialProfiles.facebook}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-gray-300 hover:text-primary transition-colors"
+                                >
+                                  <i className="fab fa-facebook fa-lg"></i>
+                                </a>
+                              )}
+                              {location.socialProfiles.instagram && (
+                                <a 
+                                  href={location.socialProfiles.instagram}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-gray-300 hover:text-primary transition-colors"
+                                >
+                                  <i className="fab fa-instagram fa-lg"></i>
+                                </a>
+                              )}
+                              {location.socialProfiles.twitter && (
+                                <a 
+                                  href={location.socialProfiles.twitter}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-gray-300 hover:text-primary transition-colors"
+                                >
+                                  <i className="fab fa-twitter fa-lg"></i>
+                                </a>
+                              )}
+                              {location.socialProfiles.yelp && (
+                                <a 
+                                  href={location.socialProfiles.yelp}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-gray-300 hover:text-primary transition-colors"
+                                >
+                                  <i className="fab fa-yelp fa-lg"></i>
+                                </a>
+                              )}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
-                  
-                  <div className="mt-6 pt-6 border-t border-gray-700">
-                    <h3 className="text-lg font-semibold mb-3 text-white">Services Offered</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {location.services.map((service, index) => (
-                        <span 
-                          key={index} 
-                          className="bg-primary/20 text-white text-sm py-1 px-3 rounded-full border border-gray-700"
-                        >
-                          {service}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-          
-          {/* Map & Directions */}
-          <div className="lg:col-span-1">
-            <h2 className="text-2xl font-bold font-['Poppins'] mb-6 text-white">Location & Directions</h2>
-            
-            <div className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700 p-6 mb-6">
-              <h3 className="text-lg font-semibold mb-3 text-white">Interactive Map</h3>
-              <div 
-                className="h-96 rounded-lg overflow-hidden mb-4"
-                itemProp="hasMap"
-                itemScope
-                itemType="https://schema.org/Map"
-              >
-                <meta itemProp="url" content={location.googlePlaceId ? `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.fullAddress)}`} />
-                <GoogleMapsIntegration 
-                  locations={[{
-                    id: location.id,
-                    name: location.name,
-                    address: location.fullAddress,
-                    position: location.coordinates,
-                    googlePlaceId: location.googlePlaceId,
-                    appleMapsLink: location.appleMapsLink,
-                    city: location.city
-                  }]}
-                  height="100%"
-                  width="100%"
-                  zoom={15}
-                  activeLocationId={location.id}
-                  showDirectionsLink={true}
-                  apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
-                  mapType="roadmap"
-                />
-              </div>
-              
-              <h3 className="text-lg font-semibold mb-3 text-white">Get Directions</h3>
-              <DirectionsButton 
-                address={location.fullAddress}
-                lat={location.coordinates.lat}
-                lng={location.coordinates.lng}
-                buttonText="Navigate to Store"
-                variant="primary"
-                fullWidth={true}
-                showIcon={true}
-                googlePlaceId={location.googlePlaceId}
-                appleMapsLink={location.appleMapsLink}
-              />
-              
-              {location.publicTransit && (
-                <div className="mt-4">
-                  <h3 className="text-lg font-semibold mb-2 text-white">Public Transportation</h3>
-                  <p className="text-gray-300 text-sm">{location.publicTransit}</p>
                 </div>
               )}
               
-              {location.parking && (
-                <div className="mt-4">
-                  <h3 className="text-lg font-semibold mb-2 text-white">Parking Information</h3>
-                  <p className="text-gray-300 text-sm">{location.parking}</p>
-                </div>
-              )}
-            </div>
-            
-            {/* Payment Methods */}
-            <div className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700 p-6">
-              <h3 className="text-lg font-semibold mb-4 text-white">Accepted Payment Methods</h3>
-              <div className="flex flex-wrap gap-2">
-                {location.acceptedPayments.map((payment, index) => (
-                  <span 
-                    key={index} 
-                    className="bg-primary/10 text-white text-sm py-1 px-3 rounded-full border border-gray-700"
-                  >
-                    {payment}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
               {/* Area Served */}
               <div className="mb-8">
                 <h3 className="text-xl font-semibold mb-4 text-white">Areas We Serve</h3>
@@ -630,7 +390,7 @@ const ArlingtonLocationPage: React.FC = () => {
                     
                     {/* Featured Products at Arlington */}
                     <h3 className="text-xl font-semibold mb-4 text-white">Featured Products at Arlington</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-8">
                       {arlingtonProducts.map((product) => (
                         <div key={product.id} className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700">
                           <div className="h-40 overflow-hidden">
@@ -640,22 +400,109 @@ const ArlingtonLocationPage: React.FC = () => {
                               className="w-full h-full object-cover"
                             />
                           </div>
-                    <div className="p-4">
-                      <h4 className="font-medium mb-1 text-white">{product.name}</h4>
-                      <p className="text-sm text-gray-300 mb-2">{product.category}</p>
-                      <p className="font-bold text-primary">${product.price.toFixed(2)}</p>
+                          <div className="p-4">
+                            <h4 className="font-medium text-white mb-1">{product.name}</h4>
+                            <p className="text-sm text-gray-300 mb-2">{product.description}</p>
+                            <div className="flex justify-between items-center">
+                              <span className="text-primary font-bold">${product.price.toFixed(2)}</span>
+                              {product.featuredLabel && (
+                                <span className="bg-primary text-white text-xs px-2 py-1 rounded">
+                                  {product.featuredLabel}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="text-center">
+                      <Link href="/products" className="text-primary hover:text-primary/80 font-medium">
+                        View All Products →
+                      </Link>
                     </div>
                   </div>
-                ))}
-              </div>
-              
-              <div className="text-center">
-                <Link href="/products" className="text-primary hover:text-primary/80 font-medium">
-                  View All Products →
-                </Link>
+                )}
               </div>
             </div>
-          )}
+          
+            {/* Map & Directions */}
+            <div className="lg:col-span-1">
+              <h2 className="text-2xl font-bold font-['Poppins'] mb-6 text-white">Location & Directions</h2>
+              
+              <div className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700 p-6 mb-6">
+                <h3 className="text-lg font-semibold mb-3 text-white">Interactive Map</h3>
+                <div 
+                  className="h-96 rounded-lg overflow-hidden mb-4"
+                  itemProp="hasMap"
+                  itemScope
+                  itemType="https://schema.org/Map"
+                >
+                  <meta itemProp="url" content={location.googlePlaceId ? `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.fullAddress)}`} />
+                  <GoogleMapsIntegration 
+                    locations={[{
+                      id: location.id,
+                      name: location.name,
+                      address: location.fullAddress,
+                      position: location.coordinates,
+                      googlePlaceId: location.googlePlaceId,
+                      appleMapsLink: location.appleMapsLink,
+                      city: location.city
+                    }]}
+                    height="100%"
+                    width="100%"
+                    zoom={15}
+                    activeLocationId={location.id}
+                    showDirectionsLink={true}
+                    apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
+                    mapType="roadmap"
+                  />
+                </div>
+                
+                <h3 className="text-lg font-semibold mb-3 text-white">Get Directions</h3>
+                <DirectionsButton 
+                  address={location.fullAddress}
+                  lat={location.coordinates.lat}
+                  lng={location.coordinates.lng}
+                  buttonText="Navigate to Store"
+                  variant="primary"
+                  fullWidth={true}
+                  showIcon={true}
+                  googlePlaceId={location.googlePlaceId}
+                  appleMapsLink={location.appleMapsLink}
+                />
+                
+                {location.publicTransit && (
+                  <div className="mt-4">
+                    <h3 className="text-lg font-semibold mb-2 text-white">Public Transportation</h3>
+                    <p className="text-gray-300 text-sm">{location.publicTransit}</p>
+                  </div>
+                )}
+                
+                {location.parking && (
+                  <div className="mt-4">
+                    <h3 className="text-lg font-semibold mb-2 text-white">Parking Information</h3>
+                    <p className="text-gray-300 text-sm">{location.parking}</p>
+                  </div>
+                )}
+              </div>
+              
+              {/* Payment Methods */}
+              <div className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700 p-6">
+                <h3 className="text-lg font-semibold mb-4 text-white">Accepted Payment Methods</h3>
+                <div className="flex flex-wrap gap-2">
+                  {location.acceptedPayments.map((payment, index) => (
+                    <span 
+                      key={index} 
+                      className="bg-primary/10 text-white text-sm py-1 px-3 rounded-full border border-gray-700"
+                    >
+                      {payment}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
       
