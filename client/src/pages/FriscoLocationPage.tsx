@@ -488,7 +488,7 @@ const FriscoLocationPage: React.FC = () => {
                     zoom={15}
                     activeLocationId={location.id}
                     showDirectionsLink={true}
-                    apiKey={process.env.GOOGLE_MAPS_API_KEY}
+                    apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
                     mapType="roadmap"
                   />
                 </div>
