@@ -500,7 +500,7 @@ const FriscoLocationPage: React.FC = () => {
                   {location.areaServed.map((area, index) => (
                     <span 
                       key={index} 
-                      className="bg-primary/20 text-gray-700 text-sm py-1 px-3 rounded-full border border-gray-300"
+                      className="bg-black/30 text-white text-sm py-1 px-3 rounded-full border border-gray-800"
                     >
                       {area}
                     </span>
@@ -526,8 +526,10 @@ const FriscoLocationPage: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                       {location.services.map((service, index) => (
                         <div key={index} className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700 p-4 flex items-center">
-                          <div className="bg-primary/20 text-gray-700 rounded-full p-3 mr-4 border border-gray-300">
-                            <i className="fas fa-check"></i>
+                          <div className="bg-black/40 text-primary rounded-full p-3 mr-4 border border-gray-800">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
                           </div>
                           <div>
                             <h4 className="font-medium text-white">{service}</h4>
@@ -628,15 +630,15 @@ const FriscoLocationPage: React.FC = () => {
                   />
                   
                   {location.publicTransit && (
-                    <div className="p-4 bg-primary/10 rounded-lg border border-gray-300">
-                      <h4 className="font-medium text-gray-700 mb-1">Public Transit</h4>
+                    <div className="p-4 bg-black/30 rounded-lg border border-gray-800">
+                      <h4 className="font-medium text-white mb-1">Public Transit</h4>
                       <p className="text-gray-300 text-sm">{location.publicTransit}</p>
                     </div>
                   )}
                   
                   {location.parking && (
-                    <div className="p-4 bg-primary/10 rounded-lg border border-gray-300">
-                      <h4 className="font-medium text-gray-700 mb-1">Parking Information</h4>
+                    <div className="p-4 bg-black/30 rounded-lg border border-gray-800">
+                      <h4 className="font-medium text-white mb-1">Parking Information</h4>
                       <p className="text-gray-300 text-sm">{location.parking}</p>
                     </div>
                   )}
@@ -650,7 +652,7 @@ const FriscoLocationPage: React.FC = () => {
                   {location.acceptedPayments.map((payment, index) => (
                     <span 
                       key={index} 
-                      className="bg-primary/10 text-gray-700 text-sm py-1 px-3 rounded-full border border-gray-300"
+                      className="bg-black/30 text-white text-sm py-1 px-3 rounded-full border border-gray-800"
                     >
                       {payment}
                     </span>
