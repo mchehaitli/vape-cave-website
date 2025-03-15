@@ -198,11 +198,23 @@ const ArlingtonLocationPage: React.FC = () => {
           "description": product.description,
           "image": product.image,
           "category": product.category,
+          "brand": {
+            "@type": "Brand",
+            "name": product.name.includes("Elf Bar") ? "Elf Bar" : 
+                    product.name.includes("Lost Mary") ? "Lost Mary" : 
+                    product.name.includes("Geek") ? "GeekVape" : 
+                    product.name.includes("Hyde") ? "Hyde" : 
+                    product.name.includes("Caliburn") ? "Uwell Caliburn" : 
+                    "Vape Cave"
+          },
           "offers": {
             "@type": "Offer",
             "price": product.price.toFixed(2),
             "priceCurrency": "USD",
             "availability": "https://schema.org/InStock",
+            "availabilityStarts": "2023-01-01T00:00:00-06:00",
+            "priceValidUntil": "2025-12-31",
+            "url": "https://vapecavetx.com/products",
             "availableAtOrFrom": {
               "@type": "VapeShop",
               "name": location.name,
@@ -210,10 +222,26 @@ const ArlingtonLocationPage: React.FC = () => {
                 "@type": "PostalAddress",
                 "streetAddress": location.address,
                 "addressLocality": location.city,
-                "addressRegion": "TX"
+                "addressRegion": "TX",
+                "postalCode": postalCode,
+                "addressCountry": "US"
               }
             }
-          }
+          },
+          "sku": `VC-${product.id}`,
+          "mpn": `VCC-${product.id}-${product.category.replace(/\s+/g, '-').toLowerCase()}`,
+          "additionalProperty": [
+            {
+              "@type": "PropertyValue",
+              "name": "Age Restriction",
+              "value": "21+"
+            },
+            {
+              "@type": "PropertyValue",
+              "name": "Product Type",
+              "value": product.category
+            }
+          ]
         }
       })),
       "potentialAction": [
@@ -306,15 +334,15 @@ const ArlingtonLocationPage: React.FC = () => {
   
   return (
     <MainLayout
-      title={`Vape Cave Arlington, TX - Premium Vape Shop in ${location.city}`}
-      description={`Visit Vape Cave in Arlington, TX for premium vaping products, accessories, and expert advice. Located at ${location.address}, we offer the best selection in ${location.city}.`}
+      title={`Vape Cave Arlington, TX | Best Vape Shop near Cooper St | Premium Vaping Products`}
+      description={`Visit Vape Cave at ${location.address} in Arlington, TX for premium vaping products, Elf Bar, Lost Mary, Geek Vape, Delta 8, THC-A & accessories. Open daily 10AM-11PM.`}
       canonical={canonicalUrl}
       ogImage="/vapecave-logo.png"
       structuredData={generateArlingtonStructuredData()}
     >
       <Helmet>
-        <title>Vape Cave Arlington | Premium Vape Shop in Arlington | Premium Vaping Products & Delta 8</title>
-        <meta name="description" content={`Visit Vape Cave in Arlington at ${location.address}. Offering premium vape products, Delta 8, THC-A, disposables & accessories. Open daily 10AM-11PM.`} />
+        <title>Vape Cave Arlington | #1 Vape Shop in Arlington TX | Premium Vaping Products, Elf Bar, Lost Mary & Delta 8</title>
+        <meta name="description" content={`Looking for the best vape shop in Arlington? Visit Vape Cave at ${location.address}. Offering premium products including Elf Bar, Lost Mary, Geek Vape, Delta 8, THC-A, disposables & CBD. Open daily 10AM-11PM.`} />
         <link rel="canonical" href={canonicalUrl} />
         
         {/* Additional meta tags specific to Arlington location */}
@@ -326,8 +354,8 @@ const ArlingtonLocationPage: React.FC = () => {
         {/* Open Graph & Twitter tags */}
         <meta property="og:locale" content="en_US" />
         <meta property="og:type" content="business.business" />
-        <meta property="og:title" content={`Vape Cave Arlington | Premium Vape Shop in Arlington`} />
-        <meta property="og:description" content={`Visit Vape Cave in Arlington at ${location.address}. We offer premium vaping products, Delta 8, THC-A, and more at our convenient Cooper St location.`} />
+        <meta property="og:title" content={`Vape Cave Arlington TX | Best Vape Shop for Elf Bar, Lost Mary & Delta 8`} />
+        <meta property="og:description" content={`Visit the #1 vape shop in Arlington at ${location.address}. We offer premium products including Elf Bar, Lost Mary, GeekVape, Delta 8, THC-A, and more at our convenient Cooper St location.`} />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:site_name" content="Vape Cave" />
         <meta property="og:image" content="/vapecave-logo.png" />
@@ -348,7 +376,7 @@ const ArlingtonLocationPage: React.FC = () => {
         <meta name="twitter:image" content="/vapecave-logo.png" />
         
         {/* Location-specific keywords */}
-        <meta name="keywords" content="vape shop arlington tx, arlington vape store, vape cave arlington, vape near me arlington, delta 8 arlington, thc-a arlington, vape products arlington, disposable vapes arlington, cbd shop arlington, smoke shop arlington texas, premium vape arlington, vape shop google place id" />
+        <meta name="keywords" content="vape shop arlington tx, arlington vape store, vape cave arlington, vape near me arlington, delta 8 arlington, thc-a arlington, vape products arlington, disposable vapes arlington, cbd shop arlington, smoke shop arlington texas, premium vape arlington, vape shop google place id, geekvape arlington, elf bar arlington, lost mary arlington, hyde vape arlington, lost vape arlington, caliburn arlington, delta 10 arlington, hhc arlington, vape shop near me, smoke shop near me, best vape shop arlington" />
         
         {/* Dublin Core Metadata */}
         <meta name="DC.title" content="Vape Cave Arlington | Premium Vape Shop" />
