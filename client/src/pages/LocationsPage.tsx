@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet";
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import DirectionsButton from "@/components/DirectionsButton";
+import GoogleMapsIntegration from "@/components/GoogleMapsIntegration";
 import { storeLocations, getFormattedLocationsForMap } from "@/data/storeInfo";
 
 const LocationsPage = () => {
