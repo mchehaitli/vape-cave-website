@@ -597,6 +597,152 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Featured Arlington Location Section - Enhance SEO importance */}
+      <section 
+        className="py-14 bg-gradient-to-r from-primary/5 to-primary/10 text-white" 
+        id="arlington-location" 
+        itemScope 
+        itemType="https://schema.org/VapeShop"
+        itemProp="departments"
+      >
+        <meta itemProp="name" content="Vape Cave Arlington" />
+        <meta itemProp="identifier" content="ChIJ23422NdJSYYRVX94pdZlUGg" />
+        <meta itemProp="alternateName" content="Vape Cave Arlington Cooper Street" />
+        <meta itemProp="description" content="Premier vape shop in Arlington, TX with the largest selection of disposable vapes, Delta 8, THC-A, and accessories. Conveniently located at 4100 S Cooper St #4108." />
+        <meta itemProp="image" content="https://vapecavetx.com/arlington-location.jpg" />
+        <meta itemProp="url" content="https://vapecavetx.com/locations/arlington" />
+        <meta itemProp="priceRange" content="$$" />
+        <meta itemProp="telephone" content="+16822700334" />
+        <meta itemProp="email" content="vapecavetx@gmail.com" />
+        <div 
+          itemProp="address" 
+          itemScope 
+          itemType="https://schema.org/PostalAddress"
+        >
+          <meta itemProp="streetAddress" content="4100 S Cooper St #4108" />
+          <meta itemProp="addressLocality" content="Arlington" />
+          <meta itemProp="addressRegion" content="TX" />
+          <meta itemProp="postalCode" content="76015" />
+          <meta itemProp="addressCountry" content="US" />
+        </div>
+        <div 
+          itemProp="geo" 
+          itemScope 
+          itemType="https://schema.org/GeoCoordinates"
+        >
+          <meta itemProp="latitude" content="32.687070" />
+          <meta itemProp="longitude" content="-97.134800" />
+        </div>
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row items-center gap-8">
+            <div className="md:w-1/2 order-2 md:order-1">
+              <h2 className="text-3xl font-bold font-['Poppins'] mb-3">
+                Find Us Easily in Arlington
+              </h2>
+              <div className="h-1 w-24 bg-primary rounded-full mb-6"></div>
+              <p className="text-gray-300 mb-6">
+                Our Arlington location is conveniently accessible at <span className="text-primary font-semibold">4100 S Cooper St #4108, Arlington, TX 76015</span>.
+                Use our direct Google Maps or Apple Maps links below to navigate to our store with ease.
+              </p>
+              
+              <div className="mb-8">
+                <h3 className="text-xl font-semibold mb-3">Why Visit Our Arlington Location?</h3>
+                <ul className="space-y-2 text-gray-300">
+                  <li className="flex items-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Near The Parks Mall with ample free parking
+                  </li>
+                  <li className="flex items-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Expert staff offering product demonstrations
+                  </li>
+                  <li className="flex items-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Largest selection of disposables in the area
+                  </li>
+                  <li className="flex items-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Special discounts for military and first responders
+                  </li>
+                  <li className="flex items-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Open daily from 10:00 AM to 11:00 PM
+                  </li>
+                </ul>
+              </div>
+              
+              <div className="flex flex-wrap gap-3">
+                <a 
+                  href="https://maps.app.goo.gl/7RRoEeD3uzANmdhZA" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                  </svg>
+                  Google Maps
+                </a>
+                <a 
+                  href="https://maps.apple.com/?address=4100%20S%20Cooper%20St%20%234108,%20Arlington,%20TX%20%2076015,%20United%20States&ll=32.687070,-97.134800&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center bg-white/10 hover:bg-white/20 border border-white/30 text-white px-4 py-2 rounded transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  Apple Maps
+                </a>
+                <Link
+                  href="/locations/arlington"
+                  className="inline-flex items-center bg-primary/30 hover:bg-primary/40 border border-primary/50 text-white px-4 py-2 rounded transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  More Store Info
+                </Link>
+                <a
+                  href="tel:+16822700334"
+                  className="inline-flex items-center bg-white/10 hover:bg-white/20 border border-white/30 text-white px-4 py-2 rounded transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
+                  Call Now
+                </a>
+              </div>
+            </div>
+            <div className="md:w-1/2 mb-6 md:mb-0 order-1 md:order-2">
+              <div className="rounded-lg overflow-hidden shadow-xl border border-gray-700 h-full">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3357.926302595539!2d-97.13739482379145!3d32.68707018061235!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864e6377a56ba2c1%3A0x63d3de7c2a26fd3d!2s4100%20S%20Cooper%20St%20%234108%2C%20Arlington%2C%20TX%2076015!5e0!3m2!1sen!2sus!4v1672321865030!5m2!1sen!2sus"
+                  width="100%"
+                  height="450"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  title="Arlington Store Location Map"
+                  referrerPolicy="no-referrer-when-downgrade"
+                ></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Age Verification Notice */}
       <section className="py-14 bg-darker">
         <div className="container mx-auto px-4 text-center">
