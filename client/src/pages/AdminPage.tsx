@@ -711,7 +711,7 @@ export default function AdminPage() {
                                   <Input
                                     id="image-upload"
                                     type="file"
-                                    accept=".png,.jpg,.jpeg,.svg"
+                                    accept="image/*,.png,.jpg,.jpeg,.webp,.gif,.bmp,.tiff,.svg"
                                     className="bg-gray-900 border-gray-700 text-white cursor-pointer file:cursor-pointer file:border-0 file:bg-gray-800 file:text-white file:px-4 file:py-2 file:mr-4 file:hover:bg-gray-700"
                                     onChange={async (e) => {
                                       const file = e.target.files?.[0];
@@ -747,7 +747,7 @@ export default function AdminPage() {
                               )}
                             </div>
                             <FormDescription className="text-gray-500 text-xs">
-                              You can provide a URL or upload a PNG, JPG, or SVG image.
+                              You can provide a URL or upload various image formats (PNG, JPG, JPEG, WEBP, GIF, BMP, TIFF, SVG).
                             </FormDescription>
                             <FormMessage className="text-red-400" />
                           </FormItem>
