@@ -395,14 +395,6 @@ const LocationsPage = () => {
                         <div>
                           <p className="text-sm text-gray-400">Hours</p>
                           <p className="font-medium text-gray-200">{location.hours}</p>
-                          {location.openingHours && (
-                            <button 
-                              onClick={() => setActiveLocation(location.id)}
-                              className="text-orange-500 text-xs mt-1 hover:underline"
-                            >
-                              See detailed hours →
-                            </button>
-                          )}
                         </div>
                       </div>
                       
