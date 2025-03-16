@@ -864,6 +864,67 @@ export default function AdminPage() {
       setDeletingBlogPostId(null);
     }
   };
+  
+  // Store Location CRUD operations
+  const onStoreLocationSubmit = async (data: StoreLocationFormValues) => {
+    try {
+      if (editingStoreLocation) {
+        // Update existing store location
+        await apiRequest('PUT', `/api/admin/store-locations/${editingStoreLocation.id}`, data);
+        
+        toast({
+          title: "Store Location Updated",
+          description: "The store location has been successfully updated",
+        });
+      } else {
+        // Create new store location
+        await apiRequest('POST', '/api/admin/store-locations', data);
+        
+        toast({
+          title: "Store Location Created",
+          description: "The store location has been successfully created",
+        });
+      }
+      
+      // Invalidate queries to refresh data
+      queryClient.invalidateQueries({ queryKey: ['/api/store-locations'] });
+      
+      // Close dialog
+      setStoreLocationDialogOpen(false);
+      setEditingStoreLocation(null);
+    } catch (error) {
+      console.error("Store location submit error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to save store location",
+        variant: "destructive",
+      });
+    }
+  };
+  
+  const confirmDeleteStoreLocation = async () => {
+    if (!deletingStoreLocationId) return;
+    
+    try {
+      await apiRequest('DELETE', `/api/admin/store-locations/${deletingStoreLocationId}`);
+      
+      queryClient.invalidateQueries({ queryKey: ['/api/store-locations'] });
+      
+      toast({
+        title: "Store Location Deleted",
+        description: "The store location has been successfully deleted",
+      });
+    } catch (error) {
+      console.error("Delete store location error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to delete store location",
+        variant: "destructive",
+      });
+    } finally {
+      setDeletingStoreLocationId(null);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -910,6 +971,7 @@ export default function AdminPage() {
                 <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="dashboard">Dashboard</TabsTrigger>
                 <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="brands">Brands</TabsTrigger>
                 <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="categories">Categories</TabsTrigger>
+                <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="locations">Locations</TabsTrigger>
                 <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="blog">Blog</TabsTrigger>
                 <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="settings">Settings</TabsTrigger>
               </TabsList>
@@ -1548,6 +1610,341 @@ export default function AdminPage() {
                     <AlertDialogAction 
                       className="bg-red-600 hover:bg-red-700"
                       onClick={confirmDeleteCategory}
+                    >
+                      Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </TabsContent>
+            
+            <TabsContent value="locations" className="space-y-4">
+              <Card className="bg-gray-800 border-gray-700">
+                <CardHeader>
+                  <CardTitle>Manage Store Locations</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-400 mb-4">
+                    This section allows you to add, edit, and delete store locations.
+                  </p>
+                  <div className="flex justify-end mb-4">
+                    <Button 
+                      onClick={() => {
+                        setEditingStoreLocation(null);
+                        setStoreLocationDialogOpen(true);
+                      }}
+                      className="bg-primary hover:bg-primary/90 flex items-center gap-2"
+                    >
+                      <Plus size={16} />
+                      Add New Location
+                    </Button>
+                  </div>
+                  
+                  {isStoreLocationsLoading ? (
+                    <div className="animate-pulse space-y-3">
+                      {[1, 2].map((i) => (
+                        <div key={i} className="h-14 bg-gray-700 rounded"></div>
+                      ))}
+                    </div>
+                  ) : storeLocations && storeLocations.length > 0 ? (
+                    <div className="rounded-md border border-gray-700 overflow-x-auto">
+                      <Table>
+                        <TableHeader className="bg-gray-800">
+                          <TableRow className="hover:bg-gray-700/50 border-gray-700">
+                            <TableHead className="text-gray-400">Location</TableHead>
+                            <TableHead className="text-gray-400 hidden md:table-cell">City</TableHead>
+                            <TableHead className="text-gray-400 hidden md:table-cell">Phone</TableHead>
+                            <TableHead className="text-gray-400 text-right">Actions</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {storeLocations.map(location => (
+                            <TableRow key={location.id} className="hover:bg-gray-700/50 border-gray-700">
+                              <TableCell className="font-medium">
+                                <div className="flex items-center gap-3">
+                                  <div className="w-12 h-12 rounded bg-gray-700 overflow-hidden border border-gray-600">
+                                    <img 
+                                      src={location.image} 
+                                      alt={location.name} 
+                                      className="w-full h-full object-cover" 
+                                      onError={(e) => {
+                                        (e.target as HTMLImageElement).src = 'https://placehold.co/100x100?text=Store';
+                                      }}
+                                    />
+                                  </div>
+                                  <div>
+                                    <div>{location.name}</div>
+                                    <div className="text-xs text-gray-400 md:hidden mt-1">
+                                      {location.city}, {location.phone}
+                                    </div>
+                                  </div>
+                                </div>
+                              </TableCell>
+                              <TableCell className="hidden md:table-cell">{location.city}</TableCell>
+                              <TableCell className="hidden md:table-cell">{location.phone}</TableCell>
+                              <TableCell className="text-right">
+                                <div className="flex justify-end gap-2">
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm"
+                                    className="h-8 w-8 p-0 text-gray-400 hover:text-white hover:bg-gray-700"
+                                    onClick={() => {
+                                      setEditingStoreLocation(location);
+                                      setStoreLocationDialogOpen(true);
+                                    }}
+                                  >
+                                    <span className="sr-only">Edit</span>
+                                    <Edit size={16} />
+                                  </Button>
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm"
+                                    className="h-8 w-8 p-0 text-red-400 hover:text-red-300 hover:bg-gray-700"
+                                    onClick={() => setDeletingStoreLocationId(location.id)}
+                                  >
+                                    <span className="sr-only">Delete</span>
+                                    <Trash2 size={16} />
+                                  </Button>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-gray-400">
+                      <p>No store locations found. Click "Add New Location" to create your first store location.</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+              
+              {/* Store Location Dialog */}
+              <Dialog open={storeLocationDialogOpen} onOpenChange={setStoreLocationDialogOpen}>
+                <DialogContent className="bg-gray-800 text-white border-gray-700 sm:max-w-2xl max-h-[90vh] overflow-y-auto mx-4 w-[calc(100%-2rem)]">
+                  <DialogHeader>
+                    <DialogTitle>{editingStoreLocation ? "Edit Store Location" : "Add New Store Location"}</DialogTitle>
+                    <DialogDescription className="text-gray-400">
+                      {editingStoreLocation 
+                        ? "Edit store location details below and save your changes." 
+                        : "Fill in the store location details to add it to your system."
+                      }
+                    </DialogDescription>
+                  </DialogHeader>
+                  
+                  <Form {...storeLocationForm}>
+                    <form onSubmit={storeLocationForm.handleSubmit(onStoreLocationSubmit)} className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <FormField
+                          control={storeLocationForm.control}
+                          name="name"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Store Name</FormLabel>
+                              <FormControl>
+                                <Input
+                                  className="bg-gray-900 border-gray-700 text-white" 
+                                  placeholder="Vape Cave"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage className="text-red-400" />
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <FormField
+                          control={storeLocationForm.control}
+                          name="city"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>City</FormLabel>
+                              <FormControl>
+                                <Input
+                                  className="bg-gray-900 border-gray-700 text-white" 
+                                  placeholder="Arlington"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage className="text-red-400" />
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <FormField
+                          control={storeLocationForm.control}
+                          name="address"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Address</FormLabel>
+                              <FormControl>
+                                <Input
+                                  className="bg-gray-900 border-gray-700 text-white" 
+                                  placeholder="123 Main St"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage className="text-red-400" />
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <FormField
+                          control={storeLocationForm.control}
+                          name="full_address"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Full Address</FormLabel>
+                              <FormControl>
+                                <Input
+                                  className="bg-gray-900 border-gray-700 text-white" 
+                                  placeholder="123 Main St, Arlington, TX 76010"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage className="text-red-400" />
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <FormField
+                          control={storeLocationForm.control}
+                          name="phone"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Phone</FormLabel>
+                              <FormControl>
+                                <Input
+                                  className="bg-gray-900 border-gray-700 text-white" 
+                                  placeholder="(123) 456-7890"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage className="text-red-400" />
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <FormField
+                          control={storeLocationForm.control}
+                          name="email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Email (Optional)</FormLabel>
+                              <FormControl>
+                                <Input
+                                  className="bg-gray-900 border-gray-700 text-white" 
+                                  placeholder="store@example.com"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage className="text-red-400" />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      
+                      <div className="border-t border-gray-700 pt-4">
+                        <h3 className="font-medium mb-2">Location Map Information</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <FormField
+                            control={storeLocationForm.control}
+                            name="lat"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Latitude</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    className="bg-gray-900 border-gray-700 text-white" 
+                                    placeholder="32.735687"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage className="text-red-400" />
+                              </FormItem>
+                            )}
+                          />
+                          
+                          <FormField
+                            control={storeLocationForm.control}
+                            name="lng"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Longitude</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    className="bg-gray-900 border-gray-700 text-white" 
+                                    placeholder="-97.108066"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage className="text-red-400" />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="border-t border-gray-700 pt-4">
+                        <h3 className="font-medium mb-2">More Information</h3>
+                        <div className="grid grid-cols-1 gap-4">
+                          <FormField
+                            control={storeLocationForm.control}
+                            name="description"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Store Description</FormLabel>
+                                <FormControl>
+                                  <Textarea
+                                    className="bg-gray-900 border-gray-700 text-white min-h-[100px]" 
+                                    placeholder="Enter a detailed description of this store location..."
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage className="text-red-400" />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </div>
+                      
+                      <DialogFooter className="pt-4">
+                        <Button 
+                          type="submit" 
+                          className="bg-primary hover:bg-primary/90 w-full sm:w-auto"
+                          disabled={storeLocationForm.formState.isSubmitting}
+                        >
+                          {storeLocationForm.formState.isSubmitting ? (
+                            <div className="flex items-center gap-2">
+                              <RefreshCcw size={16} className="animate-spin" />
+                              Saving...
+                            </div>
+                          ) : (
+                            "Save Store Location"
+                          )}
+                        </Button>
+                      </DialogFooter>
+                    </form>
+                  </Form>
+                </DialogContent>
+              </Dialog>
+              
+              {/* Store Location Delete Confirmation */}
+              <AlertDialog open={!!deletingStoreLocationId} onOpenChange={() => setDeletingStoreLocationId(null)}>
+                <AlertDialogContent className="bg-gray-800 text-white border-gray-700">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogDescription className="text-gray-400">
+                      This action cannot be undone. This will permanently delete the
+                      store location and all associated data.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="hover:bg-gray-700 hover:text-white border-gray-600">Cancel</AlertDialogCancel>
+                    <AlertDialogAction 
+                      className="bg-red-600 hover:bg-red-700"
+                      onClick={confirmDeleteStoreLocation}
                     >
                       Delete
                     </AlertDialogAction>
