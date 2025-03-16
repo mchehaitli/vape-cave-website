@@ -44,16 +44,12 @@ const brandSchema = z.object({
   }),
   name: z.string({
     required_error: "Brand name is required",
-  }).min(2, {
-    message: "Brand name must be at least 2 characters",
   }),
   image: z.string({
     required_error: "Image URL is required",
   }),
   description: z.string({
     required_error: "Description is required",
-  }).min(10, {
-    message: "Description must be at least 10 characters",
   }),
   displayOrder: z.coerce.number().default(0),
   imageSize: z.string().default("medium"),
@@ -63,8 +59,6 @@ const brandSchema = z.object({
 const categorySchema = z.object({
   category: z.string({
     required_error: "Category name is required",
-  }).min(2, {
-    message: "Category name must be at least 2 characters",
   }),
   bgClass: z.string().optional(),
   displayOrder: z.coerce.number().default(0),
@@ -75,13 +69,9 @@ const categorySchema = z.object({
 const userSchema = z.object({
   username: z.string({
     required_error: "Username is required",
-  }).min(3, {
-    message: "Username must be at least 3 characters",
   }),
   password: z.string({
     required_error: "Password is required",
-  }).min(6, {
-    message: "Password must be at least 6 characters",
   }),
   isAdmin: z.boolean().default(false),
 });
