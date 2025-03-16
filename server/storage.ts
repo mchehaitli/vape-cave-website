@@ -119,35 +119,106 @@ export class DbStorage implements IStorage {
 
   // Brand operations
   async getAllBrands(): Promise<Brand[]> {
-    return db.select().from(brands).orderBy(asc(brands.displayOrder));
+    // Select only existing columns from the database
+    const rows = await db.select({
+      id: brands.id,
+      categoryId: brands.categoryId,
+      name: brands.name,
+      image: brands.image,
+      description: brands.description,
+      displayOrder: brands.displayOrder,
+    })
+    .from(brands)
+    .orderBy(asc(brands.displayOrder));
+    
+    // Add the imageSize field with a default value
+    return rows.map(row => ({
+      ...row,
+      imageSize: "medium", // Default value
+    }));
   }
 
   async getBrandsByCategory(categoryId: number): Promise<Brand[]> {
-    return db
-      .select()
+    // Select only existing columns from the database
+    const rows = await db
+      .select({
+        id: brands.id,
+        categoryId: brands.categoryId,
+        name: brands.name,
+        image: brands.image,
+        description: brands.description,
+        displayOrder: brands.displayOrder,
+      })
       .from(brands)
       .where(eq(brands.categoryId, categoryId))
       .orderBy(asc(brands.displayOrder));
+    
+    // Add the imageSize field with a default value
+    return rows.map(row => ({
+      ...row,
+      imageSize: "medium", // Default value
+    }));
   }
 
   async getBrand(id: number): Promise<Brand | undefined> {
-    const result = await db.select().from(brands).where(eq(brands.id, id));
-    return result[0];
+    // Select only existing columns from the database
+    const result = await db
+      .select({
+        id: brands.id,
+        categoryId: brands.categoryId,
+        name: brands.name,
+        image: brands.image,
+        description: brands.description,
+        displayOrder: brands.displayOrder,
+      })
+      .from(brands)
+      .where(eq(brands.id, id));
+    
+    if (result.length === 0) {
+      return undefined;
+    }
+    
+    // Add imageSize field with default value
+    return {
+      ...result[0],
+      imageSize: "medium", // Default value
+    };
   }
 
   async createBrand(brand: InsertBrand): Promise<Brand> {
-    const result = await db.insert(brands).values(brand).returning();
-    return result[0];
+    // Extract only the columns that exist in the database
+    const { imageSize, ...dbBrand } = brand;
+    
+    // Insert the brand without the imageSize field
+    const result = await db.insert(brands).values(dbBrand).returning();
+    
+    // Return the result with the imageSize field added
+    return {
+      ...result[0],
+      imageSize: imageSize || "medium",
+    };
   }
 
   async updateBrand(id: number, brand: Partial<InsertBrand>): Promise<Brand | undefined> {
+    // Extract only the columns that exist in the database
+    const { imageSize, ...dbBrand } = brand;
+    
+    // Update the brand without the imageSize field
     const result = await db
       .update(brands)
-      .set(brand)
+      .set(dbBrand)
       .where(eq(brands.id, id))
       .returning();
     
-    return result[0];
+    if (result.length === 0) {
+      return undefined;
+    }
+    
+    // Return the result with the imageSize field added
+    return {
+      ...result[0],
+      imageSize: imageSize || "medium",
+    };
   }
 
   async deleteBrand(id: number): Promise<boolean> {
