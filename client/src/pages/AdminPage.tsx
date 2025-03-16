@@ -115,12 +115,75 @@ const blogPostSchema = z.object({
   metaDescription: z.string().optional()
 });
 
+// Store location schema for forms
+const storeLocationSchema = z.object({
+  name: z.string({
+    required_error: "Store name is required"
+  }),
+  city: z.string({
+    required_error: "City is required"
+  }),
+  address: z.string({
+    required_error: "Address is required"
+  }),
+  full_address: z.string({
+    required_error: "Full address is required"
+  }),
+  phone: z.string({
+    required_error: "Phone number is required"
+  }),
+  hours: z.string({
+    required_error: "Store hours summary is required"
+  }),
+  closed_days: z.string().optional(),
+  image: z.string({
+    required_error: "Store image URL is required"
+  }),
+  lat: z.string({
+    required_error: "Latitude is required"
+  }),
+  lng: z.string({
+    required_error: "Longitude is required"
+  }),
+  google_place_id: z.string().optional(),
+  apple_maps_link: z.string().optional(),
+  map_embed: z.string({
+    required_error: "Map embed code is required"
+  }),
+  email: z.string().optional(),
+  store_code: z.string().optional(),
+  opening_hours: z.record(z.string()).default({}),
+  services: z.array(z.string()).default([]),
+  accepted_payments: z.array(z.string()).default([]),
+  area_served: z.array(z.string()).default([]),
+  public_transit: z.string().optional(),
+  parking: z.string().optional(),
+  year_established: z.coerce.number({
+    required_error: "Year established is required"
+  }),
+  price_range: z.string({
+    required_error: "Price range is required"
+  }),
+  social_profiles: z.object({
+    facebook: z.string().optional(),
+    instagram: z.string().optional(),
+    twitter: z.string().optional(),
+    yelp: z.string().optional()
+  }).optional(),
+  description: z.string({
+    required_error: "Description is required"
+  }),
+  neighborhood_info: z.string().optional(),
+  amenities: z.array(z.string()).default([])
+});
+
 // Type definitions based on schemas
 type BrandFormValues = z.infer<typeof brandSchema>;
 type CategoryFormValues = z.infer<typeof categorySchema>;
 type UserFormValues = z.infer<typeof userSchema>;
 type BlogCategoryFormValues = z.infer<typeof blogCategorySchema>;
 type BlogPostFormValues = z.infer<typeof blogPostSchema>;
+type StoreLocationFormValues = z.infer<typeof storeLocationSchema>;
 
 export default function AdminPage() {
   const queryClient = useQueryClient();
@@ -141,6 +204,12 @@ export default function AdminPage() {
   const { data: blogPosts = [], isLoading: isBlogPostsLoading } = useQuery<any[]>({
     queryKey: ['/api/admin/blog-posts'],
     staleTime: 30000,
+  });
+  
+  // Query for store locations
+  const { data: storeLocations = [], isLoading: isStoreLocationsLoading } = useQuery<any[]>({
+    queryKey: ['/api/store-locations'],
+    staleTime: 60000,
   });
   
   // State for brand management
@@ -166,6 +235,11 @@ export default function AdminPage() {
   const [blogPostDialogOpen, setBlogPostDialogOpen] = useState(false);
   const [editingBlogPost, setEditingBlogPost] = useState<any>(null);
   const [deletingBlogPostId, setDeletingBlogPostId] = useState<number | null>(null);
+  
+  // State for store location management
+  const [storeLocationDialogOpen, setStoreLocationDialogOpen] = useState(false);
+  const [editingStoreLocation, setEditingStoreLocation] = useState<any>(null);
+  const [deletingStoreLocationId, setDeletingStoreLocationId] = useState<number | null>(null);
 
   useEffect(() => {
     // Check if user is authenticated and is admin
@@ -284,6 +358,45 @@ export default function AdminPage() {
     }
   });
   
+  // Store location form setup
+  const storeLocationForm = useForm<StoreLocationFormValues>({
+    resolver: zodResolver(storeLocationSchema),
+    defaultValues: {
+      name: "",
+      city: "",
+      address: "",
+      full_address: "",
+      phone: "",
+      hours: "",
+      closed_days: "",
+      image: "",
+      lat: "",
+      lng: "",
+      google_place_id: "",
+      apple_maps_link: "",
+      map_embed: "",
+      email: "",
+      store_code: "",
+      opening_hours: {},
+      services: [],
+      accepted_payments: [],
+      area_served: [],
+      public_transit: "",
+      parking: "",
+      year_established: new Date().getFullYear(),
+      price_range: "$",
+      social_profiles: {
+        facebook: "",
+        instagram: "",
+        twitter: "",
+        yelp: ""
+      },
+      description: "",
+      neighborhood_info: "",
+      amenities: []
+    }
+  });
+  
   // Reset forms when dialog is opened/closed
   useEffect(() => {
     if (brandDialogOpen && editingBrand) {
@@ -374,6 +487,81 @@ export default function AdminPage() {
       });
     }
   }, [blogPostDialogOpen, editingBlogPost, blogPostForm, blogCategories]);
+  
+  // Reset store location form when dialog is opened/closed
+  useEffect(() => {
+    if (storeLocationDialogOpen && editingStoreLocation) {
+      storeLocationForm.reset({
+        name: editingStoreLocation.name,
+        city: editingStoreLocation.city,
+        address: editingStoreLocation.address,
+        full_address: editingStoreLocation.full_address,
+        phone: editingStoreLocation.phone,
+        hours: editingStoreLocation.hours,
+        closed_days: editingStoreLocation.closed_days || "",
+        image: editingStoreLocation.image,
+        lat: editingStoreLocation.lat,
+        lng: editingStoreLocation.lng,
+        google_place_id: editingStoreLocation.google_place_id || "",
+        apple_maps_link: editingStoreLocation.apple_maps_link || "",
+        map_embed: editingStoreLocation.map_embed,
+        email: editingStoreLocation.email || "",
+        store_code: editingStoreLocation.store_code || "",
+        opening_hours: editingStoreLocation.opening_hours || {},
+        services: editingStoreLocation.services || [],
+        accepted_payments: editingStoreLocation.accepted_payments || [],
+        area_served: editingStoreLocation.area_served || [],
+        public_transit: editingStoreLocation.public_transit || "",
+        parking: editingStoreLocation.parking || "",
+        year_established: editingStoreLocation.year_established,
+        price_range: editingStoreLocation.price_range,
+        social_profiles: editingStoreLocation.social_profiles || {
+          facebook: "",
+          instagram: "",
+          twitter: "",
+          yelp: ""
+        },
+        description: editingStoreLocation.description,
+        neighborhood_info: editingStoreLocation.neighborhood_info || "",
+        amenities: editingStoreLocation.amenities || []
+      });
+    } else if (storeLocationDialogOpen) {
+      storeLocationForm.reset({
+        name: "",
+        city: "",
+        address: "",
+        full_address: "",
+        phone: "",
+        hours: "",
+        closed_days: "",
+        image: "",
+        lat: "",
+        lng: "",
+        google_place_id: "",
+        apple_maps_link: "",
+        map_embed: "",
+        email: "",
+        store_code: "",
+        opening_hours: {},
+        services: [],
+        accepted_payments: [],
+        area_served: [],
+        public_transit: "",
+        parking: "",
+        year_established: new Date().getFullYear(),
+        price_range: "$",
+        social_profiles: {
+          facebook: "",
+          instagram: "",
+          twitter: "",
+          yelp: ""
+        },
+        description: "",
+        neighborhood_info: "",
+        amenities: []
+      });
+    }
+  }, [storeLocationDialogOpen, editingStoreLocation, storeLocationForm]);
   
   // Brand CRUD operations
   const handleAddBrand = () => {
