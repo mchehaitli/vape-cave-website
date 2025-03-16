@@ -568,126 +568,7 @@ export default function AdminPage() {
     }
   }, [storeLocationDialogOpen, editingStoreLocation, storeLocationForm]);
   
-  // Initialize store hours form when dialog opens
-  useEffect(() => {
-    if (storeHoursDialogOpen && editingStoreLocation) {
-      // Initialize temporary hours from the location's opening_hours
-      setTemporaryHours(editingStoreLocation.opening_hours || {});
-      setClosedDays(editingStoreLocation.closed_days || "");
-      setHoursSummary(editingStoreLocation.hours || "");
-    }
-  }, [storeHoursDialogOpen, editingStoreLocation]);
-  
-  // Helper functions for store hours management
-  const getOpeningHour = (day: string): string => {
-    const hours = temporaryHours[day] || "";
-    if (!hours) return "";
-    
-    // If format is "10:00 AM - 7:00 PM", extract the opening time
-    const match = hours.match(/^([^-]+)/);
-    return match ? match[1].trim() : "";
-  };
-  
-  const getClosingHour = (day: string): string => {
-    const hours = temporaryHours[day] || "";
-    if (!hours) return "";
-    
-    // If format is "10:00 AM - 7:00 PM", extract the closing time
-    const match = hours.match(/\s*-\s*(.+)$/);
-    return match ? match[1].trim() : "";
-  };
-  
-  const handleHourChange = (day: string, type: 'open' | 'close', value: string) => {
-    const currentHours = temporaryHours[day] || "";
-    let newHours = "";
-    
-    if (type === 'open') {
-      const closingTime = getClosingHour(day);
-      newHours = closingTime ? `${value} - ${closingTime}` : value;
-    } else {
-      const openingTime = getOpeningHour(day);
-      newHours = openingTime ? `${openingTime} - ${value}` : `- ${value}`;
-    }
-    
-    setTemporaryHours(prev => ({
-      ...prev,
-      [day]: newHours
-    }));
-  };
-  
-  const handleCopyHours = (fromDay: string) => {
-    const hoursValue = temporaryHours[fromDay] || "";
-    
-    // Display a toast to indicate what is happening
-    toast({
-      title: "Copy Hours",
-      description: `Click on another day to copy "${hoursValue}" to that day`,
-    });
-    
-    // Set a listener for the next day selection
-    const handleDayClick = (event: MouseEvent) => {
-      // Find if the click was on a day input
-      const target = event.target as HTMLElement;
-      const dayRow = target.closest('[data-day]');
-      
-      if (dayRow) {
-        const toDay = dayRow.getAttribute('data-day');
-        if (toDay && toDay !== fromDay) {
-          setTemporaryHours(prev => ({
-            ...prev,
-            [toDay]: hoursValue
-          }));
-          
-          toast({
-            title: "Hours Copied",
-            description: `Hours from ${fromDay} copied to ${toDay}`,
-          });
-        }
-      }
-      
-      // Remove the event listener after one use
-      document.removeEventListener('click', handleDayClick);
-    };
-    
-    // Add the listener
-    document.addEventListener('click', handleDayClick);
-  };
-  
-  const handleSaveStoreHours = async () => {
-    if (!editingStoreLocation) return;
-    
-    try {
-      // Prepare the update data
-      const updateData = {
-        opening_hours: temporaryHours,
-        closed_days: closedDays,
-        hours: hoursSummary
-      };
-      
-      // Update the store location
-      await apiRequest('PUT', `/api/admin/store-locations/${editingStoreLocation.id}/hours`, updateData);
-      
-      // Success notification
-      toast({
-        title: "Hours Updated",
-        description: `Store hours for ${editingStoreLocation.name} have been updated successfully`,
-      });
-      
-      // Refresh the data
-      queryClient.invalidateQueries({ queryKey: ['/api/store-locations'] });
-      
-      // Close the dialog
-      setStoreHoursDialogOpen(false);
-      setEditingStoreLocation(null);
-    } catch (error) {
-      console.error("Update store hours error:", error);
-      toast({
-        title: "Error",
-        description: "Failed to update store hours",
-        variant: "destructive",
-      });
-    }
-  };
+  // Store hours management is now handled in the StoreHoursDialog component
   
   // Brand CRUD operations
   const handleAddBrand = () => {
@@ -2890,6 +2771,48 @@ export default function AdminPage() {
           </Tabs>
         </div>
       </div>
+
+      {/* Store Hours Dialog */}
+      <StoreHoursDialog
+        open={storeHoursDialogOpen}
+        onOpenChange={setStoreHoursDialogOpen}
+        storeLocation={editingStoreLocation}
+        onSave={async (data) => {
+          if (!editingStoreLocation) return;
+          
+          try {
+            // Prepare the update data
+            const updateData = {
+              opening_hours: data.opening_hours,
+              closed_days: data.closed_days,
+              hours: data.hours
+            };
+            
+            // Update the store location
+            await apiRequest('PUT', `/api/admin/store-locations/${editingStoreLocation.id}/hours`, updateData);
+            
+            // Success notification
+            toast({
+              title: "Hours Updated",
+              description: `Store hours for ${editingStoreLocation.name} have been updated successfully`,
+            });
+            
+            // Refresh the data
+            queryClient.invalidateQueries({ queryKey: ['/api/store-locations'] });
+            
+            // Close the dialog
+            setStoreHoursDialogOpen(false);
+            setEditingStoreLocation(null);
+          } catch (error) {
+            console.error("Update store hours error:", error);
+            toast({
+              title: "Error",
+              description: "Failed to update store hours",
+              variant: "destructive",
+            });
+          }
+        }}
+      />
     </MainLayout>
   );
 }
