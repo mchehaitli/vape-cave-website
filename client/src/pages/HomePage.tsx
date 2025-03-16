@@ -357,9 +357,9 @@ const HomePage = () => {
       {/* Featured Brands Section with rotating categories */}
       <section className="py-16 bg-gradient-to-b from-gray-900 to-black" id="featured-brands">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <motion.h2 
-              className="text-3xl md:text-4xl font-bold text-white mb-4"
+              className="text-3xl md:text-4xl font-bold text-white mb-8"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -367,15 +367,6 @@ const HomePage = () => {
             >
               Featured <span className="text-primary">Brands</span>
             </motion.h2>
-            <motion.p 
-              className="text-gray-400 max-w-2xl mx-auto"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
-              Discover our extensive collection of premium brands, each carefully selected to provide you with the best vaping experience.
-            </motion.p>
           </div>
           
           <motion.div 
