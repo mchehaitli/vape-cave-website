@@ -63,6 +63,9 @@ const Navigation = () => {
     { label: "Contact", path: "/contact", ariaLabel: "Contact us" },
   ];
   
+  // Admin navigation item (shown at the bottom of mobile menu)
+  const adminItem = { label: "Admin Login", path: "/admin/login", ariaLabel: "Admin login area" };
+  
   // Scroll navigation items (only show on homepage)
   const scrollNavItems = location === "/" ? [
     { label: "Frisco Location", sectionId: "frisco-location", ariaLabel: "Scroll to Frisco location" },
@@ -96,26 +99,43 @@ const Navigation = () => {
 
           {/* Desktop Navigation with Semantic Structure */}
           <nav className="hidden md:block" aria-label="Main Navigation">
-            <ul className="flex space-x-8 font-['Poppins'] font-medium" role="menubar">
-              {navItems.map((item) => (
-                <li key={item.path} role="none">
-                  <Link href={item.path}>
-                    <span
-                      role="menuitem"
-                      aria-label={item.ariaLabel}
-                      aria-current={location === item.path ? "page" : undefined}
-                      className={`text-black hover:text-white transition-colors cursor-pointer font-medium relative ${
-                        location === item.path 
-                          ? 'font-bold after:block after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-black'
-                          : 'after:block after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-black hover:after:w-full after:transition-all after:duration-300'
-                      }`}
-                    >
-                      {item.label}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <div className="flex items-center">
+              <ul className="flex space-x-8 font-['Poppins'] font-medium" role="menubar">
+                {navItems.map((item) => (
+                  <li key={item.path} role="none">
+                    <Link href={item.path}>
+                      <span
+                        role="menuitem"
+                        aria-label={item.ariaLabel}
+                        aria-current={location === item.path ? "page" : undefined}
+                        className={`text-black hover:text-white transition-colors cursor-pointer font-medium relative ${
+                          location === item.path 
+                            ? 'font-bold after:block after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-black'
+                            : 'after:block after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-black hover:after:w-full after:transition-all after:duration-300'
+                        }`}
+                      >
+                        {item.label}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              
+              {/* Admin link (discreet in desktop) */}
+              <Link href={adminItem.path} className="ml-6">
+                <span
+                  role="menuitem"
+                  aria-label={adminItem.ariaLabel}
+                  aria-current={location === adminItem.path ? "page" : undefined}
+                  className="text-black/50 text-sm cursor-pointer hover:text-black transition-colors flex items-center"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                  <span className="text-xs">Admin</span>
+                </span>
+              </Link>
+            </div>
           </nav>
         </div>
         
@@ -213,6 +233,24 @@ const Navigation = () => {
               </ul>
             </div>
           )}
+          
+          {/* Admin link (at the bottom of mobile menu) */}
+          <div className="pt-3 mt-2 border-t border-black/10">
+            <Link href={adminItem.path}>
+              <span
+                role="menuitem"
+                aria-label={adminItem.ariaLabel}
+                aria-current={location === adminItem.path ? "page" : undefined}
+                className="block text-black/70 text-sm cursor-pointer hover:text-black transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                {adminItem.label}
+              </span>
+            </Link>
+          </div>
         </div>
       </div>
     </header>
