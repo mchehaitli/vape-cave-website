@@ -173,7 +173,7 @@ const ArlingtonLocationPage: React.FC = () => {
           "value": location.storeCode || "VC-ARLINGTON"
         }
       ],
-      "openingHoursSpecification": Object.entries(location.openingHours).map(([day, hours]) => {
+      "openingHoursSpecification": getOrderedOpeningHours(location.openingHours).map(({day, hours}) => {
         const parts = hours.split(' - ');
         const openTime = formatOpeningHours(parts[0]);
         const closeTime = formatOpeningHours(parts[1] === "Closed" ? "00:00" : parts[1]);
@@ -519,6 +519,16 @@ const ArlingtonLocationPage: React.FC = () => {
                     </div>
                     
                     <div>
+                      <h3 className="text-lg font-semibold mb-4 text-white">Hours of Operation</h3>
+                      <div className="space-y-2 mb-6">
+                        {getOrderedOpeningHours(location.openingHours).map(({day, hours}) => (
+                          <div key={day} className="flex justify-between py-1 border-b border-gray-700">
+                            <span className="font-medium text-white">{day}</span>
+                            <span className="text-gray-300">{hours}</span>
+                          </div>
+                        ))}
+                      </div>
+                      
                       <h3 className="text-lg font-semibold mb-4 text-white">Store Features</h3>
                       <div className="space-y-4">
                         <div>
@@ -768,9 +778,15 @@ const ArlingtonLocationPage: React.FC = () => {
               <div className="mt-2" itemScope itemType="https://schema.org/Answer">
                 <div itemProp="text">
                   <p className="text-gray-300">
-                    Our Arlington store is open from 10:00 AM to 11:00 PM Monday through Sunday. 
-                    We're ready to serve you every day of the week!
+                    Our Arlington store has the following hours:
                   </p>
+                  <div className="mt-2 space-y-1">
+                    {getOrderedOpeningHours(location.openingHours).map(({day, hours}) => (
+                      <p key={day} className="text-gray-300">
+                        <span className="font-medium text-white">{day}:</span> {hours}
+                      </p>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
