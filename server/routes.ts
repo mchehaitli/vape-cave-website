@@ -43,6 +43,17 @@ async function isAdmin(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+// Check if a user is an admin (for use in routes)
+async function isAdminUser(userId: number): Promise<boolean> {
+  try {
+    const user = await storage.getUser(userId);
+    return !!user?.isAdmin;
+  } catch (error) {
+    console.error("Error checking admin status:", error);
+    return false;
+  }
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
   // Set up session with PostgreSQL
   const PgSession = connectPgSimple(session);
@@ -472,8 +483,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/blog-posts', async (req, res) => {
     try {
       // Admin users can see unpublished posts if they specify includeUnpublished=true
-      const isAdminUser = req.session?.userId ? await isAdminUser(req.session.userId) : false;
-      const includeUnpublished = isAdminUser && req.query.includeUnpublished === 'true';
+      const userIsAdmin = req.session?.userId ? await isAdminUser(req.session.userId) : false;
+      const includeUnpublished = userIsAdmin && req.query.includeUnpublished === 'true';
       
       const posts = await storage.getAllBlogPosts(includeUnpublished);
       res.json(posts);
@@ -502,8 +513,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Admin users can see unpublished posts if they specify includeUnpublished=true
-      const isAdminUser = req.session?.userId ? await isAdminUser(req.session.userId) : false;
-      const includeUnpublished = isAdminUser && req.query.includeUnpublished === 'true';
+      const userIsAdmin = req.session?.userId ? await isAdminUser(req.session.userId) : false;
+      const includeUnpublished = userIsAdmin && req.query.includeUnpublished === 'true';
       
       const posts = await storage.getBlogPostsByCategory(categoryId, includeUnpublished);
       res.json(posts);
@@ -518,8 +529,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { slug } = req.params;
       
       // Admin users can see unpublished posts if they specify includeUnpublished=true
-      const isAdminUser = req.session?.userId ? await isAdminUser(req.session.userId) : false;
-      const includeUnpublished = isAdminUser && req.query.includeUnpublished === 'true';
+      const userIsAdmin = req.session?.userId ? await isAdminUser(req.session.userId) : false;
+      const includeUnpublished = userIsAdmin && req.query.includeUnpublished === 'true';
       
       const posts = await storage.getBlogPostsByCategorySlug(slug, includeUnpublished);
       res.json(posts);
