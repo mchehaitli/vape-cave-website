@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import Logo from "./Logo";
-import { getFriscoLocation } from "@/data/storeInfo";
+import { useFriscoLocation, useArlingtonLocation } from "@/hooks/use-store-locations";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -14,24 +14,47 @@ const Footer = () => {
     setEmail("");
   };
 
-  // Get Frisco location data for structured data
-  const frisco = getFriscoLocation();
+  // Get location data from API
+  const { data: frisco, isLoading: isFriscoLoading } = useFriscoLocation();
+  const { data: arlington, isLoading: isArlingtonLoading } = useArlingtonLocation();
   
   // Generate LocalBusiness JSON-LD for footer
   const generateLocalBusinessSchema = () => {
+    if (!frisco) return {}; // Return empty object if data is not loaded yet
+    
+    // Transform database field names to the expected format
+    const location = {
+      image: frisco.image,
+      description: frisco.description,
+      acceptedPayments: frisco.accepted_payments || [],
+      googlePlaceId: frisco.google_place_id,
+      appleMapsLink: frisco.apple_maps_link,
+      fullAddress: frisco.full_address,
+      coordinates: {
+        lat: parseFloat(frisco.lat as string),
+        lng: parseFloat(frisco.lng as string)
+      },
+      socialProfiles: {
+        facebook: frisco.social_profiles?.facebook,
+        instagram: frisco.social_profiles?.instagram,
+        twitter: frisco.social_profiles?.twitter,
+        yelp: frisco.social_profiles?.yelp
+      }
+    };
+    
     return {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
       "@id": "https://vapecavetx.com/locations/frisco#business",
       "name": "Vape Cave Frisco",
-      "image": frisco.image,
+      "image": location.image,
       "url": "https://vapecavetx.com/locations/frisco",
       "telephone": "+14692940061",
-      "email": "vapecavetex@gmail.com",
+      "email": "vapecavetx@gmail.com",
       "priceRange": "$$",
-      "description": frisco.description,
+      "description": location.description,
       "currenciesAccepted": "USD",
-      "paymentAccepted": frisco.acceptedPayments.join(", "),
+      "paymentAccepted": location.acceptedPayments.join(", "),
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "6958 Main St #200",
@@ -42,14 +65,14 @@ const Footer = () => {
       },
       "geo": {
         "@type": "GeoCoordinates",
-        "latitude": frisco.coordinates.lat,
-        "longitude": frisco.coordinates.lng
+        "latitude": location.coordinates.lat,
+        "longitude": location.coordinates.lng
       },
       "additionalProperty": [
         {
           "@type": "PropertyValue",
           "name": "googlePlaceId",
-          "value": frisco.googlePlaceId || ""
+          "value": location.googlePlaceId || ""
         }
       ],
       "openingHoursSpecification": [
@@ -67,20 +90,20 @@ const Footer = () => {
         }
       ],
       "sameAs": [
-        frisco.socialProfiles?.facebook,
-        frisco.socialProfiles?.instagram,
-        frisco.socialProfiles?.twitter,
-        frisco.socialProfiles?.yelp
+        location.socialProfiles?.facebook,
+        location.socialProfiles?.instagram,
+        location.socialProfiles?.twitter,
+        location.socialProfiles?.yelp
       ],
       "keywords": "vape shop frisco, premium vape shop frisco, frisco vape shop, delta 8 frisco, thc-a frisco",
       "hasMap": [
         {
           "@type": "Map",
-          "url": frisco.googlePlaceId ? `https://www.google.com/maps/place/?q=place_id:${frisco.googlePlaceId}` : `https://www.google.com/maps/dir/?api=1&destination=${frisco.coordinates.lat},${frisco.coordinates.lng}`
+          "url": location.googlePlaceId ? `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}` : `https://www.google.com/maps/dir/?api=1&destination=${location.coordinates.lat},${location.coordinates.lng}`
         },
         {
           "@type": "Map",
-          "url": frisco.appleMapsLink || `https://maps.apple.com/?q=${encodeURIComponent(frisco.fullAddress)}`
+          "url": location.appleMapsLink || `https://maps.apple.com/?q=${encodeURIComponent(location.fullAddress)}`
         }
       ]
     };
@@ -198,7 +221,9 @@ const Footer = () => {
                 </svg>
                 <div>
                   <Link href="/locations/frisco">
-                    <span className="text-white/70 hover:text-primary/80 block">6958 Main St, Frisco, TX 75033</span>
+                    <span className="text-white/70 hover:text-primary/80 block">
+                      {frisco?.full_address || "Loading address..."}
+                    </span>
                     <span className="text-primary/80 hover:text-primary text-xs mt-1 block">Find us on Google Maps</span>
                   </Link>
                 </div>
@@ -213,14 +238,18 @@ const Footer = () => {
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span className="text-white/70">Mon-Thu & Sun: 10:00 AM - 12:00 AM</span>
+                <span className="text-white/70">
+                  {frisco?.hours || "Loading hours..."}
+                </span>
               </li>
-              <li className="flex items-start">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span className="text-white/70">Fri-Sat: 10:00 AM - 1:00 AM</span>
-              </li>
+              {frisco?.closed_days && (
+                <li className="flex items-start">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span className="text-white/70">{frisco.closed_days}</span>
+                </li>
+              )}
             </ul>
           </div>
           
@@ -239,7 +268,9 @@ const Footer = () => {
                 </svg>
                 <div>
                   <Link href="/locations/arlington">
-                    <span className="text-white/70 hover:text-primary/80 block">4100 S Cooper St, Unit 4108, Arlington, TX 76015</span>
+                    <span className="text-white/70 hover:text-primary/80 block">
+                      {arlington?.full_address || "Loading address..."}
+                    </span>
                     <span className="text-primary/80 hover:text-primary text-xs mt-1 block">Find us on Google Maps</span>
                   </Link>
                 </div>
@@ -254,14 +285,18 @@ const Footer = () => {
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span className="text-white/70">10:00 AM - 11:00 PM</span>
+                <span className="text-white/70">
+                  {arlington?.hours || "Loading hours..."}
+                </span>
               </li>
-              <li className="flex items-start">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span className="text-white/70">Open 7 days a week</span>
-              </li>
+              {arlington?.closed_days && (
+                <li className="flex items-start">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span className="text-white/70">{arlington.closed_days}</span>
+                </li>
+              )}
             </ul>
           </div>
           
