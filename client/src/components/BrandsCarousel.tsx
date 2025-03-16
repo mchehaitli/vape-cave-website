@@ -62,7 +62,7 @@ const BrandsCarousel = ({
       </div>
       
       <div className="p-4 flex-grow flex flex-col">
-        <div className="relative min-h-[180px] flex-grow overflow-hidden">
+        <div className="relative min-h-[260px] flex-grow overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentIndex}
@@ -70,17 +70,21 @@ const BrandsCarousel = ({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5 }}
-              className="absolute inset-0 flex flex-col items-center justify-center text-center px-2"
+              className="absolute inset-0 flex flex-col items-center justify-between text-center px-2 py-4"
             >
-              <div className="h-32 sm:h-36 md:h-40 w-full flex items-center justify-center mb-4">
+              <div className="h-32 sm:h-36 md:h-40 w-full flex items-center justify-center">
                 <img 
                   src={currentBrand.image} 
                   alt={currentBrand.name} 
                   className="max-h-full max-w-full object-contain"
                 />
               </div>
-              <h4 className="text-lg font-semibold text-primary mb-1">{currentBrand.name}</h4>
-              <p className="text-sm text-gray-300 line-clamp-2">{currentBrand.description}</p>
+              <div className="mt-4 min-h-[80px] w-full flex flex-col justify-start">
+                <div className="bg-black/30 px-2 py-1 rounded mb-2 w-full">
+                  <h4 className="text-lg font-semibold text-primary line-clamp-1">{currentBrand.name}</h4>
+                </div>
+                <p className="text-sm text-gray-300 line-clamp-2 px-1">{currentBrand.description}</p>
+              </div>
             </motion.div>
           </AnimatePresence>
         </div>
