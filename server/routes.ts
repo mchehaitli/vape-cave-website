@@ -298,6 +298,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (req.body.image !== undefined) updatedData.image = req.body.image;
       if (req.body.description !== undefined) updatedData.description = req.body.description;
       if (req.body.displayOrder !== undefined) updatedData.displayOrder = req.body.displayOrder;
+      if (req.body.imageSize !== undefined) updatedData.imageSize = req.body.imageSize;
       
       const brand = await storage.updateBrand(id, updatedData);
       
