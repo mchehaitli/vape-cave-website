@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 import { Link } from "wouter";
 import GoogleMapsIntegration from "@/components/GoogleMapsIntegration";
 import DirectionsButton from "@/components/DirectionsButton";
-import { getFriscoLocation, getFormattedLocationsForMap } from "@/data/storeInfo";
+import { useFriscoLocation, useFormattedLocationsForMap } from "@/hooks/use-store-locations";
 import { products } from "@/data/products";
 
 /**
@@ -12,8 +12,73 @@ import { products } from "@/data/products";
  * This page focuses on the Frisco store specifically to improve local search visibility
  */
 const FriscoLocationPage: React.FC = () => {
-  const location = getFriscoLocation();
+  const { data: locationData, isLoading } = useFriscoLocation();
+  const { data: formattedLocations } = useFormattedLocationsForMap();
   const friscoProducts = products.filter(p => p.featured).slice(0, 4); // Display featured products at Frisco location
+  
+  // If location data is still loading, show a simplified version with loading indicators
+  const location = locationData ? {
+    // Map API fields to match the expected structure
+    id: locationData.id,
+    name: locationData.name,
+    city: locationData.city,
+    address: locationData.address,
+    fullAddress: locationData.full_address,
+    phone: locationData.phone,
+    hours: locationData.hours,
+    closedDays: locationData.closed_days || "",
+    image: locationData.image,
+    coordinates: {
+      lat: parseFloat(locationData.lat as string),
+      lng: parseFloat(locationData.lng as string)
+    },
+    googlePlaceId: locationData.google_place_id,
+    appleMapsLink: locationData.apple_maps_link,
+    mapEmbed: locationData.map_embed,
+    email: locationData.email,
+    storeCode: locationData.store_code,
+    openingHours: locationData.opening_hours || {},
+    services: locationData.services || [],
+    acceptedPayments: locationData.accepted_payments || [],
+    areaServed: locationData.area_served || [],
+    publicTransit: locationData.public_transit,
+    parking: locationData.parking,
+    yearEstablished: locationData.year_established || 2020,
+    priceRange: locationData.price_range || "$$",
+    socialProfiles: locationData.social_profiles || {},
+    description: locationData.description,
+    neighborhoodInfo: locationData.neighborhood_info,
+    amenities: locationData.amenities || []
+  } : {
+    // Fallback data structure while loading
+    id: 1,
+    name: "Vape Cave Frisco",
+    city: "Frisco",
+    address: "Loading...",
+    fullAddress: "Loading address...",
+    phone: "Loading...",
+    hours: "Loading hours...",
+    closedDays: "",
+    image: "",
+    coordinates: { lat: 0, lng: 0 },
+    googlePlaceId: "",
+    appleMapsLink: "",
+    mapEmbed: "",
+    email: "",
+    storeCode: "",
+    openingHours: {},
+    services: [],
+    acceptedPayments: [],
+    areaServed: [],
+    publicTransit: "",
+    parking: "",
+    yearEstablished: 2020,
+    priceRange: "$$",
+    socialProfiles: {},
+    description: "Loading description...",
+    neighborhoodInfo: "",
+    amenities: []
+  };
   
   // Create enhanced structured data specifically for Frisco location with maximum Google-recommended properties
   const generateFriscoStructuredData = () => {
