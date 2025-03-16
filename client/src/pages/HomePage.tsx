@@ -385,22 +385,66 @@ const HomePage = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.4, staggerChildren: 0.1 }}
           >
-            {featuredBrands.map((category, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <BrandsCarousel 
-                  category={category.category} 
-                  brands={category.brands} 
-                  intervalMs={5000} 
-                  bgClass={category.bgClass}
-                />
-              </motion.div>
-            ))}
+            {isLoading ? (
+              // Loading state
+              Array(6).fill(0).map((_, index) => (
+                <motion.div
+                  key={index}
+                  className="rounded-xl shadow-lg bg-gray-800 h-64 animate-pulse"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <div className="p-5 h-16 bg-gradient-to-r from-gray-900 to-gray-800 border-b border-gray-700"></div>
+                  <div className="p-4 flex-grow flex flex-col items-center justify-center">
+                    <div className="h-16 w-full bg-gray-700 rounded mb-2"></div>
+                    <div className="h-6 w-32 bg-gray-700 rounded mb-1"></div>
+                    <div className="h-4 w-48 bg-gray-700 rounded"></div>
+                  </div>
+                </motion.div>
+              ))
+            ) : error ? (
+              // Error state - show the fallback data
+              featuredBrands.map((category, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <BrandsCarousel 
+                    category={category.category} 
+                    brands={category.brands}
+                    intervalMs={5000}
+                    bgClass={category.bgClass}
+                  />
+                </motion.div>
+              ))
+            ) : (
+              // Loaded successfully - show API data
+              apiBrands?.map((category, index) => (
+                <motion.div
+                  key={category.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <BrandsCarousel 
+                    category={category.category} 
+                    brands={category.brands.map(brand => ({
+                      ...brand,
+                      // Use placeholder image if brand has no image
+                      image: brand.image || `/brand-logos/placeholder.svg`
+                    }))}
+                    intervalMs={category.intervalMs || 5000}
+                    bgClass={category.bgClass || "bg-gray-800"}
+                  />
+                </motion.div>
+              ))
+            )}
           </motion.div>
           
           <div className="text-center mt-12">
