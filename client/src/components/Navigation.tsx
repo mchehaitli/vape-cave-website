@@ -60,11 +60,12 @@ const Navigation = () => {
     { label: "Home", path: "/", ariaLabel: "Go to homepage" },
     { label: "Frisco Store", path: "/locations/frisco", ariaLabel: "Visit our Frisco TX location" },
     { label: "Arlington Store", path: "/locations/arlington", ariaLabel: "Visit our Arlington TX location" },
+    { label: "Blog", path: "/blog", ariaLabel: "Read our blog" },
     { label: "Contact", path: "/contact", ariaLabel: "Contact us" },
   ];
   
   // Scroll navigation items (only show on homepage)
-  const scrollNavItems = [];
+  const scrollNavItems: Array<{label: string, sectionId: string, ariaLabel: string}> = [];
 
   return (
     <header className="bg-primary sticky top-0 z-50 shadow-lg backdrop-blur-sm bg-opacity-95">

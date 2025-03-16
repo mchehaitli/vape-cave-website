@@ -153,7 +153,9 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <span className="text-white/70 hover:text-primary transition-colors cursor-pointer">Blog</span>
+                <Link href="/blog">
+                  <span className="text-white/70 hover:text-primary transition-colors cursor-pointer">Blog</span>
+                </Link>
               </li>
               <li>
                 <span className="text-white/70 hover:text-primary transition-colors cursor-pointer">FAQs</span>

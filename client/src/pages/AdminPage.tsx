@@ -717,11 +717,11 @@ export default function AdminPage() {
           </header>
 
           <Tabs defaultValue="brands" className="space-y-4">
-            <TabsList className="bg-gray-800 border border-gray-700">
+            <TabsList className="bg-gray-800 border border-gray-700 overflow-x-auto flex flex-wrap md:flex-nowrap">
               <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
               <TabsTrigger value="brands">Manage Brands</TabsTrigger>
               <TabsTrigger value="categories">Brand Categories</TabsTrigger>
-              <TabsTrigger value="blog">Blog</TabsTrigger>
+              <TabsTrigger value="blog">Blog Management</TabsTrigger>
               <TabsTrigger value="settings">Settings</TabsTrigger>
             </TabsList>
             
