@@ -40,6 +40,7 @@ export const brands = pgTable("brands", {
   image: text("image").notNull(),
   description: text("description").notNull(),
   displayOrder: integer("display_order").default(0),
+  imageSize: text("image_size").default("medium"), // small, medium, large, custom
 });
 
 export const insertBrandSchema = createInsertSchema(brands).pick({
@@ -48,6 +49,7 @@ export const insertBrandSchema = createInsertSchema(brands).pick({
   image: true,
   description: true,
   displayOrder: true,
+  imageSize: true,
 });
 
 // Define session table

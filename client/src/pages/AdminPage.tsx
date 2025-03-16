@@ -56,6 +56,7 @@ const brandSchema = z.object({
     message: "Description must be at least 10 characters",
   }),
   displayOrder: z.coerce.number().default(0),
+  imageSize: z.string().default("medium"),
 });
 
 // Category schema for forms
@@ -548,7 +549,26 @@ export default function AdminPage() {
                             category.brands.map(brand => (
                               <TableRow key={brand.id} className="hover:bg-gray-700/50 border-gray-700">
                                 <TableCell className="font-medium flex items-center gap-3">
-                                  <div className="w-10 h-10 rounded bg-gray-700 overflow-hidden border border-gray-600">
+                                  <div className="w-16 h-16 rounded bg-gray-700 overflow-hidden border border-gray-600 hover:w-32 hover:h-32 transition-all duration-300 cursor-pointer" 
+                                    title="Click to see larger preview"
+                                    onClick={() => {
+                                      toast({
+                                        title: brand.name,
+                                        description: (
+                                          <div className="mt-2">
+                                            <div className="w-full h-40 bg-gray-800 rounded-md flex items-center justify-center p-2">
+                                              <img 
+                                                src={brand.image} 
+                                                alt={brand.name} 
+                                                className="max-w-full max-h-full object-contain" 
+                                              />
+                                            </div>
+                                          </div>
+                                        ),
+                                        duration: 5000,
+                                      });
+                                    }}
+                                  >
                                     <img 
                                       src={brand.image} 
                                       alt={brand.name} 
