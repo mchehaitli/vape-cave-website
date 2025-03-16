@@ -61,8 +61,8 @@ const BrandsCarousel = ({
         <h3 className="text-xl font-bold text-white">{category}</h3>
       </div>
       
-      <div className="p-4 flex-grow flex flex-col">
-        <div className="relative min-h-[260px] flex-grow overflow-hidden">
+      <div className="p-2 flex-grow flex flex-col">
+        <div className="relative min-h-[380px] flex-grow overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentIndex}
@@ -72,11 +72,11 @@ const BrandsCarousel = ({
               transition={{ duration: 0.5 }}
               className="absolute inset-0 flex flex-col items-center justify-between text-center px-2 py-4"
             >
-              <div className="h-32 sm:h-36 md:h-40 w-full flex items-center justify-center">
+              <div className="h-52 sm:h-56 md:h-60 w-full flex items-center justify-center">
                 <img 
                   src={currentBrand.image} 
                   alt={currentBrand.name} 
-                  className="max-h-full max-w-full object-contain"
+                  className="max-h-[95%] max-w-[95%] object-contain"
                 />
               </div>
               <div className="mt-4 min-h-[80px] w-full flex flex-col justify-start">
