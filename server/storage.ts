@@ -526,51 +526,26 @@ export class MemStorage implements IStorage {
     let posts = Array.from(this.blogPostsMap.values());
     
     if (!includeUnpublished) {
-      posts = posts.filter(post => post.isPublished);
+      posts = posts.filter(post => post.is_published);
     }
     
     return posts.sort((a, b) => {
-      const dateA = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
-      const dateB = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+      const dateA = a.created_at ? new Date(a.created_at).getTime() : 0;
+      const dateB = b.created_at ? new Date(b.created_at).getTime() : 0;
       return dateB - dateA; // Sort by most recent first
     });
   }
 
   async getFeaturedBlogPosts(limit: number = 5): Promise<BlogPost[]> {
     const posts = Array.from(this.blogPostsMap.values())
-      .filter(post => post.isFeatured && post.isPublished)
+      .filter(post => post.is_featured && post.is_published)
       .sort((a, b) => {
-        const dateA = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
-        const dateB = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+        const dateA = a.created_at ? new Date(a.created_at).getTime() : 0;
+        const dateB = b.created_at ? new Date(b.created_at).getTime() : 0;
         return dateB - dateA; // Sort by most recent first
       });
     
     return posts.slice(0, limit);
-  }
-
-  async getBlogPostsByCategory(categoryId: number, includeUnpublished: boolean = false): Promise<BlogPost[]> {
-    let posts = Array.from(this.blogPostsMap.values())
-      .filter(post => post.categoryId === categoryId);
-    
-    if (!includeUnpublished) {
-      posts = posts.filter(post => post.isPublished);
-    }
-    
-    return posts.sort((a, b) => {
-      const dateA = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
-      const dateB = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
-      return dateB - dateA; // Sort by most recent first
-    });
-  }
-
-  async getBlogPostsByCategorySlug(slug: string, includeUnpublished: boolean = false): Promise<BlogPost[]> {
-    const category = await this.getBlogCategoryBySlug(slug);
-    
-    if (!category) {
-      return [];
-    }
-    
-    return this.getBlogPostsByCategory(category.id, includeUnpublished);
   }
 
   async getBlogPost(id: number): Promise<BlogPost | undefined> {
@@ -590,20 +565,18 @@ export class MemStorage implements IStorage {
     // Create a properly typed BlogPost with all required fields
     const newPost: BlogPost = {
       id,
-      categoryId: post.categoryId,
       title: post.title,
       slug: post.slug,
       summary: post.summary,
       content: post.content,
-      featuredImage: post.featuredImage,
-      authorId: post.authorId,
-      publishedAt: now,
-      updatedAt: now,
-      metaTitle: post.metaTitle || "",
-      metaDescription: post.metaDescription || "",
-      isFeatured: post.isFeatured || false,
-      isPublished: post.isPublished || true,
-      viewCount: 0
+      featured_image: post.featured_image || null,
+      is_featured: post.is_featured || false,
+      is_published: post.is_published || true,
+      meta_title: post.meta_title || null,
+      meta_description: post.meta_description || null,
+      view_count: 0,
+      created_at: now,
+      updated_at: now
     };
     
     this.blogPostsMap.set(id, newPost);
@@ -621,28 +594,18 @@ export class MemStorage implements IStorage {
     const updatedPost: BlogPost = { ...existingPost };
     
     // Explicitly update only the fields that are provided
-    if (post.categoryId !== undefined) updatedPost.categoryId = post.categoryId;
     if (post.title !== undefined) updatedPost.title = post.title;
     if (post.slug !== undefined) updatedPost.slug = post.slug;
     if (post.summary !== undefined) updatedPost.summary = post.summary;
     if (post.content !== undefined) updatedPost.content = post.content;
-    if (post.featuredImage !== undefined) updatedPost.featuredImage = post.featuredImage;
-    if (post.authorId !== undefined) updatedPost.authorId = post.authorId;
-    if (post.metaTitle !== undefined) updatedPost.metaTitle = post.metaTitle;
-    if (post.metaDescription !== undefined) updatedPost.metaDescription = post.metaDescription;
-    if (post.isFeatured !== undefined) updatedPost.isFeatured = post.isFeatured;
+    if (post.featured_image !== undefined) updatedPost.featured_image = post.featured_image;
+    if (post.meta_title !== undefined) updatedPost.meta_title = post.meta_title;
+    if (post.meta_description !== undefined) updatedPost.meta_description = post.meta_description;
+    if (post.is_featured !== undefined) updatedPost.is_featured = post.is_featured;
+    if (post.is_published !== undefined) updatedPost.is_published = post.is_published;
     
-    // Always update the updatedAt timestamp
-    updatedPost.updatedAt = new Date();
-    
-    // Special handling for publishing a post
-    if (post.isPublished !== undefined) {
-      updatedPost.isPublished = post.isPublished;
-      // If post is being published for the first time, set publishedAt
-      if (post.isPublished && !existingPost.isPublished) {
-        updatedPost.publishedAt = new Date();
-      }
-    }
+    // Always update the updated_at timestamp
+    updatedPost.updated_at = new Date();
     
     this.blogPostsMap.set(id, updatedPost);
     return updatedPost;
@@ -656,7 +619,7 @@ export class MemStorage implements IStorage {
     const post = this.blogPostsMap.get(id);
     
     if (post) {
-      post.viewCount = (post.viewCount || 0) + 1;
+      post.view_count = (post.view_count || 0) + 1;
       this.blogPostsMap.set(id, post);
     }
   }
