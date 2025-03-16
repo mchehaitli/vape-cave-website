@@ -40,17 +40,22 @@ export const brands = pgTable("brands", {
   image: text("image").notNull(),
   description: text("description").notNull(),
   displayOrder: integer("display_order").default(0),
-  imageSize: text("image_size").default("medium"), // small, medium, large, custom
+  // Note: imageSize field is handled in memory only
 });
 
-export const insertBrandSchema = createInsertSchema(brands).pick({
-  categoryId: true,
-  name: true,
-  image: true,
-  description: true,
-  displayOrder: true,
-  imageSize: true,
-});
+// Add imageSize to the insert schema even though it's not in the database
+// We'll handle it in memory in the storage implementation
+export const insertBrandSchema = createInsertSchema(brands)
+  .pick({
+    categoryId: true,
+    name: true,
+    image: true,
+    description: true,
+    displayOrder: true,
+  })
+  .extend({
+    imageSize: z.string().optional().default("medium"),
+  });
 
 // Define session table
 export const sessions = pgTable("sessions", {
@@ -67,4 +72,7 @@ export type InsertBrandCategory = z.infer<typeof insertBrandCategorySchema>;
 export type BrandCategory = typeof brandCategories.$inferSelect;
 
 export type InsertBrand = z.infer<typeof insertBrandSchema>;
-export type Brand = typeof brands.$inferSelect;
+// Extend the Brand type to include imageSize which is handled in memory
+export type Brand = typeof brands.$inferSelect & {
+  imageSize?: string;
+};

@@ -132,10 +132,11 @@ export class DbStorage implements IStorage {
     .orderBy(asc(brands.displayOrder));
     
     // Add the imageSize field with a default value
-    return rows.map(row => ({
-      ...row,
-      imageSize: "medium", // Default value
-    }));
+    return rows.map(row => {
+      const brandWithSize = row as Brand;
+      brandWithSize.imageSize = "medium";
+      return brandWithSize;
+    });
   }
 
   async getBrandsByCategory(categoryId: number): Promise<Brand[]> {
@@ -154,10 +155,11 @@ export class DbStorage implements IStorage {
       .orderBy(asc(brands.displayOrder));
     
     // Add the imageSize field with a default value
-    return rows.map(row => ({
-      ...row,
-      imageSize: "medium", // Default value
-    }));
+    return rows.map(row => {
+      const brandWithSize = row as Brand;
+      brandWithSize.imageSize = "medium";
+      return brandWithSize;
+    });
   }
 
   async getBrand(id: number): Promise<Brand | undefined> {
@@ -179,25 +181,24 @@ export class DbStorage implements IStorage {
     }
     
     // Add imageSize field with default value
-    return {
-      ...result[0],
-      imageSize: "medium", // Default value
-    };
+    const brandWithSize = result[0] as Brand;
+    brandWithSize.imageSize = "medium";
+    return brandWithSize;
   }
 
   async createBrand(brand: InsertBrand): Promise<Brand> {
-    // Extract imageSize from the input
-    const { imageSize } = brand;
+    // Extract imageSize from the input but don't include it in DB operation
+    const { imageSize, ...dbFields } = brand;
     
     // Insert the brand without the imageSize field
     const result = await db
       .insert(brands)
       .values({
-        categoryId: brand.categoryId,
-        name: brand.name,
-        image: brand.image,
-        description: brand.description,
-        displayOrder: brand.displayOrder || 0
+        categoryId: dbFields.categoryId,
+        name: dbFields.name,
+        image: dbFields.image,
+        description: dbFields.description,
+        displayOrder: dbFields.displayOrder || 0
       })
       .returning({
         id: brands.id,
@@ -209,15 +210,14 @@ export class DbStorage implements IStorage {
       });
     
     // Return the result with the imageSize field added
-    return {
-      ...result[0],
-      imageSize: imageSize || "medium",
-    };
+    const brandWithSize = result[0] as Brand;
+    brandWithSize.imageSize = imageSize || "medium";
+    return brandWithSize;
   }
 
   async updateBrand(id: number, brand: Partial<InsertBrand>): Promise<Brand | undefined> {
-    // Extract imageSize from the input
-    const { imageSize } = brand;
+    // Extract imageSize from the input but don't include it in DB operation
+    const { imageSize, ...updateProps } = brand;
     
     // Create a new object with just the fields we need to update
     const updateFields: {
@@ -229,11 +229,11 @@ export class DbStorage implements IStorage {
     } = {};
     
     // Only add fields that are defined
-    if (brand.categoryId !== undefined) updateFields.categoryId = brand.categoryId;
-    if (brand.name !== undefined) updateFields.name = brand.name;
-    if (brand.image !== undefined) updateFields.image = brand.image;
-    if (brand.description !== undefined) updateFields.description = brand.description;
-    if (brand.displayOrder !== undefined) updateFields.displayOrder = brand.displayOrder;
+    if (updateProps.categoryId !== undefined) updateFields.categoryId = updateProps.categoryId;
+    if (updateProps.name !== undefined) updateFields.name = updateProps.name;
+    if (updateProps.image !== undefined) updateFields.image = updateProps.image;
+    if (updateProps.description !== undefined) updateFields.description = updateProps.description;
+    if (updateProps.displayOrder !== undefined) updateFields.displayOrder = updateProps.displayOrder;
     
     // Only include fields that are actually in the database
     const result = await db
@@ -254,10 +254,9 @@ export class DbStorage implements IStorage {
     }
     
     // Return the result with the imageSize field added
-    return {
-      ...result[0],
-      imageSize: imageSize || "medium",
-    };
+    const brandWithSize = result[0] as Brand;
+    brandWithSize.imageSize = imageSize || "medium";
+    return brandWithSize;
   }
 
   async deleteBrand(id: number): Promise<boolean> {
