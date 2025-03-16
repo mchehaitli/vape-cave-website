@@ -9,7 +9,8 @@ import { Helmet } from "react-helmet";
 import MainLayout from '@/layouts/MainLayout';
 import { 
   useArlingtonLocation,
-  useFormattedLocationsForMap
+  useFormattedLocationsForMap,
+  getOrderedOpeningHours
 } from '@/hooks/use-store-locations';
 import { products } from '@/data/products';
 import GoogleMapsIntegration from '@/components/GoogleMapsIntegration';
