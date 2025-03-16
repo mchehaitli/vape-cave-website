@@ -8,15 +8,33 @@ import { Link } from 'wouter';
 import { Helmet } from "react-helmet";
 import MainLayout from '@/layouts/MainLayout';
 import { 
-  getArlingtonLocation,
-  getFormattedLocationsForMap
-} from '@/data/storeInfo';
+  useArlingtonLocation,
+  useFormattedLocationsForMap
+} from '@/hooks/use-store-locations';
 import { products } from '@/data/products';
 import GoogleMapsIntegration from '@/components/GoogleMapsIntegration';
 import DirectionsButton from '@/components/DirectionsButton';
 
 const ArlingtonLocationPage: React.FC = () => {
-  const location = getArlingtonLocation();
+  // Use API data instead of static data
+  const { data: location, isLoading } = useArlingtonLocation();
+  const { data: formattedLocations } = useFormattedLocationsForMap();
+  
+  // If location data is still loading, show a loading state
+  if (isLoading || !location) {
+    return (
+      <MainLayout title="Loading..." description="Loading location data...">
+        <div className="container mx-auto px-4 py-12 text-center">
+          <div className="animate-pulse flex flex-col items-center">
+            <div className="h-8 bg-gray-300 rounded w-3/4 mb-4"></div>
+            <div className="h-4 bg-gray-300 rounded w-2/3 mb-2"></div>
+            <div className="h-4 bg-gray-300 rounded w-1/2 mb-8"></div>
+            <div className="w-full h-64 bg-gray-300 rounded-lg"></div>
+          </div>
+        </div>
+      </MainLayout>
+    );
+  }
   
   // Create enhanced structured data specifically for Arlington location with maximum Google-recommended properties
   const generateArlingtonStructuredData = () => {
