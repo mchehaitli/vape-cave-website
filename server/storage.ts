@@ -233,7 +233,10 @@ export class DbStorage implements IStorage {
     if (updateProps.name !== undefined) updateFields.name = updateProps.name;
     if (updateProps.image !== undefined) updateFields.image = updateProps.image;
     if (updateProps.description !== undefined) updateFields.description = updateProps.description;
-    if (updateProps.displayOrder !== undefined) updateFields.displayOrder = updateProps.displayOrder;
+    if (updateProps.displayOrder !== undefined) {
+      // Handle the null vs undefined case - convert null to undefined
+      updateFields.displayOrder = updateProps.displayOrder === null ? undefined : updateProps.displayOrder;
+    }
     
     // Only include fields that are actually in the database
     const result = await db

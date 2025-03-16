@@ -54,7 +54,7 @@ export const insertBrandSchema = createInsertSchema(brands)
     displayOrder: true,
   })
   .extend({
-    imageSize: z.string().optional().default("medium"),
+    imageSize: z.string().optional(),
   });
 
 // Define session table

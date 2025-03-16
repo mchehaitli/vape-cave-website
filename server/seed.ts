@@ -103,7 +103,8 @@ async function seedDatabase() {
         categoryId: categoryMap.get("Disposables Nicotiene") || 0,
         image: "/brand-logos/placeholder.svg",
         description: "Premium disposable vapes in a variety of flavors",
-        displayOrder: 1
+        displayOrder: 1,
+        imageSize: "medium"
       },
       {
         name: "Lost Mary",
@@ -255,7 +256,12 @@ async function seedDatabase() {
         if (existingBrand) {
           console.log(`Brand "${brand.name}" already exists in this category`);
         } else {
-          const newBrand = await storage.createBrand(brand);
+          // Add imageSize field if it doesn't exist
+          const brandWithSize = {
+            ...brand,
+            imageSize: "medium" // Default value
+          };
+          const newBrand = await storage.createBrand(brandWithSize);
           console.log(`Created brand "${newBrand.name}" with ID ${newBrand.id}`);
         }
       } catch (error) {
