@@ -717,13 +717,15 @@ export default function AdminPage() {
           </header>
 
           <Tabs defaultValue="brands" className="space-y-4">
-            <TabsList className="bg-gray-800 border border-gray-700 overflow-x-auto flex flex-wrap md:flex-nowrap">
-              <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-              <TabsTrigger value="brands">Manage Brands</TabsTrigger>
-              <TabsTrigger value="categories">Brand Categories</TabsTrigger>
-              <TabsTrigger value="blog">Blog Management</TabsTrigger>
-              <TabsTrigger value="settings">Settings</TabsTrigger>
-            </TabsList>
+            <div className="overflow-x-auto -mx-4 px-4">
+              <TabsList className="bg-gray-800 border border-gray-700 w-full md:w-auto mb-2">
+                <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="dashboard">Dashboard</TabsTrigger>
+                <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="brands">Brands</TabsTrigger>
+                <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="categories">Categories</TabsTrigger>
+                <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="blog">Blog</TabsTrigger>
+                <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="settings">Settings</TabsTrigger>
+              </TabsList>
+            </div>
             
             <TabsContent value="dashboard" className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -791,13 +793,13 @@ export default function AdminPage() {
                       ))}
                     </div>
                   ) : featuredBrands && featuredBrands.length > 0 ? (
-                    <div className="rounded-md border border-gray-700">
+                    <div className="rounded-md border border-gray-700 overflow-x-auto">
                       <Table>
                         <TableHeader className="bg-gray-800">
                           <TableRow className="hover:bg-gray-700/50 border-gray-700">
-                            <TableHead className="text-gray-400">Brand</TableHead>
-                            <TableHead className="text-gray-400">Category</TableHead>
-                            <TableHead className="text-gray-400">Description</TableHead>
+                            <TableHead className="text-gray-400 whitespace-nowrap">Brand</TableHead>
+                            <TableHead className="text-gray-400 hidden md:table-cell">Category</TableHead>
+                            <TableHead className="text-gray-400 hidden md:table-cell">Description</TableHead>
                             <TableHead className="text-gray-400 text-right">Actions</TableHead>
                           </TableRow>
                         </TableHeader>
@@ -805,8 +807,8 @@ export default function AdminPage() {
                           {featuredBrands.map(category => (
                             category.brands.map(brand => (
                               <TableRow key={brand.id} className="hover:bg-gray-700/50 border-gray-700">
-                                <TableCell className="font-medium flex items-center gap-3">
-                                  <div className="w-16 h-16 rounded bg-gray-700 overflow-hidden border border-gray-600 hover:w-32 hover:h-32 transition-all duration-300 cursor-pointer" 
+                                <TableCell className="font-medium flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+                                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded bg-gray-700 overflow-hidden border border-gray-600 hover:bg-gray-600 transition-all duration-300 cursor-pointer" 
                                     title="Click to see larger preview"
                                     onClick={() => {
                                       toast({
@@ -846,10 +848,18 @@ export default function AdminPage() {
                                       }}
                                     />
                                   </div>
-                                  {brand.name}
+                                  <div>
+                                    <div>{brand.name}</div>
+                                    <div className="text-xs text-gray-400 md:hidden mt-1">
+                                      <span className="font-medium">{category.category}</span>
+                                      {brand.description && (
+                                        <span className="block mt-1 line-clamp-2">{brand.description}</span>
+                                      )}
+                                    </div>
+                                  </div>
                                 </TableCell>
-                                <TableCell>{category.category}</TableCell>
-                                <TableCell className="max-w-xs truncate">{brand.description}</TableCell>
+                                <TableCell className="hidden md:table-cell">{category.category}</TableCell>
+                                <TableCell className="hidden md:table-cell max-w-xs truncate">{brand.description}</TableCell>
                                 <TableCell className="text-right">
                                   <div className="flex justify-end gap-2">
                                     <Button 
@@ -888,7 +898,7 @@ export default function AdminPage() {
               
               {/* Brand Dialog */}
               <Dialog open={brandDialogOpen} onOpenChange={setBrandDialogOpen}>
-                <DialogContent className="bg-gray-800 text-white border-gray-700 sm:max-w-xl">
+                <DialogContent className="bg-gray-800 text-white border-gray-700 sm:max-w-xl max-h-[90vh] overflow-y-auto mx-4 w-[calc(100%-2rem)]">
                   <DialogHeader>
                     <DialogTitle>{editingBrand ? "Edit Brand" : "Add New Brand"}</DialogTitle>
                     <DialogDescription className="text-gray-400">
