@@ -82,7 +82,7 @@ const BrandsCarousel = ({
     if (!currentBrand.description) {
       return {
         containerHeight: "min-h-[30px]",
-        imageHeight: "h-[500px] sm:h-[520px] md:h-[540px]",
+        imageHeight: "h-[520px] sm:h-[540px] md:h-[560px]",
         fontSize: "text-sm",
         lineClamp: "line-clamp-1",
         padding: "py-2"
@@ -97,7 +97,7 @@ const BrandsCarousel = ({
     if (descLength === 0) {
       return {
         containerHeight: "min-h-[30px]",
-        imageHeight: "h-[500px] sm:h-[520px] md:h-[540px]",
+        imageHeight: "h-[520px] sm:h-[540px] md:h-[560px]",
         fontSize: "text-sm",
         lineClamp: "line-clamp-1",
         padding: "py-2"
@@ -108,7 +108,7 @@ const BrandsCarousel = ({
     if (descLength < 40 || wordCount < 6) {
       return {
         containerHeight: "min-h-[50px]",
-        imageHeight: "h-[470px] sm:h-[490px] md:h-[510px]",
+        imageHeight: "h-[490px] sm:h-[510px] md:h-[530px]",
         fontSize: "text-base",
         lineClamp: "line-clamp-1",
         padding: "py-2"
@@ -118,7 +118,7 @@ const BrandsCarousel = ({
     else if (descLength < 80 || wordCount < 12) {
       return {
         containerHeight: "min-h-[70px]",
-        imageHeight: "h-[450px] sm:h-[470px] md:h-[490px]",
+        imageHeight: "h-[470px] sm:h-[490px] md:h-[510px]",
         fontSize: "text-sm",
         lineClamp: "line-clamp-2",
         padding: "py-2"
@@ -128,7 +128,7 @@ const BrandsCarousel = ({
     else if (descLength < 160 || wordCount < 25) {
       return {
         containerHeight: "min-h-[90px]",
-        imageHeight: "h-[430px] sm:h-[450px] md:h-[470px]",
+        imageHeight: "h-[450px] sm:h-[470px] md:h-[490px]",
         fontSize: "text-sm",
         lineClamp: "line-clamp-3",
         padding: "py-2"
@@ -138,7 +138,7 @@ const BrandsCarousel = ({
     else if (descLength < 250 || wordCount < 40) {
       return {
         containerHeight: "min-h-[110px]",
-        imageHeight: "h-[410px] sm:h-[430px] md:h-[450px]",
+        imageHeight: "h-[430px] sm:h-[450px] md:h-[470px]",
         fontSize: "text-xs",
         lineClamp: "line-clamp-4",
         padding: "py-2"
@@ -148,7 +148,7 @@ const BrandsCarousel = ({
     else {
       return {
         containerHeight: "min-h-[130px]",
-        imageHeight: "h-[390px] sm:h-[410px] md:h-[430px]",
+        imageHeight: "h-[410px] sm:h-[430px] md:h-[450px]",
         fontSize: "text-xs",
         lineClamp: "line-clamp-5",
         padding: "py-2"
@@ -167,7 +167,7 @@ const BrandsCarousel = ({
       </div>
       
       <div className="p-0 flex-grow flex flex-col">
-        <div className="relative min-h-[550px] flex-grow overflow-hidden">
+        <div className="relative min-h-[600px] flex-grow overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentIndex}
@@ -179,11 +179,12 @@ const BrandsCarousel = ({
             >
               <div 
                 className={`${textStyles.imageHeight} w-full flex items-center justify-center p-0 transition-all duration-300`}
+                style={{ minHeight: "350px" }}
               >
                 <img 
                   src={currentBrand.image} 
                   alt={currentBrand.name} 
-                  className="max-h-full max-w-full object-contain"
+                  className="w-full h-full object-scale-down"
                 />
               </div>
               <div className={`mt-1 ${textStyles.containerHeight} w-full flex flex-col justify-start transition-all duration-300`}>
