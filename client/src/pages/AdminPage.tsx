@@ -971,7 +971,7 @@ export default function AdminPage() {
                 <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="dashboard">Dashboard</TabsTrigger>
                 <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="brands">Brands</TabsTrigger>
                 <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="categories">Categories</TabsTrigger>
-                <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="locations">Locations</TabsTrigger>
+                <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="store-hours">Store Hours</TabsTrigger>
                 <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="blog">Blog</TabsTrigger>
                 <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="settings">Settings</TabsTrigger>
               </TabsList>
