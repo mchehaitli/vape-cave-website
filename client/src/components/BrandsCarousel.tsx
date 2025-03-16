@@ -34,6 +34,7 @@ const BrandsCarousel = ({
 }: BrandsCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0, sizeClass: '' });
 
   useEffect(() => {
     // Only autoplay when not hovered
@@ -184,7 +185,37 @@ const BrandsCarousel = ({
                 <img 
                   src={currentBrand.image} 
                   alt={currentBrand.name} 
-                  className="w-full h-full object-scale-down"
+                  className="brand-image w-auto h-auto max-w-full max-h-full object-contain brand-image-medium"
+                  style={{ 
+                    minWidth: "200px", 
+                    minHeight: "200px"
+                  }}
+                  onLoad={(e) => {
+                    // Dynamically detect image size and apply appropriate scaling class
+                    const img = e.target as HTMLImageElement;
+                    let sizeClass = '';
+                    
+                    if (img.naturalWidth < 300 || img.naturalHeight < 300) {
+                      sizeClass = 'brand-image-small';
+                      img.classList.add('brand-image-small');
+                      img.classList.remove('brand-image-medium', 'brand-image-large');
+                    } else if (img.naturalWidth < 600 || img.naturalHeight < 600) {
+                      sizeClass = 'brand-image-medium';
+                      img.classList.add('brand-image-medium');
+                      img.classList.remove('brand-image-small', 'brand-image-large');
+                    } else {
+                      sizeClass = 'brand-image-large';
+                      img.classList.add('brand-image-large');
+                      img.classList.remove('brand-image-small', 'brand-image-medium');
+                    }
+                    
+                    // Store dimensions for debug panel
+                    setImageDimensions({
+                      width: img.naturalWidth,
+                      height: img.naturalHeight,
+                      sizeClass
+                    });
+                  }}
                 />
               </div>
               <div className={`mt-1 ${textStyles.containerHeight} w-full flex flex-col justify-start transition-all duration-300`}>
@@ -221,12 +252,20 @@ const BrandsCarousel = ({
       
       {/* Debug panel showing auto-sizing metrics */}
       {debug && (
-        <div className="bg-black/80 text-white text-xs p-2 absolute top-0 right-0 z-50 rounded-bl overflow-auto max-w-[200px] text-left">
+        <div className="bg-black/80 text-white text-xs p-2 absolute top-0 right-0 z-50 rounded-bl overflow-auto max-w-[250px] text-left">
           <div className="font-bold mb-1">Auto-sizing Debug:</div>
+          <div className="mt-1 font-semibold">Image:</div>
+          <div>Dimensions: {imageDimensions.width}×{imageDimensions.height}px</div>
+          <div>Size Class: {imageDimensions.sizeClass}</div>
+          <div>Scale: {imageDimensions.sizeClass === 'brand-image-small' ? '1.4x' : 
+                       imageDimensions.sizeClass === 'brand-image-medium' ? '1.2x' : '1.05x'}</div>
+          
+          <div className="mt-1 font-semibold">Description:</div>
           <div>Length: {descriptionMetrics.length} chars</div>
           <div>Words: {descriptionMetrics.wordCount}</div>
           <div>Size: {descriptionMetrics.sizeCategory}</div>
-          <div className="mt-1">Styles applied:</div>
+          
+          <div className="mt-1 font-semibold">Styles applied:</div>
           <div>Container: {textStyles.containerHeight}</div>
           <div>Image: {textStyles.imageHeight}</div>
           <div>Font: {textStyles.fontSize}</div>
