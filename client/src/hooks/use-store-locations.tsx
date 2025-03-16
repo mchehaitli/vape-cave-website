@@ -3,6 +3,26 @@ import { StoreLocation } from "@/types/store-location";
 import { getQueryFn } from "@/lib/queryClient";
 
 /**
+ * Helper function to get ordered opening hours
+ * Ensures weekdays are displayed in the correct order (Monday-Sunday)
+ */
+export function getOrderedOpeningHours(openingHours?: Record<string, string>): Array<{day: string, hours: string}> {
+  if (!openingHours) return [];
+  
+  const daysOrder = [
+    'Monday', 'Tuesday', 'Wednesday', 'Thursday', 
+    'Friday', 'Saturday', 'Sunday'
+  ];
+  
+  return daysOrder
+    .filter(day => openingHours[day]) // Only include days that have hours
+    .map(day => ({
+      day,
+      hours: openingHours[day]
+    }));
+}
+
+/**
  * Hook to fetch all store locations
  */
 export function useStoreLocations() {

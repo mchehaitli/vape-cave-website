@@ -4,7 +4,11 @@ import { Helmet } from "react-helmet";
 import { Link } from "wouter";
 import GoogleMapsIntegration from "@/components/GoogleMapsIntegration";
 import DirectionsButton from "@/components/DirectionsButton";
-import { useFriscoLocation, useFormattedLocationsForMap } from "@/hooks/use-store-locations";
+import { 
+  useFriscoLocation, 
+  useFormattedLocationsForMap,
+  getOrderedOpeningHours 
+} from "@/hooks/use-store-locations";
 import { products } from "@/data/products";
 
 /**
@@ -531,7 +535,7 @@ const FriscoLocationPage: React.FC = () => {
                     <div>
                       <h3 className="text-lg font-semibold mb-3 text-white">Hours of Operation</h3>
                       <div className="space-y-2">
-                        {Object.entries(location.openingHours).map(([day, hours]) => (
+                        {getOrderedOpeningHours(location.openingHours).map(({day, hours}) => (
                           <div key={day} className="flex justify-between py-1 border-b border-gray-700">
                             <span className="font-medium text-white">{day}</span>
                             <span className="text-gray-300">{hours}</span>
