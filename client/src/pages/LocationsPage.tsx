@@ -398,19 +398,18 @@ const LocationsPage = () => {
                           {location.openingHours && (
                             <div className="text-sm mt-1 opacity-80">
                               {getOrderedOpeningHours(location.openingHours)
-                                .slice(0, 3) // Show first 3 days only in compact view
                                 .map(({day, hours}, index) => (
                                   <div key={day} className="flex justify-between">
                                     <span className="mr-2">{day.substring(0, 3)}</span>
                                     <span>{hours}</span>
                                   </div>
                               ))}
-                              {Object.keys(location.openingHours).length > 3 && (
+                              {Object.keys(location.openingHours).length > 0 && (
                                 <button 
                                   onClick={() => setActiveLocation(location.id)}
                                   className="text-orange-500 text-xs mt-1 hover:underline"
                                 >
-                                  See all hours →
+                                  See detailed hours →
                                 </button>
                               )}
                             </div>
