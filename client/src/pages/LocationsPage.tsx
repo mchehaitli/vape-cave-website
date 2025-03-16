@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import DirectionsButton from "@/components/DirectionsButton";
 import GoogleMapsIntegration from "@/components/GoogleMapsIntegration";
-import { useStoreLocations, useFormattedLocationsForMap } from "@/hooks/use-store-locations";
+import { useStoreLocations, useFormattedLocationsForMap, getOrderedOpeningHours } from "@/hooks/use-store-locations";
 
 const LocationsPage = () => {
   // Use API data instead of static data and get formatted locations for backward compatibility 
@@ -395,6 +395,26 @@ const LocationsPage = () => {
                         <div>
                           <p className="text-sm text-gray-400">Hours</p>
                           <p className="font-medium text-gray-200">{location.hours}</p>
+                          {location.openingHours && (
+                            <div className="text-sm mt-1 opacity-80">
+                              {getOrderedOpeningHours(location.openingHours)
+                                .slice(0, 3) // Show first 3 days only in compact view
+                                .map(({day, hours}, index) => (
+                                  <div key={day} className="flex justify-between">
+                                    <span className="mr-2">{day.substring(0, 3)}</span>
+                                    <span>{hours}</span>
+                                  </div>
+                              ))}
+                              {Object.keys(location.openingHours).length > 3 && (
+                                <button 
+                                  onClick={() => setActiveLocation(location.id)}
+                                  className="text-orange-500 text-xs mt-1 hover:underline"
+                                >
+                                  See all hours →
+                                </button>
+                              )}
+                            </div>
+                          )}
                         </div>
                       </div>
                       
@@ -426,7 +446,7 @@ const LocationsPage = () => {
                   <div className="mb-6">
                     <h3 className="text-lg font-semibold font-['Poppins'] text-white mb-4" id="store-hours">Hours of Operation</h3>
                     <div className="grid grid-cols-2 gap-2">
-                      {Object.entries(location.openingHours).map(([day, hours]) => (
+                      {getOrderedOpeningHours(location.openingHours).map(({day, hours}) => (
                         <div key={day} className="flex justify-between py-1 border-b border-gray-700">
                           <span className="font-medium text-gray-200">{day}</span>
                           <span className="text-gray-400">{hours}</span>
