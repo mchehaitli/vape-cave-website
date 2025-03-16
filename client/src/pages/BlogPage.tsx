@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "wouter";
 import MainLayout from "@/layouts/MainLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -169,12 +170,12 @@ function BlogPostCard({ post, categories }: BlogPostCardProps) {
       </CardHeader>
       <CardContent className="p-4 pt-2">
         <p className="text-gray-600 text-sm line-clamp-3 mb-3">{post.summary}</p>
-        <a 
+        <Link
           href={`/blog/${post.slug}`} 
-          className="text-primary hover:text-primary/80 text-sm font-semibold"
+          className="text-primary hover:text-primary/80 text-sm font-semibold inline-block"
         >
           Read More →
-        </a>
+        </Link>
       </CardContent>
     </Card>
   );
