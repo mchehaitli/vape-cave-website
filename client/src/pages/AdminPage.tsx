@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useToast } from "@/hooks/use-toast";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
 import MainLayout from "@/layouts/MainLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,8 +26,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { apiRequest } from "@/lib/queryClient";
-import { Trash2, Edit, Plus, RefreshCcw, Info } from "lucide-react";
+import { Trash2, Edit, Plus, RefreshCcw, Info, Calendar, Eye, MessageCircle } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Switch } from "@/components/ui/switch";
 import { 
   AlertDialog,
   AlertDialogAction,
@@ -78,10 +79,48 @@ const userSchema = z.object({
   isAdmin: z.boolean().default(false),
 });
 
+// Blog category schema for forms
+const blogCategorySchema = z.object({
+  name: z.string({
+    required_error: "Category name is required"
+  }),
+  slug: z.string({
+    required_error: "Slug is required"
+  }),
+  description: z.string().optional(),
+  displayOrder: z.coerce.number().default(0)
+});
+
+// Blog post schema for forms
+const blogPostSchema = z.object({
+  categoryId: z.coerce.number({
+    required_error: "Category is required"
+  }),
+  title: z.string({
+    required_error: "Title is required"
+  }),
+  slug: z.string({
+    required_error: "Slug is required"
+  }),
+  summary: z.string({
+    required_error: "Summary is required"
+  }),
+  content: z.string({
+    required_error: "Content is required"
+  }),
+  imageUrl: z.string().optional(),
+  published: z.boolean().default(false),
+  featured: z.boolean().default(false),
+  metaTitle: z.string().optional(),
+  metaDescription: z.string().optional()
+});
+
 // Type definitions based on schemas
 type BrandFormValues = z.infer<typeof brandSchema>;
 type CategoryFormValues = z.infer<typeof categorySchema>;
 type UserFormValues = z.infer<typeof userSchema>;
+type BlogCategoryFormValues = z.infer<typeof blogCategorySchema>;
+type BlogPostFormValues = z.infer<typeof blogPostSchema>;
 
 export default function AdminPage() {
   const queryClient = useQueryClient();
@@ -91,6 +130,18 @@ export default function AdminPage() {
   const { toast } = useToast();
   const { data: categories, isLoading: isCategoriesLoading } = useBrandCategories();
   const { data: featuredBrands, isLoading: isFeaturedBrandsLoading } = useFeaturedBrands();
+  
+  // Query for blog categories
+  const { data: blogCategories, isLoading: isBlogCategoriesLoading } = useQuery({
+    queryKey: ['/api/blog-categories'],
+    staleTime: 60000,
+  });
+
+  // Query for blog posts
+  const { data: blogPosts, isLoading: isBlogPostsLoading } = useQuery({
+    queryKey: ['/api/admin/blog-posts'],
+    staleTime: 30000,
+  });
   
   // State for brand management
   const [brandDialogOpen, setBrandDialogOpen] = useState(false);
@@ -106,6 +157,15 @@ export default function AdminPage() {
   const [userDialogOpen, setUserDialogOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<any>(null);
   const [deletingUserId, setDeletingUserId] = useState<number | null>(null);
+  
+  // State for blog management
+  const [blogCategoryDialogOpen, setBlogCategoryDialogOpen] = useState(false);
+  const [editingBlogCategory, setEditingBlogCategory] = useState<any>(null);
+  const [deletingBlogCategoryId, setDeletingBlogCategoryId] = useState<number | null>(null);
+  
+  const [blogPostDialogOpen, setBlogPostDialogOpen] = useState(false);
+  const [editingBlogPost, setEditingBlogPost] = useState<any>(null);
+  const [deletingBlogPostId, setDeletingBlogPostId] = useState<number | null>(null);
 
   useEffect(() => {
     // Check if user is authenticated and is admin
@@ -196,6 +256,34 @@ export default function AdminPage() {
     }
   });
   
+  // Blog category form setup
+  const blogCategoryForm = useForm<BlogCategoryFormValues>({
+    resolver: zodResolver(blogCategorySchema),
+    defaultValues: {
+      name: "",
+      slug: "",
+      description: "",
+      displayOrder: 0
+    }
+  });
+  
+  // Blog post form setup
+  const blogPostForm = useForm<BlogPostFormValues>({
+    resolver: zodResolver(blogPostSchema),
+    defaultValues: {
+      categoryId: 0,
+      title: "",
+      slug: "",
+      summary: "",
+      content: "",
+      imageUrl: "",
+      published: false,
+      featured: false,
+      metaTitle: "",
+      metaDescription: ""
+    }
+  });
+  
   // Reset forms when dialog is opened/closed
   useEffect(() => {
     if (brandDialogOpen && editingBrand) {
@@ -236,6 +324,56 @@ export default function AdminPage() {
       });
     }
   }, [categoryDialogOpen, editingCategory, categoryForm]);
+  
+  // Reset blog category form when dialog is opened/closed
+  useEffect(() => {
+    if (blogCategoryDialogOpen && editingBlogCategory) {
+      blogCategoryForm.reset({
+        name: editingBlogCategory.name,
+        slug: editingBlogCategory.slug,
+        description: editingBlogCategory.description || "",
+        displayOrder: editingBlogCategory.displayOrder || 0
+      });
+    } else if (blogCategoryDialogOpen) {
+      blogCategoryForm.reset({
+        name: "",
+        slug: "",
+        description: "",
+        displayOrder: 0
+      });
+    }
+  }, [blogCategoryDialogOpen, editingBlogCategory, blogCategoryForm]);
+  
+  // Reset blog post form when dialog is opened/closed
+  useEffect(() => {
+    if (blogPostDialogOpen && editingBlogPost) {
+      blogPostForm.reset({
+        categoryId: editingBlogPost.categoryId,
+        title: editingBlogPost.title,
+        slug: editingBlogPost.slug,
+        summary: editingBlogPost.summary,
+        content: editingBlogPost.content,
+        imageUrl: editingBlogPost.imageUrl || "",
+        published: editingBlogPost.published || false,
+        featured: editingBlogPost.featured || false,
+        metaTitle: editingBlogPost.metaTitle || "",
+        metaDescription: editingBlogPost.metaDescription || ""
+      });
+    } else if (blogPostDialogOpen) {
+      blogPostForm.reset({
+        categoryId: blogCategories?.[0]?.id || 0,
+        title: "",
+        slug: "",
+        summary: "",
+        content: "",
+        imageUrl: "",
+        published: false,
+        featured: false,
+        metaTitle: "",
+        metaDescription: ""
+      });
+    }
+  }, [blogPostDialogOpen, editingBlogPost, blogPostForm, blogCategories]);
   
   // Brand CRUD operations
   const handleAddBrand = () => {
