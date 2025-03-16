@@ -5,6 +5,10 @@ import { motion } from "framer-motion";
 import MainLayout from "@/layouts/MainLayout";
 import BrandsCarousel from "@/components/BrandsCarousel";
 import { useFeaturedBrands } from "@/hooks/use-brands";
+import { 
+  useFriscoLocation, 
+  useArlingtonLocation 
+} from "@/hooks/use-store-locations";
 // Keeping this for fallback
 import { featuredBrands } from "@/data/brands";
 
@@ -14,6 +18,10 @@ const HomePage = () => {
   
   // Fetch featured brands from API
   const { data: apiBrands, isLoading, error } = useFeaturedBrands();
+  
+  // Fetch location data from API
+  const { data: friscoLocation, isLoading: friscoLoading } = useFriscoLocation();
+  const { data: arlingtonLocation, isLoading: arlingtonLoading } = useArlingtonLocation();
   
   // Effect to handle scroll events
   useEffect(() => {
@@ -602,7 +610,9 @@ const HomePage = () => {
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    Extended hours on Friday and Saturday (open until 1AM)
+                    {friscoLocation?.openingHours?.['Friday'] && friscoLocation?.openingHours?.['Saturday'] 
+                      ? `Extended hours on Friday and Saturday (${friscoLocation?.openingHours?.['Friday']})` 
+                      : 'Extended hours on Friday and Saturday'}
                   </motion.li>
                   <motion.li 
                     className="flex items-start"
@@ -764,8 +774,21 @@ const HomePage = () => {
                     whileHover={{ y: -5, transition: { duration: 0.2 } }}
                   >
                     <h4 className="text-primary font-semibold mb-2">Hours</h4>
-                    <p className="text-gray-300 text-sm">Sun-Thu: 10AM - 12AM</p>
-                    <p className="text-gray-300 text-sm">Fri-Sat: 10AM - 1AM</p>
+                    {friscoLoading ? (
+                      <>
+                        <div className="h-4 bg-gray-700 animate-pulse rounded w-24 mb-2"></div>
+                        <div className="h-4 bg-gray-700 animate-pulse rounded w-28"></div>
+                      </>
+                    ) : (
+                      <>
+                        <p className="text-gray-300 text-sm">
+                          {friscoLocation?.openingHours?.['Sunday'] || 'Sun-Thu: 10AM - 12AM'}
+                        </p>
+                        <p className="text-gray-300 text-sm">
+                          {friscoLocation?.openingHours?.['Friday'] || 'Fri-Sat: 10AM - 1AM'}
+                        </p>
+                      </>
+                    )}
                   </motion.div>
                   
                   <motion.div 
@@ -962,7 +985,9 @@ const HomePage = () => {
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    Open daily from 10:00 AM to 11:00 PM
+                    {arlingtonLocation?.openingHours?.['Monday'] ? 
+                      `Open daily ${arlingtonLocation.openingHours['Monday']}` : 
+                      'Open daily from 10:00 AM to 11:00 PM'}
                   </motion.li>
                 </motion.ul>
               </motion.div>
@@ -1112,8 +1137,19 @@ const HomePage = () => {
                     whileHover={{ y: -5, transition: { duration: 0.2 } }}
                   >
                     <h4 className="text-primary font-semibold mb-2">Hours</h4>
-                    <p className="text-gray-300 text-sm">Every Day: 10AM - 11PM</p>
-                    <p className="text-primary/80 text-xs mt-1">Open 7 days a week</p>
+                    {arlingtonLoading ? (
+                      <>
+                        <div className="h-4 bg-gray-700 animate-pulse rounded w-24 mb-2"></div>
+                        <div className="h-4 bg-gray-700 animate-pulse rounded w-28"></div>
+                      </>
+                    ) : (
+                      <>
+                        <p className="text-gray-300 text-sm">
+                          {arlingtonLocation?.openingHours?.['Monday'] || 'Every Day: 10AM - 11PM'}
+                        </p>
+                        <p className="text-primary/80 text-xs mt-1">Open 7 days a week</p>
+                      </>
+                    )}
                   </motion.div>
                   
                   <motion.div 
