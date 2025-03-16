@@ -9,6 +9,8 @@ import LocationsPage from "@/pages/LocationsPage";
 import FriscoLocationPage from "@/pages/FriscoLocationPage";
 import ArlingtonLocationPage from "@/pages/ArlingtonLocationPage";
 import ContactPage from "@/pages/ContactPage";
+import AdminLoginPage from "@/pages/AdminLoginPage";
+import AdminPage from "@/pages/AdminPage";
 import NotFound from "@/pages/not-found";
 import AgeVerificationModal from "@/components/AgeVerificationModal";
 import PageTransition from "@/components/PageTransition";
@@ -43,6 +45,8 @@ function Router() {
           <Route path="/locations/frisco" component={FriscoLocationPage} />
           <Route path="/locations/arlington" component={ArlingtonLocationPage} />
           <Route path="/contact" component={ContactPage} />
+          <Route path="/admin/login" component={AdminLoginPage} />
+          <Route path="/admin" component={AdminPage} />
           <Route component={NotFound} />
         </Switch>
       </PageTransition>
