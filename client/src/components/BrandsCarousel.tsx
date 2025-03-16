@@ -62,7 +62,7 @@ const BrandsCarousel = ({
       </div>
       
       <div className="p-2 flex-grow flex flex-col">
-        <div className="relative min-h-[380px] flex-grow overflow-hidden">
+        <div className="relative min-h-[480px] flex-grow overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentIndex}
@@ -70,13 +70,13 @@ const BrandsCarousel = ({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5 }}
-              className="absolute inset-0 flex flex-col items-center justify-between text-center px-2 py-4"
+              className="absolute inset-0 flex flex-col items-center justify-between text-center px-2 py-2"
             >
-              <div className="h-52 sm:h-56 md:h-60 w-full flex items-center justify-center">
+              <div className="h-60 sm:h-72 md:h-80 w-full flex items-center justify-center p-0">
                 <img 
                   src={currentBrand.image} 
                   alt={currentBrand.name} 
-                  className="max-h-[95%] max-w-[95%] object-contain"
+                  className="max-h-full max-w-full object-contain"
                 />
               </div>
               <div className="mt-4 min-h-[80px] w-full flex flex-col justify-start">
