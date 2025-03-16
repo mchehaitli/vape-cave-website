@@ -73,7 +73,7 @@ const BrandsCarousel = ({
               className="absolute inset-0 flex flex-col items-center justify-between text-center px-2 py-2"
             >
               <div 
-                className={`${!currentBrand.description ? 'h-[500px] sm:h-[520px] md:h-[540px]' : 'h-[460px] sm:h-[480px] md:h-[500px]'} w-full flex items-center justify-center p-0`}
+                className={`${!currentBrand.description ? 'h-[500px] sm:h-[520px] md:h-[540px]' : 'h-[430px] sm:h-[450px] md:h-[470px]'} w-full flex items-center justify-center p-0`}
               >
                 <img 
                   src={currentBrand.image} 
@@ -81,13 +81,13 @@ const BrandsCarousel = ({
                   className="max-h-full max-w-full object-contain"
                 />
               </div>
-              <div className={`mt-1 ${!currentBrand.description ? 'min-h-[30px]' : 'min-h-[60px]'} w-full flex flex-col justify-start`}>
-                <div className="bg-black/50 px-2 py-1 rounded w-full mb-1">
+              <div className={`mt-1 ${!currentBrand.description ? 'min-h-[30px]' : 'min-h-[90px]'} w-full flex flex-col justify-start`}>
+                <div className="bg-black/70 px-3 py-2 rounded-t w-full">
                   <h4 className="text-lg md:text-xl font-bold text-primary line-clamp-1">{currentBrand.name}</h4>
                 </div>
                 {currentBrand.description && (
-                  <div className="bg-black/30 px-2 py-1 rounded w-full">
-                    <p className="text-xs text-gray-200 line-clamp-2">{currentBrand.description}</p>
+                  <div className="bg-black/50 px-3 py-3 rounded-b w-full">
+                    <p className="text-sm text-white line-clamp-3">{currentBrand.description}</p>
                   </div>
                 )}
               </div>
