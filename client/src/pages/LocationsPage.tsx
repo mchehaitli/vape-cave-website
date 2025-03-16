@@ -7,9 +7,48 @@ import GoogleMapsIntegration from "@/components/GoogleMapsIntegration";
 import { useStoreLocations, useFormattedLocationsForMap } from "@/hooks/use-store-locations";
 
 const LocationsPage = () => {
-  // Use API data instead of static data
+  // Use API data instead of static data and get formatted locations for backward compatibility 
   const { data: locations, isLoading } = useStoreLocations();
   const { data: formattedLocations } = useFormattedLocationsForMap();
+  
+  // Type-safe approach
+  type MappedLocation = {
+    id: number;
+    name: string;
+    city: string;
+    address: string;
+    fullAddress: string;
+    phone: string;
+    hours: string;
+    closedDays: string;
+    image: string;
+    coordinates: {
+      lat: number;
+      lng: number;
+    };
+    openingHours: Record<string, string>;
+    mapEmbed: string;
+    email?: string;
+    googlePlaceId?: string;
+    appleMapsLink?: string;
+    storeCode?: string;
+    services: string[];
+    acceptedPayments: string[];
+    areaServed: string[];
+    publicTransit?: string;
+    parking?: string;
+    yearEstablished: number;
+    priceRange: string;
+    socialProfiles?: {
+      facebook?: string;
+      instagram?: string;
+      twitter?: string;
+      yelp?: string;
+    };
+    description: string;
+    neighborhoodInfo?: string;
+    amenities: string[];
+  };
   
   // Create enhanced structured data for SEO - more detailed for better search visibility
   const generateLocalBusinessSchema = (location: any) => {
@@ -315,7 +354,7 @@ const LocationsPage = () => {
       <section className="py-12 bg-gradient-to-r from-black to-gray-900 text-white">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {locations.map((location) => (
+            {formattedLocations.map((location) => (
               <div 
                 key={location.id}
                 className={`bg-gray-800 rounded-lg shadow-md overflow-hidden border ${
@@ -591,7 +630,7 @@ const LocationsPage = () => {
             <div className="h-[500px] relative" id="locations-map">
               <div className="absolute inset-0 dark-map-light">
                 <GoogleMapsIntegration 
-                  locations={getFormattedLocationsForMap()}
+                  locations={formattedLocations || []}
                   height="100%"
                   width="100%"
                   zoom={9}
