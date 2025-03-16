@@ -607,6 +607,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ error: "Failed to update store location" });
     }
   });
+  
+  // Dedicated endpoint for updating store hours
+  app.put('/api/admin/store-locations/:id/hours', isAdmin, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid store location ID" });
+      }
+      
+      // Extract hours-related data from request
+      const { opening_hours, closed_days, hours } = req.body;
+      
+      // Validate the hours data
+      if (!opening_hours || typeof opening_hours !== 'object') {
+        return res.status(400).json({ error: "Invalid opening hours data" });
+      }
+      
+      // Create update object with only hours-related fields
+      const updatedData = {
+        opening_hours,
+        closed_days: closed_days || null,
+        hours: hours || ""
+      };
+      
+      const location = await storage.updateStoreLocation(id, updatedData);
+      
+      if (!location) {
+        return res.status(404).json({ error: "Store location not found" });
+      }
+      
+      res.json(location);
+    } catch (error) {
+      console.error("Update store hours error:", error);
+      res.status(500).json({ error: "Failed to update store hours" });
+    }
+  });
 
   app.delete('/api/admin/store-locations/:id', isAdmin, async (req, res) => {
     try {
