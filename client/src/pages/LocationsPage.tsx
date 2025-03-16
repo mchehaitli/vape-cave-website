@@ -396,23 +396,12 @@ const LocationsPage = () => {
                           <p className="text-sm text-gray-400">Hours</p>
                           <p className="font-medium text-gray-200">{location.hours}</p>
                           {location.openingHours && (
-                            <div className="text-sm mt-1 opacity-80">
-                              {getOrderedOpeningHours(location.openingHours)
-                                .map(({day, hours}, index) => (
-                                  <div key={day} className="flex justify-between">
-                                    <span className="mr-2">{day.substring(0, 3)}</span>
-                                    <span>{hours}</span>
-                                  </div>
-                              ))}
-                              {Object.keys(location.openingHours).length > 0 && (
-                                <button 
-                                  onClick={() => setActiveLocation(location.id)}
-                                  className="text-orange-500 text-xs mt-1 hover:underline"
-                                >
-                                  See detailed hours →
-                                </button>
-                              )}
-                            </div>
+                            <button 
+                              onClick={() => setActiveLocation(location.id)}
+                              className="text-orange-500 text-xs mt-1 hover:underline"
+                            >
+                              See detailed hours →
+                            </button>
                           )}
                         </div>
                       </div>
