@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, varchar, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, varchar, timestamp, json } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -108,3 +108,76 @@ export const insertBlogPostSchema = createInsertSchema(blogPosts).pick({
 
 export type InsertBlogPost = z.infer<typeof insertBlogPostSchema>;
 export type BlogPost = typeof blogPosts.$inferSelect;
+
+// Store locations table
+export const storeLocations = pgTable("store_locations", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  city: text("city").notNull(),
+  address: text("address").notNull(),
+  full_address: text("full_address").notNull(),
+  phone: text("phone").notNull(),
+  hours: text("hours").notNull(),
+  closed_days: text("closed_days").default(""),
+  image: text("image").notNull(),
+  lat: text("lat").notNull(),
+  lng: text("lng").notNull(),
+  google_place_id: text("google_place_id").default(""),
+  apple_maps_link: text("apple_maps_link").default(""),
+  map_embed: text("map_embed").notNull(),
+  email: text("email").default(""),
+  store_code: text("store_code").default(""),
+  opening_hours: json("opening_hours").notNull().$type<Record<string, string>>(),
+  services: json("services").notNull().$type<string[]>(),
+  accepted_payments: json("accepted_payments").notNull().$type<string[]>(),
+  area_served: json("area_served").notNull().$type<string[]>(),
+  public_transit: text("public_transit").default(""),
+  parking: text("parking").default(""),
+  year_established: integer("year_established").notNull(),
+  price_range: text("price_range").notNull(),
+  social_profiles: json("social_profiles").$type<{
+    facebook?: string;
+    instagram?: string;
+    twitter?: string;
+    yelp?: string;
+  }>(),
+  description: text("description").notNull(),
+  neighborhood_info: text("neighborhood_info").default(""),
+  amenities: json("amenities").notNull().$type<string[]>(),
+  created_at: timestamp("created_at").notNull().defaultNow(),
+  updated_at: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const insertStoreLocationSchema = createInsertSchema(storeLocations)
+  .pick({
+    name: true,
+    city: true,
+    address: true,
+    full_address: true,
+    phone: true,
+    hours: true,
+    closed_days: true,
+    image: true,
+    lat: true,
+    lng: true,
+    google_place_id: true,
+    apple_maps_link: true,
+    map_embed: true,
+    email: true,
+    store_code: true,
+    opening_hours: true,
+    services: true,
+    accepted_payments: true,
+    area_served: true,
+    public_transit: true,
+    parking: true,
+    year_established: true,
+    price_range: true,
+    social_profiles: true,
+    description: true,
+    neighborhood_info: true,
+    amenities: true,
+  });
+
+export type InsertStoreLocation = z.infer<typeof insertStoreLocationSchema>;
+export type StoreLocation = typeof storeLocations.$inferSelect;
