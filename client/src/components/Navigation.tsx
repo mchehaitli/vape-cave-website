@@ -64,10 +64,7 @@ const Navigation = () => {
   ];
   
   // Scroll navigation items (only show on homepage)
-  const scrollNavItems = location === "/" ? [
-    { label: "Frisco Location", sectionId: "frisco-location", ariaLabel: "Scroll to Frisco location" },
-    { label: "Arlington Location", sectionId: "arlington-location", ariaLabel: "Scroll to Arlington location" },
-  ] : [];
+  const scrollNavItems = [];
 
   return (
     <header className="bg-primary sticky top-0 z-50 shadow-lg backdrop-blur-sm bg-opacity-95">
