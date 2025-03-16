@@ -244,10 +244,7 @@ export default function AdminPage() {
   const [editingStoreLocation, setEditingStoreLocation] = useState<any>(null);
   const [deletingStoreLocationId, setDeletingStoreLocationId] = useState<number | null>(null);
   
-  // State for store hours management
-  const [temporaryHours, setTemporaryHours] = useState<Record<string, string>>({});
-  const [closedDays, setClosedDays] = useState<string>("");
-  const [hoursSummary, setHoursSummary] = useState<string>("");
+  // State for store hours management is now managed in the StoreHoursDialog component
 
   useEffect(() => {
     // Check if user is authenticated and is admin

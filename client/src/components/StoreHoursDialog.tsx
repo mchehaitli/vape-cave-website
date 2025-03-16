@@ -17,7 +17,22 @@ import {
 } from "@/components/ui/tooltip";
 import { RefreshCcw } from "lucide-react";
 import { useState, useEffect } from "react";
-import { StoreLocation } from "@/types/store-location";
+// Define the store location type inline to avoid import issues
+interface StoreLocation {
+  id: number;
+  name: string;
+  city: string;
+  address: string;
+  full_address: string;
+  phone: string;
+  hours?: string;
+  closed_days?: string;
+  image: string;
+  lat: number | string;
+  lng: number | string;
+  opening_hours?: Record<string, string>;
+  description?: string;
+}
 
 interface StoreHoursDialogProps {
   open: boolean;
@@ -59,12 +74,14 @@ export default function StoreHoursDialog({
       // Fill with existing hours if available
       if (storeLocation.opening_hours) {
         Object.entries(storeLocation.opening_hours).forEach(([day, hoursString]) => {
-          const [open, close] = hoursString.split(' - ');
-          if (open && close) {
-            initialHours[day] = {
-              open,
-              close
-            };
+          if (typeof hoursString === 'string') {
+            const [open, close] = hoursString.split(' - ');
+            if (open && close) {
+              initialHours[day] = {
+                open,
+                close
+              };
+            }
           }
         });
       }
