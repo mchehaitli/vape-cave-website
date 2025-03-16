@@ -189,19 +189,16 @@ export class DbStorage implements IStorage {
     // Extract imageSize from the input
     const { imageSize } = brand;
     
-    // Build an insert object only with fields that exist in the database
-    const insertData: Record<string, any> = {
-      categoryId: brand.categoryId,
-      name: brand.name,
-      image: brand.image,
-      description: brand.description,
-      displayOrder: brand.displayOrder || 0
-    };
-    
     // Insert the brand without the imageSize field
     const result = await db
       .insert(brands)
-      .values(insertData)
+      .values({
+        categoryId: brand.categoryId,
+        name: brand.name,
+        image: brand.image,
+        description: brand.description,
+        displayOrder: brand.displayOrder || 0
+      })
       .returning({
         id: brands.id,
         categoryId: brands.categoryId,
@@ -222,18 +219,26 @@ export class DbStorage implements IStorage {
     // Extract imageSize from the input
     const { imageSize } = brand;
     
-    // Build a clean update object only with fields that exist in the database
-    const updateData: Record<string, any> = {};
-    if (brand.categoryId !== undefined) updateData.categoryId = brand.categoryId;
-    if (brand.name !== undefined) updateData.name = brand.name;
-    if (brand.image !== undefined) updateData.image = brand.image;
-    if (brand.description !== undefined) updateData.description = brand.description;
-    if (brand.displayOrder !== undefined) updateData.displayOrder = brand.displayOrder;
+    // Create a new object with just the fields we need to update
+    const updateFields: {
+      categoryId?: number;
+      name?: string;
+      image?: string;
+      description?: string;
+      displayOrder?: number;
+    } = {};
+    
+    // Only add fields that are defined
+    if (brand.categoryId !== undefined) updateFields.categoryId = brand.categoryId;
+    if (brand.name !== undefined) updateFields.name = brand.name;
+    if (brand.image !== undefined) updateFields.image = brand.image;
+    if (brand.description !== undefined) updateFields.description = brand.description;
+    if (brand.displayOrder !== undefined) updateFields.displayOrder = brand.displayOrder;
     
     // Only include fields that are actually in the database
     const result = await db
       .update(brands)
-      .set(updateData)
+      .set(updateFields)
       .where(eq(brands.id, id))
       .returning({
         id: brands.id,
