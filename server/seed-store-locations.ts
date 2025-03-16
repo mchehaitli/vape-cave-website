@@ -21,81 +21,58 @@ async function seedStoreLocations() {
     for (const location of storeLocations) {
       console.log(`Processing location: ${location.name}`);
       
+      // Prepare social profiles object in correct format for database
+      const socialProfiles = location.socialProfiles ? {
+        facebook: location.socialProfiles.facebook || undefined,
+        instagram: location.socialProfiles.instagram || undefined,
+        twitter: location.socialProfiles.twitter || undefined,
+        yelp: location.socialProfiles.yelp || undefined
+      } : undefined;
+      
+      // Create the store location data object with proper types
+      const locationData = {
+        name: location.name,
+        city: location.city,
+        address: location.address,
+        full_address: location.fullAddress,
+        phone: location.phone,
+        hours: location.hours,
+        closed_days: location.closedDays || null,
+        image: location.image,
+        lat: location.coordinates.lat.toString(),
+        lng: location.coordinates.lng.toString(),
+        google_place_id: location.googlePlaceId || null,
+        apple_maps_link: location.appleMapsLink || null,
+        map_embed: location.mapEmbed,
+        email: location.email || null,
+        store_code: location.storeCode || null,
+        description: location.description,
+        neighborhood_info: location.neighborhoodInfo || null,
+        year_established: location.yearEstablished,
+        price_range: location.priceRange,
+        opening_hours: location.openingHours,
+        services: location.services,
+        accepted_payments: location.acceptedPayments,
+        area_served: location.areaServed,
+        amenities: location.amenities,
+        social_profiles: socialProfiles
+      };
+      
       // Check if this location already exists by city name
       const existingLocation = await storage.getStoreLocationByCity(location.city);
       
       if (existingLocation) {
         console.log(`Location for ${location.city} already exists with ID ${existingLocation.id}, updating...`);
         
-        // Convert frontend social profiles to expected format if it exists
-        const socialProfilesJson = location.socialProfiles 
-          ? JSON.stringify({
-              facebook: location.socialProfiles.facebook || null,
-              instagram: location.socialProfiles.instagram || null,
-              twitter: location.socialProfiles.twitter || null,
-              yelp: location.socialProfiles.yelp || null
-            })
-          : null;
-        
-        // Map frontend data structure to database structure
-        await storage.updateStoreLocation(existingLocation.id, {
-          name: location.name,
-          city: location.city,
-          address: location.address,
-          full_address: location.fullAddress,
-          phone: location.phone,
-          hours: location.hours,
-          closed_days: location.closedDays || null,
-          image: location.image,
-          lat: location.coordinates.lat.toString(),
-          lng: location.coordinates.lng.toString(),
-          google_place_id: location.googlePlaceId || null,
-          apple_maps_link: location.appleMapsLink || null,
-          map_embed: location.mapEmbed,
-          email: location.email || null,
-          store_code: location.storeCode || null,
-          description: location.description,
-          neighborhood_info: location.neighborhoodInfo || null,
-          year_established: location.yearEstablished,
-          price_range: location.priceRange
-        });
+        // Update existing location
+        await storage.updateStoreLocation(existingLocation.id, locationData);
         
         processedLocations.push(existingLocation.id);
       } else {
         console.log(`Creating new location for ${location.city}...`);
         
-        // Convert frontend social profiles to expected format if it exists
-        const socialProfilesJson = location.socialProfiles 
-          ? JSON.stringify({
-              facebook: location.socialProfiles.facebook || null,
-              instagram: location.socialProfiles.instagram || null,
-              twitter: location.socialProfiles.twitter || null,
-              yelp: location.socialProfiles.yelp || null
-            })
-          : null;
-          
-        // Map frontend data structure to database structure
-        const newLocation = await storage.createStoreLocation({
-          name: location.name,
-          city: location.city,
-          address: location.address,
-          full_address: location.fullAddress,
-          phone: location.phone,
-          hours: location.hours,
-          closed_days: location.closedDays || null,
-          image: location.image,
-          lat: location.coordinates.lat.toString(),
-          lng: location.coordinates.lng.toString(),
-          google_place_id: location.googlePlaceId || null,
-          apple_maps_link: location.appleMapsLink || null,
-          map_embed: location.mapEmbed,
-          email: location.email || null,
-          store_code: location.storeCode || null,
-          description: location.description,
-          neighborhood_info: location.neighborhoodInfo || null,
-          year_established: location.yearEstablished,
-          price_range: location.priceRange
-        });
+        // Create new location
+        const newLocation = await storage.createStoreLocation(locationData);
         
         console.log(`Created new location with ID ${newLocation.id}`);
         processedLocations.push(newLocation.id);
