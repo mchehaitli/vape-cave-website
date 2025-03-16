@@ -7,7 +7,8 @@ import BrandsCarousel from "@/components/BrandsCarousel";
 import { useFeaturedBrands } from "@/hooks/use-brands";
 import { 
   useFriscoLocation, 
-  useArlingtonLocation 
+  useArlingtonLocation,
+  getOrderedOpeningHours
 } from "@/hooks/use-store-locations";
 // Keeping this for fallback
 import { featuredBrands } from "@/data/brands";
@@ -610,8 +611,11 @@ const HomePage = () => {
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    {friscoLocation?.openingHours?.['Friday'] && friscoLocation?.openingHours?.['Saturday'] 
-                      ? `Extended hours on Friday and Saturday (${friscoLocation?.openingHours?.['Friday']})` 
+                    {friscoLocation?.openingHours
+                      ? `Extended hours on Friday and Saturday (${getOrderedOpeningHours(friscoLocation.openingHours)
+                          .filter(({day}) => day === 'Friday' || day === 'Saturday')
+                          .map(({day, hours}) => hours)
+                          .join(' & ')})` 
                       : 'Extended hours on Friday and Saturday'}
                   </motion.li>
                   <motion.li 
@@ -781,12 +785,19 @@ const HomePage = () => {
                       </>
                     ) : (
                       <>
-                        <p className="text-gray-300 text-sm">
-                          {friscoLocation?.openingHours?.['Sunday'] || 'Sun-Thu: 10AM - 12AM'}
-                        </p>
-                        <p className="text-gray-300 text-sm">
-                          {friscoLocation?.openingHours?.['Friday'] || 'Fri-Sat: 10AM - 1AM'}
-                        </p>
+                        {friscoLocation?.openingHours && getOrderedOpeningHours(friscoLocation.openingHours)
+                          .slice(0, 4) // Show first 4 days only in compact view
+                          .map(({day, hours}, index) => (
+                            <p key={day} className="text-gray-300 text-sm">
+                              <span className="font-medium">{day.substring(0, 3)}:</span> {hours}
+                            </p>
+                          ))}
+                        {!friscoLocation?.openingHours && (
+                          <>
+                            <p className="text-gray-300 text-sm">Sun-Thu: 10AM - 12AM</p>
+                            <p className="text-gray-300 text-sm">Fri-Sat: 10AM - 1AM</p>
+                          </>
+                        )}
                       </>
                     )}
                   </motion.div>
@@ -985,8 +996,8 @@ const HomePage = () => {
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    {arlingtonLocation?.openingHours?.['Monday'] ? 
-                      `Open daily ${arlingtonLocation.openingHours['Monday']}` : 
+                    {arlingtonLocation?.openingHours ? 
+                      `Open daily ${getOrderedOpeningHours(arlingtonLocation.openingHours)[0]?.hours || arlingtonLocation.openingHours['Monday']}` : 
                       'Open daily from 10:00 AM to 11:00 PM'}
                   </motion.li>
                 </motion.ul>
@@ -1144,9 +1155,16 @@ const HomePage = () => {
                       </>
                     ) : (
                       <>
-                        <p className="text-gray-300 text-sm">
-                          {arlingtonLocation?.openingHours?.['Monday'] || 'Every Day: 10AM - 11PM'}
-                        </p>
+                        {arlingtonLocation?.openingHours && getOrderedOpeningHours(arlingtonLocation.openingHours)
+                          .slice(0, 3) // Show first 3 days only in compact view
+                          .map(({day, hours}, index) => (
+                            <p key={day} className="text-gray-300 text-sm">
+                              <span className="font-medium">{day.substring(0, 3)}:</span> {hours}
+                            </p>
+                          ))}
+                        {!arlingtonLocation?.openingHours && (
+                          <p className="text-gray-300 text-sm">Every Day: 10AM - 11PM</p>
+                        )}
                         <p className="text-primary/80 text-xs mt-1">Open 7 days a week</p>
                       </>
                     )}
