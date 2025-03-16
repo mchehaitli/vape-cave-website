@@ -72,18 +72,22 @@ const BrandsCarousel = ({
               transition={{ duration: 0.5 }}
               className="absolute inset-0 flex flex-col items-center justify-between text-center px-2 py-2"
             >
-              <div className="h-[480px] sm:h-[500px] md:h-[520px] w-full flex items-center justify-center p-0">
+              <div 
+                className={`${!currentBrand.description ? 'h-[500px] sm:h-[520px] md:h-[540px]' : 'h-[480px] sm:h-[500px] md:h-[520px]'} w-full flex items-center justify-center p-0`}
+              >
                 <img 
                   src={currentBrand.image} 
                   alt={currentBrand.name} 
                   className="max-h-full max-w-full object-contain"
                 />
               </div>
-              <div className="mt-1 min-h-[40px] w-full flex flex-col justify-start">
-                <div className="bg-black/50 px-2 py-0.5 rounded mb-0.5 w-full">
-                  <h4 className="text-base font-semibold text-primary line-clamp-1">{currentBrand.name}</h4>
+              <div className={`mt-1 ${!currentBrand.description ? 'min-h-[30px]' : 'min-h-[40px]'} w-full flex flex-col justify-start`}>
+                <div className="bg-black/50 px-2 py-1 rounded w-full">
+                  <h4 className="text-lg md:text-xl font-bold text-primary line-clamp-1">{currentBrand.name}</h4>
                 </div>
-                <p className="text-xs text-gray-300 line-clamp-1 px-1">{currentBrand.description}</p>
+                {currentBrand.description && (
+                  <p className="text-xs text-gray-300 line-clamp-1 px-1">{currentBrand.description}</p>
+                )}
               </div>
             </motion.div>
           </AnimatePresence>
