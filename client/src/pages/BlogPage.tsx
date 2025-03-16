@@ -10,13 +10,13 @@ export default function BlogPage() {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   
   // Query for blog categories
-  const { data: blogCategories = [], isLoading: isBlogCategoriesLoading } = useQuery<any[]>({
+  const { data: blogCategories = [], isLoading: isBlogCategoriesLoading } = useQuery<BlogCategory[]>({
     queryKey: ['/api/blog-categories'],
     staleTime: 60000,
   });
 
   // Query for blog posts
-  const { data: blogPosts = [], isLoading: isBlogPostsLoading } = useQuery<any[]>({
+  const { data: blogPosts = [], isLoading: isBlogPostsLoading } = useQuery<BlogPost[]>({
     queryKey: ['/api/blog-posts'],
     staleTime: 30000,
   });
@@ -73,7 +73,7 @@ export default function BlogPage() {
                 <TabsTrigger value="all" onClick={() => setActiveCategory(null)}>
                   All Posts
                 </TabsTrigger>
-                {blogCategories.map((category: any) => (
+                {blogCategories.map((category: BlogCategory) => (
                   <TabsTrigger 
                     key={category.slug} 
                     value={category.slug}
@@ -88,7 +88,7 @@ export default function BlogPage() {
             <TabsContent value="all" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {blogPosts.length > 0 ? (
-                  blogPosts.map((post: any) => (
+                  blogPosts.map((post: BlogPost) => (
                     <BlogPostCard key={post.id} post={post} categories={blogCategories} />
                   ))
                 ) : (
@@ -99,15 +99,15 @@ export default function BlogPage() {
               </div>
             </TabsContent>
             
-            {blogCategories.map((category: any) => (
+            {blogCategories.map((category: BlogCategory) => (
               <TabsContent key={category.slug} value={category.slug} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {blogPosts.filter((post: any) => 
+                  {blogPosts.filter((post: BlogPost) => 
                     post.categoryId === category.id && post.published
                   ).length > 0 ? (
                     blogPosts
-                      .filter((post: any) => post.categoryId === category.id && post.published)
-                      .map((post: any) => (
+                      .filter((post: BlogPost) => post.categoryId === category.id && post.published)
+                      .map((post: BlogPost) => (
                         <BlogPostCard key={post.id} post={post} categories={blogCategories} />
                       ))
                   ) : (
@@ -132,8 +132,8 @@ export default function BlogPage() {
 }
 
 interface BlogPostCardProps {
-  post: any;
-  categories: any[];
+  post: BlogPost;
+  categories: BlogCategory[];
 }
 
 function BlogPostCard({ post, categories }: BlogPostCardProps) {
