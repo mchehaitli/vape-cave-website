@@ -2,7 +2,11 @@ import { Link } from "wouter";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import Logo from "./Logo";
-import { useFriscoLocation, useArlingtonLocation } from "@/hooks/use-store-locations";
+import { 
+  useFriscoLocation, 
+  useArlingtonLocation, 
+  getOrderedOpeningHours 
+} from "@/hooks/use-store-locations";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -238,9 +242,18 @@ const Footer = () => {
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span className="text-white/70">
+                <div className="text-white/70">
                   {frisco?.hours || "Loading hours..."}
-                </span>
+                  {frisco?.opening_hours && (
+                    <span className="block text-xs mt-1 text-white/60">
+                      {getOrderedOpeningHours(frisco.opening_hours).map(({day, hours}, index) => (
+                        <span key={day} className="block">
+                          {day}: {hours}
+                        </span>
+                      ))}
+                    </span>
+                  )}
+                </div>
               </li>
               {frisco?.closed_days && (
                 <li className="flex items-start">
@@ -285,9 +298,18 @@ const Footer = () => {
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mt-1 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span className="text-white/70">
+                <div className="text-white/70">
                   {arlington?.hours || "Loading hours..."}
-                </span>
+                  {arlington?.opening_hours && (
+                    <span className="block text-xs mt-1 text-white/60">
+                      {getOrderedOpeningHours(arlington.opening_hours).map(({day, hours}, index) => (
+                        <span key={day} className="block">
+                          {day}: {hours}
+                        </span>
+                      ))}
+                    </span>
+                  )}
+                </div>
               </li>
               {arlington?.closed_days && (
                 <li className="flex items-start">
