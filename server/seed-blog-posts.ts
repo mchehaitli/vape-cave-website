@@ -165,7 +165,7 @@ These innovations, from smart features and advanced heating to sustainability ef
 
     // Insert the blog posts
     for (const post of blogPosts) {
-      await db.insert('blog_posts').values({
+      await db.insert(schema.blogPosts).values({
         title: post.title,
         slug: post.slug,
         summary: post.summary,
