@@ -21,6 +21,10 @@ const ArlingtonLocationPage: React.FC = () => {
   const { data: location, isLoading } = useArlingtonLocation();
   const { data: formattedLocations } = useFormattedLocationsForMap();
   
+  // Toggle states for accordion-like sections
+  const [showDetails, setShowDetails] = useState(true);
+  const [showProducts, setShowProducts] = useState(true);
+  
   // If location data is still loading, show a loading state
   if (isLoading || !location) {
     return (
@@ -338,10 +342,6 @@ const ArlingtonLocationPage: React.FC = () => {
       ]
     };
   };
-  
-  // Toggle states for accordion-like sections
-  const [showDetails, setShowDetails] = useState(true);
-  const [showProducts, setShowProducts] = useState(true);
   
   // Filter products for Arlington location (example of location-specific products)
   const arlingtonProducts = products.filter(product => 
