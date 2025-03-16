@@ -398,6 +398,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Category-based blog post routes have been removed
   
+  app.get('/api/blog-posts/slug/:slug', async (req, res) => {
+    try {
+      const { slug } = req.params;
+      
+      const post = await storage.getBlogPostBySlug(slug);
+      
+      if (!post) {
+        return res.status(404).json({ error: "Blog post not found" });
+      }
+      
+      // Increment view count (don't await this, let it happen in the background)
+      storage.incrementBlogPostViewCount(post.id).catch(err => {
+        console.error("Error incrementing view count:", err);
+      });
+      
+      res.json(post);
+    } catch (error) {
+      console.error("Get blog post by slug error:", error);
+      res.status(500).json({ error: "Failed to fetch blog post" });
+    }
+  });
+  
   app.get('/api/blog-posts/:id', async (req, res) => {
     try {
       const id = parseInt(req.params.id);
@@ -419,28 +441,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(post);
     } catch (error) {
       console.error("Get blog post error:", error);
-      res.status(500).json({ error: "Failed to fetch blog post" });
-    }
-  });
-  
-  app.get('/api/blog-posts/slug/:slug', async (req, res) => {
-    try {
-      const { slug } = req.params;
-      
-      const post = await storage.getBlogPostBySlug(slug);
-      
-      if (!post) {
-        return res.status(404).json({ error: "Blog post not found" });
-      }
-      
-      // Increment view count (don't await this, let it happen in the background)
-      storage.incrementBlogPostViewCount(post.id).catch(err => {
-        console.error("Error incrementing view count:", err);
-      });
-      
-      res.json(post);
-    } catch (error) {
-      console.error("Get blog post by slug error:", error);
       res.status(500).json({ error: "Failed to fetch blog post" });
     }
   });
