@@ -8,6 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useBrandCategories, useFeaturedBrands } from "@/hooks/use-brands";
 import BrandsCarousel from "@/components/BrandsCarousel";
+import StoreHoursDialog from "@/components/StoreHoursDialog";
+import { StoreLocation } from "@/types/store-location";
 import { 
   Dialog, 
   DialogContent, 
