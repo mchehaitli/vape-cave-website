@@ -786,7 +786,6 @@ const HomePage = () => {
                     ) : (
                       <>
                         {friscoLocation?.openingHours && getOrderedOpeningHours(friscoLocation.openingHours)
-                          .slice(0, 4) // Show first 4 days only in compact view
                           .map(({day, hours}, index) => (
                             <p key={day} className="text-gray-300 text-sm">
                               <span className="font-medium">{day.substring(0, 3)}:</span> {hours}
@@ -1156,7 +1155,6 @@ const HomePage = () => {
                     ) : (
                       <>
                         {arlingtonLocation?.openingHours && getOrderedOpeningHours(arlingtonLocation.openingHours)
-                          .slice(0, 3) // Show first 3 days only in compact view
                           .map(({day, hours}, index) => (
                             <p key={day} className="text-gray-300 text-sm">
                               <span className="font-medium">{day.substring(0, 3)}:</span> {hours}
