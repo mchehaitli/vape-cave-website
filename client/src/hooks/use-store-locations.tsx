@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { StoreLocation } from "@/types/store-location";
 import { getQueryFn } from "@/lib/queryClient";
+import { formatStoreHours, formatExtendedHours } from "@/utils/formatStoreHours";
 
 /**
  * Helper function to get ordered opening hours
@@ -84,7 +85,8 @@ export function useFormattedLocationsForMap() {
     email: loc.email,
     phone: loc.phone,
     image: loc.image,
-    hours: loc.hours,
+    // Use our formatStoreHours utility for consistent display
+    hours: formatStoreHours(loc.opening_hours) || loc.hours,
     closedDays: loc.closed_days || "",
     openingHours: loc.opening_hours || {},
     storeCode: loc.store_code,
@@ -131,6 +133,8 @@ export function useFriscoLocation() {
     mapEmbed: location.map_embed,
     storeCode: location.store_code,
     openingHours: location.opening_hours || {},
+    // Use our formatStoreHours utility for consistent display
+    hours: formatStoreHours(location.opening_hours) || location.hours,
     closedDays: location.closed_days || "",
     yearEstablished: location.year_established,
     priceRange: location.price_range,
@@ -169,6 +173,8 @@ export function useArlingtonLocation() {
     mapEmbed: location.map_embed,
     storeCode: location.store_code,
     openingHours: location.opening_hours || {},
+    // Use our formatStoreHours utility for consistent display
+    hours: formatStoreHours(location.opening_hours) || location.hours,
     closedDays: location.closed_days || "",
     yearEstablished: location.year_established,
     priceRange: location.price_range,

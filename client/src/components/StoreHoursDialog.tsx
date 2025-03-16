@@ -219,42 +219,14 @@ export default function StoreHoursDialog({
     
     if (daysWithHours.length === 0) return "No hours set";
     
-    // Group days with the same hours
-    const hourGroups: Record<string, string[]> = {};
-    
+    // Create temporary opening_hours format
+    const opening_hours: Record<string, string> = {};
     daysWithHours.forEach(day => {
-      const hours = `${temporaryHours[day].open} - ${temporaryHours[day].close}`;
-      if (!hourGroups[hours]) hourGroups[hours] = [];
-      hourGroups[hours].push(day);
+      opening_hours[day] = `${temporaryHours[day].open} - ${temporaryHours[day].close}`;
     });
     
-    // Format the hours summary
-    return Object.entries(hourGroups).map(([hours, groupDays]) => {
-      // If it's all days, just say "Every day"
-      if (groupDays.length === 7) {
-        return `Every day: ${hours}`;
-      }
-      
-      // If it's weekdays
-      if (groupDays.length === 5 && 
-          groupDays.includes('Monday') && 
-          groupDays.includes('Tuesday') && 
-          groupDays.includes('Wednesday') && 
-          groupDays.includes('Thursday') && 
-          groupDays.includes('Friday')) {
-        return `Weekdays: ${hours}`;
-      }
-      
-      // If it's weekend
-      if (groupDays.length === 2 && 
-          groupDays.includes('Saturday') && 
-          groupDays.includes('Sunday')) {
-        return `Weekend: ${hours}`;
-      }
-      
-      // Otherwise list the days
-      return `${groupDays.map(d => d.substring(0, 3)).join(', ')}: ${hours}`;
-    }).join(' | ');
+    // Use our utility for consistent formatting
+    return formatStoreHours(opening_hours);
   };
   
   // Update hours summary automatically if preview mode is on
@@ -277,10 +249,15 @@ export default function StoreHoursDialog({
       }
     });
     
+    // If not using the preview mode, generate a formatted hours summary
+    // This ensures that even if the user manually edits the summary, we save a properly
+    // formatted version to the database as well
+    const formattedHours = previewMode ? hoursSummary : formatStoreHours(opening_hours);
+    
     try {
       await onSave({
         opening_hours,
-        hours: hoursSummary,
+        hours: formattedHours,
         closed_days: closedDays
       });
       

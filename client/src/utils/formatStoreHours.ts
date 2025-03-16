@@ -77,8 +77,8 @@ export function formatStoreHours(
         }
       };
       
-      const latestWeekendClosing = Math.max(...weekendHours.map(convertTo24h));
-      const latestWeekdayClosing = Math.max(...nonWeekendHours.map(convertTo24h));
+      const latestWeekendClosing = Math.max(...weekendHours.map(time => convertTo24h(time)));
+      const latestWeekdayClosing = Math.max(...nonWeekendHours.map(time => convertTo24h(time)));
       
       hasExtendedHours = latestWeekendClosing > latestWeekdayClosing;
     }
