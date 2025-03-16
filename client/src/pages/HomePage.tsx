@@ -4,11 +4,16 @@ import { Helmet } from "react-helmet";
 import { motion } from "framer-motion";
 import MainLayout from "@/layouts/MainLayout";
 import BrandsCarousel from "@/components/BrandsCarousel";
+import { useFeaturedBrands } from "@/hooks/use-brands";
+// Keeping this for fallback
 import { featuredBrands } from "@/data/brands";
 
 const HomePage = () => {
   // State for scroll-to-top button visibility
   const [showScrollTop, setShowScrollTop] = useState(false);
+  
+  // Fetch featured brands from API
+  const { data: apiBrands, isLoading, error } = useFeaturedBrands();
   
   // Effect to handle scroll events
   useEffect(() => {

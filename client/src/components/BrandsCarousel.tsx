@@ -1,6 +1,16 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+export interface ApiBrand {
+  id: number;
+  categoryId: number;
+  name: string;
+  image: string;
+  description: string;
+  displayOrder?: number;
+  createdAt?: string;
+}
+
 interface Brand {
   name: string;
   image: string;
@@ -9,7 +19,7 @@ interface Brand {
 
 interface BrandsCarouselProps {
   category: string;
-  brands: Brand[];
+  brands: Brand[] | ApiBrand[];
   intervalMs?: number;
   bgClass?: string;
 }
@@ -34,6 +44,10 @@ const BrandsCarousel = ({
     }
     return () => {};
   }, [brands.length, intervalMs, isHovered]);
+
+  if (brands.length === 0) {
+    return null;
+  }
 
   const currentBrand = brands[currentIndex];
 
