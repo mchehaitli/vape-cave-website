@@ -5,7 +5,7 @@ import MainLayout from "@/layouts/MainLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useBrandCategories } from "@/hooks/use-brands";
+import { useBrandCategories, useFeaturedBrands } from "@/hooks/use-brands";
 
 export default function AdminPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -13,6 +13,7 @@ export default function AdminPage() {
   const [, navigate] = useLocation();
   const { toast } = useToast();
   const { data: categories, isLoading: isCategoriesLoading } = useBrandCategories();
+  const { data: featuredBrands, isLoading: isFeaturedBrandsLoading } = useFeaturedBrands();
 
   useEffect(() => {
     // Check if user is authenticated and is admin
@@ -133,7 +134,11 @@ export default function AdminPage() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-3xl font-bold">
-                      {categories?.reduce((acc, cat) => acc + cat.brands.length, 0) || 0}
+                      {isFeaturedBrandsLoading ? (
+                        <span className="animate-pulse">...</span>
+                      ) : (
+                        featuredBrands?.reduce((acc, cat) => acc + cat.brands.length, 0) || 0
+                      )}
                     </p>
                   </CardContent>
                 </Card>
