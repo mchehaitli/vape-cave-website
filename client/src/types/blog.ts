@@ -3,23 +3,22 @@ export interface BlogCategory {
   name: string;
   slug: string;
   description?: string;
-  displayOrder?: number;
-  createdAt?: string;
+  display_order?: number;
+  created_at?: string;
 }
 
 export interface BlogPost {
   id: number;
-  categoryId: number;
   title: string;
   slug: string;
   summary: string;
   content: string;
-  imageUrl?: string;
-  published: boolean;
-  featured: boolean;
-  metaTitle?: string;
-  metaDescription?: string;
-  viewCount?: number;
-  createdAt: string;
-  updatedAt?: string;
+  featured_image?: string;
+  is_published: boolean;
+  is_featured: boolean;
+  meta_title?: string;
+  meta_description?: string;
+  view_count?: number;
+  created_at: string;
+  updated_at?: string;
 }

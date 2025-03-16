@@ -1,8 +1,7 @@
-import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRoute, Link } from "wouter";
 import MainLayout from "@/layouts/MainLayout";
-import { BlogPost, BlogCategory } from "@/types/blog";
+import { BlogPost } from "@/types/blog";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -19,15 +18,6 @@ export default function BlogPostPage() {
     staleTime: 30000,
     enabled: !!slug,
   });
-  
-  // Query for blog categories for navigation
-  const { data: categories = [] } = useQuery<BlogCategory[]>({
-    queryKey: ['/api/blog-categories'],
-    staleTime: 60000,
-  });
-  
-  // Find the category this post belongs to
-  const category = post ? categories.find(c => c.id === post.categoryId) : null;
   
   // Handle 404 if post not found
   if (!isPostLoading && (!post || postError)) {
@@ -74,10 +64,10 @@ export default function BlogPostPage() {
   
   return (
     <MainLayout
-      title={`${post.metaTitle || post.title} | Vape Cave TX Blog`}
-      description={post.metaDescription || post.summary}
+      title={`${post.meta_title || post.title} | Vape Cave TX Blog`}
+      description={post.meta_description || post.summary}
       canonical={`/blog/${post.slug}`}
-      ogImage={post.imageUrl}
+      ogImage={post.featured_image}
     >
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <div className="mb-6">
@@ -91,17 +81,15 @@ export default function BlogPostPage() {
           <h1 className="text-3xl md:text-4xl font-bold mb-3">{post.title}</h1>
           
           <div className="flex items-center text-sm text-gray-600 mb-4">
-            <span>{category?.name || 'Uncategorized'}</span>
-            <span className="mx-2">•</span>
-            <span>{new Date(post.createdAt).toLocaleDateString('en-US', {
+            <span>{new Date(post.created_at).toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
               day: 'numeric'
             })}</span>
-            {post.updatedAt && post.updatedAt !== post.createdAt && (
+            {post.updated_at && post.updated_at !== post.created_at && (
               <>
                 <span className="mx-2">•</span>
-                <span>Updated: {new Date(post.updatedAt).toLocaleDateString('en-US', {
+                <span>Updated: {new Date(post.updated_at).toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric'
@@ -110,10 +98,10 @@ export default function BlogPostPage() {
             )}
           </div>
           
-          {post.imageUrl && (
+          {post.featured_image && (
             <div className="mb-8">
               <img 
-                src={post.imageUrl} 
+                src={post.featured_image} 
                 alt={post.title} 
                 className="w-full h-auto rounded-lg object-cover max-h-[400px]"
               />

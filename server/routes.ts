@@ -1,7 +1,7 @@
 import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertUserSchema, insertBrandCategorySchema, insertBrandSchema, insertBlogCategorySchema, insertBlogPostSchema } from "@shared/schema";
+import { insertUserSchema, insertBrandCategorySchema, insertBrandSchema, insertBlogPostSchema } from "@shared/schema";
 import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
 import * as dotenv from "dotenv";

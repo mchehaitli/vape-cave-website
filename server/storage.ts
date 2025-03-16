@@ -2,7 +2,6 @@ import {
   users, type User, type InsertUser,
   brands, type Brand, type InsertBrand, 
   brandCategories, type BrandCategory, type InsertBrandCategory,
-  blogCategories, type BlogCategory, type InsertBlogCategory,
   blogPosts, type BlogPost, type InsertBlogPost
 } from "@shared/schema";
 import { eq, and, asc, sql } from "drizzle-orm";
@@ -44,19 +43,9 @@ export interface IStorage {
   updateBrand(id: number, brand: Partial<InsertBrand>): Promise<Brand | undefined>;
   deleteBrand(id: number): Promise<boolean>;
   
-  // Blog category operations
-  getAllBlogCategories(): Promise<BlogCategory[]>;
-  getBlogCategory(id: number): Promise<BlogCategory | undefined>;
-  getBlogCategoryBySlug(slug: string): Promise<BlogCategory | undefined>;
-  createBlogCategory(category: InsertBlogCategory): Promise<BlogCategory>;
-  updateBlogCategory(id: number, category: Partial<InsertBlogCategory>): Promise<BlogCategory | undefined>;
-  deleteBlogCategory(id: number): Promise<boolean>;
-  
   // Blog post operations
   getAllBlogPosts(includeUnpublished?: boolean): Promise<BlogPost[]>;
   getFeaturedBlogPosts(limit?: number): Promise<BlogPost[]>;
-  getBlogPostsByCategory(categoryId: number, includeUnpublished?: boolean): Promise<BlogPost[]>;
-  getBlogPostsByCategorySlug(slug: string, includeUnpublished?: boolean): Promise<BlogPost[]>;
   getBlogPost(id: number): Promise<BlogPost | undefined>;
   getBlogPostBySlug(slug: string): Promise<BlogPost | undefined>;
   createBlogPost(post: InsertBlogPost): Promise<BlogPost>;
