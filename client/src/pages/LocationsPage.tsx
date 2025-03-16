@@ -4,11 +4,15 @@ import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import DirectionsButton from "@/components/DirectionsButton";
 import GoogleMapsIntegration from "@/components/GoogleMapsIntegration";
-import { storeLocations, getFormattedLocationsForMap } from "@/data/storeInfo";
+import { useStoreLocations, useFormattedLocationsForMap } from "@/hooks/use-store-locations";
 
 const LocationsPage = () => {
+  // Use API data instead of static data
+  const { data: locations, isLoading } = useStoreLocations();
+  const { data: formattedLocations } = useFormattedLocationsForMap();
+  
   // Create enhanced structured data for SEO - more detailed for better search visibility
-  const generateLocalBusinessSchema = (location: typeof storeLocations[0]) => {
+  const generateLocalBusinessSchema = (location: any) => {
     // Parse postal code from address (ZIP code is the last 5 digits in US addresses)
     const zipCodeMatch = location.fullAddress.match(/\d{5}(?![\d-])/);
     const postalCode = zipCodeMatch ? zipCodeMatch[0] : "";
@@ -142,8 +146,21 @@ const LocationsPage = () => {
   // Don't set any location as active by default to avoid favoring one location over another
   const [activeLocation, setActiveLocation] = useState<number | null>(null);
   
-  // Get properly formatted locations for Google Maps
-  const mapLocations = getFormattedLocationsForMap();
+  // Show loading state if data is not yet available
+  if (isLoading || !locations || !formattedLocations) {
+    return (
+      <MainLayout title="Loading..." description="Loading location data...">
+        <div className="container mx-auto px-4 py-12 text-center">
+          <div className="animate-pulse flex flex-col items-center">
+            <div className="h-8 bg-gray-300 rounded w-3/4 mb-4"></div>
+            <div className="h-4 bg-gray-300 rounded w-2/3 mb-2"></div>
+            <div className="h-4 bg-gray-300 rounded w-1/2 mb-8"></div>
+            <div className="w-full h-64 bg-gray-300 rounded-lg"></div>
+          </div>
+        </div>
+      </MainLayout>
+    );
+  }
 
   return (
     <MainLayout
@@ -250,7 +267,7 @@ const LocationsPage = () => {
                 "mainEntityOfPage": "https://vapecavetx.com/locations/arlington"
               }
             ],
-            "location": storeLocations.map(location => generateLocalBusinessSchema(location))
+            "location": formattedLocations.map(location => generateLocalBusinessSchema(location))
           })}
         </script>
         
@@ -298,7 +315,7 @@ const LocationsPage = () => {
       <section className="py-12 bg-gradient-to-r from-black to-gray-900 text-white">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {storeLocations.map((location) => (
+            {locations.map((location) => (
               <div 
                 key={location.id}
                 className={`bg-gray-800 rounded-lg shadow-md overflow-hidden border ${
