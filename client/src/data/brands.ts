@@ -71,22 +71,22 @@ export const featuredBrands: BrandCategory[] = [
     brands: [
       {
         name: "Naked 100",
-        image: "/brand-logos/naked100.png",
+        image: placeholderImage,
         description: "Premium fruit-flavored e-liquids with smooth taste"
       },
       {
         name: "Pachamama",
-        image: "/brand-logos/pachamama.png",
+        image: placeholderImage,
         description: "Exotic fruit-blend e-juices with bold flavors"
       },
       {
         name: "Twist",
-        image: "/brand-logos/twist.png",
+        image: placeholderImage,
         description: "Refreshing beverage-inspired e-liquids"
       },
       {
         name: "Salt Bae",
-        image: "/brand-logos/saltbae.png",
+        image: placeholderImage,
         description: "High-quality nicotine salt e-juices"
       }
     ]
@@ -97,22 +97,22 @@ export const featuredBrands: BrandCategory[] = [
     brands: [
       {
         name: "GeekVape",
-        image: "/brand-logos/geekvape.png",
+        image: placeholderImage,
         description: "Durable, high-performance vaping devices"
       },
       {
         name: "SMOK",
-        image: "/brand-logos/smok.png",
+        image: placeholderImage,
         description: "Innovative vape mods with cutting-edge technology"
       },
       {
         name: "Uwell Caliburn",
-        image: "/brand-logos/caliburn.png",
+        image: placeholderImage,
         description: "User-friendly pod systems with excellent flavor"
       },
       {
         name: "Vaporesso",
-        image: "/brand-logos/vaporesso.png",
+        image: placeholderImage,
         description: "Stylish devices with advanced vaping technology"
       }
     ]
@@ -123,22 +123,22 @@ export const featuredBrands: BrandCategory[] = [
     brands: [
       {
         name: "Starbuzz",
-        image: "/brand-logos/starbuzz.png",
+        image: placeholderImage,
         description: "Premium hookah tobacco with rich flavors"
       },
       {
         name: "Al Fakher",
-        image: "/brand-logos/alfakher.png",
+        image: placeholderImage,
         description: "Traditional hookah tobacco with authentic taste"
       },
       {
         name: "Fumari",
-        image: "/brand-logos/fumari.png",
+        image: placeholderImage,
         description: "Gourmet hookah flavors with excellent cloud production"
       },
       {
         name: "Azure",
-        image: "/brand-logos/azure.png",
+        image: placeholderImage,
         description: "Modern hookah tobacco with innovative blends"
       }
     ]
@@ -149,22 +149,22 @@ export const featuredBrands: BrandCategory[] = [
     brands: [
       {
         name: "Grav Labs",
-        image: "/brand-logos/gravlabs.png",
+        image: placeholderImage,
         description: "Scientific-grade glass with modern designs"
       },
       {
         name: "Puffco",
-        image: "/brand-logos/puffco.png",
+        image: placeholderImage,
         description: "Premium electronic dab rigs and vaporizers"
       },
       {
         name: "Raw Glass",
-        image: "/brand-logos/rawglass.png",
+        image: placeholderImage,
         description: "Authentic glass accessories with natural aesthetics"
       },
       {
         name: "Lookah",
-        image: "/brand-logos/lookah.png",
+        image: placeholderImage,
         description: "Innovative glass pieces with advanced features"
       }
     ]

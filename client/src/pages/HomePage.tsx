@@ -3,6 +3,8 @@ import { Link } from "wouter";
 import { Helmet } from "react-helmet";
 import { motion } from "framer-motion";
 import MainLayout from "@/layouts/MainLayout";
+import BrandsCarousel from "@/components/BrandsCarousel";
+import { featuredBrands } from "@/data/brands";
 
 const HomePage = () => {
   // State for scroll-to-top button visibility
@@ -344,6 +346,72 @@ const HomePage = () => {
               </motion.div>
             </motion.div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Featured Brands Section with rotating categories */}
+      <section className="py-16 bg-gradient-to-b from-gray-900 to-black" id="featured-brands">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <motion.h2 
+              className="text-3xl md:text-4xl font-bold text-white mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              Featured <span className="text-primary">Brands</span>
+            </motion.h2>
+            <motion.p 
+              className="text-gray-400 max-w-2xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              Discover our extensive collection of premium brands, each carefully selected to provide you with the best vaping experience.
+            </motion.p>
+          </div>
+          
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, staggerChildren: 0.1 }}
+          >
+            {featuredBrands.map((category, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <BrandsCarousel 
+                  category={category.category} 
+                  brands={category.brands} 
+                  intervalMs={5000} 
+                  bgClass={category.bgClass}
+                />
+              </motion.div>
+            ))}
+          </motion.div>
+          
+          <div className="text-center mt-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              <Link href="/products">
+                <div className="inline-block bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                  View All Products
+                </div>
+              </Link>
+            </motion.div>
+          </div>
         </div>
       </section>
 
