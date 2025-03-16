@@ -49,8 +49,6 @@ const brandSchema = z.object({
   }),
   image: z.string({
     required_error: "Image URL is required",
-  }).url({
-    message: "Please enter a valid URL",
   }),
   description: z.string({
     required_error: "Description is required",
@@ -670,16 +668,61 @@ export default function AdminPage() {
                         name="image"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Image URL</FormLabel>
-                            <FormControl>
-                              <Input
-                                className="bg-gray-900 border-gray-700 text-white" 
-                                placeholder="https://example.com/image.jpg"
-                                {...field}
-                              />
-                            </FormControl>
+                            <FormLabel>Brand Image</FormLabel>
+                            <div className="space-y-3">
+                              <FormControl>
+                                <Input
+                                  className="bg-gray-900 border-gray-700 text-white" 
+                                  placeholder="https://example.com/image.jpg or upload below"
+                                  {...field}
+                                />
+                              </FormControl>
+                              
+                              <div className="mt-2">
+                                <div className="flex flex-col gap-2">
+                                  <Label htmlFor="image-upload" className="text-sm text-gray-400">
+                                    Or upload from your computer:
+                                  </Label>
+                                  <Input
+                                    id="image-upload"
+                                    type="file"
+                                    accept=".png,.jpg,.jpeg,.svg"
+                                    className="bg-gray-900 border-gray-700 text-white cursor-pointer file:cursor-pointer file:border-0 file:bg-gray-800 file:text-white file:px-4 file:py-2 file:mr-4 file:hover:bg-gray-700"
+                                    onChange={async (e) => {
+                                      const file = e.target.files?.[0];
+                                      if (file) {
+                                        // Simple base64 encoding
+                                        const reader = new FileReader();
+                                        reader.onload = (event) => {
+                                          if (event.target?.result) {
+                                            field.onChange(event.target.result as string);
+                                          }
+                                        };
+                                        reader.readAsDataURL(file);
+                                      }
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                              
+                              {field.value && (
+                                <div className="mt-2 border border-gray-700 rounded p-2 bg-gray-800">
+                                  <p className="text-xs text-gray-400 mb-2">Image Preview:</p>
+                                  <div className="w-32 h-32 bg-gray-900 rounded flex items-center justify-center overflow-hidden">
+                                    <img 
+                                      src={field.value} 
+                                      alt="Brand preview" 
+                                      className="max-w-full max-h-full object-contain"
+                                      onError={(e) => {
+                                        (e.target as HTMLImageElement).src = 'https://placehold.co/100x100?text=Invalid+Image';
+                                      }}
+                                    />
+                                  </div>
+                                </div>
+                              )}
+                            </div>
                             <FormDescription className="text-gray-500 text-xs">
-                              Enter a valid image URL. Image will be displayed in brand carousels.
+                              You can provide a URL or upload a PNG, JPG, or SVG image.
                             </FormDescription>
                             <FormMessage className="text-red-400" />
                           </FormItem>
