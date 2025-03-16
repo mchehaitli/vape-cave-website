@@ -283,7 +283,8 @@ export class MemStorage implements IStorage {
     const newBrand: Brand = { 
       ...brand, 
       id,
-      displayOrder: brand.displayOrder ?? 0
+      displayOrder: brand.displayOrder ?? 0,
+      imageSize: brand.imageSize ?? "medium"
     };
     this.brandsMap.set(id, newBrand);
     return newBrand;

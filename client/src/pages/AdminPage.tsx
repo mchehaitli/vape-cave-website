@@ -179,6 +179,7 @@ export default function AdminPage() {
       image: "",
       description: "",
       displayOrder: 0,
+      imageSize: "medium",
     }
   });
   
@@ -212,6 +213,7 @@ export default function AdminPage() {
         image: editingBrand.image,
         description: editingBrand.description,
         displayOrder: editingBrand.displayOrder || 0,
+        imageSize: editingBrand.imageSize || "medium",
       });
     } else if (brandDialogOpen) {
       brandForm.reset({
@@ -220,6 +222,7 @@ export default function AdminPage() {
         image: "",
         description: "",
         displayOrder: 0,
+        imageSize: "medium",
       });
     }
   }, [brandDialogOpen, editingBrand, brandForm, categories]);
