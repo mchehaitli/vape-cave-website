@@ -14,7 +14,7 @@ export default function BlogPostPage() {
   
   // Query for the blog post
   const { data: post, isLoading: isPostLoading, error: postError } = useQuery<BlogPost>({
-    queryKey: ['/api/blog-posts/slug', slug],
+    queryKey: [`/api/blog-posts/slug/${slug}`],
     staleTime: 30000,
     enabled: !!slug,
   });
