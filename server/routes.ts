@@ -367,117 +367,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // Blog category endpoints
-  app.get('/api/blog-categories', async (req, res) => {
-    try {
-      const categories = await storage.getAllBlogCategories();
-      res.json(categories);
-    } catch (error) {
-      console.error("Get blog categories error:", error);
-      res.status(500).json({ error: "Failed to fetch blog categories" });
-    }
-  });
-  
-  app.get('/api/blog-categories/:id', async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      if (isNaN(id)) {
-        return res.status(400).json({ error: "Invalid blog category ID" });
-      }
-      
-      const category = await storage.getBlogCategory(id);
-      
-      if (!category) {
-        return res.status(404).json({ error: "Blog category not found" });
-      }
-      
-      res.json(category);
-    } catch (error) {
-      console.error("Get blog category error:", error);
-      res.status(500).json({ error: "Failed to fetch blog category" });
-    }
-  });
-  
-  app.get('/api/blog-categories/slug/:slug', async (req, res) => {
-    try {
-      const { slug } = req.params;
-      
-      const category = await storage.getBlogCategoryBySlug(slug);
-      
-      if (!category) {
-        return res.status(404).json({ error: "Blog category not found" });
-      }
-      
-      res.json(category);
-    } catch (error) {
-      console.error("Get blog category by slug error:", error);
-      res.status(500).json({ error: "Failed to fetch blog category" });
-    }
-  });
-  
-  app.post('/api/admin/blog-categories', isAdmin, async (req, res) => {
-    try {
-      const categoryResult = insertBlogCategorySchema.safeParse(req.body);
-      
-      if (!categoryResult.success) {
-        return res.status(400).json({ error: categoryResult.error.format() });
-      }
-      
-      const category = await storage.createBlogCategory(categoryResult.data);
-      res.status(201).json(category);
-    } catch (error) {
-      console.error("Create blog category error:", error);
-      res.status(500).json({ error: "Failed to create blog category" });
-    }
-  });
-  
-  app.put('/api/admin/blog-categories/:id', isAdmin, async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      if (isNaN(id)) {
-        return res.status(400).json({ error: "Invalid blog category ID" });
-      }
-      
-      // Only validate the fields present in the request
-      const updatedData: Record<string, any> = {};
-      
-      if (req.body.name !== undefined) updatedData.name = req.body.name;
-      if (req.body.slug !== undefined) updatedData.slug = req.body.slug;
-      if (req.body.description !== undefined) updatedData.description = req.body.description;
-      if (req.body.displayOrder !== undefined) updatedData.displayOrder = req.body.displayOrder;
-      
-      const category = await storage.updateBlogCategory(id, updatedData);
-      
-      if (!category) {
-        return res.status(404).json({ error: "Blog category not found" });
-      }
-      
-      res.json(category);
-    } catch (error) {
-      console.error("Update blog category error:", error);
-      res.status(500).json({ error: "Failed to update blog category" });
-    }
-  });
-  
-  app.delete('/api/admin/blog-categories/:id', isAdmin, async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      if (isNaN(id)) {
-        return res.status(400).json({ error: "Invalid blog category ID" });
-      }
-      
-      const success = await storage.deleteBlogCategory(id);
-      
-      if (!success) {
-        return res.status(404).json({ error: "Blog category not found" });
-      }
-      
-      res.json({ message: "Blog category deleted successfully" });
-    } catch (error) {
-      console.error("Delete blog category error:", error);
-      res.status(500).json({ error: "Failed to delete blog category" });
-    }
-  });
+  // No blog category endpoints - using simplified blog structure
   
   // Blog posts endpoints
   app.get('/api/blog-posts', async (req, res) => {
@@ -505,40 +395,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  app.get('/api/blog-posts/category/:categoryId', async (req, res) => {
-    try {
-      const categoryId = parseInt(req.params.categoryId);
-      if (isNaN(categoryId)) {
-        return res.status(400).json({ error: "Invalid category ID" });
-      }
-      
-      // Admin users can see unpublished posts if they specify includeUnpublished=true
-      const userIsAdmin = req.session?.userId ? await isAdminUser(req.session.userId) : false;
-      const includeUnpublished = userIsAdmin && req.query.includeUnpublished === 'true';
-      
-      const posts = await storage.getBlogPostsByCategory(categoryId, includeUnpublished);
-      res.json(posts);
-    } catch (error) {
-      console.error("Get blog posts by category error:", error);
-      res.status(500).json({ error: "Failed to fetch blog posts" });
-    }
-  });
-  
-  app.get('/api/blog-posts/category/slug/:slug', async (req, res) => {
-    try {
-      const { slug } = req.params;
-      
-      // Admin users can see unpublished posts if they specify includeUnpublished=true
-      const userIsAdmin = req.session?.userId ? await isAdminUser(req.session.userId) : false;
-      const includeUnpublished = userIsAdmin && req.query.includeUnpublished === 'true';
-      
-      const posts = await storage.getBlogPostsByCategorySlug(slug, includeUnpublished);
-      res.json(posts);
-    } catch (error) {
-      console.error("Get blog posts by category slug error:", error);
-      res.status(500).json({ error: "Failed to fetch blog posts" });
-    }
-  });
+  // Category-based blog post routes have been removed
   
   app.get('/api/blog-posts/:id', async (req, res) => {
     try {
@@ -613,17 +470,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Only validate the fields present in the request
       const updatedData: Record<string, any> = {};
       
-      if (req.body.categoryId !== undefined) updatedData.categoryId = req.body.categoryId;
       if (req.body.title !== undefined) updatedData.title = req.body.title;
       if (req.body.slug !== undefined) updatedData.slug = req.body.slug;
       if (req.body.summary !== undefined) updatedData.summary = req.body.summary;
       if (req.body.content !== undefined) updatedData.content = req.body.content;
-      if (req.body.featuredImage !== undefined) updatedData.featuredImage = req.body.featuredImage;
-      if (req.body.authorId !== undefined) updatedData.authorId = req.body.authorId;
-      if (req.body.metaTitle !== undefined) updatedData.metaTitle = req.body.metaTitle;
-      if (req.body.metaDescription !== undefined) updatedData.metaDescription = req.body.metaDescription;
-      if (req.body.isFeatured !== undefined) updatedData.isFeatured = req.body.isFeatured;
-      if (req.body.isPublished !== undefined) updatedData.isPublished = req.body.isPublished;
+      if (req.body.featured_image !== undefined) updatedData.featured_image = req.body.featured_image;
+      if (req.body.meta_title !== undefined) updatedData.meta_title = req.body.meta_title;
+      if (req.body.meta_description !== undefined) updatedData.meta_description = req.body.meta_description;
+      if (req.body.is_featured !== undefined) updatedData.is_featured = req.body.is_featured;
+      if (req.body.is_published !== undefined) updatedData.is_published = req.body.is_published;
       
       const post = await storage.updateBlogPost(id, updatedData);
       

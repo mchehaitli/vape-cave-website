@@ -43,7 +43,7 @@ export interface IStorage {
   updateBrand(id: number, brand: Partial<InsertBrand>): Promise<Brand | undefined>;
   deleteBrand(id: number): Promise<boolean>;
   
-  // Blog post operations
+  // Blog post operations (uncategorized)
   getAllBlogPosts(includeUnpublished?: boolean): Promise<BlogPost[]>;
   getFeaturedBlogPosts(limit?: number): Promise<BlogPost[]>;
   getBlogPost(id: number): Promise<BlogPost | undefined>;
@@ -282,54 +282,17 @@ export class DbStorage implements IStorage {
     return result.length > 0;
   }
   
-  // Blog category operations
-  async getAllBlogCategories(): Promise<BlogCategory[]> {
-    return db.select().from(blogCategories).orderBy(asc(blogCategories.displayOrder));
-  }
-
-  async getBlogCategory(id: number): Promise<BlogCategory | undefined> {
-    const result = await db.select().from(blogCategories).where(eq(blogCategories.id, id));
-    return result[0];
-  }
-
-  async getBlogCategoryBySlug(slug: string): Promise<BlogCategory | undefined> {
-    const result = await db.select().from(blogCategories).where(eq(blogCategories.slug, slug));
-    return result[0];
-  }
-
-  async createBlogCategory(category: InsertBlogCategory): Promise<BlogCategory> {
-    const result = await db.insert(blogCategories).values(category).returning();
-    return result[0];
-  }
-
-  async updateBlogCategory(id: number, category: Partial<InsertBlogCategory>): Promise<BlogCategory | undefined> {
-    const result = await db
-      .update(blogCategories)
-      .set(category)
-      .where(eq(blogCategories.id, id))
-      .returning();
-    
-    return result[0];
-  }
-
-  async deleteBlogCategory(id: number): Promise<boolean> {
-    const result = await db
-      .delete(blogCategories)
-      .where(eq(blogCategories.id, id))
-      .returning();
-    
-    return result.length > 0;
-  }
+  // Blog category operations have been removed
 
   // Blog post operations
   async getAllBlogPosts(includeUnpublished: boolean = false): Promise<BlogPost[]> {
     if (includeUnpublished) {
-      return db.select().from(blogPosts).orderBy(asc(blogPosts.publishedAt));
+      return db.select().from(blogPosts).orderBy(desc(blogPosts.created_at));
     } else {
       return db.select()
         .from(blogPosts)
-        .where(eq(blogPosts.isPublished, true))
-        .orderBy(asc(blogPosts.publishedAt));
+        .where(eq(blogPosts.is_published, true))
+        .orderBy(desc(blogPosts.created_at));
     }
   }
 
@@ -338,40 +301,11 @@ export class DbStorage implements IStorage {
       .select()
       .from(blogPosts)
       .where(and(
-        eq(blogPosts.isFeatured, true),
-        eq(blogPosts.isPublished, true)
+        eq(blogPosts.is_featured, true),
+        eq(blogPosts.is_published, true)
       ))
-      .orderBy(asc(blogPosts.publishedAt))
+      .orderBy(desc(blogPosts.created_at))
       .limit(limit);
-  }
-
-  async getBlogPostsByCategory(categoryId: number, includeUnpublished: boolean = false): Promise<BlogPost[]> {
-    if (includeUnpublished) {
-      return db
-        .select()
-        .from(blogPosts)
-        .where(eq(blogPosts.categoryId, categoryId))
-        .orderBy(asc(blogPosts.publishedAt));
-    } else {
-      return db
-        .select()
-        .from(blogPosts)
-        .where(and(
-          eq(blogPosts.categoryId, categoryId),
-          eq(blogPosts.isPublished, true)
-        ))
-        .orderBy(asc(blogPosts.publishedAt));
-    }
-  }
-
-  async getBlogPostsByCategorySlug(slug: string, includeUnpublished: boolean = false): Promise<BlogPost[]> {
-    const category = await this.getBlogCategoryBySlug(slug);
-    
-    if (!category) {
-      return [];
-    }
-    
-    return this.getBlogPostsByCategory(category.id, includeUnpublished);
   }
 
   async getBlogPost(id: number): Promise<BlogPost | undefined> {
@@ -393,33 +327,23 @@ export class DbStorage implements IStorage {
     // Create a clean update object with only fields that exist in the schema
     const updateData: Partial<Omit<BlogPost, 'id'>> = {};
     
-    // Explicitly map allowed fields from post to updateData
-    if (post.categoryId !== undefined) updateData.categoryId = post.categoryId;
+    // Explicitly map allowed fields from post to updateData using snake_case property names
     if (post.title !== undefined) updateData.title = post.title;
     if (post.slug !== undefined) updateData.slug = post.slug;
     if (post.summary !== undefined) updateData.summary = post.summary;
     if (post.content !== undefined) updateData.content = post.content;
-    if (post.featuredImage !== undefined) updateData.featuredImage = post.featuredImage;
-    if (post.authorId !== undefined) updateData.authorId = post.authorId;
-    if (post.metaTitle !== undefined) updateData.metaTitle = post.metaTitle;
-    if (post.metaDescription !== undefined) updateData.metaDescription = post.metaDescription;
-    if (post.isFeatured !== undefined) updateData.isFeatured = post.isFeatured;
-    if (post.isPublished !== undefined) updateData.isPublished = post.isPublished;
+    if (post.featured_image !== undefined) updateData.featured_image = post.featured_image;
+    if (post.meta_title !== undefined) updateData.meta_title = post.meta_title;
+    if (post.meta_description !== undefined) updateData.meta_description = post.meta_description;
+    if (post.is_featured !== undefined) updateData.is_featured = post.is_featured;
+    if (post.is_published !== undefined) updateData.is_published = post.is_published;
     
-    // Always update the updatedAt field
-    updateData.updatedAt = new Date();
-    
-    // Set publishedAt if the post is being published for the first time
-    if (post.isPublished === true) {
-      const existingPost = await this.getBlogPost(id);
-      if (existingPost && !existingPost.isPublished) {
-        updateData.publishedAt = new Date();
-      }
-    }
+    // Always update the updated_at field
+    updateData.updated_at = new Date();
     
     const result = await db
       .update(blogPosts)
-      .set(updateData as any) // Use type assertion to bypass TypeScript's strict checking
+      .set(updateData)
       .where(eq(blogPosts.id, id))
       .returning();
     
