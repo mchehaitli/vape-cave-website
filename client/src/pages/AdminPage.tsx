@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useBrandCategories, useFeaturedBrands } from "@/hooks/use-brands";
+import BrandsCarousel from "@/components/BrandsCarousel";
 import { 
   Dialog, 
   DialogContent, 
@@ -546,19 +547,30 @@ export default function AdminPage() {
                                     title="Click to see larger preview"
                                     onClick={() => {
                                       toast({
-                                        title: brand.name,
+                                        title: "Brand Preview",
                                         description: (
                                           <div className="mt-2">
-                                            <div className="w-full h-40 bg-gray-800 rounded-md flex items-center justify-center p-2">
-                                              <img 
-                                                src={brand.image} 
-                                                alt={brand.name} 
-                                                className="max-w-full max-h-full object-contain" 
+                                            <div className="relative w-full max-w-md mx-auto">
+                                              <BrandsCarousel 
+                                                category={category.category}
+                                                brands={[{ 
+                                                  id: brand.id,
+                                                  categoryId: brand.categoryId,
+                                                  name: brand.name, 
+                                                  image: brand.image, 
+                                                  description: brand.description,
+                                                  displayOrder: brand.displayOrder,
+                                                  createdAt: brand.createdAt
+                                                }]}
+                                                debug={true}
                                               />
+                                              <div className="mt-2 text-sm text-gray-400 text-center">
+                                                Debug mode enabled - showing auto-sizing metrics
+                                              </div>
                                             </div>
                                           </div>
                                         ),
-                                        duration: 5000,
+                                        duration: 10000,
                                       });
                                     }}
                                   >
