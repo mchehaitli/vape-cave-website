@@ -26,7 +26,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { apiRequest } from "@/lib/queryClient";
-import { Trash2, Edit, Plus, RefreshCcw } from "lucide-react";
+import { Trash2, Edit, Plus, RefreshCcw, Info } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { 
   AlertDialog,
   AlertDialogAction,
@@ -705,9 +706,25 @@ export default function AdminPage() {
                               
                               <div className="mt-2">
                                 <div className="flex flex-col gap-2">
-                                  <Label htmlFor="image-upload" className="text-sm text-gray-400">
-                                    Or upload from your computer:
-                                  </Label>
+                                  <div className="flex items-center gap-2">
+                                    <Label htmlFor="image-upload" className="text-sm text-gray-400">
+                                      Or upload from your computer:
+                                    </Label>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <div className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-gray-600 bg-gray-800 cursor-help">
+                                          <Info className="h-3.5 w-3.5 text-gray-400" />
+                                        </div>
+                                      </TooltipTrigger>
+                                      <TooltipContent side="right" className="max-w-xs bg-black text-white border-gray-700">
+                                        <p className="font-semibold">Optimal Image Dimensions:</p>
+                                        <p className="text-xs mt-1">700px width × 530px height</p>
+                                        <p className="text-xs mt-1 text-gray-300">
+                                          This size ensures your brand images fill available space with minimal distortion.
+                                        </p>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </div>
                                   <Input
                                     id="image-upload"
                                     type="file"
