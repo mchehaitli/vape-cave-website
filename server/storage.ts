@@ -4,7 +4,7 @@ import {
   brandCategories, type BrandCategory, type InsertBrandCategory,
   blogPosts, type BlogPost, type InsertBlogPost
 } from "@shared/schema";
-import { eq, and, asc, sql } from "drizzle-orm";
+import { eq, and, asc, desc, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import pg from "pg";
 import * as bcrypt from "bcryptjs";
@@ -363,7 +363,7 @@ export class DbStorage implements IStorage {
     await db
       .update(blogPosts)
       .set({
-        viewCount: sql`${blogPosts.viewCount} + 1`
+        view_count: sql`${blogPosts.view_count} + 1`
       })
       .where(eq(blogPosts.id, id));
   }
@@ -374,26 +374,22 @@ export class MemStorage implements IStorage {
   private usersMap: Map<number, User>;
   private brandCategoriesMap: Map<number, BrandCategory>;
   private brandsMap: Map<number, Brand>;
-  private blogCategoriesMap: Map<number, BlogCategory>;
   private blogPostsMap: Map<number, BlogPost>;
   
   private userCurrentId: number;
   private categoryCurrentId: number;
   private brandCurrentId: number;
-  private blogCategoryCurrentId: number;
   private blogPostCurrentId: number;
 
   constructor() {
     this.usersMap = new Map();
     this.brandCategoriesMap = new Map();
     this.brandsMap = new Map();
-    this.blogCategoriesMap = new Map();
     this.blogPostsMap = new Map();
     
     this.userCurrentId = 1;
     this.categoryCurrentId = 1;
     this.brandCurrentId = 1;
-    this.blogCategoryCurrentId = 1;
     this.blogPostCurrentId = 1;
   }
 
@@ -523,52 +519,7 @@ export class MemStorage implements IStorage {
     return this.brandsMap.delete(id);
   }
   
-  // Blog category operations
-  async getAllBlogCategories(): Promise<BlogCategory[]> {
-    return Array.from(this.blogCategoriesMap.values())
-      .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
-  }
-
-  async getBlogCategory(id: number): Promise<BlogCategory | undefined> {
-    return this.blogCategoriesMap.get(id);
-  }
-
-  async getBlogCategoryBySlug(slug: string): Promise<BlogCategory | undefined> {
-    return Array.from(this.blogCategoriesMap.values()).find(
-      (category) => category.slug === slug
-    );
-  }
-
-  async createBlogCategory(category: InsertBlogCategory): Promise<BlogCategory> {
-    const id = this.blogCategoryCurrentId++;
-    const newCategory: BlogCategory = {
-      ...category,
-      id,
-      displayOrder: category.displayOrder ?? 0,
-      description: category.description ?? ""
-    };
-    this.blogCategoriesMap.set(id, newCategory);
-    return newCategory;
-  }
-
-  async updateBlogCategory(id: number, category: Partial<InsertBlogCategory>): Promise<BlogCategory | undefined> {
-    const existingCategory = this.blogCategoriesMap.get(id);
-    
-    if (!existingCategory) {
-      return undefined;
-    }
-    
-    const updatedCategory: BlogCategory = { 
-      ...existingCategory, 
-      ...category
-    };
-    this.blogCategoriesMap.set(id, updatedCategory);
-    return updatedCategory;
-  }
-
-  async deleteBlogCategory(id: number): Promise<boolean> {
-    return this.blogCategoriesMap.delete(id);
-  }
+  // Blog category operations have been removed
 
   // Blog post operations
   async getAllBlogPosts(includeUnpublished: boolean = false): Promise<BlogPost[]> {
