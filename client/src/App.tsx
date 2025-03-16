@@ -9,6 +9,7 @@ import LocationsPage from "@/pages/LocationsPage";
 import FriscoLocationPage from "@/pages/FriscoLocationPage";
 import ArlingtonLocationPage from "@/pages/ArlingtonLocationPage";
 import ContactPage from "@/pages/ContactPage";
+import BlogPage from "@/pages/BlogPage";
 import AdminLoginPage from "@/pages/AdminLoginPage";
 import AdminPage from "@/pages/AdminPage";
 import NotFound from "@/pages/not-found";
@@ -45,6 +46,7 @@ function Router() {
           <Route path="/locations/frisco" component={FriscoLocationPage} />
           <Route path="/locations/arlington" component={ArlingtonLocationPage} />
           <Route path="/contact" component={ContactPage} />
+          <Route path="/blog" component={BlogPage} />
           <Route path="/admin/login" component={AdminLoginPage} />
           <Route path="/admin" component={AdminPage} />
           <Route component={NotFound} />
