@@ -50,11 +50,12 @@ async function seedStoreLocations() {
         neighborhood_info: location.neighborhoodInfo || null,
         year_established: location.yearEstablished,
         price_range: location.priceRange,
-        opening_hours: location.openingHours,
-        services: location.services,
-        accepted_payments: location.acceptedPayments,
-        area_served: location.areaServed,
-        amenities: location.amenities,
+        // Convert values to proper types expected by the database schema
+        opening_hours: location.openingHours as Record<string, string>,
+        services: location.services as string[],
+        accepted_payments: location.acceptedPayments as string[],
+        area_served: location.areaServed as string[],
+        amenities: location.amenities as string[],
         social_profiles: socialProfiles
       };
       
