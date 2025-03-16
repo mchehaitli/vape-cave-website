@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, varchar } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, varchar, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -76,3 +76,59 @@ export type InsertBrand = z.infer<typeof insertBrandSchema>;
 export type Brand = typeof brands.$inferSelect & {
   imageSize?: string;
 };
+
+// Blog categories table
+export const blogCategories = pgTable("blog_categories", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  description: text("description").default(""),
+  displayOrder: integer("display_order").default(0),
+});
+
+export const insertBlogCategorySchema = createInsertSchema(blogCategories).pick({
+  name: true,
+  slug: true,
+  description: true,
+  displayOrder: true,
+});
+
+// Blog posts table
+export const blogPosts = pgTable("blog_posts", {
+  id: serial("id").primaryKey(),
+  categoryId: integer("category_id").notNull(),
+  title: text("title").notNull(),
+  slug: text("slug").notNull().unique(),
+  summary: text("summary").notNull(),
+  content: text("content").notNull(),
+  featuredImage: text("featured_image").notNull(),
+  authorId: integer("author_id").notNull(),
+  publishedAt: timestamp("published_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  metaTitle: text("meta_title").default(""),
+  metaDescription: text("meta_description").default(""),
+  isFeatured: boolean("is_featured").default(false),
+  isPublished: boolean("is_published").default(true),
+  viewCount: integer("view_count").default(0),
+});
+
+export const insertBlogPostSchema = createInsertSchema(blogPosts).pick({
+  categoryId: true,
+  title: true,
+  slug: true,
+  summary: true,
+  content: true,
+  featuredImage: true,
+  authorId: true,
+  metaTitle: true,
+  metaDescription: true,
+  isFeatured: true,
+  isPublished: true,
+});
+
+// Type exports for blog
+export type InsertBlogCategory = z.infer<typeof insertBlogCategorySchema>;
+export type BlogCategory = typeof blogCategories.$inferSelect;
+
+export type InsertBlogPost = z.infer<typeof insertBlogPostSchema>;
+export type BlogPost = typeof blogPosts.$inferSelect;

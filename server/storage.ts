@@ -1,9 +1,11 @@
 import { 
   users, type User, type InsertUser,
   brands, type Brand, type InsertBrand, 
-  brandCategories, type BrandCategory, type InsertBrandCategory
+  brandCategories, type BrandCategory, type InsertBrandCategory,
+  blogCategories, type BlogCategory, type InsertBlogCategory,
+  blogPosts, type BlogPost, type InsertBlogPost
 } from "@shared/schema";
-import { eq, and, asc } from "drizzle-orm";
+import { eq, and, asc, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import pg from "pg";
 import * as bcrypt from "bcryptjs";
@@ -41,6 +43,26 @@ export interface IStorage {
   createBrand(brand: InsertBrand): Promise<Brand>;
   updateBrand(id: number, brand: Partial<InsertBrand>): Promise<Brand | undefined>;
   deleteBrand(id: number): Promise<boolean>;
+  
+  // Blog category operations
+  getAllBlogCategories(): Promise<BlogCategory[]>;
+  getBlogCategory(id: number): Promise<BlogCategory | undefined>;
+  getBlogCategoryBySlug(slug: string): Promise<BlogCategory | undefined>;
+  createBlogCategory(category: InsertBlogCategory): Promise<BlogCategory>;
+  updateBlogCategory(id: number, category: Partial<InsertBlogCategory>): Promise<BlogCategory | undefined>;
+  deleteBlogCategory(id: number): Promise<boolean>;
+  
+  // Blog post operations
+  getAllBlogPosts(includeUnpublished?: boolean): Promise<BlogPost[]>;
+  getFeaturedBlogPosts(limit?: number): Promise<BlogPost[]>;
+  getBlogPostsByCategory(categoryId: number, includeUnpublished?: boolean): Promise<BlogPost[]>;
+  getBlogPostsByCategorySlug(slug: string, includeUnpublished?: boolean): Promise<BlogPost[]>;
+  getBlogPost(id: number): Promise<BlogPost | undefined>;
+  getBlogPostBySlug(slug: string): Promise<BlogPost | undefined>;
+  createBlogPost(post: InsertBlogPost): Promise<BlogPost>;
+  updateBlogPost(id: number, post: Partial<InsertBlogPost>): Promise<BlogPost | undefined>;
+  deleteBlogPost(id: number): Promise<boolean>;
+  incrementBlogPostViewCount(id: number): Promise<void>;
 }
 
 // Database implementation of the storage interface
@@ -270,6 +292,168 @@ export class DbStorage implements IStorage {
     
     return result.length > 0;
   }
+  
+  // Blog category operations
+  async getAllBlogCategories(): Promise<BlogCategory[]> {
+    return db.select().from(blogCategories).orderBy(asc(blogCategories.displayOrder));
+  }
+
+  async getBlogCategory(id: number): Promise<BlogCategory | undefined> {
+    const result = await db.select().from(blogCategories).where(eq(blogCategories.id, id));
+    return result[0];
+  }
+
+  async getBlogCategoryBySlug(slug: string): Promise<BlogCategory | undefined> {
+    const result = await db.select().from(blogCategories).where(eq(blogCategories.slug, slug));
+    return result[0];
+  }
+
+  async createBlogCategory(category: InsertBlogCategory): Promise<BlogCategory> {
+    const result = await db.insert(blogCategories).values(category).returning();
+    return result[0];
+  }
+
+  async updateBlogCategory(id: number, category: Partial<InsertBlogCategory>): Promise<BlogCategory | undefined> {
+    const result = await db
+      .update(blogCategories)
+      .set(category)
+      .where(eq(blogCategories.id, id))
+      .returning();
+    
+    return result[0];
+  }
+
+  async deleteBlogCategory(id: number): Promise<boolean> {
+    const result = await db
+      .delete(blogCategories)
+      .where(eq(blogCategories.id, id))
+      .returning();
+    
+    return result.length > 0;
+  }
+
+  // Blog post operations
+  async getAllBlogPosts(includeUnpublished: boolean = false): Promise<BlogPost[]> {
+    if (includeUnpublished) {
+      return db.select().from(blogPosts).orderBy(asc(blogPosts.publishedAt));
+    } else {
+      return db.select()
+        .from(blogPosts)
+        .where(eq(blogPosts.isPublished, true))
+        .orderBy(asc(blogPosts.publishedAt));
+    }
+  }
+
+  async getFeaturedBlogPosts(limit: number = 5): Promise<BlogPost[]> {
+    return db
+      .select()
+      .from(blogPosts)
+      .where(and(
+        eq(blogPosts.isFeatured, true),
+        eq(blogPosts.isPublished, true)
+      ))
+      .orderBy(asc(blogPosts.publishedAt))
+      .limit(limit);
+  }
+
+  async getBlogPostsByCategory(categoryId: number, includeUnpublished: boolean = false): Promise<BlogPost[]> {
+    if (includeUnpublished) {
+      return db
+        .select()
+        .from(blogPosts)
+        .where(eq(blogPosts.categoryId, categoryId))
+        .orderBy(asc(blogPosts.publishedAt));
+    } else {
+      return db
+        .select()
+        .from(blogPosts)
+        .where(and(
+          eq(blogPosts.categoryId, categoryId),
+          eq(blogPosts.isPublished, true)
+        ))
+        .orderBy(asc(blogPosts.publishedAt));
+    }
+  }
+
+  async getBlogPostsByCategorySlug(slug: string, includeUnpublished: boolean = false): Promise<BlogPost[]> {
+    const category = await this.getBlogCategoryBySlug(slug);
+    
+    if (!category) {
+      return [];
+    }
+    
+    return this.getBlogPostsByCategory(category.id, includeUnpublished);
+  }
+
+  async getBlogPost(id: number): Promise<BlogPost | undefined> {
+    const result = await db.select().from(blogPosts).where(eq(blogPosts.id, id));
+    return result[0];
+  }
+
+  async getBlogPostBySlug(slug: string): Promise<BlogPost | undefined> {
+    const result = await db.select().from(blogPosts).where(eq(blogPosts.slug, slug));
+    return result[0];
+  }
+
+  async createBlogPost(post: InsertBlogPost): Promise<BlogPost> {
+    const result = await db.insert(blogPosts).values(post).returning();
+    return result[0];
+  }
+
+  async updateBlogPost(id: number, post: Partial<InsertBlogPost>): Promise<BlogPost | undefined> {
+    // Create a clean update object with only fields that exist in the schema
+    const updateData: Partial<Omit<BlogPost, 'id'>> = {};
+    
+    // Explicitly map allowed fields from post to updateData
+    if (post.categoryId !== undefined) updateData.categoryId = post.categoryId;
+    if (post.title !== undefined) updateData.title = post.title;
+    if (post.slug !== undefined) updateData.slug = post.slug;
+    if (post.summary !== undefined) updateData.summary = post.summary;
+    if (post.content !== undefined) updateData.content = post.content;
+    if (post.featuredImage !== undefined) updateData.featuredImage = post.featuredImage;
+    if (post.authorId !== undefined) updateData.authorId = post.authorId;
+    if (post.metaTitle !== undefined) updateData.metaTitle = post.metaTitle;
+    if (post.metaDescription !== undefined) updateData.metaDescription = post.metaDescription;
+    if (post.isFeatured !== undefined) updateData.isFeatured = post.isFeatured;
+    if (post.isPublished !== undefined) updateData.isPublished = post.isPublished;
+    
+    // Always update the updatedAt field
+    updateData.updatedAt = new Date();
+    
+    // Set publishedAt if the post is being published for the first time
+    if (post.isPublished === true) {
+      const existingPost = await this.getBlogPost(id);
+      if (existingPost && !existingPost.isPublished) {
+        updateData.publishedAt = new Date();
+      }
+    }
+    
+    const result = await db
+      .update(blogPosts)
+      .set(updateData as any) // Use type assertion to bypass TypeScript's strict checking
+      .where(eq(blogPosts.id, id))
+      .returning();
+    
+    return result[0];
+  }
+
+  async deleteBlogPost(id: number): Promise<boolean> {
+    const result = await db
+      .delete(blogPosts)
+      .where(eq(blogPosts.id, id))
+      .returning();
+    
+    return result.length > 0;
+  }
+  
+  async incrementBlogPostViewCount(id: number): Promise<void> {
+    await db
+      .update(blogPosts)
+      .set({
+        viewCount: sql`${blogPosts.viewCount} + 1`
+      })
+      .where(eq(blogPosts.id, id));
+  }
 }
 
 // Fallback to MemStorage if database connection fails
@@ -277,19 +461,27 @@ export class MemStorage implements IStorage {
   private usersMap: Map<number, User>;
   private brandCategoriesMap: Map<number, BrandCategory>;
   private brandsMap: Map<number, Brand>;
+  private blogCategoriesMap: Map<number, BlogCategory>;
+  private blogPostsMap: Map<number, BlogPost>;
   
   private userCurrentId: number;
   private categoryCurrentId: number;
   private brandCurrentId: number;
+  private blogCategoryCurrentId: number;
+  private blogPostCurrentId: number;
 
   constructor() {
     this.usersMap = new Map();
     this.brandCategoriesMap = new Map();
     this.brandsMap = new Map();
+    this.blogCategoriesMap = new Map();
+    this.blogPostsMap = new Map();
     
     this.userCurrentId = 1;
     this.categoryCurrentId = 1;
     this.brandCurrentId = 1;
+    this.blogCategoryCurrentId = 1;
+    this.blogPostCurrentId = 1;
   }
 
   // User operations
@@ -416,6 +608,193 @@ export class MemStorage implements IStorage {
 
   async deleteBrand(id: number): Promise<boolean> {
     return this.brandsMap.delete(id);
+  }
+  
+  // Blog category operations
+  async getAllBlogCategories(): Promise<BlogCategory[]> {
+    return Array.from(this.blogCategoriesMap.values())
+      .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+  }
+
+  async getBlogCategory(id: number): Promise<BlogCategory | undefined> {
+    return this.blogCategoriesMap.get(id);
+  }
+
+  async getBlogCategoryBySlug(slug: string): Promise<BlogCategory | undefined> {
+    return Array.from(this.blogCategoriesMap.values()).find(
+      (category) => category.slug === slug
+    );
+  }
+
+  async createBlogCategory(category: InsertBlogCategory): Promise<BlogCategory> {
+    const id = this.blogCategoryCurrentId++;
+    const newCategory: BlogCategory = {
+      ...category,
+      id,
+      displayOrder: category.displayOrder ?? 0,
+      description: category.description ?? ""
+    };
+    this.blogCategoriesMap.set(id, newCategory);
+    return newCategory;
+  }
+
+  async updateBlogCategory(id: number, category: Partial<InsertBlogCategory>): Promise<BlogCategory | undefined> {
+    const existingCategory = this.blogCategoriesMap.get(id);
+    
+    if (!existingCategory) {
+      return undefined;
+    }
+    
+    const updatedCategory: BlogCategory = { 
+      ...existingCategory, 
+      ...category
+    };
+    this.blogCategoriesMap.set(id, updatedCategory);
+    return updatedCategory;
+  }
+
+  async deleteBlogCategory(id: number): Promise<boolean> {
+    return this.blogCategoriesMap.delete(id);
+  }
+
+  // Blog post operations
+  async getAllBlogPosts(includeUnpublished: boolean = false): Promise<BlogPost[]> {
+    let posts = Array.from(this.blogPostsMap.values());
+    
+    if (!includeUnpublished) {
+      posts = posts.filter(post => post.isPublished);
+    }
+    
+    return posts.sort((a, b) => {
+      const dateA = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
+      const dateB = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+      return dateB - dateA; // Sort by most recent first
+    });
+  }
+
+  async getFeaturedBlogPosts(limit: number = 5): Promise<BlogPost[]> {
+    const posts = Array.from(this.blogPostsMap.values())
+      .filter(post => post.isFeatured && post.isPublished)
+      .sort((a, b) => {
+        const dateA = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
+        const dateB = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+        return dateB - dateA; // Sort by most recent first
+      });
+    
+    return posts.slice(0, limit);
+  }
+
+  async getBlogPostsByCategory(categoryId: number, includeUnpublished: boolean = false): Promise<BlogPost[]> {
+    let posts = Array.from(this.blogPostsMap.values())
+      .filter(post => post.categoryId === categoryId);
+    
+    if (!includeUnpublished) {
+      posts = posts.filter(post => post.isPublished);
+    }
+    
+    return posts.sort((a, b) => {
+      const dateA = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
+      const dateB = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+      return dateB - dateA; // Sort by most recent first
+    });
+  }
+
+  async getBlogPostsByCategorySlug(slug: string, includeUnpublished: boolean = false): Promise<BlogPost[]> {
+    const category = await this.getBlogCategoryBySlug(slug);
+    
+    if (!category) {
+      return [];
+    }
+    
+    return this.getBlogPostsByCategory(category.id, includeUnpublished);
+  }
+
+  async getBlogPost(id: number): Promise<BlogPost | undefined> {
+    return this.blogPostsMap.get(id);
+  }
+
+  async getBlogPostBySlug(slug: string): Promise<BlogPost | undefined> {
+    return Array.from(this.blogPostsMap.values()).find(
+      (post) => post.slug === slug
+    );
+  }
+
+  async createBlogPost(post: InsertBlogPost): Promise<BlogPost> {
+    const id = this.blogPostCurrentId++;
+    const now = new Date();
+    
+    // Create a properly typed BlogPost with all required fields
+    const newPost: BlogPost = {
+      id,
+      categoryId: post.categoryId,
+      title: post.title,
+      slug: post.slug,
+      summary: post.summary,
+      content: post.content,
+      featuredImage: post.featuredImage,
+      authorId: post.authorId,
+      publishedAt: now,
+      updatedAt: now,
+      metaTitle: post.metaTitle || "",
+      metaDescription: post.metaDescription || "",
+      isFeatured: post.isFeatured || false,
+      isPublished: post.isPublished || true,
+      viewCount: 0
+    };
+    
+    this.blogPostsMap.set(id, newPost);
+    return newPost;
+  }
+
+  async updateBlogPost(id: number, post: Partial<InsertBlogPost>): Promise<BlogPost | undefined> {
+    const existingPost = this.blogPostsMap.get(id);
+    
+    if (!existingPost) {
+      return undefined;
+    }
+    
+    // Create a properly typed updated post
+    const updatedPost: BlogPost = { ...existingPost };
+    
+    // Explicitly update only the fields that are provided
+    if (post.categoryId !== undefined) updatedPost.categoryId = post.categoryId;
+    if (post.title !== undefined) updatedPost.title = post.title;
+    if (post.slug !== undefined) updatedPost.slug = post.slug;
+    if (post.summary !== undefined) updatedPost.summary = post.summary;
+    if (post.content !== undefined) updatedPost.content = post.content;
+    if (post.featuredImage !== undefined) updatedPost.featuredImage = post.featuredImage;
+    if (post.authorId !== undefined) updatedPost.authorId = post.authorId;
+    if (post.metaTitle !== undefined) updatedPost.metaTitle = post.metaTitle;
+    if (post.metaDescription !== undefined) updatedPost.metaDescription = post.metaDescription;
+    if (post.isFeatured !== undefined) updatedPost.isFeatured = post.isFeatured;
+    
+    // Always update the updatedAt timestamp
+    updatedPost.updatedAt = new Date();
+    
+    // Special handling for publishing a post
+    if (post.isPublished !== undefined) {
+      updatedPost.isPublished = post.isPublished;
+      // If post is being published for the first time, set publishedAt
+      if (post.isPublished && !existingPost.isPublished) {
+        updatedPost.publishedAt = new Date();
+      }
+    }
+    
+    this.blogPostsMap.set(id, updatedPost);
+    return updatedPost;
+  }
+
+  async deleteBlogPost(id: number): Promise<boolean> {
+    return this.blogPostsMap.delete(id);
+  }
+  
+  async incrementBlogPostViewCount(id: number): Promise<void> {
+    const post = this.blogPostsMap.get(id);
+    
+    if (post) {
+      post.viewCount = (post.viewCount || 0) + 1;
+      this.blogPostsMap.set(id, post);
+    }
   }
 }
 
