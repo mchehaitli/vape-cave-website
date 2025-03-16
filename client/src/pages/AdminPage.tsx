@@ -132,13 +132,13 @@ export default function AdminPage() {
   const { data: featuredBrands, isLoading: isFeaturedBrandsLoading } = useFeaturedBrands();
   
   // Query for blog categories
-  const { data: blogCategories, isLoading: isBlogCategoriesLoading } = useQuery({
+  const { data: blogCategories = [], isLoading: isBlogCategoriesLoading } = useQuery<any[]>({
     queryKey: ['/api/blog-categories'],
     staleTime: 60000,
   });
 
   // Query for blog posts
-  const { data: blogPosts, isLoading: isBlogPostsLoading } = useQuery({
+  const { data: blogPosts = [], isLoading: isBlogPostsLoading } = useQuery<any[]>({
     queryKey: ['/api/admin/blog-posts'],
     staleTime: 30000,
   });
@@ -553,6 +553,129 @@ export default function AdminPage() {
       });
     }
   };
+  
+  // Blog Category CRUD operations
+  const onBlogCategorySubmit = async (data: BlogCategoryFormValues) => {
+    try {
+      if (editingBlogCategory) {
+        // Update existing blog category
+        await apiRequest('PUT', `/api/admin/blog-categories/${editingBlogCategory.id}`, data);
+        
+        toast({
+          title: "Blog Category Updated",
+          description: "The blog category has been successfully updated",
+        });
+      } else {
+        // Create new blog category
+        await apiRequest('POST', '/api/admin/blog-categories', data);
+        
+        toast({
+          title: "Blog Category Created",
+          description: "The blog category has been successfully created",
+        });
+      }
+      
+      // Invalidate queries to refresh data
+      queryClient.invalidateQueries({ queryKey: ['/api/blog-categories'] });
+      
+      // Close dialog
+      setBlogCategoryDialogOpen(false);
+      setEditingBlogCategory(null);
+    } catch (error) {
+      console.error("Blog category submit error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to save blog category",
+        variant: "destructive",
+      });
+    }
+  };
+  
+  const confirmDeleteBlogCategory = async () => {
+    if (!deletingBlogCategoryId) return;
+    
+    try {
+      await apiRequest('DELETE', `/api/admin/blog-categories/${deletingBlogCategoryId}`);
+      
+      queryClient.invalidateQueries({ queryKey: ['/api/blog-categories'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/blog-posts'] });
+      
+      toast({
+        title: "Blog Category Deleted",
+        description: "The blog category has been successfully deleted",
+      });
+    } catch (error) {
+      console.error("Delete blog category error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to delete blog category",
+        variant: "destructive",
+      });
+    } finally {
+      setDeletingBlogCategoryId(null);
+    }
+  };
+  
+  // Blog Post CRUD operations
+  const onBlogPostSubmit = async (data: BlogPostFormValues) => {
+    try {
+      if (editingBlogPost) {
+        // Update existing blog post
+        await apiRequest('PUT', `/api/admin/blog-posts/${editingBlogPost.id}`, data);
+        
+        toast({
+          title: "Blog Post Updated",
+          description: "The blog post has been successfully updated",
+        });
+      } else {
+        // Create new blog post
+        await apiRequest('POST', '/api/admin/blog-posts', data);
+        
+        toast({
+          title: "Blog Post Created",
+          description: "The blog post has been successfully created",
+        });
+      }
+      
+      // Invalidate queries to refresh data
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/blog-posts'] });
+      
+      // Close dialog
+      setBlogPostDialogOpen(false);
+      setEditingBlogPost(null);
+    } catch (error) {
+      console.error("Blog post submit error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to save blog post",
+        variant: "destructive",
+      });
+    }
+  };
+  
+  const confirmDeleteBlogPost = async () => {
+    if (!deletingBlogPostId) return;
+    
+    try {
+      await apiRequest('DELETE', `/api/admin/blog-posts/${deletingBlogPostId}`);
+      
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/blog-posts'] });
+      
+      toast({
+        title: "Blog Post Deleted",
+        description: "The blog post has been successfully deleted",
+      });
+    } catch (error) {
+      console.error("Delete blog post error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to delete blog post",
+        variant: "destructive",
+      });
+    } finally {
+      setDeletingBlogPostId(null);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -598,6 +721,7 @@ export default function AdminPage() {
               <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
               <TabsTrigger value="brands">Manage Brands</TabsTrigger>
               <TabsTrigger value="categories">Brand Categories</TabsTrigger>
+              <TabsTrigger value="blog">Blog</TabsTrigger>
               <TabsTrigger value="settings">Settings</TabsTrigger>
             </TabsList>
             
@@ -1226,6 +1350,666 @@ export default function AdminPage() {
                     <AlertDialogAction 
                       className="bg-red-600 hover:bg-red-700"
                       onClick={confirmDeleteCategory}
+                    >
+                      Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </TabsContent>
+            
+            <TabsContent value="blog" className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Card className="bg-gray-800 border-gray-700">
+                  <CardHeader>
+                    <CardTitle>Blog Categories</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-400 mb-4">
+                      Manage your blog categories for organizing blog posts.
+                    </p>
+                    <div className="flex justify-end mb-4">
+                      <Button 
+                        onClick={() => {
+                          setEditingBlogCategory(null);
+                          setBlogCategoryDialogOpen(true);
+                        }}
+                        className="bg-primary hover:bg-primary/90 flex items-center gap-2"
+                      >
+                        <Plus size={16} />
+                        Add New Category
+                      </Button>
+                    </div>
+                    
+                    {isBlogCategoriesLoading ? (
+                      <div className="animate-pulse space-y-3">
+                        {[1, 2, 3].map((i) => (
+                          <div key={i} className="h-14 bg-gray-700 rounded"></div>
+                        ))}
+                      </div>
+                    ) : blogCategories && blogCategories.length > 0 ? (
+                      <div className="rounded-md border border-gray-700">
+                        <Table>
+                          <TableHeader className="bg-gray-800">
+                            <TableRow className="hover:bg-gray-700/50 border-gray-700">
+                              <TableHead className="text-gray-400">Name</TableHead>
+                              <TableHead className="text-gray-400">Slug</TableHead>
+                              <TableHead className="text-gray-400">Actions</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {blogCategories.map((category: any) => (
+                              <TableRow key={category.id} className="hover:bg-gray-700/50 border-gray-700">
+                                <TableCell className="font-medium">{category.name}</TableCell>
+                                <TableCell className="font-mono text-sm">{category.slug}</TableCell>
+                                <TableCell>
+                                  <div className="flex gap-2">
+                                    <Button 
+                                      variant="ghost" 
+                                      size="sm"
+                                      className="h-8 w-8 p-0 text-gray-400 hover:text-white hover:bg-gray-700"
+                                      onClick={() => {
+                                        setEditingBlogCategory(category);
+                                        setBlogCategoryDialogOpen(true);
+                                      }}
+                                    >
+                                      <span className="sr-only">Edit</span>
+                                      <Edit size={16} />
+                                    </Button>
+                                    <Button 
+                                      variant="ghost" 
+                                      size="sm"
+                                      className="h-8 w-8 p-0 text-red-400 hover:text-red-300 hover:bg-gray-700"
+                                      onClick={() => setDeletingBlogCategoryId(category.id)}
+                                    >
+                                      <span className="sr-only">Delete</span>
+                                      <Trash2 size={16} />
+                                    </Button>
+                                  </div>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
+                    ) : (
+                      <div className="text-center py-8 text-gray-400">
+                        <p>No blog categories found. Click "Add New Category" to create your first category.</p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+                
+                <Card className="bg-gray-800 border-gray-700">
+                  <CardHeader>
+                    <CardTitle>Recent Blog Posts</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-400 mb-4">
+                      Quick summary of recent blog posts and their status.
+                    </p>
+                    {isBlogPostsLoading ? (
+                      <div className="animate-pulse space-y-3">
+                        {[1, 2, 3].map((i) => (
+                          <div key={i} className="h-14 bg-gray-700 rounded"></div>
+                        ))}
+                      </div>
+                    ) : blogPosts && blogPosts.length > 0 ? (
+                      <div className="space-y-3">
+                        {blogPosts.slice(0, 5).map((post: any) => (
+                          <div key={post.id} className="flex items-center gap-3 p-3 border border-gray-700 rounded-md">
+                            <div className="flex-1">
+                              <div className="font-medium">{post.title}</div>
+                              <div className="text-sm text-gray-400">{new Date(post.createdAt).toLocaleDateString()}</div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {post.published ? (
+                                <div className="flex items-center text-sm text-green-500">
+                                  <div className="w-2 h-2 rounded-full bg-green-500 mr-1"></div>
+                                  Published
+                                </div>
+                              ) : (
+                                <div className="flex items-center text-sm text-yellow-500">
+                                  <div className="w-2 h-2 rounded-full bg-yellow-500 mr-1"></div>
+                                  Draft
+                                </div>
+                              )}
+                              <Button 
+                                variant="ghost" 
+                                size="sm"
+                                className="h-8 w-8 p-0 text-gray-400 hover:text-white hover:bg-gray-700"
+                                onClick={() => {
+                                  setEditingBlogPost(post);
+                                  setBlogPostDialogOpen(true);
+                                }}
+                              >
+                                <span className="sr-only">Edit</span>
+                                <Edit size={16} />
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-8 text-gray-400">
+                        <p>No blog posts found. Add a blog category first, then create your first post.</p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+              
+              <Card className="bg-gray-800 border-gray-700">
+                <CardHeader>
+                  <div className="flex justify-between items-center">
+                    <CardTitle>Blog Posts</CardTitle>
+                    <Button 
+                      onClick={() => {
+                        setEditingBlogPost(null);
+                        setBlogPostDialogOpen(true);
+                      }}
+                      className="bg-primary hover:bg-primary/90 flex items-center gap-2"
+                      disabled={!blogCategories || blogCategories.length === 0}
+                    >
+                      <Plus size={16} />
+                      Add New Post
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-400 mb-4">
+                    Manage all your blog content from this section. Create, edit and publish articles.
+                  </p>
+                  
+                  {isBlogPostsLoading ? (
+                    <div className="animate-pulse space-y-3">
+                      {[1, 2, 3].map((i) => (
+                        <div key={i} className="h-14 bg-gray-700 rounded"></div>
+                      ))}
+                    </div>
+                  ) : blogPosts && blogPosts.length > 0 ? (
+                    <div className="rounded-md border border-gray-700">
+                      <Table>
+                        <TableHeader className="bg-gray-800">
+                          <TableRow className="hover:bg-gray-700/50 border-gray-700">
+                            <TableHead className="text-gray-400">Title</TableHead>
+                            <TableHead className="text-gray-400">Category</TableHead>
+                            <TableHead className="text-gray-400">Status</TableHead>
+                            <TableHead className="text-gray-400">Date</TableHead>
+                            <TableHead className="text-gray-400 text-right">Actions</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {blogPosts.map((post: any) => {
+                            const category = blogCategories?.find((c: any) => c.id === post.categoryId);
+                            return (
+                              <TableRow key={post.id} className="hover:bg-gray-700/50 border-gray-700">
+                                <TableCell className="font-medium">
+                                  <div className="flex items-center gap-2">
+                                    {post.featured && (
+                                      <Tooltip>
+                                        <TooltipTrigger asChild>
+                                          <div className="text-yellow-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                            </svg>
+                                          </div>
+                                        </TooltipTrigger>
+                                        <TooltipContent side="top" className="bg-black text-white border-gray-700">
+                                          Featured Post
+                                        </TooltipContent>
+                                      </Tooltip>
+                                    )}
+                                    {post.title}
+                                  </div>
+                                </TableCell>
+                                <TableCell>{category?.name || 'Unknown'}</TableCell>
+                                <TableCell>
+                                  {post.published ? (
+                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                      Published
+                                    </span>
+                                  ) : (
+                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+                                      Draft
+                                    </span>
+                                  )}
+                                </TableCell>
+                                <TableCell>{new Date(post.createdAt).toLocaleDateString()}</TableCell>
+                                <TableCell className="text-right">
+                                  <div className="flex justify-end gap-2">
+                                    <Button 
+                                      variant="ghost" 
+                                      size="sm"
+                                      className="h-8 w-8 p-0 text-gray-400 hover:text-white hover:bg-gray-700"
+                                      onClick={() => {
+                                        setEditingBlogPost(post);
+                                        setBlogPostDialogOpen(true);
+                                      }}
+                                    >
+                                      <span className="sr-only">Edit</span>
+                                      <Edit size={16} />
+                                    </Button>
+                                    <Button 
+                                      variant="ghost" 
+                                      size="sm"
+                                      className="h-8 w-8 p-0 text-red-400 hover:text-red-300 hover:bg-gray-700"
+                                      onClick={() => setDeletingBlogPostId(post.id)}
+                                    >
+                                      <span className="sr-only">Delete</span>
+                                      <Trash2 size={16} />
+                                    </Button>
+                                  </div>
+                                </TableCell>
+                              </TableRow>
+                            );
+                          })}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-gray-400">
+                      <p>No blog posts found. Click "Add New Post" to create your first article.</p>
+                      {(!blogCategories || blogCategories.length === 0) && (
+                        <p className="mt-2 text-sm text-yellow-500">You need to create a blog category first before adding posts.</p>
+                      )}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+              
+              {/* Blog Category Dialog */}
+              <Dialog open={blogCategoryDialogOpen} onOpenChange={setBlogCategoryDialogOpen}>
+                <DialogContent className="bg-gray-800 text-white border-gray-700">
+                  <DialogHeader>
+                    <DialogTitle>{editingBlogCategory ? "Edit Blog Category" : "Add New Blog Category"}</DialogTitle>
+                    <DialogDescription className="text-gray-400">
+                      {editingBlogCategory 
+                        ? "Edit blog category details below and save your changes." 
+                        : "Fill in the category details to organize your blog content."
+                      }
+                    </DialogDescription>
+                  </DialogHeader>
+                  
+                  <Form {...blogCategoryForm}>
+                    <form onSubmit={blogCategoryForm.handleSubmit(onBlogCategorySubmit)} className="space-y-4">
+                      <FormField
+                        control={blogCategoryForm.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Category Name</FormLabel>
+                            <FormControl>
+                              <Input
+                                className="bg-gray-900 border-gray-700 text-white" 
+                                placeholder="Enter category name"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage className="text-red-400" />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={blogCategoryForm.control}
+                        name="slug"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>URL Slug</FormLabel>
+                            <FormControl>
+                              <Input
+                                className="bg-gray-900 border-gray-700 text-white" 
+                                placeholder="Enter URL slug (e.g., vaping-tips)"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormDescription className="text-gray-500">
+                              This will be used in the URL for this category (only lowercase letters, numbers, and hyphens)
+                            </FormDescription>
+                            <FormMessage className="text-red-400" />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={blogCategoryForm.control}
+                        name="description"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Description</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                className="bg-gray-900 border-gray-700 text-white" 
+                                placeholder="Enter category description"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage className="text-red-400" />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={blogCategoryForm.control}
+                        name="displayOrder"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Display Order</FormLabel>
+                            <FormControl>
+                              <Input
+                                className="bg-gray-900 border-gray-700 text-white" 
+                                type="number"
+                                placeholder="Enter display order (lower numbers appear first)"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormDescription className="text-gray-500">
+                              Categories will be sorted by this number, lower numbers appear first
+                            </FormDescription>
+                            <FormMessage className="text-red-400" />
+                          </FormItem>
+                        )}
+                      />
+                    
+                      <DialogFooter className="pt-4">
+                        <Button 
+                          type="submit" 
+                          className="bg-primary hover:bg-primary/90"
+                        >
+                          {editingBlogCategory ? "Save Changes" : "Create Category"}
+                        </Button>
+                      </DialogFooter>
+                    </form>
+                  </Form>
+                </DialogContent>
+              </Dialog>
+              
+              {/* Blog Post Dialog */}
+              <Dialog open={blogPostDialogOpen} onOpenChange={setBlogPostDialogOpen}>
+                <DialogContent className="bg-gray-800 text-white border-gray-700 sm:max-w-3xl">
+                  <DialogHeader>
+                    <DialogTitle>{editingBlogPost ? "Edit Blog Post" : "Add New Blog Post"}</DialogTitle>
+                    <DialogDescription className="text-gray-400">
+                      {editingBlogPost 
+                        ? "Edit blog post details below and save your changes." 
+                        : "Create a new blog post with the details below."
+                      }
+                    </DialogDescription>
+                  </DialogHeader>
+                  
+                  <Form {...blogPostForm}>
+                    <form onSubmit={blogPostForm.handleSubmit(onBlogPostSubmit)} className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <FormField
+                          control={blogPostForm.control}
+                          name="title"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Post Title</FormLabel>
+                              <FormControl>
+                                <Input
+                                  className="bg-gray-900 border-gray-700 text-white" 
+                                  placeholder="Enter post title"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage className="text-red-400" />
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <FormField
+                          control={blogPostForm.control}
+                          name="slug"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>URL Slug</FormLabel>
+                              <FormControl>
+                                <Input
+                                  className="bg-gray-900 border-gray-700 text-white" 
+                                  placeholder="Enter URL slug (e.g., benefits-of-vaping)"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage className="text-red-400" />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <FormField
+                          control={blogPostForm.control}
+                          name="categoryId"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Category</FormLabel>
+                              <Select 
+                                onValueChange={(value) => field.onChange(parseInt(value))}
+                                defaultValue={field.value ? field.value.toString() : undefined}
+                              >
+                                <FormControl>
+                                  <SelectTrigger className="bg-gray-900 border-gray-700 text-white">
+                                    <SelectValue placeholder="Select a category" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent className="bg-gray-900 border-gray-700 text-white">
+                                  {blogCategories?.map((category: any) => (
+                                    <SelectItem 
+                                      key={category.id} 
+                                      value={category.id.toString()}
+                                      className="hover:bg-gray-800 focus:bg-gray-800"
+                                    >
+                                      {category.name}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage className="text-red-400" />
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <FormField
+                          control={blogPostForm.control}
+                          name="imageUrl"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Featured Image URL</FormLabel>
+                              <FormControl>
+                                <Input
+                                  className="bg-gray-900 border-gray-700 text-white" 
+                                  placeholder="Enter image URL"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage className="text-red-400" />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      
+                      <FormField
+                        control={blogPostForm.control}
+                        name="summary"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Summary</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                className="bg-gray-900 border-gray-700 text-white" 
+                                placeholder="Enter post summary (appears in previews and snippets)"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage className="text-red-400" />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={blogPostForm.control}
+                        name="content"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Post Content</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                className="bg-gray-900 border-gray-700 text-white min-h-[200px]" 
+                                placeholder="Enter post content (markdown supported)"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage className="text-red-400" />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <FormField
+                          control={blogPostForm.control}
+                          name="published"
+                          render={({ field }) => (
+                            <FormItem className="flex flex-row items-center justify-between rounded-lg border border-gray-700 p-4">
+                              <div className="space-y-0.5">
+                                <FormLabel className="text-base">
+                                  Published
+                                </FormLabel>
+                                <FormDescription className="text-gray-500">
+                                  Make this post visible to the public
+                                </FormDescription>
+                              </div>
+                              <FormControl>
+                                <Switch
+                                  checked={field.value}
+                                  onCheckedChange={field.onChange}
+                                  className="data-[state=checked]:bg-primary"
+                                />
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <FormField
+                          control={blogPostForm.control}
+                          name="featured"
+                          render={({ field }) => (
+                            <FormItem className="flex flex-row items-center justify-between rounded-lg border border-gray-700 p-4">
+                              <div className="space-y-0.5">
+                                <FormLabel className="text-base">
+                                  Featured Post
+                                </FormLabel>
+                                <FormDescription className="text-gray-500">
+                                  Highlight this post in featured sections
+                                </FormDescription>
+                              </div>
+                              <FormControl>
+                                <Switch
+                                  checked={field.value}
+                                  onCheckedChange={field.onChange}
+                                  className="data-[state=checked]:bg-primary"
+                                />
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      
+                      <div className="space-y-3 pt-3 border-t border-gray-700">
+                        <h4 className="text-sm font-medium text-gray-300">SEO Settings</h4>
+                        
+                        <FormField
+                          control={blogPostForm.control}
+                          name="metaTitle"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Meta Title</FormLabel>
+                              <FormControl>
+                                <Input
+                                  className="bg-gray-900 border-gray-700 text-white" 
+                                  placeholder="Enter SEO title (leave empty to use post title)"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage className="text-red-400" />
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <FormField
+                          control={blogPostForm.control}
+                          name="metaDescription"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Meta Description</FormLabel>
+                              <FormControl>
+                                <Textarea
+                                  className="bg-gray-900 border-gray-700 text-white" 
+                                  placeholder="Enter SEO description (leave empty to use post summary)"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage className="text-red-400" />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    
+                      <DialogFooter className="pt-4">
+                        <Button 
+                          type="submit" 
+                          className="bg-primary hover:bg-primary/90"
+                        >
+                          {editingBlogPost ? "Save Changes" : "Create Post"}
+                        </Button>
+                      </DialogFooter>
+                    </form>
+                  </Form>
+                </DialogContent>
+              </Dialog>
+              
+              {/* Delete Blog Category Confirmation Dialog */}
+              <AlertDialog open={!!deletingBlogCategoryId} onOpenChange={(open) => !open && setDeletingBlogCategoryId(null)}>
+                <AlertDialogContent className="bg-gray-800 text-white border-gray-700">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you sure you want to delete this category?</AlertDialogTitle>
+                    <AlertDialogDescription className="text-gray-400">
+                      This will permanently delete the blog category and all of its associated posts.
+                      This action cannot be undone.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="bg-gray-700 text-white hover:bg-gray-600 border-gray-600">
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction 
+                      className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
+                      onClick={confirmDeleteBlogCategory}
+                    >
+                      Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+              
+              {/* Delete Blog Post Confirmation Dialog */}
+              <AlertDialog open={!!deletingBlogPostId} onOpenChange={(open) => !open && setDeletingBlogPostId(null)}>
+                <AlertDialogContent className="bg-gray-800 text-white border-gray-700">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you sure you want to delete this post?</AlertDialogTitle>
+                    <AlertDialogDescription className="text-gray-400">
+                      This will permanently delete the blog post.
+                      This action cannot be undone.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="bg-gray-700 text-white hover:bg-gray-600 border-gray-600">
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction 
+                      className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
+                      onClick={confirmDeleteBlogPost}
                     >
                       Delete
                     </AlertDialogAction>
