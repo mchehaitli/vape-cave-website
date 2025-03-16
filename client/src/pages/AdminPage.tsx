@@ -243,8 +243,34 @@ export default function AdminPage() {
   const [storeHoursDialogOpen, setStoreHoursDialogOpen] = useState(false);
   const [editingStoreLocation, setEditingStoreLocation] = useState<any>(null);
   const [deletingStoreLocationId, setDeletingStoreLocationId] = useState<number | null>(null);
+  const [isSeedingLocations, setIsSeedingLocations] = useState(false);
   
   // State for store hours management is now managed in the StoreHoursDialog component
+  
+  // Function to seed store locations from frontend data
+  const seedStoreLocations = async () => {
+    try {
+      setIsSeedingLocations(true);
+      await apiRequest('POST', '/api/admin/seed-store-locations');
+      
+      toast({
+        title: "Store Locations Seeded",
+        description: "Store locations have been successfully imported from frontend data.",
+      });
+      
+      // Refresh the data
+      queryClient.invalidateQueries({ queryKey: ['/api/store-locations'] });
+    } catch (error) {
+      console.error("Seed store locations error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to seed store locations",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSeedingLocations(false);
+    }
+  };
 
   useEffect(() => {
     // Check if user is authenticated and is admin
@@ -1627,12 +1653,33 @@ export default function AdminPage() {
             
             <TabsContent value="store-hours" className="space-y-4">
               <Card className="bg-gray-800 border-gray-700">
-                <CardHeader>
+                <CardHeader className="flex flex-row items-center justify-between">
                   <CardTitle>Manage Store Hours</CardTitle>
+                  {storeLocations.length === 0 && (
+                    <Button 
+                      onClick={seedStoreLocations}
+                      className="flex items-center gap-2 bg-green-600 hover:bg-green-700"
+                      disabled={isSeedingLocations}
+                    >
+                      {isSeedingLocations ? (
+                        <>
+                          <RefreshCcw size={16} className="animate-spin" />
+                          Seeding...
+                        </>
+                      ) : (
+                        <>
+                          <RefreshCcw size={16} />
+                          Seed Store Locations
+                        </>
+                      )}
+                    </Button>
+                  )}
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-400 mb-4">
-                    Update the operating hours for each of your store locations.
+                    {storeLocations.length === 0 
+                      ? "No store locations found. Click the 'Seed Store Locations' button to import locations from the frontend data."
+                      : "Update the operating hours for each of your store locations."}
                   </p>
                   
                   {isStoreLocationsLoading ? (
