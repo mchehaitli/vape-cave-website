@@ -1,39 +1,320 @@
-import { users, type User, type InsertUser } from "@shared/schema";
+import { 
+  users, type User, type InsertUser,
+  brands, type Brand, type InsertBrand, 
+  brandCategories, type BrandCategory, type InsertBrandCategory
+} from "@shared/schema";
+import { eq, and, asc } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/node-postgres";
+import pg from "pg";
+import * as bcrypt from "bcryptjs";
+import * as dotenv from "dotenv";
 
-// modify the interface with any CRUD methods
-// you might need
+dotenv.config();
 
+// Create a PostgreSQL connection pool
+const pool = new pg.Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+// Initialize drizzle with the pool
+const db = drizzle(pool);
+
+// Storage interface defining all database operations
 export interface IStorage {
+  // User operations
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  validateUser(username: string, password: string): Promise<User | null>;
+
+  // Brand category operations
+  getAllBrandCategories(): Promise<BrandCategory[]>;
+  getBrandCategory(id: number): Promise<BrandCategory | undefined>;
+  createBrandCategory(category: InsertBrandCategory): Promise<BrandCategory>;
+  updateBrandCategory(id: number, category: Partial<InsertBrandCategory>): Promise<BrandCategory | undefined>;
+  deleteBrandCategory(id: number): Promise<boolean>;
+
+  // Brand operations
+  getAllBrands(): Promise<Brand[]>;
+  getBrandsByCategory(categoryId: number): Promise<Brand[]>;
+  getBrand(id: number): Promise<Brand | undefined>;
+  createBrand(brand: InsertBrand): Promise<Brand>;
+  updateBrand(id: number, brand: Partial<InsertBrand>): Promise<Brand | undefined>;
+  deleteBrand(id: number): Promise<boolean>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<number, User>;
-  currentId: number;
-
-  constructor() {
-    this.users = new Map();
-    this.currentId = 1;
-  }
-
+// Database implementation of the storage interface
+export class DbStorage implements IStorage {
+  // User operations
   async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
+    const result = await db.select().from(users).where(eq(users.id, id));
+    return result[0];
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
+    const result = await db.select().from(users).where(eq(users.username, username));
+    return result[0];
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    // Hash the password before storing
+    const hashedPassword = await bcrypt.hash(insertUser.password, 10);
+    
+    const result = await db.insert(users).values({
+      ...insertUser,
+      password: hashedPassword
+    }).returning();
+    
+    return result[0];
+  }
+
+  async validateUser(username: string, password: string): Promise<User | null> {
+    const user = await this.getUserByUsername(username);
+    
+    if (!user) {
+      return null;
+    }
+    
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) {
+      return null;
+    }
+    
+    return user;
+  }
+
+  // Brand category operations
+  async getAllBrandCategories(): Promise<BrandCategory[]> {
+    return db.select().from(brandCategories).orderBy(asc(brandCategories.displayOrder));
+  }
+
+  async getBrandCategory(id: number): Promise<BrandCategory | undefined> {
+    const result = await db.select().from(brandCategories).where(eq(brandCategories.id, id));
+    return result[0];
+  }
+
+  async createBrandCategory(category: InsertBrandCategory): Promise<BrandCategory> {
+    const result = await db.insert(brandCategories).values(category).returning();
+    return result[0];
+  }
+
+  async updateBrandCategory(id: number, category: Partial<InsertBrandCategory>): Promise<BrandCategory | undefined> {
+    const result = await db
+      .update(brandCategories)
+      .set(category)
+      .where(eq(brandCategories.id, id))
+      .returning();
+    
+    return result[0];
+  }
+
+  async deleteBrandCategory(id: number): Promise<boolean> {
+    const result = await db
+      .delete(brandCategories)
+      .where(eq(brandCategories.id, id))
+      .returning();
+    
+    return result.length > 0;
+  }
+
+  // Brand operations
+  async getAllBrands(): Promise<Brand[]> {
+    return db.select().from(brands).orderBy(asc(brands.displayOrder));
+  }
+
+  async getBrandsByCategory(categoryId: number): Promise<Brand[]> {
+    return db
+      .select()
+      .from(brands)
+      .where(eq(brands.categoryId, categoryId))
+      .orderBy(asc(brands.displayOrder));
+  }
+
+  async getBrand(id: number): Promise<Brand | undefined> {
+    const result = await db.select().from(brands).where(eq(brands.id, id));
+    return result[0];
+  }
+
+  async createBrand(brand: InsertBrand): Promise<Brand> {
+    const result = await db.insert(brands).values(brand).returning();
+    return result[0];
+  }
+
+  async updateBrand(id: number, brand: Partial<InsertBrand>): Promise<Brand | undefined> {
+    const result = await db
+      .update(brands)
+      .set(brand)
+      .where(eq(brands.id, id))
+      .returning();
+    
+    return result[0];
+  }
+
+  async deleteBrand(id: number): Promise<boolean> {
+    const result = await db
+      .delete(brands)
+      .where(eq(brands.id, id))
+      .returning();
+    
+    return result.length > 0;
+  }
+}
+
+// Fallback to MemStorage if database connection fails
+export class MemStorage implements IStorage {
+  private usersMap: Map<number, User>;
+  private brandCategoriesMap: Map<number, BrandCategory>;
+  private brandsMap: Map<number, Brand>;
+  
+  private userCurrentId: number;
+  private categoryCurrentId: number;
+  private brandCurrentId: number;
+
+  constructor() {
+    this.usersMap = new Map();
+    this.brandCategoriesMap = new Map();
+    this.brandsMap = new Map();
+    
+    this.userCurrentId = 1;
+    this.categoryCurrentId = 1;
+    this.brandCurrentId = 1;
+  }
+
+  // User operations
+  async getUser(id: number): Promise<User | undefined> {
+    return this.usersMap.get(id);
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    return Array.from(this.usersMap.values()).find(
       (user) => user.username === username,
     );
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.currentId++;
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+    const id = this.userCurrentId++;
+    
+    // For memory storage, we'll hash the password too
+    const hashedPassword = await bcrypt.hash(insertUser.password, 10);
+    
+    const user: User = { 
+      ...insertUser, 
+      id, 
+      password: hashedPassword,
+      isAdmin: insertUser.isAdmin || false
+    };
+    
+    this.usersMap.set(id, user);
     return user;
+  }
+
+  async validateUser(username: string, password: string): Promise<User | null> {
+    const user = await this.getUserByUsername(username);
+    
+    if (!user) {
+      return null;
+    }
+    
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) {
+      return null;
+    }
+    
+    return user;
+  }
+
+  // Brand category operations
+  async getAllBrandCategories(): Promise<BrandCategory[]> {
+    return Array.from(this.brandCategoriesMap.values())
+      .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+  }
+
+  async getBrandCategory(id: number): Promise<BrandCategory | undefined> {
+    return this.brandCategoriesMap.get(id);
+  }
+
+  async createBrandCategory(category: InsertBrandCategory): Promise<BrandCategory> {
+    const id = this.categoryCurrentId++;
+    const newCategory: BrandCategory = { 
+      ...category, 
+      id,
+      bgClass: category.bgClass ?? "bg-gradient-to-br from-gray-900 to-gray-800",
+      displayOrder: category.displayOrder ?? 0,
+      intervalMs: category.intervalMs ?? 5000
+    };
+    this.brandCategoriesMap.set(id, newCategory);
+    return newCategory;
+  }
+
+  async updateBrandCategory(id: number, category: Partial<InsertBrandCategory>): Promise<BrandCategory | undefined> {
+    const existingCategory = this.brandCategoriesMap.get(id);
+    
+    if (!existingCategory) {
+      return undefined;
+    }
+    
+    const updatedCategory: BrandCategory = { ...existingCategory, ...category };
+    this.brandCategoriesMap.set(id, updatedCategory);
+    return updatedCategory;
+  }
+
+  async deleteBrandCategory(id: number): Promise<boolean> {
+    return this.brandCategoriesMap.delete(id);
+  }
+
+  // Brand operations
+  async getAllBrands(): Promise<Brand[]> {
+    return Array.from(this.brandsMap.values())
+      .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+  }
+
+  async getBrandsByCategory(categoryId: number): Promise<Brand[]> {
+    return Array.from(this.brandsMap.values())
+      .filter(brand => brand.categoryId === categoryId)
+      .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+  }
+
+  async getBrand(id: number): Promise<Brand | undefined> {
+    return this.brandsMap.get(id);
+  }
+
+  async createBrand(brand: InsertBrand): Promise<Brand> {
+    const id = this.brandCurrentId++;
+    const newBrand: Brand = { 
+      ...brand, 
+      id,
+      displayOrder: brand.displayOrder ?? 0
+    };
+    this.brandsMap.set(id, newBrand);
+    return newBrand;
+  }
+
+  async updateBrand(id: number, brand: Partial<InsertBrand>): Promise<Brand | undefined> {
+    const existingBrand = this.brandsMap.get(id);
+    
+    if (!existingBrand) {
+      return undefined;
+    }
+    
+    const updatedBrand: Brand = { ...existingBrand, ...brand };
+    this.brandsMap.set(id, updatedBrand);
+    return updatedBrand;
+  }
+
+  async deleteBrand(id: number): Promise<boolean> {
+    return this.brandsMap.delete(id);
   }
 }
 
-export const storage = new MemStorage();
+// Try to use the database implementation, fall back to memory if it fails
+let storage: IStorage;
+
+try {
+  storage = new DbStorage();
+  console.log("Using database storage");
+} catch (error) {
+  console.error("Failed to initialize database storage, falling back to memory storage", error);
+  storage = new MemStorage();
+}
+
+export { storage };
