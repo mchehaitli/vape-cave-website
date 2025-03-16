@@ -1,7 +1,7 @@
 import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertUserSchema, insertBrandCategorySchema, insertBrandSchema, insertBlogPostSchema } from "@shared/schema";
+import { insertUserSchema, insertBrandCategorySchema, insertBrandSchema, insertBlogPostSchema, insertStoreLocationSchema } from "@shared/schema";
 import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
 import * as dotenv from "dotenv";
@@ -510,6 +510,120 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Delete blog post error:", error);
       res.status(500).json({ error: "Failed to delete blog post" });
+    }
+  });
+
+  // Store location endpoints
+  app.get('/api/store-locations', async (req, res) => {
+    try {
+      const locations = await storage.getAllStoreLocations();
+      res.json(locations);
+    } catch (error) {
+      console.error("Get store locations error:", error);
+      res.status(500).json({ error: "Failed to fetch store locations" });
+    }
+  });
+
+  app.get('/api/store-locations/city/:city', async (req, res) => {
+    try {
+      const { city } = req.params;
+      
+      const location = await storage.getStoreLocationByCity(city);
+      
+      if (!location) {
+        return res.status(404).json({ error: "Store location not found" });
+      }
+      
+      res.json(location);
+    } catch (error) {
+      console.error("Get store location by city error:", error);
+      res.status(500).json({ error: "Failed to fetch store location" });
+    }
+  });
+  
+  app.get('/api/store-locations/:id', async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid store location ID" });
+      }
+      
+      const location = await storage.getStoreLocation(id);
+      
+      if (!location) {
+        return res.status(404).json({ error: "Store location not found" });
+      }
+      
+      res.json(location);
+    } catch (error) {
+      console.error("Get store location error:", error);
+      res.status(500).json({ error: "Failed to fetch store location" });
+    }
+  });
+
+  app.post('/api/admin/store-locations', isAdmin, async (req, res) => {
+    try {
+      const locationResult = insertStoreLocationSchema.safeParse(req.body);
+      
+      if (!locationResult.success) {
+        return res.status(400).json({ error: locationResult.error.format() });
+      }
+      
+      const location = await storage.createStoreLocation(locationResult.data);
+      res.status(201).json(location);
+    } catch (error) {
+      console.error("Create store location error:", error);
+      res.status(500).json({ error: "Failed to create store location" });
+    }
+  });
+
+  app.put('/api/admin/store-locations/:id', isAdmin, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid store location ID" });
+      }
+      
+      // Create a clean update object with only the fields that are in the request
+      const updatedData: Record<string, any> = {};
+      
+      // Map all properties from the request body to the updatedData object
+      Object.keys(req.body).forEach(key => {
+        if (req.body[key] !== undefined) {
+          updatedData[key] = req.body[key];
+        }
+      });
+      
+      const location = await storage.updateStoreLocation(id, updatedData);
+      
+      if (!location) {
+        return res.status(404).json({ error: "Store location not found" });
+      }
+      
+      res.json(location);
+    } catch (error) {
+      console.error("Update store location error:", error);
+      res.status(500).json({ error: "Failed to update store location" });
+    }
+  });
+
+  app.delete('/api/admin/store-locations/:id', isAdmin, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid store location ID" });
+      }
+      
+      const success = await storage.deleteStoreLocation(id);
+      
+      if (!success) {
+        return res.status(404).json({ error: "Store location not found" });
+      }
+      
+      res.json({ message: "Store location deleted successfully" });
+    } catch (error) {
+      console.error("Delete store location error:", error);
+      res.status(500).json({ error: "Failed to delete store location" });
     }
   });
 
