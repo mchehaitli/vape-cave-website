@@ -2,6 +2,7 @@ import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertUserSchema, insertBrandCategorySchema, insertBrandSchema, insertBlogPostSchema, insertStoreLocationSchema } from "@shared/schema";
+import { seedStoreLocations } from "./seed-store-locations";
 import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
 import * as dotenv from "dotenv";
@@ -624,6 +625,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Delete store location error:", error);
       res.status(500).json({ error: "Failed to delete store location" });
+    }
+  });
+  
+  // Special endpoint to seed store locations from frontend data
+  app.post('/api/admin/seed-store-locations', isAdmin, async (req, res) => {
+    try {
+      await seedStoreLocations();
+      res.json({ message: "Store locations seeded successfully" });
+    } catch (error) {
+      console.error("Seed store locations error:", error);
+      res.status(500).json({ error: "Failed to seed store locations" });
     }
   });
 

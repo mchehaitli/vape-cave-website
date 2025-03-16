@@ -26,7 +26,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { apiRequest } from "@/lib/queryClient";
-import { Trash2, Edit, Plus, RefreshCcw, Info, Calendar, Eye, MessageCircle } from "lucide-react";
+import { Trash2, Edit, Plus, RefreshCcw, Info, Calendar, Eye, MessageCircle, Download } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Switch } from "@/components/ui/switch";
 import { 
@@ -1627,7 +1627,31 @@ export default function AdminPage() {
                   <p className="text-gray-400 mb-4">
                     This section allows you to add, edit, and delete store locations.
                   </p>
-                  <div className="flex justify-end mb-4">
+                  <div className="flex flex-col sm:flex-row sm:justify-between gap-2 mb-4">
+                    <Button 
+                      variant="outline" 
+                      onClick={async () => {
+                        try {
+                          await apiRequest('POST', '/api/admin/seed-store-locations');
+                          queryClient.invalidateQueries({ queryKey: ['/api/store-locations'] });
+                          toast({
+                            title: "Store Locations Imported",
+                            description: "Successfully imported store locations from site data",
+                          });
+                        } catch (error) {
+                          console.error("Error seeding store locations:", error);
+                          toast({
+                            title: "Error",
+                            description: "Failed to import store locations",
+                            variant: "destructive",
+                          });
+                        }
+                      }}
+                      className="border-gray-600 hover:bg-gray-800 text-gray-300 flex items-center gap-2"
+                    >
+                      <Download size={16} />
+                      Import Locations
+                    </Button>
                     <Button 
                       onClick={() => {
                         setEditingStoreLocation(null);
