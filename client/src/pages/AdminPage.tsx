@@ -1369,27 +1369,27 @@ export default function AdminPage() {
             </TabsContent>
             
             <TabsContent value="blog" className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <Card className="bg-gray-800 border-gray-700">
-                  <CardHeader>
+                  <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                     <CardTitle>Blog Categories</CardTitle>
+                    <Button 
+                      onClick={() => {
+                        setEditingBlogCategory(null);
+                        setBlogCategoryDialogOpen(true);
+                      }}
+                      className="bg-primary hover:bg-primary/90 flex items-center gap-1 h-8 px-3"
+                      size="sm"
+                    >
+                      <Plus size={14} />
+                      <span className="hidden sm:inline">Add Category</span>
+                      <span className="sm:hidden">Add</span>
+                    </Button>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-gray-400 mb-4">
+                    <p className="text-gray-400 mb-4 text-sm">
                       Manage your blog categories for organizing blog posts.
                     </p>
-                    <div className="flex justify-end mb-4">
-                      <Button 
-                        onClick={() => {
-                          setEditingBlogCategory(null);
-                          setBlogCategoryDialogOpen(true);
-                        }}
-                        className="bg-primary hover:bg-primary/90 flex items-center gap-2"
-                      >
-                        <Plus size={16} />
-                        Add New Category
-                      </Button>
-                    </div>
                     
                     {isBlogCategoriesLoading ? (
                       <div className="animate-pulse space-y-3">
@@ -1510,21 +1510,21 @@ export default function AdminPage() {
               </div>
               
               <Card className="bg-gray-800 border-gray-700">
-                <CardHeader>
-                  <div className="flex justify-between items-center">
-                    <CardTitle>Blog Posts</CardTitle>
-                    <Button 
-                      onClick={() => {
-                        setEditingBlogPost(null);
-                        setBlogPostDialogOpen(true);
-                      }}
-                      className="bg-primary hover:bg-primary/90 flex items-center gap-2"
-                      disabled={!blogCategories || blogCategories.length === 0}
-                    >
-                      <Plus size={16} />
-                      Add New Post
-                    </Button>
-                  </div>
+                <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                  <CardTitle>Blog Posts</CardTitle>
+                  <Button 
+                    onClick={() => {
+                      setEditingBlogPost(null);
+                      setBlogPostDialogOpen(true);
+                    }}
+                    className="bg-primary hover:bg-primary/90 flex items-center gap-1 h-9 px-3"
+                    size="sm"
+                    disabled={!blogCategories || blogCategories.length === 0}
+                  >
+                    <Plus size={14} />
+                    <span className="hidden sm:inline">Add New Post</span>
+                    <span className="sm:hidden">Add Post</span>
+                  </Button>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-400 mb-4">
@@ -1538,14 +1538,14 @@ export default function AdminPage() {
                       ))}
                     </div>
                   ) : blogPosts && blogPosts.length > 0 ? (
-                    <div className="rounded-md border border-gray-700">
+                    <div className="rounded-md border border-gray-700 overflow-x-auto">
                       <Table>
                         <TableHeader className="bg-gray-800">
                           <TableRow className="hover:bg-gray-700/50 border-gray-700">
                             <TableHead className="text-gray-400">Title</TableHead>
-                            <TableHead className="text-gray-400">Category</TableHead>
+                            <TableHead className="text-gray-400 hidden md:table-cell">Category</TableHead>
                             <TableHead className="text-gray-400">Status</TableHead>
-                            <TableHead className="text-gray-400">Date</TableHead>
+                            <TableHead className="text-gray-400 hidden md:table-cell">Date</TableHead>
                             <TableHead className="text-gray-400 text-right">Actions</TableHead>
                           </TableRow>
                         </TableHeader>
@@ -1555,37 +1555,42 @@ export default function AdminPage() {
                             return (
                               <TableRow key={post.id} className="hover:bg-gray-700/50 border-gray-700">
                                 <TableCell className="font-medium">
-                                  <div className="flex items-center gap-2">
-                                    {post.featured && (
-                                      <Tooltip>
-                                        <TooltipTrigger asChild>
-                                          <div className="text-yellow-500">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                                            </svg>
-                                          </div>
-                                        </TooltipTrigger>
-                                        <TooltipContent side="top" className="bg-black text-white border-gray-700">
-                                          Featured Post
-                                        </TooltipContent>
-                                      </Tooltip>
-                                    )}
-                                    {post.title}
+                                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                                    <div className="flex items-center gap-2">
+                                      {post.featured && (
+                                        <Tooltip>
+                                          <TooltipTrigger asChild>
+                                            <div className="text-yellow-500">
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                              </svg>
+                                            </div>
+                                          </TooltipTrigger>
+                                          <TooltipContent side="top" className="bg-black text-white border-gray-700">
+                                            Featured Post
+                                          </TooltipContent>
+                                        </Tooltip>
+                                      )}
+                                      {post.title}
+                                    </div>
+                                    <div className="text-xs text-gray-400 md:hidden">
+                                      {category?.name || 'Unknown'} • {new Date(post.createdAt).toLocaleDateString()}
+                                    </div>
                                   </div>
                                 </TableCell>
-                                <TableCell>{category?.name || 'Unknown'}</TableCell>
+                                <TableCell className="hidden md:table-cell">{category?.name || 'Unknown'}</TableCell>
                                 <TableCell>
                                   {post.published ? (
-                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                                       Published
                                     </span>
                                   ) : (
-                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+                                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
                                       Draft
                                     </span>
                                   )}
                                 </TableCell>
-                                <TableCell>{new Date(post.createdAt).toLocaleDateString()}</TableCell>
+                                <TableCell className="hidden md:table-cell">{new Date(post.createdAt).toLocaleDateString()}</TableCell>
                                 <TableCell className="text-right">
                                   <div className="flex justify-end gap-2">
                                     <Button 
@@ -1630,7 +1635,7 @@ export default function AdminPage() {
               
               {/* Blog Category Dialog */}
               <Dialog open={blogCategoryDialogOpen} onOpenChange={setBlogCategoryDialogOpen}>
-                <DialogContent className="bg-gray-800 text-white border-gray-700">
+                <DialogContent className="bg-gray-800 text-white border-gray-700 max-h-[90vh] overflow-y-auto mx-4 w-[calc(100%-2rem)]">
                   <DialogHeader>
                     <DialogTitle>{editingBlogCategory ? "Edit Blog Category" : "Add New Blog Category"}</DialogTitle>
                     <DialogDescription className="text-gray-400">
@@ -1737,7 +1742,7 @@ export default function AdminPage() {
               
               {/* Blog Post Dialog */}
               <Dialog open={blogPostDialogOpen} onOpenChange={setBlogPostDialogOpen}>
-                <DialogContent className="bg-gray-800 text-white border-gray-700 sm:max-w-3xl">
+                <DialogContent className="bg-gray-800 text-white border-gray-700 sm:max-w-3xl max-h-[90vh] overflow-y-auto mx-4 w-[calc(100%-2rem)]">
                   <DialogHeader>
                     <DialogTitle>{editingBlogPost ? "Edit Blog Post" : "Add New Blog Post"}</DialogTitle>
                     <DialogDescription className="text-gray-400">
