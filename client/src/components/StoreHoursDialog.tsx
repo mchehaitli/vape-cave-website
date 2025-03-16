@@ -14,6 +14,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
+  TooltipProvider
 } from "@/components/ui/tooltip";
 import { RefreshCcw } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -219,20 +220,22 @@ export default function StoreHoursDialog({
                           handleCopyHours(day);
                         }}
                       >
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <span className="flex items-center justify-center text-gray-400 hover:text-white">
-                              <RefreshCcw size={14} />
-                            </span>
-                          </TooltipTrigger>
-                          <TooltipContent side="top">
-                            <p className="text-xs">
-                              {copyingFromDay === day 
-                                ? "Click on another day to copy hours there" 
-                                : "Copy these hours to another day"}
-                            </p>
-                          </TooltipContent>
-                        </Tooltip>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <span className="flex items-center justify-center text-gray-400 hover:text-white">
+                                <RefreshCcw size={14} />
+                              </span>
+                            </TooltipTrigger>
+                            <TooltipContent side="top">
+                              <p className="text-xs">
+                                {copyingFromDay === day 
+                                  ? "Click on another day to copy hours there" 
+                                  : "Copy these hours to another day"}
+                              </p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       </Button>
                     </div>
                     
