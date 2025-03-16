@@ -32,8 +32,7 @@ export default function BlogPage() {
             <div className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {[1, 2, 3, 4, 5, 6].map((i) => (
-                  <div key={i} className="animate-pulse">
-                    <div className="h-48 bg-gray-700 rounded-lg mb-4"></div>
+                  <div key={i} className="animate-pulse rounded-lg bg-gray-800 p-4">
                     <div className="h-6 bg-gray-700 rounded w-3/4 mb-2"></div>
                     <div className="h-4 bg-gray-700 rounded w-1/2 mb-4"></div>
                     <div className="space-y-2">
@@ -70,16 +69,8 @@ interface BlogPostCardProps {
 
 function BlogPostCard({ post }: BlogPostCardProps) {
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow border-gray-800 bg-gray-800 text-white">
-      {post.featured_image && (
-        <div className="h-48 overflow-hidden">
-          <img 
-            src={post.featured_image} 
-            alt={post.title} 
-            className="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
-          />
-        </div>
-      )}
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow border-gray-800 bg-gray-800 text-white"
+    >
       <CardHeader className="p-4 pb-2">
         <div className="flex justify-between items-start">
           <div>
