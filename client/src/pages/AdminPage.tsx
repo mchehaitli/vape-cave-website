@@ -238,6 +238,7 @@ export default function AdminPage() {
   
   // State for store location management
   const [storeLocationDialogOpen, setStoreLocationDialogOpen] = useState(false);
+  const [storeHoursDialogOpen, setStoreHoursDialogOpen] = useState(false);
   const [editingStoreLocation, setEditingStoreLocation] = useState<any>(null);
   const [deletingStoreLocationId, setDeletingStoreLocationId] = useState<number | null>(null);
 
@@ -1618,51 +1619,15 @@ export default function AdminPage() {
               </AlertDialog>
             </TabsContent>
             
-            <TabsContent value="locations" className="space-y-4">
+            <TabsContent value="store-hours" className="space-y-4">
               <Card className="bg-gray-800 border-gray-700">
                 <CardHeader>
-                  <CardTitle>Manage Store Locations</CardTitle>
+                  <CardTitle>Manage Store Hours</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-400 mb-4">
-                    This section allows you to add, edit, and delete store locations.
+                    Update the operating hours for each of your store locations.
                   </p>
-                  <div className="flex flex-col sm:flex-row sm:justify-between gap-2 mb-4">
-                    <Button 
-                      variant="outline" 
-                      onClick={async () => {
-                        try {
-                          await apiRequest('POST', '/api/admin/seed-store-locations');
-                          queryClient.invalidateQueries({ queryKey: ['/api/store-locations'] });
-                          toast({
-                            title: "Store Locations Imported",
-                            description: "Successfully imported store locations from site data",
-                          });
-                        } catch (error) {
-                          console.error("Error seeding store locations:", error);
-                          toast({
-                            title: "Error",
-                            description: "Failed to import store locations",
-                            variant: "destructive",
-                          });
-                        }
-                      }}
-                      className="border-gray-600 hover:bg-gray-800 text-gray-300 flex items-center gap-2"
-                    >
-                      <Download size={16} />
-                      Import Locations
-                    </Button>
-                    <Button 
-                      onClick={() => {
-                        setEditingStoreLocation(null);
-                        setStoreLocationDialogOpen(true);
-                      }}
-                      className="bg-primary hover:bg-primary/90 flex items-center gap-2"
-                    >
-                      <Plus size={16} />
-                      Add New Location
-                    </Button>
-                  </div>
                   
                   {isStoreLocationsLoading ? (
                     <div className="animate-pulse space-y-3">
@@ -1671,74 +1636,81 @@ export default function AdminPage() {
                       ))}
                     </div>
                   ) : storeLocations && storeLocations.length > 0 ? (
-                    <div className="rounded-md border border-gray-700 overflow-x-auto">
-                      <Table>
-                        <TableHeader className="bg-gray-800">
-                          <TableRow className="hover:bg-gray-700/50 border-gray-700">
-                            <TableHead className="text-gray-400">Location</TableHead>
-                            <TableHead className="text-gray-400 hidden md:table-cell">City</TableHead>
-                            <TableHead className="text-gray-400 hidden md:table-cell">Phone</TableHead>
-                            <TableHead className="text-gray-400 text-right">Actions</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {storeLocations.map(location => (
-                            <TableRow key={location.id} className="hover:bg-gray-700/50 border-gray-700">
-                              <TableCell className="font-medium">
-                                <div className="flex items-center gap-3">
-                                  <div className="w-12 h-12 rounded bg-gray-700 overflow-hidden border border-gray-600">
-                                    <img 
-                                      src={location.image} 
-                                      alt={location.name} 
-                                      className="w-full h-full object-cover" 
-                                      onError={(e) => {
-                                        (e.target as HTMLImageElement).src = 'https://placehold.co/100x100?text=Store';
-                                      }}
-                                    />
-                                  </div>
-                                  <div>
-                                    <div>{location.name}</div>
-                                    <div className="text-xs text-gray-400 md:hidden mt-1">
-                                      {location.city}, {location.phone}
+                    <div className="space-y-8">
+                      {storeLocations.map(location => (
+                        <div key={location.id} className="rounded-lg border border-gray-700 overflow-hidden">
+                          <div className="bg-gray-800 px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div className="flex items-center gap-3">
+                              <div className="w-12 h-12 rounded bg-gray-700 overflow-hidden border border-gray-600">
+                                <img 
+                                  src={location.image} 
+                                  alt={location.name} 
+                                  className="w-full h-full object-cover" 
+                                  onError={(e) => {
+                                    (e.target as HTMLImageElement).src = 'https://placehold.co/100x100?text=Store';
+                                  }}
+                                />
+                              </div>
+                              <div>
+                                <h3 className="font-medium text-lg">{location.name}</h3>
+                                <p className="text-sm text-gray-400">{location.city} - {location.phone}</p>
+                              </div>
+                            </div>
+                            <Button 
+                              onClick={() => {
+                                // Set up the store hours editing
+                                setEditingStoreLocation(location);
+                                setStoreHoursDialogOpen(true);
+                              }}
+                              className="bg-primary hover:bg-primary/90 flex items-center gap-2 text-sm"
+                              size="sm"
+                            >
+                              <Clock size={14} />
+                              Edit Hours
+                            </Button>
+                          </div>
+                          
+                          <div className="p-4 bg-gray-900">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div>
+                                <h4 className="text-sm font-medium mb-2">Regular Hours</h4>
+                                <div className="space-y-1">
+                                  {location.opening_hours && Object.entries(location.opening_hours).map(([day, hours]) => (
+                                    <div key={day} className="flex justify-between text-sm">
+                                      <span className="text-gray-400 font-medium w-28">{day}</span>
+                                      <span>{hours}</span>
+                                    </div>
+                                  ))}
+                                  {(!location.opening_hours || Object.keys(location.opening_hours).length === 0) && (
+                                    <div className="text-sm text-gray-400 italic">
+                                      No regular hours set.
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                              
+                              <div>
+                                <h4 className="text-sm font-medium mb-2">Special Hours & Closures</h4>
+                                {location.closed_days ? (
+                                  <div className="space-y-1">
+                                    <div className="text-sm text-gray-300">
+                                      {location.closed_days}
                                     </div>
                                   </div>
-                                </div>
-                              </TableCell>
-                              <TableCell className="hidden md:table-cell">{location.city}</TableCell>
-                              <TableCell className="hidden md:table-cell">{location.phone}</TableCell>
-                              <TableCell className="text-right">
-                                <div className="flex justify-end gap-2">
-                                  <Button 
-                                    variant="ghost" 
-                                    size="sm"
-                                    className="h-8 w-8 p-0 text-gray-400 hover:text-white hover:bg-gray-700"
-                                    onClick={() => {
-                                      setEditingStoreLocation(location);
-                                      setStoreLocationDialogOpen(true);
-                                    }}
-                                  >
-                                    <span className="sr-only">Edit</span>
-                                    <Edit size={16} />
-                                  </Button>
-                                  <Button 
-                                    variant="ghost" 
-                                    size="sm"
-                                    className="h-8 w-8 p-0 text-red-400 hover:text-red-300 hover:bg-gray-700"
-                                    onClick={() => setDeletingStoreLocationId(location.id)}
-                                  >
-                                    <span className="sr-only">Delete</span>
-                                    <Trash2 size={16} />
-                                  </Button>
-                                </div>
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
+                                ) : (
+                                  <div className="text-sm text-gray-400 italic">
+                                    No special hours or holiday closures set.
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   ) : (
                     <div className="text-center py-8 text-gray-400">
-                      <p>No store locations found. Click "Add New Location" to create your first store location.</p>
+                      <p>No store locations found. Please add store locations first to manage their hours.</p>
                     </div>
                   )}
                 </CardContent>
