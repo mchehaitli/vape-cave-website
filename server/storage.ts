@@ -2,7 +2,8 @@ import {
   users, type User, type InsertUser,
   brands, type Brand, type InsertBrand, 
   brandCategories, type BrandCategory, type InsertBrandCategory,
-  blogPosts, type BlogPost, type InsertBlogPost
+  blogPosts, type BlogPost, type InsertBlogPost,
+  storeLocations, type StoreLocation, type InsertStoreLocation
 } from "@shared/schema";
 import { eq, and, asc, desc, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
@@ -52,6 +53,14 @@ export interface IStorage {
   updateBlogPost(id: number, post: Partial<InsertBlogPost>): Promise<BlogPost | undefined>;
   deleteBlogPost(id: number): Promise<boolean>;
   incrementBlogPostViewCount(id: number): Promise<void>;
+
+  // Store location operations
+  getAllStoreLocations(): Promise<StoreLocation[]>;
+  getStoreLocation(id: number): Promise<StoreLocation | undefined>;
+  getStoreLocationByCity(city: string): Promise<StoreLocation | undefined>;
+  createStoreLocation(location: InsertStoreLocation): Promise<StoreLocation>;
+  updateStoreLocation(id: number, location: Partial<InsertStoreLocation>): Promise<StoreLocation | undefined>;
+  deleteStoreLocation(id: number): Promise<boolean>;
 }
 
 // Database implementation of the storage interface
@@ -367,6 +376,58 @@ export class DbStorage implements IStorage {
       })
       .where(eq(blogPosts.id, id));
   }
+
+  // Store location operations
+  async getAllStoreLocations(): Promise<StoreLocation[]> {
+    return db.select().from(storeLocations);
+  }
+
+  async getStoreLocation(id: number): Promise<StoreLocation | undefined> {
+    const result = await db.select().from(storeLocations).where(eq(storeLocations.id, id));
+    return result[0];
+  }
+
+  async getStoreLocationByCity(city: string): Promise<StoreLocation | undefined> {
+    const result = await db.select().from(storeLocations).where(eq(storeLocations.city, city));
+    return result[0];
+  }
+
+  async createStoreLocation(location: InsertStoreLocation): Promise<StoreLocation> {
+    const result = await db.insert(storeLocations).values(location).returning();
+    return result[0];
+  }
+
+  async updateStoreLocation(id: number, location: Partial<InsertStoreLocation>): Promise<StoreLocation | undefined> {
+    // Create a clean update object
+    const updateData: Partial<Omit<StoreLocation, 'id'>> = {};
+    
+    // Map fields to the update data object
+    Object.keys(location).forEach(key => {
+      if (location[key as keyof InsertStoreLocation] !== undefined) {
+        updateData[key as keyof Omit<StoreLocation, 'id'>] = location[key as keyof InsertStoreLocation];
+      }
+    });
+    
+    // Always update the updated_at field
+    updateData.updated_at = new Date();
+    
+    const result = await db
+      .update(storeLocations)
+      .set(updateData)
+      .where(eq(storeLocations.id, id))
+      .returning();
+    
+    return result[0];
+  }
+
+  async deleteStoreLocation(id: number): Promise<boolean> {
+    const result = await db
+      .delete(storeLocations)
+      .where(eq(storeLocations.id, id))
+      .returning();
+    
+    return result.length > 0;
+  }
 }
 
 // Fallback to MemStorage if database connection fails
@@ -375,22 +436,26 @@ export class MemStorage implements IStorage {
   private brandCategoriesMap: Map<number, BrandCategory>;
   private brandsMap: Map<number, Brand>;
   private blogPostsMap: Map<number, BlogPost>;
+  private storeLocationsMap: Map<number, StoreLocation>;
   
   private userCurrentId: number;
   private categoryCurrentId: number;
   private brandCurrentId: number;
   private blogPostCurrentId: number;
+  private storeLocationCurrentId: number;
 
   constructor() {
     this.usersMap = new Map();
     this.brandCategoriesMap = new Map();
     this.brandsMap = new Map();
     this.blogPostsMap = new Map();
+    this.storeLocationsMap = new Map();
     
     this.userCurrentId = 1;
     this.categoryCurrentId = 1;
     this.brandCurrentId = 1;
     this.blogPostCurrentId = 1;
+    this.storeLocationCurrentId = 1;
   }
 
   // User operations
@@ -622,6 +687,58 @@ export class MemStorage implements IStorage {
       post.view_count = (post.view_count || 0) + 1;
       this.blogPostsMap.set(id, post);
     }
+  }
+
+  // Store location operations
+  async getAllStoreLocations(): Promise<StoreLocation[]> {
+    return Array.from(this.storeLocationsMap.values());
+  }
+
+  async getStoreLocation(id: number): Promise<StoreLocation | undefined> {
+    return this.storeLocationsMap.get(id);
+  }
+
+  async getStoreLocationByCity(city: string): Promise<StoreLocation | undefined> {
+    return Array.from(this.storeLocationsMap.values()).find(
+      (location) => location.city.toLowerCase() === city.toLowerCase()
+    );
+  }
+
+  async createStoreLocation(location: InsertStoreLocation): Promise<StoreLocation> {
+    const id = this.storeLocationCurrentId++;
+    const now = new Date();
+    
+    const newLocation: StoreLocation = {
+      ...location,
+      id,
+      created_at: now,
+      updated_at: now
+    };
+    
+    this.storeLocationsMap.set(id, newLocation);
+    return newLocation;
+  }
+
+  async updateStoreLocation(id: number, location: Partial<InsertStoreLocation>): Promise<StoreLocation | undefined> {
+    const existingLocation = this.storeLocationsMap.get(id);
+    
+    if (!existingLocation) {
+      return undefined;
+    }
+    
+    // Create an updated store location object
+    const updatedLocation: StoreLocation = { 
+      ...existingLocation,
+      ...location,
+      updated_at: new Date()
+    };
+    
+    this.storeLocationsMap.set(id, updatedLocation);
+    return updatedLocation;
+  }
+
+  async deleteStoreLocation(id: number): Promise<boolean> {
+    return this.storeLocationsMap.delete(id);
   }
 }
 
