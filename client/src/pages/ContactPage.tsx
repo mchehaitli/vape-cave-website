@@ -10,6 +10,8 @@ const ContactPage = () => {
   });
   
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -19,22 +21,45 @@ const ContactPage = () => {
     }));
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real application, you would send this data to your backend
-    console.log("Form submitted:", formData);
-    setFormSubmitted(true);
-    // Reset form after submission
-    setFormData({
-      name: "",
-      email: "",
-      subject: "",
-      message: ""
-    });
-    // Hide success message after 5 seconds
-    setTimeout(() => {
-      setFormSubmitted(false);
-    }, 5000);
+    setIsSubmitting(true);
+    setErrorMessage(null);
+    
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to submit form');
+      }
+      
+      // Form submitted successfully
+      setFormSubmitted(true);
+      // Reset form after submission
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: ""
+      });
+      // Hide success message after 5 seconds
+      setTimeout(() => {
+        setFormSubmitted(false);
+      }, 5000);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setErrorMessage(error instanceof Error ? error.message : 'An unknown error occurred');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   
   return (
@@ -63,6 +88,15 @@ const ContactPage = () => {
                   <div className="flex items-center">
                     <i className="fas fa-check-circle text-primary mr-2"></i>
                     <p>Thank you for your message! We'll get back to you soon.</p>
+                  </div>
+                </div>
+              )}
+              
+              {errorMessage && (
+                <div className="bg-red-900/20 border border-red-500/40 text-white rounded-lg p-4 mb-6">
+                  <div className="flex items-center">
+                    <i className="fas fa-exclamation-circle text-red-500 mr-2"></i>
+                    <p>{errorMessage}</p>
                   </div>
                 </div>
               )}

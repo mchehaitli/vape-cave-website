@@ -7,6 +7,7 @@ import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
 import * as dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import { sendContactEmail, sendNewsletterSubscriptionEmail, ContactFormData, NewsletterSubscription } from "./email-service";
 
 // Add userId to session
 declare module 'express-session' {
@@ -672,6 +673,73 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Seed store locations error:", error);
       res.status(500).json({ error: "Failed to seed store locations" });
+    }
+  });
+
+  // Contact form submission endpoint
+  app.post('/api/contact', async (req, res) => {
+    try {
+      const { name, email, subject, message } = req.body;
+      
+      // Validate required fields
+      if (!name || !email || !message) {
+        return res.status(400).json({ error: "Name, email, and message are required" });
+      }
+
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        return res.status(400).json({ error: "Invalid email format" });
+      }
+      
+      const contactData: ContactFormData = {
+        name,
+        email,
+        subject: subject || "General Inquiry", // Default subject if not provided
+        message
+      };
+      
+      const result = await sendContactEmail(contactData);
+      
+      if (result.success) {
+        res.json({ message: "Contact form submitted successfully" });
+      } else {
+        res.status(500).json({ error: "Failed to send contact form" });
+      }
+    } catch (error) {
+      console.error("Contact form submission error:", error);
+      res.status(500).json({ error: "Failed to process contact form" });
+    }
+  });
+  
+  // Newsletter subscription endpoint
+  app.post('/api/newsletter/subscribe', async (req, res) => {
+    try {
+      const { email } = req.body;
+      
+      // Validate email
+      if (!email) {
+        return res.status(400).json({ error: "Email is required" });
+      }
+      
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        return res.status(400).json({ error: "Invalid email format" });
+      }
+      
+      const subscriptionData: NewsletterSubscription = { email };
+      
+      const result = await sendNewsletterSubscriptionEmail(subscriptionData);
+      
+      if (result.success) {
+        res.json({ message: "Newsletter subscription successful" });
+      } else {
+        res.status(500).json({ error: "Failed to process newsletter subscription" });
+      }
+    } catch (error) {
+      console.error("Newsletter subscription error:", error);
+      res.status(500).json({ error: "Failed to process newsletter subscription" });
     }
   });
 
