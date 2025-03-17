@@ -797,6 +797,7 @@ const HomePage = () => {
                             <p className="text-gray-300 text-sm">Fri-Sat: 10AM - 1AM</p>
                           </>
                         )}
+                        <p className="text-primary/80 text-xs mt-1">Open 7 days a week</p>
                       </>
                     )}
                   </motion.div>
