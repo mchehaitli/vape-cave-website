@@ -11,11 +11,57 @@ import {
 const Footer = () => {
   const [email, setEmail] = useState("");
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [subscriptionSuccess, setSubscriptionSuccess] = useState(false);
+  const [subscriptionError, setSubscriptionError] = useState<string | null>(null);
+
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, this would send the email to a backend service
-    alert(`Thank you for subscribing with: ${email}`);
-    setEmail("");
+    
+    // Validate email
+    if (!email) {
+      setSubscriptionError("Email is required");
+      return;
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setSubscriptionError("Invalid email format");
+      return;
+    }
+    
+    setIsSubmitting(true);
+    setSubscriptionError(null);
+    
+    try {
+      const response = await fetch('/api/newsletter/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to subscribe');
+      }
+      
+      // Subscription successful
+      setSubscriptionSuccess(true);
+      setEmail("");
+      
+      // Hide success message after 5 seconds
+      setTimeout(() => {
+        setSubscriptionSuccess(false);
+      }, 5000);
+    } catch (error) {
+      console.error('Error subscribing to newsletter:', error);
+      setSubscriptionError(error instanceof Error ? error.message : 'An unknown error occurred');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Get location data from API
@@ -190,7 +236,7 @@ const Footer = () => {
             </ul>
           </div>
           
-          {/* Column 2: Main Contact */}
+          {/* Column 2: Main Contact & Newsletter */}
           <div>
             <h4 className="font-['Poppins'] font-semibold text-xl mb-4">Main Contact</h4>
             <ul className="space-y-3">
@@ -206,8 +252,58 @@ const Footer = () => {
                 </svg>
                 <span className="text-white/70">vapecavetx@gmail.com</span>
               </li>
-
             </ul>
+            
+            {/* Newsletter Signup */}
+            <div className="mt-8">
+              <h4 className="font-['Poppins'] font-semibold text-xl mb-4">Newsletter</h4>
+              <p className="text-white/70 mb-3">Get the latest deals and updates from Vape Cave</p>
+              
+              {subscriptionSuccess && (
+                <div className="bg-primary/20 border border-primary/40 text-white rounded-lg p-3 mb-4">
+                  <div className="flex items-center">
+                    <i className="fas fa-check-circle text-primary mr-2"></i>
+                    <p>Thanks for subscribing!</p>
+                  </div>
+                </div>
+              )}
+              
+              {subscriptionError && (
+                <div className="bg-red-900/20 border border-red-500/40 text-white rounded-lg p-3 mb-4">
+                  <div className="flex items-center">
+                    <i className="fas fa-exclamation-circle text-red-500 mr-2"></i>
+                    <p>{subscriptionError}</p>
+                  </div>
+                </div>
+              )}
+              
+              <form onSubmit={handleSubscribe} className="flex flex-col space-y-3">
+                <div className="flex">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Your email"
+                    className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-700 rounded-l-md focus:outline-none focus:ring-2 focus:ring-primary"
+                    required
+                  />
+                  <button
+                    type="submit"
+                    className="bg-primary hover:bg-primary/90 text-black font-bold px-4 py-2 rounded-r-md transition-colors flex items-center justify-center disabled:opacity-70"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <svg className="animate-spin h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                    ) : (
+                      <i className="fas fa-paper-plane"></i>
+                    )}
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
           
           {/* Column 3: Frisco Location */}
