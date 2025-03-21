@@ -16,7 +16,7 @@ interface MainLayoutProps {
 const MainLayout: React.FC<MainLayoutProps> = ({
   children,
   title = "Vape Cave - Premium Vaping Products & Accessories",
-  description = "Premium vaping products and accessories at Vape Cave. Visit our two convenient locations in Frisco and Arlington, TX or shop online.",
+  description = "Your One Stop Vape Shop for Disposables | E-Liquids | Salts | Delta | THC - A | Glass | Tobacco | Hookah / Shisha | Vaporizers | Mods | and much more",
   canonical = "",
   ogImage = "/images/vape-cave-share-image.jpg",
   structuredData
@@ -39,9 +39,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({
       "width": 180,
       "height": 60
     },
-    "description": "Premium vaping products and accessories at Vape Cave Frisco. Visit our convenient locations in Frisco and Arlington, TX or shop online.",
-    "slogan": "Your Premier Destination for Premium Vaping Products in Frisco, TX",
-    "keywords": "vape shop frisco, premium vaping products frisco, frisco vape shop, delta 8 frisco, thc-a frisco, disposable vape frisco, vape products frisco tx, vape cave frisco",
+    "description": "Your One Stop Vape Shop for Disposables | E-Liquids | Salts | Delta | THC - A | Glass | Tobacco | Hookah / Shisha | Vaporizers | Mods | and much more",
+    "slogan": "Your One Stop Vape Shop for Premium Vaping Products in Frisco & Arlington, TX",
+    "keywords": "vape shop frisco, disposable vapes, e-liquids, salts, delta 8 frisco, thc-a frisco, glass, tobacco, hookah, shisha, vaporizers, mods, vape products frisco tx, vape shop arlington, vape cave frisco, vape cave arlington",
     "founder": {
       "@type": "Person",
       "name": "Vape Cave Founder",
@@ -225,7 +225,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
       "@type": "Brand",
       "name": "Vape Cave",
       "logo": "https://vapecavetx.com/logo.png",
-      "slogan": "Premium Vaping Products & Accessories"
+      "slogan": "Your One Stop Vape Shop for Disposables, E-Liquids, Delta, THC-A and more"
     }
   };
 
@@ -249,7 +249,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         <title>{title}</title>
         <meta name="description" content={description} />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="keywords" content="vape shop frisco, premium vaping products frisco, frisco vape shop, delta 8 frisco, thc-a frisco, disposable vape frisco, vape products frisco tx, vaping frisco, frisco vaporizer shop, vape cave frisco" />
+        <meta name="keywords" content="vape shop frisco, disposable vapes, e-liquids, salts, delta 8 frisco, thc-a frisco, glass, tobacco, hookah, shisha, vaporizers, mods, vape products frisco tx, vape shop arlington, vape cave frisco, vape cave arlington" />
         <meta name="author" content="Vape Cave" />
         <meta name="robots" content="index, follow" />
         <meta name="geo.position" content="33.150730;-96.822550" />
