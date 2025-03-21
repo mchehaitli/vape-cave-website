@@ -234,6 +234,17 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   return (
     <div className="flex flex-col min-h-screen font-['Open_Sans'] text-dark bg-light">
       <Helmet>
+        {/* Google Analytics */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-9S39LGLQYG"></script>
+        <script>
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-9S39LGLQYG');
+          `}
+        </script>
+        
         {/* Primary Meta Tags */}
         <title>{title}</title>
         <meta name="description" content={description} />
