@@ -1,7 +1,15 @@
 import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertUserSchema, insertBrandCategorySchema, insertBrandSchema, insertBlogPostSchema, insertStoreLocationSchema } from "@shared/schema";
+import { 
+  insertUserSchema, 
+  insertBrandCategorySchema, 
+  insertBrandSchema, 
+  insertBlogPostSchema, 
+  insertStoreLocationSchema,
+  insertProductCategorySchema,
+  insertProductSchema
+} from "@shared/schema";
 import { seedStoreLocations } from "./seed-store-locations";
 import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
@@ -743,6 +751,118 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
+  // Product category endpoints
+  app.get('/api/product-categories', async (_req, res) => {
+    try {
+      const categories = await storage.getAllProductCategories();
+      res.json(categories);
+    } catch (error) {
+      console.error("Error fetching product categories:", error);
+      res.status(500).json({ error: "Failed to fetch product categories" });
+    }
+  });
+
+  app.get('/api/product-categories/:id', async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid product category ID" });
+      }
+      
+      const category = await storage.getProductCategory(id);
+      
+      if (!category) {
+        return res.status(404).json({ error: "Product category not found" });
+      }
+      
+      res.json(category);
+    } catch (error) {
+      console.error("Error fetching product category:", error);
+      res.status(500).json({ error: "Failed to fetch product category" });
+    }
+  });
+
+  app.get('/api/product-categories/slug/:slug', async (req, res) => {
+    try {
+      const { slug } = req.params;
+      
+      const category = await storage.getProductCategoryBySlug(slug);
+      
+      if (!category) {
+        return res.status(404).json({ error: "Product category not found" });
+      }
+      
+      res.json(category);
+    } catch (error) {
+      console.error("Error fetching product category by slug:", error);
+      res.status(500).json({ error: "Failed to fetch product category" });
+    }
+  });
+
+  app.post('/api/admin/product-categories', isAdmin, async (req, res) => {
+    try {
+      const categoryResult = insertProductCategorySchema.safeParse(req.body);
+      
+      if (!categoryResult.success) {
+        return res.status(400).json({ error: categoryResult.error.format() });
+      }
+      
+      const category = await storage.createProductCategory(categoryResult.data);
+      res.status(201).json(category);
+    } catch (error) {
+      console.error("Error creating product category:", error);
+      res.status(500).json({ error: "Failed to create product category" });
+    }
+  });
+
+  app.put('/api/admin/product-categories/:id', isAdmin, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid product category ID" });
+      }
+      
+      // Only validate the fields present in the request
+      const updatedData: Record<string, any> = {};
+      
+      if (req.body.name !== undefined) updatedData.name = req.body.name;
+      if (req.body.slug !== undefined) updatedData.slug = req.body.slug;
+      if (req.body.description !== undefined) updatedData.description = req.body.description;
+      if (req.body.display_order !== undefined) updatedData.display_order = req.body.display_order;
+      
+      const category = await storage.updateProductCategory(id, updatedData);
+      
+      if (!category) {
+        return res.status(404).json({ error: "Product category not found" });
+      }
+      
+      res.json(category);
+    } catch (error) {
+      console.error("Error updating product category:", error);
+      res.status(500).json({ error: "Failed to update product category" });
+    }
+  });
+
+  app.delete('/api/admin/product-categories/:id', isAdmin, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid product category ID" });
+      }
+      
+      const success = await storage.deleteProductCategory(id);
+      
+      if (!success) {
+        return res.status(404).json({ error: "Product category not found" });
+      }
+      
+      res.json({ message: "Product category deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting product category:", error);
+      res.status(500).json({ error: "Failed to delete product category" });
+    }
+  });
+
   // Product endpoints
   app.get('/api/products', async (_req, res) => {
     try {
@@ -794,8 +914,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   app.post('/api/admin/products', isAdmin, async (req, res) => {
     try {
-      const product = req.body;
-      const newProduct = await storage.createProduct(product);
+      const productResult = insertProductSchema.safeParse(req.body);
+      
+      if (!productResult.success) {
+        return res.status(400).json({ error: productResult.error.format() });
+      }
+      
+      const newProduct = await storage.createProduct(productResult.data);
       res.status(201).json(newProduct);
     } catch (error) {
       console.error("Error creating product:", error);
