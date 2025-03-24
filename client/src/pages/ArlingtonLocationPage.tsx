@@ -451,7 +451,7 @@ const ArlingtonLocationPage: React.FC = () => {
         </div>
         <div className="container mx-auto px-4 h-full flex flex-col justify-center relative z-10 text-white">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 drop-shadow-lg font-['Poppins']">
-            Vape into the <span className="text-primary">Future</span>
+            Vape Cave <span className="text-primary">Arlington</span>
           </h1>
           <h2 
             className="text-xl md:text-2xl lg:text-3xl mb-8 text-white/90 font-medium max-w-[1100px] mx-auto leading-relaxed"
