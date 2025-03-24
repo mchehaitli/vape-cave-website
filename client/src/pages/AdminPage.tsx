@@ -672,6 +672,81 @@ export default function AdminPage() {
   
   // Store hours management is now handled in the StoreHoursDialog component
   
+  // Product CRUD operations
+  const handleAddProduct = () => {
+    setEditingProduct(null);
+    setProductDialogOpen(true);
+  };
+  
+  const handleEditProduct = (product: any) => {
+    setEditingProduct(product);
+    setProductDialogOpen(true);
+  };
+  
+  const handleDeleteProduct = (id: number) => {
+    setDeletingProductId(id);
+  };
+  
+  const confirmDeleteProduct = async () => {
+    if (!deletingProductId) return;
+    
+    try {
+      await apiRequest('DELETE', `/api/admin/products/${deletingProductId}`);
+      
+      queryClient.invalidateQueries({ queryKey: ['/api/products'] });
+      
+      toast({
+        title: "Product Deleted",
+        description: "The product has been successfully deleted",
+      });
+    } catch (error) {
+      console.error("Delete product error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to delete product",
+        variant: "destructive",
+      });
+    } finally {
+      setDeletingProductId(null);
+    }
+  };
+  
+  const onProductSubmit = async (data: ProductFormValues) => {
+    try {
+      if (editingProduct) {
+        // Update existing product
+        await apiRequest('PUT', `/api/admin/products/${editingProduct.id}`, data);
+        
+        toast({
+          title: "Product Updated",
+          description: "The product has been successfully updated",
+        });
+      } else {
+        // Create new product
+        await apiRequest('POST', '/api/admin/products', data);
+        
+        toast({
+          title: "Product Created",
+          description: "The product has been successfully created",
+        });
+      }
+      
+      // Invalidate queries to refresh data
+      queryClient.invalidateQueries({ queryKey: ['/api/products'] });
+      
+      // Close dialog
+      setProductDialogOpen(false);
+      setEditingProduct(null);
+    } catch (error) {
+      console.error("Product submit error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to save product",
+        variant: "destructive",
+      });
+    }
+  };
+
   // Brand CRUD operations
   const handleAddBrand = () => {
     setEditingBrand(null);
@@ -1078,6 +1153,7 @@ export default function AdminPage() {
             <div className="overflow-x-auto -mx-4 px-4">
               <TabsList className="bg-gray-800 border border-gray-700 w-full md:w-auto mb-2">
                 <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="dashboard">Dashboard</TabsTrigger>
+                <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="products">Products</TabsTrigger>
                 <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="brands">Brands</TabsTrigger>
                 <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="categories">Categories</TabsTrigger>
                 <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="store-hours">Store Hours</TabsTrigger>
