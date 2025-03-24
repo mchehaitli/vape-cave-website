@@ -10,6 +10,7 @@ interface Product {
   description: string;
   image: string;
   price: string;
+  hidePrice?: boolean; // New field to hide price completely
   category: string;
   featured?: boolean;
   featuredLabel?: string;
@@ -140,9 +141,17 @@ const ProductsPage = () => {
                     <h3 className="font-['Poppins'] font-semibold text-lg mb-2 text-white">{product.name}</h3>
                     <p className="text-gray-400 text-sm mb-4">{product.description}</p>
                     <div className="flex justify-between items-center">
-                      <span className="font-bold text-lg text-primary">${Number(product.price).toFixed(2)}</span>
+                      {!product.hidePrice ? (
+                        <span className="font-bold text-lg text-primary">
+                          {product.price ? `$${Number(product.price).toFixed(2)}` : 'Call for price'}
+                        </span>
+                      ) : (
+                        <span className="font-bold text-lg text-primary">
+                          Call for price
+                        </span>
+                      )}
                       <button className="bg-primary hover:bg-primary/90 text-black font-medium py-2 px-4 rounded-md transition-colors">
-                        Add to Cart
+                        {product.hidePrice ? 'Inquire' : 'Add to Cart'}
                       </button>
                     </div>
                   </div>

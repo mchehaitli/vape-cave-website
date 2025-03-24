@@ -1983,6 +1983,30 @@ export default function AdminPage() {
                         )}
                       />
                       
+                      <FormField
+                        control={productForm.control}
+                        name="hidePrice"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border border-gray-700 p-4">
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                                className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                              />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                              <FormLabel>
+                                Hide Price
+                              </FormLabel>
+                              <FormDescription className="text-gray-400 text-xs">
+                                Hide the price completely instead of showing $0.00
+                              </FormDescription>
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                      
                       <DialogFooter className="pt-4">
                         <Button 
                           type="button" 

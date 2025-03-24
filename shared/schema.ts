@@ -209,6 +209,7 @@ export const products = pgTable("products", {
   name: text("name").notNull(),
   description: text("description").notNull(),
   price: text("price"), // Now optional
+  hidePrice: boolean("hide_price").default(false), // Option to hide the price on the customer UI
   image: text("image").notNull(),
   category: text("category").notNull(), // This is the slug of the category for backward compatibility
   categoryId: integer("category_id"), // New field to link to product_categories table
@@ -228,6 +229,7 @@ export const insertProductSchema = createInsertSchema(products)
     featured: true,
     featuredLabel: true,
     stock: true,
+    hidePrice: true, // Add hidePrice field
   })
   .extend({
     price: z.string().optional(), // Make price optional in the schema
