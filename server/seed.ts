@@ -1,6 +1,7 @@
 import { storage } from "./storage";
 import * as bcrypt from "bcryptjs";
 import * as dotenv from "dotenv";
+import { seedProducts } from "./seed-products";
 
 dotenv.config();
 
