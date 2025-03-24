@@ -450,10 +450,15 @@ const ArlingtonLocationPage: React.FC = () => {
           <div className="absolute inset-0 opacity-20 bg-pattern"></div>
         </div>
         <div className="container mx-auto px-4 h-full flex flex-col justify-center relative z-10 text-white">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 drop-shadow-lg font-['Poppins']">Vape Cave Arlington</h1>
-          <div className="h-1 w-24 bg-primary rounded-full mb-6"></div>
-          <p className="text-xl md:text-2xl max-w-2xl drop-shadow-md">Your premier destination for premium vaping products in Arlington, Texas.</p>
-          <div className="mt-8 flex flex-wrap gap-4">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 drop-shadow-lg font-['Poppins']">
+            Vape into the <span className="text-primary">Future</span>
+          </h1>
+          <h2 
+            className="text-xl md:text-2xl lg:text-3xl mb-8 text-white/90 font-medium max-w-[1100px] mx-auto leading-relaxed"
+          >
+            Your One Stop Vape Shop for <span className="text-primary font-semibold">Disposables</span> | <span className="text-primary font-semibold">E-Liquids</span> | <span className="text-primary font-semibold">Salts</span> | <span className="text-primary font-semibold">Delta</span> | <span className="text-primary font-semibold">THC - A</span> | <span className="text-primary font-semibold">Glass</span> | <span className="text-primary font-semibold">Tobacco</span> | <span className="text-primary font-semibold">Hookah / Shisha</span> | <span className="text-primary font-semibold">Vaporizers</span> | <span className="text-primary font-semibold">Mods</span> | and much more
+          </h2>
+          <div className="mt-6 flex flex-wrap gap-4">
             <a 
               href="https://maps.app.goo.gl/7RRoEeD3uzANmdhZA" 
               target="_blank" 
