@@ -3,7 +3,8 @@ import {
   brands, type Brand, type InsertBrand, 
   brandCategories, type BrandCategory, type InsertBrandCategory,
   blogPosts, type BlogPost, type InsertBlogPost,
-  storeLocations, type StoreLocation, type InsertStoreLocation
+  storeLocations, type StoreLocation, type InsertStoreLocation,
+  products, type Product, type InsertProduct
 } from "@shared/schema";
 import { eq, and, asc, desc, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
