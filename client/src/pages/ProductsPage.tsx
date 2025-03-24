@@ -67,18 +67,18 @@ const ProductsPage = () => {
       </section>
       
       {/* Product Categories */}
-      <section className="bg-white py-8 border-b border-gray-200 shadow-sm">
+      <section className="bg-zinc-800 py-8 border-b border-zinc-700 shadow-md">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap items-center gap-4">
-            <span className="font-['Poppins'] font-medium text-dark">Filter by:</span>
+            <span className="font-['Poppins'] font-medium text-white">Filter by:</span>
             <div className="flex flex-wrap gap-2">
               {categories.map((category) => (
                 <button
                   key={category.id}
                   className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                     activeCategory === category.id 
-                      ? "bg-primary text-black" 
-                      : "bg-light hover:bg-primary/20"
+                      ? "bg-primary text-black shadow-lg" 
+                      : "bg-zinc-700 text-white hover:bg-primary/70 hover:text-black"
                   }`}
                   onClick={() => setActiveCategory(category.id)}
                 >
@@ -91,20 +91,20 @@ const ProductsPage = () => {
       </section>
       
       {/* Products Grid */}
-      <section className="py-12 bg-light">
+      <section className="py-12 bg-zinc-900">
         <div className="container mx-auto px-4">
           {isLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {Array.from({ length: 8 }).map((_, index) => (
-                <div key={index} className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-md">
-                  <Skeleton className="w-full h-56" />
+                <div key={index} className="bg-zinc-800 border border-zinc-700 rounded-lg overflow-hidden shadow-md">
+                  <Skeleton className="w-full h-56 bg-zinc-700" />
                   <div className="p-5">
-                    <Skeleton className="h-6 w-3/4 mb-2" />
-                    <Skeleton className="h-4 w-full mb-1" />
-                    <Skeleton className="h-4 w-5/6 mb-4" />
+                    <Skeleton className="h-6 w-3/4 mb-2 bg-zinc-700" />
+                    <Skeleton className="h-4 w-full mb-1 bg-zinc-700" />
+                    <Skeleton className="h-4 w-5/6 mb-4 bg-zinc-700" />
                     <div className="flex justify-between items-center">
-                      <Skeleton className="h-6 w-16" />
-                      <Skeleton className="h-10 w-28" />
+                      <Skeleton className="h-6 w-16 bg-zinc-700" />
+                      <Skeleton className="h-10 w-28 bg-zinc-700" />
                     </div>
                   </div>
                 </div>
@@ -122,23 +122,25 @@ const ProductsPage = () => {
               {products.map((product) => (
                 <div 
                   key={product.id} 
-                  className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow"
+                  className="bg-zinc-800 border border-zinc-700 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1"
                 >
-                  <img 
-                    src={product.image} 
-                    alt={product.name} 
-                    className="w-full h-56 object-cover"
-                  />
-                  <div className="p-5">
+                  <div className="relative h-56 overflow-hidden">
+                    <img 
+                      src={product.image} 
+                      alt={product.name} 
+                      className="w-full h-56 object-cover transform hover:scale-105 transition-transform duration-300"
+                    />
                     {product.featured && (
-                      <span className="inline-block bg-primary/10 text-primary text-xs font-semibold rounded-full px-3 py-1 mb-2">
+                      <span className="absolute top-3 right-3 bg-primary text-black text-xs font-bold rounded-full px-3 py-1">
                         {product.featuredLabel || "Featured"}
                       </span>
                     )}
-                    <h3 className="font-['Poppins'] font-semibold text-lg mb-2">{product.name}</h3>
-                    <p className="text-dark/70 text-sm mb-4">{product.description}</p>
+                  </div>
+                  <div className="p-5">
+                    <h3 className="font-['Poppins'] font-semibold text-lg mb-2 text-white">{product.name}</h3>
+                    <p className="text-gray-400 text-sm mb-4">{product.description}</p>
                     <div className="flex justify-between items-center">
-                      <span className="font-bold text-lg">${Number(product.price).toFixed(2)}</span>
+                      <span className="font-bold text-lg text-primary">${Number(product.price).toFixed(2)}</span>
                       <button className="bg-primary hover:bg-primary/90 text-black font-medium py-2 px-4 rounded-md transition-colors">
                         Add to Cart
                       </button>
@@ -148,7 +150,7 @@ const ProductsPage = () => {
               ))}
             </div>
           ) : (
-            <div className="text-center py-12">
+            <div className="text-center py-12 text-white">
               <p className="text-xl font-medium">No products found in this category.</p>
             </div>
           )}
@@ -156,12 +158,12 @@ const ProductsPage = () => {
       </section>
       
       {/* Age Verification Notice */}
-      <section className="py-10 bg-primary/10">
+      <section className="py-10 bg-secondary/90 text-white">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto">
-            <AlertCircle className="mx-auto h-8 w-8 text-primary mb-3" />
+            <AlertCircle className="mx-auto h-8 w-8 text-white mb-3" />
             <h2 className="text-xl font-bold font-['Poppins'] mb-2">Age Verification Required</h2>
-            <p className="text-dark/80">Our products are intended for adult smokers aged 21 and over. Proof of age will be required upon purchase.</p>
+            <p className="text-white/90">Our products are intended for adult smokers aged 21 and over. Proof of age will be required upon purchase.</p>
           </div>
         </div>
       </section>
