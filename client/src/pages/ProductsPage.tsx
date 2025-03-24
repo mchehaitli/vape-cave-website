@@ -67,7 +67,7 @@ const ProductsPage = () => {
       </section>
       
       {/* Product Categories */}
-      <section className="bg-white py-8 border-b">
+      <section className="bg-white py-8 border-b border-gray-200 shadow-sm">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap items-center gap-4">
             <span className="font-['Poppins'] font-medium text-dark">Filter by:</span>

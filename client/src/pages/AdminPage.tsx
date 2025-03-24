@@ -28,9 +28,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { apiRequest } from "@/lib/queryClient";
-import { Trash2, Edit, Plus, RefreshCcw, Info, Calendar, Eye, MessageCircle, Download, Clock } from "lucide-react";
+import { Trash2, Edit, Plus, RefreshCcw, Info, Calendar, Eye, MessageCircle, Download, Clock, Loader2, AlertCircle } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Switch } from "@/components/ui/switch";
+import { Checkbox } from "@/components/ui/checkbox";
 import { 
   AlertDialog,
   AlertDialogAction,
