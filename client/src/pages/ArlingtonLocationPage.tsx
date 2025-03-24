@@ -454,7 +454,7 @@ const ArlingtonLocationPage: React.FC = () => {
             Vape Cave <span className="text-primary">Arlington</span>
           </h1>
           <h2 
-            className="text-xl md:text-2xl lg:text-3xl mb-8 text-white/90 font-medium max-w-[1100px] mx-auto leading-relaxed"
+            className="text-xl md:text-2xl lg:text-3xl mb-8 text-white/90 font-medium max-w-[1100px] leading-relaxed"
           >
             Your One Stop Vape Shop for <span className="text-primary font-semibold">Disposables</span> | <span className="text-primary font-semibold">E-Liquids</span> | <span className="text-primary font-semibold">Salts</span> | <span className="text-primary font-semibold">Delta</span> | <span className="text-primary font-semibold">THC - A</span> | <span className="text-primary font-semibold">Glass</span> | <span className="text-primary font-semibold">Tobacco</span> | <span className="text-primary font-semibold">Hookah / Shisha</span> | <span className="text-primary font-semibold">Vaporizers</span> | <span className="text-primary font-semibold">Mods</span> | and much more
           </h2>
