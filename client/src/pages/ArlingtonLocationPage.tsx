@@ -13,7 +13,8 @@ import {
   useFormattedLocationsForMap,
   getOrderedOpeningHours
 } from '@/hooks/use-store-locations';
-import { products } from '@/data/products';
+import { useFeaturedProducts } from '@/hooks/use-products';
+import { Skeleton } from '@/components/ui/skeleton';
 import GoogleMapsIntegration from '@/components/GoogleMapsIntegration';
 import DirectionsButton from '@/components/DirectionsButton';
 
