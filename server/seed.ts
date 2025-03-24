@@ -1,7 +1,6 @@
 import { storage } from "./storage";
 import * as bcrypt from "bcryptjs";
 import * as dotenv from "dotenv";
-import { seedProducts } from "./seed-products";
 
 dotenv.config();
 
@@ -268,13 +267,6 @@ async function seedDatabase() {
       } catch (error) {
         console.error(`Error creating brand "${brand.name}":`, error);
       }
-    }
-    
-    // Seed products
-    try {
-      await seedProducts();
-    } catch (error) {
-      console.error("Error seeding products:", error);
     }
     
     console.log("Database seeding completed");

@@ -3,8 +3,7 @@ import {
   brands, type Brand, type InsertBrand, 
   brandCategories, type BrandCategory, type InsertBrandCategory,
   blogPosts, type BlogPost, type InsertBlogPost,
-  storeLocations, type StoreLocation, type InsertStoreLocation,
-  products, type Product, type InsertProduct
+  storeLocations, type StoreLocation, type InsertStoreLocation
 } from "@shared/schema";
 import { eq, and, asc, desc, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
@@ -62,15 +61,6 @@ export interface IStorage {
   createStoreLocation(location: InsertStoreLocation): Promise<StoreLocation>;
   updateStoreLocation(id: number, location: Partial<InsertStoreLocation>): Promise<StoreLocation | undefined>;
   deleteStoreLocation(id: number): Promise<boolean>;
-
-  // Product operations
-  getAllProducts(): Promise<Product[]>;
-  getFeaturedProducts(limit?: number): Promise<Product[]>;
-  getProductsByCategory(category: string): Promise<Product[]>;
-  getProduct(id: number): Promise<Product | undefined>;
-  createProduct(product: InsertProduct): Promise<Product>;
-  updateProduct(id: number, product: Partial<InsertProduct>): Promise<Product | undefined>;
-  deleteProduct(id: number): Promise<boolean>;
 }
 
 // Database implementation of the storage interface
@@ -438,70 +428,6 @@ export class DbStorage implements IStorage {
     
     return result.length > 0;
   }
-
-  // Product operations
-  async getAllProducts(): Promise<Product[]> {
-    return db.select().from(products).orderBy(asc(products.name));
-  }
-
-  async getFeaturedProducts(limit: number = 4): Promise<Product[]> {
-    return db
-      .select()
-      .from(products)
-      .where(eq(products.featured, true))
-      .orderBy(asc(products.name))
-      .limit(limit);
-  }
-
-  async getProductsByCategory(category: string): Promise<Product[]> {
-    return db
-      .select()
-      .from(products)
-      .where(eq(products.category, category))
-      .orderBy(asc(products.name));
-  }
-
-  async getProduct(id: number): Promise<Product | undefined> {
-    const result = await db.select().from(products).where(eq(products.id, id));
-    return result[0];
-  }
-
-  async createProduct(product: InsertProduct): Promise<Product> {
-    const result = await db.insert(products).values(product).returning();
-    return result[0];
-  }
-
-  async updateProduct(id: number, product: Partial<InsertProduct>): Promise<Product | undefined> {
-    // Create a clean update object
-    const updateData: Partial<Omit<Product, 'id'>> = {};
-    
-    // Map fields to the update data object
-    Object.keys(product).forEach(key => {
-      if (product[key as keyof InsertProduct] !== undefined) {
-        updateData[key as keyof Omit<Product, 'id'>] = product[key as keyof InsertProduct];
-      }
-    });
-    
-    // Always update the updated_at field
-    updateData.updated_at = new Date();
-    
-    const result = await db
-      .update(products)
-      .set(updateData)
-      .where(eq(products.id, id))
-      .returning();
-    
-    return result[0];
-  }
-
-  async deleteProduct(id: number): Promise<boolean> {
-    const result = await db
-      .delete(products)
-      .where(eq(products.id, id))
-      .returning();
-    
-    return result.length > 0;
-  }
 }
 
 // Fallback to MemStorage if database connection fails
@@ -511,14 +437,12 @@ export class MemStorage implements IStorage {
   private brandsMap: Map<number, Brand>;
   private blogPostsMap: Map<number, BlogPost>;
   private storeLocationsMap: Map<number, StoreLocation>;
-  private productsMap: Map<number, Product>;
   
   private userCurrentId: number;
   private categoryCurrentId: number;
   private brandCurrentId: number;
   private blogPostCurrentId: number;
   private storeLocationCurrentId: number;
-  private productCurrentId: number;
 
   constructor() {
     this.usersMap = new Map();
@@ -526,14 +450,12 @@ export class MemStorage implements IStorage {
     this.brandsMap = new Map();
     this.blogPostsMap = new Map();
     this.storeLocationsMap = new Map();
-    this.productsMap = new Map();
     
     this.userCurrentId = 1;
     this.categoryCurrentId = 1;
     this.brandCurrentId = 1;
     this.blogPostCurrentId = 1;
     this.storeLocationCurrentId = 1;
-    this.productCurrentId = 1;
   }
 
   // User operations
@@ -817,68 +739,6 @@ export class MemStorage implements IStorage {
 
   async deleteStoreLocation(id: number): Promise<boolean> {
     return this.storeLocationsMap.delete(id);
-  }
-  
-  // Product operations
-  async getAllProducts(): Promise<Product[]> {
-    return Array.from(this.productsMap.values())
-      .sort((a, b) => a.name.localeCompare(b.name));
-  }
-
-  async getFeaturedProducts(limit: number = 4): Promise<Product[]> {
-    return Array.from(this.productsMap.values())
-      .filter(product => product.featured)
-      .sort((a, b) => a.name.localeCompare(b.name))
-      .slice(0, limit);
-  }
-
-  async getProductsByCategory(category: string): Promise<Product[]> {
-    return Array.from(this.productsMap.values())
-      .filter(product => product.category === category)
-      .sort((a, b) => a.name.localeCompare(b.name));
-  }
-
-  async getProduct(id: number): Promise<Product | undefined> {
-    return this.productsMap.get(id);
-  }
-
-  async createProduct(product: InsertProduct): Promise<Product> {
-    const id = this.productCurrentId++;
-    const now = new Date();
-    
-    const newProduct: Product = {
-      ...product,
-      id,
-      created_at: now,
-      updated_at: now,
-      featured: product.featured || false,
-      featuredLabel: product.featuredLabel || ""
-    };
-    
-    this.productsMap.set(id, newProduct);
-    return newProduct;
-  }
-
-  async updateProduct(id: number, product: Partial<InsertProduct>): Promise<Product | undefined> {
-    const existingProduct = this.productsMap.get(id);
-    
-    if (!existingProduct) {
-      return undefined;
-    }
-    
-    // Create an updated product object
-    const updatedProduct: Product = { 
-      ...existingProduct,
-      ...product,
-      updated_at: new Date()
-    };
-    
-    this.productsMap.set(id, updatedProduct);
-    return updatedProduct;
-  }
-
-  async deleteProduct(id: number): Promise<boolean> {
-    return this.productsMap.delete(id);
   }
 }
 

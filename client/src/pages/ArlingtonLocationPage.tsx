@@ -13,8 +13,7 @@ import {
   useFormattedLocationsForMap,
   getOrderedOpeningHours
 } from '@/hooks/use-store-locations';
-import { useFeaturedProducts } from '@/hooks/use-products';
-import { Skeleton } from '@/components/ui/skeleton';
+import { products } from '@/data/products';
 import GoogleMapsIntegration from '@/components/GoogleMapsIntegration';
 import DirectionsButton from '@/components/DirectionsButton';
 
@@ -87,8 +86,8 @@ const ArlingtonLocationPage: React.FC = () => {
       return `${hour.toString().padStart(2, '0')}:${minute}`;
     };
     
-    // Use API-loaded featured products (or empty array if still loading)
-    const arlingtonFeaturedProducts = featuredProducts || [];
+    // Filter Arlington-specific popular products
+    const arlingtonFeaturedProducts = products.filter(p => p.featured || p.category === "Popular").slice(0, 6);
     
     // Enhanced schema specifically for Arlington with maximal detail
     // Using all recommended properties from Google for LocalBusiness entities
@@ -245,7 +244,7 @@ const ArlingtonLocationPage: React.FC = () => {
           },
           "offers": {
             "@type": "Offer",
-            "price": parseFloat(product.price).toFixed(2),
+            "price": product.price.toFixed(2),
             "priceCurrency": "USD",
             "availability": "https://schema.org/InStock",
             "availabilityStarts": "2023-01-01T00:00:00-06:00",
@@ -356,8 +355,10 @@ const ArlingtonLocationPage: React.FC = () => {
     };
   };
   
-  // Fetch featured products from API
-  const { data: featuredProducts, isLoading: productsLoading } = useFeaturedProducts(4);
+  // Filter products for Arlington location (example of location-specific products)
+  const arlingtonProducts = products.filter(product => 
+    product.featured || product.category === "Popular"
+  ).slice(0, 6);
   
   // Additional SEO tags for Arlington location
   const canonicalUrl = "https://vapecavetx.com/locations/arlington";
@@ -682,58 +683,23 @@ const ArlingtonLocationPage: React.FC = () => {
                     
                     {/* Featured Products at Arlington */}
                     <h3 className="text-xl font-semibold mb-4 text-white">Featured Products at Arlington</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-                      {productsLoading ? (
-                        // Skeleton loading state
-                        Array(4).fill(0).map((_, index) => (
-                          <div key={index} className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-md">
-                            <Skeleton className="w-full h-56" />
-                            <div className="p-5">
-                              <Skeleton className="h-6 w-1/3 mb-2" />
-                              <Skeleton className="h-4 w-full mb-2" />
-                              <Skeleton className="h-4 w-5/6 mb-4" />
-                              <div className="flex justify-between items-center">
-                                <Skeleton className="h-6 w-20" />
-                                <Skeleton className="h-10 w-28" />
-                              </div>
-                            </div>
-                          </div>
-                        ))
-                      ) : featuredProducts && featuredProducts.length > 0 ? (
-                        featuredProducts.map((product) => (
-                          <div 
-                            key={product.id} 
-                            className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow"
-                          >
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                      {arlingtonProducts.map((product) => (
+                        <div key={product.id} className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700">
+                          <div className="h-40 overflow-hidden">
                             <img 
                               src={product.image} 
                               alt={product.name} 
-                              className="w-full h-56 object-cover"
+                              className="w-full h-full object-cover"
                             />
-                            <div className="p-5">
-                              {product.featured && (
-                                <span className="inline-block bg-primary/10 text-primary text-xs font-semibold rounded-full px-3 py-1 mb-2">
-                                  {product.featuredLabel || "Featured"}
-                                </span>
-                              )}
-                              <h3 className="font-['Poppins'] font-semibold text-lg mb-2">{product.name}</h3>
-                              <p className="text-dark/70 text-sm mb-4">{product.description}</p>
-                              <div className="flex justify-between items-center">
-                                <span className="font-bold text-lg">${parseFloat(product.price).toFixed(2)}</span>
-                                <Link href="/products">
-                                  <button className="bg-primary hover:bg-primary/90 text-black font-medium py-2 px-4 rounded-md transition-colors">
-                                    Add to Cart
-                                  </button>
-                                </Link>
-                              </div>
-                            </div>
                           </div>
-                        ))
-                      ) : (
-                        <div className="col-span-full text-center py-6 bg-white/10 rounded-lg">
-                          <p className="text-white/70">No featured products available</p>
+                          <div className="p-4">
+                            <h4 className="font-medium mb-1 text-white">{product.name}</h4>
+                            <p className="text-sm text-gray-300 mb-2">{product.category}</p>
+                            <p className="font-bold text-primary">${product.price.toFixed(2)}</p>
+                          </div>
                         </div>
-                      )}
+                      ))}
                     </div>
                     
                     <div className="text-center">

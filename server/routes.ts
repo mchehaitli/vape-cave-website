@@ -1,9 +1,8 @@
 import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertUserSchema, insertBrandCategorySchema, insertBrandSchema, insertBlogPostSchema, insertStoreLocationSchema, insertProductSchema } from "@shared/schema";
+import { insertUserSchema, insertBrandCategorySchema, insertBrandSchema, insertBlogPostSchema, insertStoreLocationSchema } from "@shared/schema";
 import { seedStoreLocations } from "./seed-store-locations";
-import { seedProducts } from "./seed-products";
 import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
 import * as dotenv from "dotenv";
@@ -516,122 +515,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Product endpoints
-  app.get('/api/products', async (req, res) => {
-    try {
-      const products = await storage.getAllProducts();
-      res.json(products);
-    } catch (error) {
-      console.error("Get products error:", error);
-      res.status(500).json({ error: "Failed to fetch products" });
-    }
-  });
-  
-  app.get('/api/products/featured', async (req, res) => {
-    try {
-      const limit = req.query.limit ? parseInt(req.query.limit as string) : undefined;
-      const products = await storage.getFeaturedProducts(limit);
-      res.json(products);
-    } catch (error) {
-      console.error("Get featured products error:", error);
-      res.status(500).json({ error: "Failed to fetch featured products" });
-    }
-  });
-  
-  app.get('/api/products/category/:category', async (req, res) => {
-    try {
-      const { category } = req.params;
-      const products = await storage.getProductsByCategory(category);
-      res.json(products);
-    } catch (error) {
-      console.error("Get products by category error:", error);
-      res.status(500).json({ error: "Failed to fetch products by category" });
-    }
-  });
-  
-  app.get('/api/products/:id', async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      if (isNaN(id)) {
-        return res.status(400).json({ error: "Invalid product ID" });
-      }
-      
-      const product = await storage.getProduct(id);
-      
-      if (!product) {
-        return res.status(404).json({ error: "Product not found" });
-      }
-      
-      res.json(product);
-    } catch (error) {
-      console.error("Get product error:", error);
-      res.status(500).json({ error: "Failed to fetch product" });
-    }
-  });
-  
-  app.post('/api/admin/products', isAdmin, async (req, res) => {
-    try {
-      const productResult = insertProductSchema.safeParse(req.body);
-      
-      if (!productResult.success) {
-        return res.status(400).json({ error: productResult.error.format() });
-      }
-      
-      const product = await storage.createProduct(productResult.data);
-      res.status(201).json(product);
-    } catch (error) {
-      console.error("Create product error:", error);
-      res.status(500).json({ error: "Failed to create product" });
-    }
-  });
-  
-  app.patch('/api/admin/products/:id', isAdmin, async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      if (isNaN(id)) {
-        return res.status(400).json({ error: "Invalid product ID" });
-      }
-      
-      const product = await storage.getProduct(id);
-      
-      if (!product) {
-        return res.status(404).json({ error: "Product not found" });
-      }
-      
-      const updateResult = insertProductSchema.partial().safeParse(req.body);
-      
-      if (!updateResult.success) {
-        return res.status(400).json({ error: updateResult.error.format() });
-      }
-      
-      const updatedProduct = await storage.updateProduct(id, updateResult.data);
-      res.json(updatedProduct);
-    } catch (error) {
-      console.error("Update product error:", error);
-      res.status(500).json({ error: "Failed to update product" });
-    }
-  });
-  
-  app.delete('/api/admin/products/:id', isAdmin, async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      if (isNaN(id)) {
-        return res.status(400).json({ error: "Invalid product ID" });
-      }
-      
-      const success = await storage.deleteProduct(id);
-      
-      if (!success) {
-        return res.status(404).json({ error: "Product not found" });
-      }
-      
-      res.status(204).end();
-    } catch (error) {
-      console.error("Delete product error:", error);
-      res.status(500).json({ error: "Failed to delete product" });
-    }
-  });
-
   // Store location endpoints
   app.get('/api/store-locations', async (req, res) => {
     try {
@@ -790,17 +673,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Seed store locations error:", error);
       res.status(500).json({ error: "Failed to seed store locations" });
-    }
-  });
-  
-  // Special endpoint to seed products from frontend data
-  app.post('/api/admin/seed-products', isAdmin, async (req, res) => {
-    try {
-      await seedProducts();
-      res.json({ message: "Products seeded successfully" });
-    } catch (error) {
-      console.error("Seed products error:", error);
-      res.status(500).json({ error: "Failed to seed products" });
     }
   });
 
