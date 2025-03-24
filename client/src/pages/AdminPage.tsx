@@ -179,6 +179,28 @@ const storeLocationSchema = z.object({
   amenities: z.array(z.string()).default([])
 });
 
+// Product schema for forms
+const productSchema = z.object({
+  name: z.string({
+    required_error: "Product name is required"
+  }),
+  category: z.string({
+    required_error: "Category is required"
+  }),
+  image: z.string({
+    required_error: "Image URL is required"
+  }),
+  description: z.string({
+    required_error: "Description is required"
+  }),
+  price: z.string({
+    required_error: "Price is required"
+  }),
+  featured: z.boolean().default(false),
+  featuredLabel: z.string().optional(),
+  stock: z.coerce.number().optional()
+});
+
 // Type definitions based on schemas
 type BrandFormValues = z.infer<typeof brandSchema>;
 type CategoryFormValues = z.infer<typeof categorySchema>;
@@ -186,6 +208,7 @@ type UserFormValues = z.infer<typeof userSchema>;
 type BlogCategoryFormValues = z.infer<typeof blogCategorySchema>;
 type BlogPostFormValues = z.infer<typeof blogPostSchema>;
 type StoreLocationFormValues = z.infer<typeof storeLocationSchema>;
+type ProductFormValues = z.infer<typeof productSchema>;
 
 export default function AdminPage() {
   const queryClient = useQueryClient();
@@ -212,6 +235,12 @@ export default function AdminPage() {
   const { data: storeLocations = [], isLoading: isStoreLocationsLoading } = useQuery<any[]>({
     queryKey: ['/api/store-locations'],
     staleTime: 60000,
+  });
+  
+  // Query for products
+  const { data: products = [], isLoading: isProductsLoading } = useQuery<any[]>({
+    queryKey: ['/api/products'],
+    staleTime: 30000,
   });
   
   // State for brand management
@@ -244,6 +273,11 @@ export default function AdminPage() {
   const [editingStoreLocation, setEditingStoreLocation] = useState<any>(null);
   const [deletingStoreLocationId, setDeletingStoreLocationId] = useState<number | null>(null);
   const [isSeedingLocations, setIsSeedingLocations] = useState(false);
+  
+  // State for product management
+  const [productDialogOpen, setProductDialogOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<any>(null);
+  const [deletingProductId, setDeletingProductId] = useState<number | null>(null);
   
   // State for store hours management is now managed in the StoreHoursDialog component
   
@@ -386,6 +420,21 @@ export default function AdminPage() {
       featured: false,
       metaTitle: "",
       metaDescription: ""
+    }
+  });
+  
+  // Product form setup
+  const productForm = useForm<ProductFormValues>({
+    resolver: zodResolver(productSchema),
+    defaultValues: {
+      name: "",
+      category: "devices",
+      image: "",
+      description: "",
+      price: "",
+      featured: false,
+      featuredLabel: "",
+      stock: 0
     }
   });
   
@@ -593,6 +642,33 @@ export default function AdminPage() {
       });
     }
   }, [storeLocationDialogOpen, editingStoreLocation, storeLocationForm]);
+  
+  // Reset product form when dialog is opened/closed
+  useEffect(() => {
+    if (productDialogOpen && editingProduct) {
+      productForm.reset({
+        name: editingProduct.name,
+        category: editingProduct.category,
+        image: editingProduct.image,
+        description: editingProduct.description,
+        price: editingProduct.price,
+        featured: editingProduct.featured || false,
+        featuredLabel: editingProduct.featuredLabel || "",
+        stock: editingProduct.stock || 0
+      });
+    } else if (productDialogOpen) {
+      productForm.reset({
+        name: "",
+        category: "devices",
+        image: "",
+        description: "",
+        price: "",
+        featured: false,
+        featuredLabel: "",
+        stock: 0
+      });
+    }
+  }, [productDialogOpen, editingProduct, productForm]);
   
   // Store hours management is now handled in the StoreHoursDialog component
   
