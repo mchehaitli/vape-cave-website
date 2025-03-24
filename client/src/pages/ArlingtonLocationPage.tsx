@@ -466,7 +466,7 @@ const ArlingtonLocationPage: React.FC = () => {
               Google Maps
             </a>
             <a 
-              href="https://www.google.com/maps/?q=Vape+Cave+Arlington+TX" 
+              href="https://maps.apple.com/?address=4100%20S%20Cooper%20St%20%234108,%20Arlington,%20TX%20%2076015,%20United%20States&ll=32.687070,-97.134800&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m" 
               target="_blank" 
               rel="noopener noreferrer"
               className="inline-flex items-center bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold py-3 px-8 rounded-lg transition-all"
@@ -475,7 +475,7 @@ const ArlingtonLocationPage: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              Maps
+              Apple Maps
             </a>
             <a 
               href={`tel:${location.phone.replace(/[^0-9]/g, '')}`} 
@@ -734,7 +734,7 @@ const ArlingtonLocationPage: React.FC = () => {
                   Google Maps Directions
                 </a>
                 <a 
-                  href="https://maps.apple.com/?address=4100+S+Cooper+St+%234108,+Arlington,+TX+76015,+United+States&ll=32.687070,-97.134800&q=Vape+Cave" 
+                  href="https://maps.apple.com/?address=4100%20S%20Cooper%20St%20%234108,%20Arlington,%20TX%20%2076015,%20United%20States&ll=32.687070,-97.134800&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center w-full bg-white/10 hover:bg-white/20 border border-white/30 text-white px-4 py-2 rounded-md transition-colors"
@@ -902,7 +902,7 @@ const ArlingtonLocationPage: React.FC = () => {
                 Google Maps
               </a>
               <a 
-                href="https://maps.apple.com/?address=4100+S+Cooper+St+%234108,+Arlington,+TX+76015,+United+States&ll=32.687070,-97.134800&q=Vape+Cave" 
+                href="https://maps.apple.com/?address=4100%20S%20Cooper%20St%20%234108,%20Arlington,%20TX%20%2076015,%20United%20States&ll=32.687070,-97.134800&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-flex items-center bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold py-3 px-8 rounded-lg transition-all"
