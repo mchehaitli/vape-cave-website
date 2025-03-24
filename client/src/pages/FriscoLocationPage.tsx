@@ -641,7 +641,7 @@ const FriscoLocationPage: React.FC = () => {
                     
                     {/* Featured Products at Frisco */}
                     <h3 className="text-xl font-semibold mb-4 text-white">Featured Products at Frisco</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
                       {friscoProducts.map((product) => (
                         <div 
                           key={product.id} 
@@ -664,7 +664,7 @@ const FriscoLocationPage: React.FC = () => {
                               <span className="font-bold text-lg">${product.price.toFixed(2)}</span>
                               <Link href="/products">
                                 <button className="bg-primary hover:bg-primary/90 text-black font-medium py-2 px-4 rounded-md transition-colors">
-                                  View Details
+                                  Add to Cart
                                 </button>
                               </Link>
                             </div>
