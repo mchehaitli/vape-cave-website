@@ -501,7 +501,21 @@ export class DbStorage implements IStorage {
   
   // Product operations
   async getAllProducts(): Promise<Product[]> {
-    return db.select().from(products).orderBy(asc(products.name));
+    return db.select({
+      id: products.id,
+      name: products.name,
+      description: products.description,
+      price: products.price,
+      hidePrice: products.hidePrice,
+      image: products.image,
+      category: products.category,
+      categoryId: products.categoryId,
+      featured: products.featured,
+      featuredLabel: products.featuredLabel,
+      stock: products.stock,
+      created_at: products.created_at,
+      updated_at: products.updated_at
+    }).from(products).orderBy(asc(products.name));
   }
   
   async getFeaturedProducts(limit: number = 10): Promise<Product[]> {
