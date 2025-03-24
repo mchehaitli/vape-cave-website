@@ -1782,7 +1782,17 @@ export default function AdminPage() {
                           <FormItem>
                             <FormLabel>Category</FormLabel>
                             <Select 
-                              onValueChange={field.onChange}
+                              onValueChange={(value) => {
+                                field.onChange(value);
+                                
+                                // When category is selected, also update the categoryId field
+                                if (productCategories && productCategories.length > 0) {
+                                  const selectedCategory = productCategories.find((cat: any) => cat.slug === value);
+                                  if (selectedCategory) {
+                                    productForm.setValue('categoryId', selectedCategory.id);
+                                  }
+                                }
+                              }}
                               defaultValue={field.value}
                             >
                               <FormControl>
@@ -1791,42 +1801,69 @@ export default function AdminPage() {
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent className="bg-gray-900 border-gray-700 text-white">
-                                <SelectItem 
-                                  value="devices" 
-                                  className="hover:bg-gray-800 focus:bg-gray-800"
-                                >
-                                  Devices
-                                </SelectItem>
-                                <SelectItem 
-                                  value="pods" 
-                                  className="hover:bg-gray-800 focus:bg-gray-800"
-                                >
-                                  Pods
-                                </SelectItem>
-                                <SelectItem 
-                                  value="juice" 
-                                  className="hover:bg-gray-800 focus:bg-gray-800"
-                                >
-                                  E-Juice
-                                </SelectItem>
-                                <SelectItem 
-                                  value="disposables" 
-                                  className="hover:bg-gray-800 focus:bg-gray-800"
-                                >
-                                  Disposables
-                                </SelectItem>
-                                <SelectItem 
-                                  value="accessories" 
-                                  className="hover:bg-gray-800 focus:bg-gray-800"
-                                >
-                                  Accessories
-                                </SelectItem>
+                                {isProductCategoriesLoading ? (
+                                  <SelectItem 
+                                    value="loading" 
+                                    disabled
+                                    className="hover:bg-gray-800 focus:bg-gray-800"
+                                  >
+                                    Loading categories...
+                                  </SelectItem>
+                                ) : productCategories && productCategories.length > 0 ? (
+                                  productCategories.map((category: any) => (
+                                    <SelectItem 
+                                      key={category.id}
+                                      value={category.slug}
+                                      className="hover:bg-gray-800 focus:bg-gray-800"
+                                    >
+                                      {category.name}
+                                    </SelectItem>
+                                  ))
+                                ) : (
+                                  <>
+                                    <SelectItem 
+                                      value="devices" 
+                                      className="hover:bg-gray-800 focus:bg-gray-800"
+                                    >
+                                      Devices
+                                    </SelectItem>
+                                    <SelectItem 
+                                      value="pods" 
+                                      className="hover:bg-gray-800 focus:bg-gray-800"
+                                    >
+                                      Pods
+                                    </SelectItem>
+                                    <SelectItem 
+                                      value="juice" 
+                                      className="hover:bg-gray-800 focus:bg-gray-800"
+                                    >
+                                      E-Juice
+                                    </SelectItem>
+                                    <SelectItem 
+                                      value="disposables" 
+                                      className="hover:bg-gray-800 focus:bg-gray-800"
+                                    >
+                                      Disposables
+                                    </SelectItem>
+                                    <SelectItem 
+                                      value="accessories" 
+                                      className="hover:bg-gray-800 focus:bg-gray-800"
+                                    >
+                                      Accessories
+                                    </SelectItem>
+                                  </>
+                                )}
                               </SelectContent>
                             </Select>
+                            <FormDescription className="text-gray-500 text-xs">
+                              Select a product category. You can manage categories in the Product Categories tab.
+                            </FormDescription>
                             <FormMessage className="text-red-400" />
                           </FormItem>
                         )}
                       />
+                      
+                      <input type="hidden" {...productForm.register('categoryId')} />
                       
                       <FormField
                         control={productForm.control}

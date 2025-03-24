@@ -210,7 +210,8 @@ export const products = pgTable("products", {
   description: text("description").notNull(),
   price: text("price"), // Now optional
   image: text("image").notNull(),
-  category: text("category").notNull(),
+  category: text("category").notNull(), // This is the slug of the category for backward compatibility
+  categoryId: integer("category_id"), // New field to link to product_categories table
   featured: boolean("featured").default(false),
   featuredLabel: text("featured_label").default(""),
   stock: integer("stock").default(0),
@@ -230,6 +231,7 @@ export const insertProductSchema = createInsertSchema(products)
   })
   .extend({
     price: z.string().optional(), // Make price optional in the schema
+    categoryId: z.number().optional(), // Make categoryId available for form handling
   });
 
 export type InsertProduct = z.infer<typeof insertProductSchema>;
