@@ -467,10 +467,7 @@ const FriscoLocationPage: React.FC = () => {
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <a 
-              href={location.googlePlaceId ? 
-                `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}` : 
-                `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(location.fullAddress)}`
-              } 
+              href="https://maps.app.goo.gl/jzbqUDyvvGHuwyXJ7" 
               target="_blank" 
               rel="noopener noreferrer"
               className="inline-flex items-center bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-md transition-colors"
@@ -481,7 +478,7 @@ const FriscoLocationPage: React.FC = () => {
               Google Maps
             </a>
             <a 
-              href={location.appleMapsLink || `https://maps.apple.com/?address=${encodeURIComponent(location.fullAddress)}&ll=${location.coordinates.lat},${location.coordinates.lng}&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m`} 
+              href="https://maps.apple.com/?address=6958%20Main%20St,%20Unit%20200,%20Frisco,%20TX%20%2075033,%20United%20States&auid=14231591118256703794&ll=33.150849,-96.824392&lsp=9902&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m" 
               target="_blank" 
               rel="noopener noreferrer"
               className="inline-flex items-center bg-white/10 hover:bg-white/20 border border-white/30 text-white px-4 py-2 rounded-md transition-colors"
@@ -697,10 +694,7 @@ const FriscoLocationPage: React.FC = () => {
                 
                 <div className="space-y-4">
                   <a 
-                    href={location.googlePlaceId ? 
-                      `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}` : 
-                      `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(location.fullAddress)}`
-                    } 
+                    href="https://maps.app.goo.gl/jzbqUDyvvGHuwyXJ7" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center w-full bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-md transition-colors mb-2"
@@ -711,7 +705,7 @@ const FriscoLocationPage: React.FC = () => {
                     Google Maps Directions
                   </a>
                   <a 
-                    href={location.appleMapsLink || `https://maps.apple.com/?address=${encodeURIComponent(location.fullAddress)}&ll=${location.coordinates.lat},${location.coordinates.lng}&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m`} 
+                    href="https://maps.apple.com/?address=6958%20Main%20St,%20Unit%20200,%20Frisco,%20TX%20%2075033,%20United%20States&auid=14231591118256703794&ll=33.150849,-96.824392&lsp=9902&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center w-full bg-white/10 hover:bg-white/20 border border-white/30 text-white px-4 py-2 rounded-md transition-colors"
@@ -848,10 +842,7 @@ const FriscoLocationPage: React.FC = () => {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <a 
-                href={location.googlePlaceId ? 
-                  `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}` : 
-                  `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(location.fullAddress)}`
-                } 
+                href="https://maps.app.goo.gl/jzbqUDyvvGHuwyXJ7" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-flex items-center bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-lg transition-all"
@@ -862,7 +853,7 @@ const FriscoLocationPage: React.FC = () => {
                 Google Maps
               </a>
               <a 
-                href={location.appleMapsLink || `https://maps.apple.com/?address=${encodeURIComponent(location.fullAddress)}&ll=${location.coordinates.lat},${location.coordinates.lng}&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m`} 
+                href="https://maps.apple.com/?address=6958%20Main%20St,%20Unit%20200,%20Frisco,%20TX%20%2075033,%20United%20States&auid=14231591118256703794&ll=33.150849,-96.824392&lsp=9902&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-flex items-center bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold py-3 px-8 rounded-lg transition-all"
