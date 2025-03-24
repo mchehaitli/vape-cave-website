@@ -19,7 +19,6 @@ import { products } from "@/data/products";
 const FriscoLocationPage: React.FC = () => {
   const { data: locationData, isLoading } = useFriscoLocation();
   const { data: formattedLocations } = useFormattedLocationsForMap();
-  const friscoProducts = products.filter(p => p.featured).slice(0, 4); // Display featured products at Frisco location
   
   // If location data is still loading, show a simplified version with loading indicators
   const location = locationData ? {
@@ -386,7 +385,6 @@ const FriscoLocationPage: React.FC = () => {
 
   // Local state for toggling sections
   const [showDetails, setShowDetails] = useState<boolean>(true);
-  const [showProducts, setShowProducts] = useState<boolean>(true);
   
   // State for collapsible FAQ items
   const [openFAQs, setOpenFAQs] = useState<Record<number, boolean>>({});
