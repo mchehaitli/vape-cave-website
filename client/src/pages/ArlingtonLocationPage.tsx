@@ -355,10 +355,8 @@ const ArlingtonLocationPage: React.FC = () => {
     };
   };
   
-  // Filter products for Arlington location (example of location-specific products)
-  const arlingtonProducts = products.filter(product => 
-    product.featured || product.category === "Popular"
-  ).slice(0, 6);
+  // Filter featured products for Arlington location
+  const arlingtonProducts = products.filter(product => product.featured).slice(0, 4);
   
   // Additional SEO tags for Arlington location
   const canonicalUrl = "https://vapecavetx.com/locations/arlington";
