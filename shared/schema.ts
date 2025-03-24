@@ -182,12 +182,33 @@ export const insertStoreLocationSchema = createInsertSchema(storeLocations)
 export type InsertStoreLocation = z.infer<typeof insertStoreLocationSchema>;
 export type StoreLocation = typeof storeLocations.$inferSelect;
 
+// Product categories table
+export const productCategories = pgTable("product_categories", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  description: text("description").default(""),
+  display_order: integer("display_order").default(0),
+  created_at: timestamp("created_at").notNull().defaultNow(),
+  updated_at: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const insertProductCategorySchema = createInsertSchema(productCategories).pick({
+  name: true,
+  slug: true,
+  description: true,
+  display_order: true,
+});
+
+export type InsertProductCategory = z.infer<typeof insertProductCategorySchema>;
+export type ProductCategory = typeof productCategories.$inferSelect;
+
 // Products table
 export const products = pgTable("products", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   description: text("description").notNull(),
-  price: numeric("price").notNull(),
+  price: text("price"), // Now optional
   image: text("image").notNull(),
   category: text("category").notNull(),
   featured: boolean("featured").default(false),
@@ -197,16 +218,19 @@ export const products = pgTable("products", {
   updated_at: timestamp("updated_at").notNull().defaultNow(),
 });
 
-export const insertProductSchema = createInsertSchema(products).pick({
-  name: true,
-  description: true,
-  price: true,
-  image: true,
-  category: true,
-  featured: true,
-  featuredLabel: true,
-  stock: true,
-});
+export const insertProductSchema = createInsertSchema(products)
+  .pick({
+    name: true,
+    description: true,
+    image: true,
+    category: true,
+    featured: true,
+    featuredLabel: true,
+    stock: true,
+  })
+  .extend({
+    price: z.string().optional(), // Make price optional in the schema
+  });
 
 export type InsertProduct = z.infer<typeof insertProductSchema>;
 export type Product = typeof products.$inferSelect;

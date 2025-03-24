@@ -63,6 +63,14 @@ export interface IStorage {
   updateStoreLocation(id: number, location: Partial<InsertStoreLocation>): Promise<StoreLocation | undefined>;
   deleteStoreLocation(id: number): Promise<boolean>;
   
+  // Product category operations
+  getAllProductCategories(): Promise<ProductCategory[]>;
+  getProductCategory(id: number): Promise<ProductCategory | undefined>;
+  getProductCategoryBySlug(slug: string): Promise<ProductCategory | undefined>;
+  createProductCategory(category: InsertProductCategory): Promise<ProductCategory>;
+  updateProductCategory(id: number, category: Partial<InsertProductCategory>): Promise<ProductCategory | undefined>;
+  deleteProductCategory(id: number): Promise<boolean>;
+  
   // Product operations
   getAllProducts(): Promise<Product[]>;
   getFeaturedProducts(limit?: number): Promise<Product[]>;
@@ -434,6 +442,57 @@ export class DbStorage implements IStorage {
     const result = await db
       .delete(storeLocations)
       .where(eq(storeLocations.id, id))
+      .returning();
+    
+    return result.length > 0;
+  }
+  
+  // Product category operations
+  async getAllProductCategories(): Promise<ProductCategory[]> {
+    return db.select().from(productCategories).orderBy(asc(productCategories.display_order));
+  }
+  
+  async getProductCategory(id: number): Promise<ProductCategory | undefined> {
+    const result = await db.select().from(productCategories).where(eq(productCategories.id, id));
+    return result[0];
+  }
+  
+  async getProductCategoryBySlug(slug: string): Promise<ProductCategory | undefined> {
+    const result = await db.select().from(productCategories).where(eq(productCategories.slug, slug));
+    return result[0];
+  }
+  
+  async createProductCategory(category: InsertProductCategory): Promise<ProductCategory> {
+    const result = await db.insert(productCategories).values(category).returning();
+    return result[0];
+  }
+  
+  async updateProductCategory(id: number, category: Partial<InsertProductCategory>): Promise<ProductCategory | undefined> {
+    // Create a clean update object
+    const updateData: Partial<Omit<ProductCategory, 'id'>> = {};
+    
+    // Map fields from category to updateData
+    if (category.name !== undefined) updateData.name = category.name;
+    if (category.slug !== undefined) updateData.slug = category.slug;
+    if (category.description !== undefined) updateData.description = category.description;
+    if (category.display_order !== undefined) updateData.display_order = category.display_order;
+    
+    // Always update the updated_at field
+    updateData.updated_at = new Date();
+    
+    const result = await db
+      .update(productCategories)
+      .set(updateData)
+      .where(eq(productCategories.id, id))
+      .returning();
+    
+    return result[0];
+  }
+  
+  async deleteProductCategory(id: number): Promise<boolean> {
+    const result = await db
+      .delete(productCategories)
+      .where(eq(productCategories.id, id))
       .returning();
     
     return result.length > 0;
