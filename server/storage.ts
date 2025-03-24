@@ -520,7 +520,21 @@ export class DbStorage implements IStorage {
   
   async getFeaturedProducts(limit: number = 10): Promise<Product[]> {
     return db
-      .select()
+      .select({
+        id: products.id,
+        name: products.name,
+        description: products.description,
+        price: products.price,
+        hidePrice: products.hidePrice,
+        image: products.image,
+        category: products.category,
+        categoryId: products.categoryId,
+        featured: products.featured,
+        featuredLabel: products.featuredLabel,
+        stock: products.stock,
+        created_at: products.created_at,
+        updated_at: products.updated_at
+      })
       .from(products)
       .where(eq(products.featured, true))
       .orderBy(asc(products.name))
@@ -534,14 +548,42 @@ export class DbStorage implements IStorage {
     if (categoryId) {
       // If it's a valid category ID, filter by categoryId
       return db
-        .select()
+        .select({
+          id: products.id,
+          name: products.name,
+          description: products.description,
+          price: products.price,
+          hidePrice: products.hidePrice,
+          image: products.image,
+          category: products.category,
+          categoryId: products.categoryId,
+          featured: products.featured,
+          featuredLabel: products.featuredLabel,
+          stock: products.stock,
+          created_at: products.created_at,
+          updated_at: products.updated_at
+        })
         .from(products)
         .where(eq(products.categoryId, categoryId))
         .orderBy(asc(products.name));
     } else {
       // Otherwise filter by category slug
       return db
-        .select()
+        .select({
+          id: products.id,
+          name: products.name,
+          description: products.description,
+          price: products.price,
+          hidePrice: products.hidePrice,
+          image: products.image,
+          category: products.category,
+          categoryId: products.categoryId,
+          featured: products.featured,
+          featuredLabel: products.featuredLabel,
+          stock: products.stock,
+          created_at: products.created_at,
+          updated_at: products.updated_at
+        })
         .from(products)
         .where(eq(products.category, category))
         .orderBy(asc(products.name));
@@ -549,7 +591,21 @@ export class DbStorage implements IStorage {
   }
   
   async getProduct(id: number): Promise<Product | undefined> {
-    const result = await db.select().from(products).where(eq(products.id, id));
+    const result = await db.select({
+      id: products.id,
+      name: products.name,
+      description: products.description,
+      price: products.price,
+      hidePrice: products.hidePrice,
+      image: products.image,
+      category: products.category,
+      categoryId: products.categoryId,
+      featured: products.featured,
+      featuredLabel: products.featuredLabel,
+      stock: products.stock,
+      created_at: products.created_at,
+      updated_at: products.updated_at
+    }).from(products).where(eq(products.id, id));
     return result[0];
   }
   
