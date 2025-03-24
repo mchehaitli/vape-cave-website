@@ -11,6 +11,14 @@ const LocationsPage = () => {
   const { data: locations, isLoading } = useStoreLocations();
   const { data: formattedLocations } = useFormattedLocationsForMap();
   
+  // Debug: Log locations to check if the Apple Maps link is correctly loaded
+  useEffect(() => {
+    if (locations) {
+      console.log("Loaded Locations from API:", locations);
+      console.log("Formatted Locations:", formattedLocations);
+    }
+  }, [locations, formattedLocations]);
+  
   // Type-safe approach
   type MappedLocation = {
     id: number;
