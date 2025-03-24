@@ -201,15 +201,14 @@ const productSchema = z.object({
   category: z.string({
     required_error: "Category is required"
   }),
+  categoryId: z.coerce.number().optional(),
   image: z.string({
     required_error: "Image URL is required"
   }),
   description: z.string({
     required_error: "Description is required"
   }),
-  price: z.string({
-    required_error: "Price is required"
-  }),
+  price: z.string().optional(),
   featured: z.boolean().default(false),
   featuredLabel: z.string().optional(),
   stock: z.coerce.number().optional()
