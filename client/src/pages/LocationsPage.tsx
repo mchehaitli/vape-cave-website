@@ -427,6 +427,25 @@ const LocationsPage = () => {
                           </div>
                         </div>
                       )}
+                      
+                      {location.appleMapsLink && (
+                        <div className="flex mb-2">
+                          <div className="text-orange-500 mr-3">
+                            <i className="fas fa-map"></i>
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-400">Apple Maps Link Available</p>
+                            <p className="font-medium text-gray-200">
+                              <a href={location.appleMapsLink} 
+                                 target="_blank" 
+                                 rel="noopener noreferrer" 
+                                 className="text-orange-500 hover:text-orange-400 underline">
+                                Open in Apple Maps
+                              </a>
+                            </p>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                   
@@ -475,6 +494,33 @@ const LocationsPage = () => {
                   
                   {/* Action Buttons */}
                   <div className="flex flex-wrap gap-3">
+                    {/* Add direct map test buttons for all locations */}
+                    <div className="w-full mb-2">
+                      <h4 className="text-md font-semibold text-orange-500 mb-2">Direct Maps Test for {location.name}:</h4>
+                      <div className="flex flex-wrap gap-2">
+                        <a 
+                          href={location.appleMapsLink} 
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded-md flex items-center"
+                        >
+                          <i className="fab fa-apple mr-2"></i>
+                          Direct Apple Maps Link
+                        </a>
+                        <a 
+                          href={location.googlePlaceId 
+                            ? `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}`
+                            : `https://www.google.com/maps/dir/?api=1&destination=${location.coordinates.lat},${location.coordinates.lng}`} 
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded-md flex items-center"
+                        >
+                          <i className="fab fa-google mr-2"></i>
+                          Direct Google Maps Link
+                        </a>
+                      </div>
+                    </div>
+                    
                     <DirectionsButton
                       address={location.fullAddress}
                       lat={location.coordinates.lat}
@@ -653,6 +699,26 @@ const LocationsPage = () => {
               <div className="flex flex-col items-center text-center">
                 <h3 className="text-xl font-bold mb-2 text-white">Frisco Location</h3>
                 <p className="text-gray-300 mb-4">6958 Main St #200, Frisco, TX 75033</p>
+                <div className="flex flex-wrap gap-2 mb-3 justify-center">
+                  <a 
+                    href={formattedLocations && formattedLocations[0] ? formattedLocations[0].appleMapsLink : "#"} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-sm bg-gray-800 hover:bg-gray-700 text-white py-1 px-3 rounded-md flex items-center"
+                  >
+                    <i className="fab fa-apple mr-1"></i> Apple Maps
+                  </a>
+                  <a 
+                    href={formattedLocations && formattedLocations[0] && formattedLocations[0].googlePlaceId
+                      ? `https://www.google.com/maps/place/?q=place_id:${formattedLocations[0].googlePlaceId}`
+                      : "#"} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-sm bg-gray-800 hover:bg-gray-700 text-white py-1 px-3 rounded-md flex items-center"
+                  >
+                    <i className="fab fa-google mr-1"></i> Google Maps
+                  </a>
+                </div>
                 <a 
                   href="/locations/frisco" 
                   className="bg-orange-500 hover:bg-orange-600 text-black font-bold py-2 px-4 rounded-md"
@@ -664,6 +730,26 @@ const LocationsPage = () => {
               <div className="flex flex-col items-center text-center">
                 <h3 className="text-xl font-bold mb-2 text-white">Arlington Location</h3>
                 <p className="text-gray-300 mb-4">4100 S Cooper St #4108, Arlington, TX 76015</p>
+                <div className="flex flex-wrap gap-2 mb-3 justify-center">
+                  <a 
+                    href={formattedLocations && formattedLocations[1] ? formattedLocations[1].appleMapsLink : "#"} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-sm bg-gray-800 hover:bg-gray-700 text-white py-1 px-3 rounded-md flex items-center"
+                  >
+                    <i className="fab fa-apple mr-1"></i> Apple Maps
+                  </a>
+                  <a 
+                    href={formattedLocations && formattedLocations[1] && formattedLocations[1].googlePlaceId
+                      ? `https://www.google.com/maps/place/?q=place_id:${formattedLocations[1].googlePlaceId}`
+                      : "#"} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-sm bg-gray-800 hover:bg-gray-700 text-white py-1 px-3 rounded-md flex items-center"
+                  >
+                    <i className="fab fa-google mr-1"></i> Google Maps
+                  </a>
+                </div>
                 <a 
                   href="/locations/arlington" 
                   className="bg-orange-500 hover:bg-orange-600 text-black font-bold py-2 px-4 rounded-md"
