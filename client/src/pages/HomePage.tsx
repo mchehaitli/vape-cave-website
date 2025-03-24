@@ -1036,7 +1036,7 @@ const HomePage = () => {
                   Google Maps
                 </motion.a>
                 <motion.a 
-                  href="https://maps.apple.com/?address=4100%20S%20Cooper%20St%20%234108,%20Arlington,%20TX%20%2076015,%20United%20States&ll=32.687070,-97.134800&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m" 
+                  href="https://maps.apple.com/place?q=Vape%20Cave%20Smoke%20%26%20Stuff&ll=32.6807165%2C-97.1350622&auid=18240116569179355943&lsp=9902&address=4100%20S%20Cooper%20St%2C%20Unit%204108%2C%20Arlington%2C%20TX%20%2076015%2C%20United%20States" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-flex items-center bg-white/10 hover:bg-white/20 border border-white/30 text-white px-4 py-2 rounded transition-colors"
