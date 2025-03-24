@@ -6,6 +6,7 @@
 import React, { useState } from 'react';
 import { Link } from 'wouter';
 import { Helmet } from "react-helmet";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import MainLayout from '@/layouts/MainLayout';
 import { 
   useArlingtonLocation,
@@ -24,6 +25,17 @@ const ArlingtonLocationPage: React.FC = () => {
   // Toggle states for accordion-like sections
   const [showDetails, setShowDetails] = useState(true);
   const [showProducts, setShowProducts] = useState(true);
+  
+  // State for collapsible FAQ items
+  const [openFAQs, setOpenFAQs] = useState<Record<number, boolean>>({});
+  
+  // Function to toggle FAQ item open/closed
+  const toggleFAQ = (faqId: number) => {
+    setOpenFAQs(prev => ({
+      ...prev,
+      [faqId]: !prev[faqId]
+    }));
+  };
   
   // If location data is still loading, show a loading state
   if (isLoading || !location) {
@@ -801,86 +813,126 @@ const ArlingtonLocationPage: React.FC = () => {
           >
             {/* FAQ Item 1 */}
             <div className="py-5" itemScope itemType="https://schema.org/Question">
-              <div className="flex justify-between cursor-pointer">
+              <div 
+                className="flex justify-between cursor-pointer"
+                onClick={() => toggleFAQ(1)}
+              >
                 <h3 className="text-lg font-medium text-primary" itemProp="name">What are your hours at the Arlington location?</h3>
+                <button className="text-primary focus:outline-none transition-transform">
+                  {openFAQs[1] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                </button>
               </div>
-              <div className="mt-2" itemScope itemType="https://schema.org/Answer">
-                <div itemProp="text">
-                  <p className="text-gray-300">
-                    Our Arlington store has the following hours:
-                  </p>
-                  <div className="mt-2 space-y-1">
-                    {getOrderedOpeningHours(location.openingHours).map(({day, hours}) => (
-                      <p key={day} className="text-gray-300">
-                        <span className="font-medium text-white">{day}:</span> {hours}
-                      </p>
-                    ))}
+              {openFAQs[1] && (
+                <div className="mt-2" itemScope itemType="https://schema.org/Answer">
+                  <div itemProp="text">
+                    <p className="text-gray-300">
+                      Our Arlington store has the following hours:
+                    </p>
+                    <div className="mt-2 space-y-1">
+                      {getOrderedOpeningHours(location.openingHours).map(({day, hours}) => (
+                        <p key={day} className="text-gray-300">
+                          <span className="font-medium text-white">{day}:</span> {hours}
+                        </p>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
             
             {/* FAQ Item 2 */}
             <div className="py-5" itemScope itemType="https://schema.org/Question">
-              <div className="flex justify-between cursor-pointer">
+              <div 
+                className="flex justify-between cursor-pointer"
+                onClick={() => toggleFAQ(2)}
+              >
                 <h3 className="text-lg font-medium text-primary" itemProp="name">What products do you carry at the Arlington location?</h3>
+                <button className="text-primary focus:outline-none transition-transform">
+                  {openFAQs[2] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                </button>
               </div>
-              <div className="mt-2" itemScope itemType="https://schema.org/Answer">
-                <div itemProp="text">
-                  <p className="text-gray-300">
-                    Our Arlington store offers a wide range of vaping products including premium e-liquids, 
-                    disposable vapes, mods, tanks, coils, Delta 8, THC-A products, and various accessories. 
-                    We pride ourselves on carrying high-quality brands and products to meet all your vaping needs.
-                  </p>
+              {openFAQs[2] && (
+                <div className="mt-2" itemScope itemType="https://schema.org/Answer">
+                  <div itemProp="text">
+                    <p className="text-gray-300">
+                      Our Arlington store offers a wide range of vaping products including premium e-liquids, 
+                      disposable vapes, mods, tanks, coils, Delta 8, THC-A products, and various accessories. 
+                      We pride ourselves on carrying high-quality brands and products to meet all your vaping needs.
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             
             {/* FAQ Item 3 */}
             <div className="py-5" itemScope itemType="https://schema.org/Question">
-              <div className="flex justify-between cursor-pointer">
+              <div 
+                className="flex justify-between cursor-pointer"
+                onClick={() => toggleFAQ(3)}
+              >
                 <h3 className="text-lg font-medium text-primary" itemProp="name">Do you offer any discounts or loyalty programs?</h3>
+                <button className="text-primary focus:outline-none transition-transform">
+                  {openFAQs[3] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                </button>
               </div>
-              <div className="mt-2" itemScope itemType="https://schema.org/Answer">
-                <div itemProp="text">
-                  <p className="text-gray-300">
-                    Yes! We have a customer loyalty program where you earn points with every purchase. 
-                    We also offer military and student discounts with valid ID. Additionally, we run 
-                    seasonal promotions and special deals that we announce on our social media channels.
-                  </p>
+              {openFAQs[3] && (
+                <div className="mt-2" itemScope itemType="https://schema.org/Answer">
+                  <div itemProp="text">
+                    <p className="text-gray-300">
+                      Yes! We have a customer loyalty program where you earn points with every purchase. 
+                      We also offer military and student discounts with valid ID. Additionally, we run 
+                      seasonal promotions and special deals that we announce on our social media channels.
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             
             {/* FAQ Item 4 */}
             <div className="py-5" itemScope itemType="https://schema.org/Question">
-              <div className="flex justify-between cursor-pointer">
+              <div 
+                className="flex justify-between cursor-pointer"
+                onClick={() => toggleFAQ(4)}
+              >
                 <h3 className="text-lg font-medium text-primary" itemProp="name">Is there parking available at your Arlington location?</h3>
+                <button className="text-primary focus:outline-none transition-transform">
+                  {openFAQs[4] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                </button>
               </div>
-              <div className="mt-2" itemScope itemType="https://schema.org/Answer">
-                <div itemProp="text">
-                  <p className="text-gray-300">
-                    Yes, we have ample free parking available in the shopping center where our Arlington store is located. 
-                    You'll find our store easily accessible from S Cooper St with convenient parking right out front.
-                  </p>
+              {openFAQs[4] && (
+                <div className="mt-2" itemScope itemType="https://schema.org/Answer">
+                  <div itemProp="text">
+                    <p className="text-gray-300">
+                      Yes, we have ample free parking available in the shopping center where our Arlington store is located. 
+                      You'll find our store easily accessible from S Cooper St with convenient parking right out front.
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             
             {/* FAQ Item 5 */}
             <div className="py-5" itemScope itemType="https://schema.org/Question">
-              <div className="flex justify-between cursor-pointer">
+              <div 
+                className="flex justify-between cursor-pointer"
+                onClick={() => toggleFAQ(5)}
+              >
                 <h3 className="text-lg font-medium text-primary" itemProp="name">Do you offer any expert advice for beginners?</h3>
+                <button className="text-primary focus:outline-none transition-transform">
+                  {openFAQs[5] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                </button>
               </div>
-              <div className="mt-2" itemScope itemType="https://schema.org/Answer">
-                <div itemProp="text">
-                  <p className="text-gray-300">
-                    Absolutely! Our knowledgeable staff at the Arlington location is always ready to help beginners 
-                    find the right products for their needs. We can provide guidance on getting started with vaping, 
-                    product selection, and proper usage. Don't hesitate to ask our friendly team any questions you may have.
-                  </p>
+              {openFAQs[5] && (
+                <div className="mt-2" itemScope itemType="https://schema.org/Answer">
+                  <div itemProp="text">
+                    <p className="text-gray-300">
+                      Absolutely! Our knowledgeable staff at the Arlington location is always ready to help beginners 
+                      find the right products for their needs. We can provide guidance on getting started with vaping, 
+                      product selection, and proper usage. Don't hesitate to ask our friendly team any questions you may have.
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
