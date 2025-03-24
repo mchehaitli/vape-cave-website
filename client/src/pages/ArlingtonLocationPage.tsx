@@ -466,7 +466,7 @@ const ArlingtonLocationPage: React.FC = () => {
               Google Maps
             </a>
             <a 
-              href="https://maps.apple.com/?address=4100+S+Cooper+St+%234108,+Arlington,+TX+76015,+United+States&ll=32.687070,-97.134800&q=Vape+Cave" 
+              href="https://www.google.com/maps/?q=Vape+Cave+Arlington+TX" 
               target="_blank" 
               rel="noopener noreferrer"
               className="inline-flex items-center bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold py-3 px-8 rounded-lg transition-all"
@@ -475,7 +475,7 @@ const ArlingtonLocationPage: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              Apple Maps
+              Maps
             </a>
             <a 
               href={`tel:${location.phone.replace(/[^0-9]/g, '')}`} 
