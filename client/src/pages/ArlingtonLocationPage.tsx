@@ -24,7 +24,6 @@ const ArlingtonLocationPage: React.FC = () => {
   
   // Toggle states for accordion-like sections
   const [showDetails, setShowDetails] = useState(true);
-  const [showProducts, setShowProducts] = useState(true);
   
   // State for collapsible FAQ items
   const [openFAQs, setOpenFAQs] = useState<Record<number, boolean>>({});
@@ -650,65 +649,33 @@ const ArlingtonLocationPage: React.FC = () => {
                 </div>
               </div>
               
-              {/* Products/Services */}
+              {/* Services */}
               <div>
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold font-['Poppins'] text-white">Products & Services</h2>
-                  <button 
-                    onClick={() => setShowProducts(!showProducts)}
-                    className="text-primary hover:text-primary/80"
-                    aria-expanded={showProducts}
-                  >
-                    {showProducts ? 'Hide Products' : 'Show Products'}
-                  </button>
+                  <h2 className="text-2xl font-bold font-['Poppins'] text-white">Services</h2>
                 </div>
                 
-                {showProducts && (
-                  <div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                      {location.services.map((service, index) => (
-                        <div key={index} className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700 p-4 flex items-center">
-                          <div className="bg-black/40 text-primary rounded-full p-3 mr-4 border border-gray-800">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                            </svg>
-                          </div>
-                          <div>
-                            <h4 className="font-medium text-white">{service}</h4>
-                            <p className="text-sm text-gray-300">Available in-store</p>
-                          </div>
-                        </div>
-                      ))}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                  {location.services.map((service, index) => (
+                    <div key={index} className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700 p-4 flex items-center">
+                      <div className="bg-black/40 text-primary rounded-full p-3 mr-4 border border-gray-800">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-white">{service}</h4>
+                        <p className="text-sm text-gray-300">Available in-store</p>
+                      </div>
                     </div>
-                    
-                    {/* Featured Products at Arlington */}
-                    <h3 className="text-xl font-semibold mb-4 text-white">Featured Products at Arlington</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                      {arlingtonProducts.map((product) => (
-                        <div key={product.id} className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700">
-                          <div className="h-40 overflow-hidden">
-                            <img 
-                              src={product.image} 
-                              alt={product.name} 
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          <div className="p-4">
-                            <h4 className="font-medium mb-1 text-white">{product.name}</h4>
-                            <p className="text-sm text-gray-300 mb-2">{product.category}</p>
-                            <p className="font-bold text-primary">${product.price.toFixed(2)}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    
-                    <div className="text-center">
-                      <Link href="/products" className="text-primary hover:text-primary/80 font-medium">
-                        View All Products →
-                      </Link>
-                    </div>
-                  </div>
-                )}
+                  ))}
+                </div>
+                
+                <div className="text-center">
+                  <Link href="/products" className="text-primary hover:text-primary/80 font-medium">
+                    View Our Products →
+                  </Link>
+                </div>
               </div>
             </div>
           
