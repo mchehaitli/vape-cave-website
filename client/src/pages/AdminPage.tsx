@@ -1201,6 +1201,414 @@ export default function AdminPage() {
                 </Card>
               </div>
             </TabsContent>
+
+            <TabsContent value="products" className="space-y-4">
+              <Card className="bg-gray-800 border-gray-700">
+                <CardHeader>
+                  <CardTitle>Manage Products</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-400 mb-4">
+                    This section allows you to add, edit, and delete products displayed on the Products page. You can also mark products as featured to display them on the home page.
+                  </p>
+                  <div className="flex justify-end mb-4">
+                    <Button 
+                      onClick={handleAddProduct}
+                      className="bg-primary hover:bg-primary/90 flex items-center gap-2"
+                    >
+                      <Plus size={16} />
+                      Add New Product
+                    </Button>
+                  </div>
+                  
+                  {isProductsLoading ? (
+                    <div className="animate-pulse space-y-3">
+                      {[1, 2, 3].map((i) => (
+                        <div key={i} className="h-14 bg-gray-700 rounded"></div>
+                      ))}
+                    </div>
+                  ) : products && products.length > 0 ? (
+                    <div className="rounded-md border border-gray-700 overflow-x-auto">
+                      <Table>
+                        <TableHeader className="bg-gray-800">
+                          <TableRow className="hover:bg-gray-700/50 border-gray-700">
+                            <TableHead className="text-gray-400 whitespace-nowrap">Product</TableHead>
+                            <TableHead className="text-gray-400 hidden md:table-cell">Category</TableHead>
+                            <TableHead className="text-gray-400 hidden md:table-cell">Price</TableHead>
+                            <TableHead className="text-gray-400 hidden md:table-cell">Featured</TableHead>
+                            <TableHead className="text-gray-400 text-right">Actions</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {products.map((product: any) => (
+                            <TableRow key={product.id} className="hover:bg-gray-700/50 border-gray-700">
+                              <TableCell className="font-medium flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+                                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded bg-gray-700 overflow-hidden border border-gray-600 hover:bg-gray-600 transition-all duration-300 cursor-pointer" 
+                                  title="Click to see larger preview"
+                                  onClick={() => {
+                                    toast({
+                                      title: "Product Preview",
+                                      description: (
+                                        <div className="mt-2">
+                                          <div className="relative w-full max-w-md mx-auto">
+                                            <img 
+                                              src={product.image} 
+                                              alt={product.name} 
+                                              className="rounded-lg max-h-[300px] object-contain mx-auto border border-gray-600 bg-gray-700 p-2"
+                                              onError={(e) => {
+                                                (e.target as HTMLImageElement).src = 'https://placehold.co/300x300?text=No+Image';
+                                              }}
+                                            />
+                                            <div className="mt-3 text-lg font-medium">{product.name}</div>
+                                            <div className="mt-1 text-gray-300">{product.description}</div>
+                                            <div className="mt-2 flex justify-between items-center">
+                                              <div className="text-primary font-bold">${product.price}</div>
+                                              {product.featured && (
+                                                <Badge variant="outline" className="bg-primary/20 text-primary border-primary/30">
+                                                  Featured
+                                                </Badge>
+                                              )}
+                                            </div>
+                                          </div>
+                                        </div>
+                                      ),
+                                      duration: 10000,
+                                    });
+                                  }}
+                                >
+                                  <img 
+                                    src={product.image} 
+                                    alt={product.name} 
+                                    className="w-full h-full object-contain" 
+                                    onError={(e) => {
+                                      (e.target as HTMLImageElement).src = 'https://placehold.co/100x100?text=Error';
+                                    }}
+                                  />
+                                </div>
+                                <div>
+                                  <div>{product.name}</div>
+                                  <div className="text-xs text-gray-400 md:hidden mt-1">
+                                    <span className="font-medium">${product.price}</span>
+                                    {product.category && (
+                                      <span className="inline-block ml-2 px-2 py-1 bg-gray-700 rounded text-xs">
+                                        {product.category}
+                                      </span>
+                                    )}
+                                    {product.description && (
+                                      <span className="block mt-1 line-clamp-2">{product.description}</span>
+                                    )}
+                                  </div>
+                                </div>
+                              </TableCell>
+                              <TableCell className="hidden md:table-cell">
+                                <span className="inline-block px-2 py-1 bg-gray-700 rounded text-xs">
+                                  {product.category}
+                                </span>
+                              </TableCell>
+                              <TableCell className="hidden md:table-cell font-medium text-primary">
+                                ${product.price}
+                              </TableCell>
+                              <TableCell className="hidden md:table-cell">
+                                {product.featured ? (
+                                  <Badge variant="outline" className="bg-primary/20 text-primary border-primary/30">
+                                    {product.featuredLabel || 'Featured'}
+                                  </Badge>
+                                ) : (
+                                  <span className="text-gray-500">—</span>
+                                )}
+                              </TableCell>
+                              <TableCell className="text-right">
+                                <div className="flex justify-end gap-2">
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm"
+                                    className="h-8 w-8 p-0 text-gray-400 hover:text-white hover:bg-gray-700"
+                                    onClick={() => handleEditProduct(product)}
+                                  >
+                                    <span className="sr-only">Edit</span>
+                                    <Edit size={16} />
+                                  </Button>
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm"
+                                    className="h-8 w-8 p-0 text-red-400 hover:text-red-300 hover:bg-gray-700"
+                                    onClick={() => handleDeleteProduct(product.id)}
+                                  >
+                                    <span className="sr-only">Delete</span>
+                                    <Trash2 size={16} />
+                                  </Button>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-gray-400">
+                      <p>No products found. Click "Add New Product" to create your first product.</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+              
+              {/* Product Dialog */}
+              <Dialog open={productDialogOpen} onOpenChange={setProductDialogOpen}>
+                <DialogContent className="bg-gray-800 text-white border-gray-700 sm:max-w-xl max-h-[90vh] overflow-y-auto mx-4 w-[calc(100%-2rem)]">
+                  <DialogHeader>
+                    <DialogTitle>{editingProduct ? "Edit Product" : "Add New Product"}</DialogTitle>
+                    <DialogDescription className="text-gray-400">
+                      {editingProduct 
+                        ? "Edit product details below and save your changes." 
+                        : "Fill in the product details to add it to your store."
+                      }
+                    </DialogDescription>
+                  </DialogHeader>
+                  
+                  <Form {...productForm}>
+                    <form onSubmit={productForm.handleSubmit(onProductSubmit)} className="space-y-4">
+                      <FormField
+                        control={productForm.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Product Name</FormLabel>
+                            <FormControl>
+                              <Input
+                                className="bg-gray-900 border-gray-700 text-white" 
+                                placeholder="Enter product name"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage className="text-red-400" />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={productForm.control}
+                        name="category"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Category</FormLabel>
+                            <Select 
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                            >
+                              <FormControl>
+                                <SelectTrigger className="bg-gray-900 border-gray-700 text-white">
+                                  <SelectValue placeholder="Select a category" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent className="bg-gray-900 border-gray-700 text-white">
+                                <SelectItem 
+                                  value="devices" 
+                                  className="hover:bg-gray-800 focus:bg-gray-800"
+                                >
+                                  Devices
+                                </SelectItem>
+                                <SelectItem 
+                                  value="pods" 
+                                  className="hover:bg-gray-800 focus:bg-gray-800"
+                                >
+                                  Pods
+                                </SelectItem>
+                                <SelectItem 
+                                  value="juice" 
+                                  className="hover:bg-gray-800 focus:bg-gray-800"
+                                >
+                                  E-Juice
+                                </SelectItem>
+                                <SelectItem 
+                                  value="disposables" 
+                                  className="hover:bg-gray-800 focus:bg-gray-800"
+                                >
+                                  Disposables
+                                </SelectItem>
+                                <SelectItem 
+                                  value="accessories" 
+                                  className="hover:bg-gray-800 focus:bg-gray-800"
+                                >
+                                  Accessories
+                                </SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage className="text-red-400" />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={productForm.control}
+                        name="price"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Price</FormLabel>
+                            <FormControl>
+                              <Input
+                                className="bg-gray-900 border-gray-700 text-white" 
+                                placeholder="29.99"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage className="text-red-400" />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={productForm.control}
+                        name="image"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Product Image URL</FormLabel>
+                            <FormControl>
+                              <Input
+                                className="bg-gray-900 border-gray-700 text-white" 
+                                placeholder="https://example.com/image.jpg"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage className="text-red-400" />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={productForm.control}
+                        name="description"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Description</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                className="bg-gray-900 border-gray-700 text-white min-h-[100px]" 
+                                placeholder="Enter product description"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage className="text-red-400" />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={productForm.control}
+                        name="stock"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Stock</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                className="bg-gray-900 border-gray-700 text-white" 
+                                {...field}
+                                onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                              />
+                            </FormControl>
+                            <FormMessage className="text-red-400" />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={productForm.control}
+                        name="featured"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border border-gray-700 p-4">
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                                className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                              />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                              <FormLabel>
+                                Feature on Homepage
+                              </FormLabel>
+                              <FormDescription className="text-gray-400 text-xs">
+                                Display this product in the featured products section on the homepage
+                              </FormDescription>
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={productForm.control}
+                        name="featuredLabel"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Featured Label (Optional)</FormLabel>
+                            <FormControl>
+                              <Input
+                                className="bg-gray-900 border-gray-700 text-white" 
+                                placeholder="Best Seller, New Arrival, etc."
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormDescription className="text-gray-400 text-xs">
+                              Special label to display on the featured product (like "Best Seller" or "New Arrival")
+                            </FormDescription>
+                            <FormMessage className="text-red-400" />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <DialogFooter className="pt-4">
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          className="border-gray-600 hover:bg-gray-700 hover:text-white mr-2"
+                          onClick={() => setProductDialogOpen(false)}
+                        >
+                          Cancel
+                        </Button>
+                        <Button 
+                          type="submit" 
+                          className="bg-primary hover:bg-primary/90"
+                          disabled={productForm.formState.isSubmitting}
+                        >
+                          {productForm.formState.isSubmitting ? (
+                            <>
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              Saving...
+                            </>
+                          ) : editingProduct ? "Update Product" : "Add Product"}
+                        </Button>
+                      </DialogFooter>
+                    </form>
+                  </Form>
+                </DialogContent>
+              </Dialog>
+              
+              {/* Product Delete Confirmation */}
+              <AlertDialog open={!!deletingProductId} onOpenChange={(open) => !open && setDeletingProductId(null)}>
+                <AlertDialogContent className="bg-gray-800 text-white border-gray-700">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                    <AlertDialogDescription className="text-gray-400">
+                      This action cannot be undone. This will permanently delete the product.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="bg-gray-700 text-white hover:bg-gray-600 hover:text-white border-0">
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction 
+                      onClick={(e) => {
+                        e.preventDefault();
+                        confirmDeleteProduct();
+                      }}
+                      className="bg-red-600 hover:bg-red-700 text-white focus:ring-red-600"
+                    >
+                      Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </TabsContent>
             
             <TabsContent value="brands" className="space-y-4">
               <Card className="bg-gray-800 border-gray-700">
