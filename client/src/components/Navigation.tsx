@@ -60,6 +60,7 @@ const Navigation = () => {
     { label: "Home", path: "/", ariaLabel: "Go to homepage" },
     { label: "Frisco Store", path: "/locations/frisco", ariaLabel: "Visit our Frisco TX location" },
     { label: "Arlington Store", path: "/locations/arlington", ariaLabel: "Visit our Arlington TX location" },
+    { label: "Products", path: "/products", ariaLabel: "Browse our products" },
     { label: "Blog", path: "/blog", ariaLabel: "Read our blog" },
     { label: "Contact", path: "/contact", ariaLabel: "Contact us" },
   ];
