@@ -742,6 +742,99 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ error: "Failed to process newsletter subscription" });
     }
   });
+  
+  // Product endpoints
+  app.get('/api/products', async (_req, res) => {
+    try {
+      const products = await storage.getAllProducts();
+      res.json(products);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      res.status(500).json({ error: "Failed to fetch products" });
+    }
+  });
+  
+  app.get('/api/products/featured', async (req, res) => {
+    try {
+      const limit = req.query.limit ? parseInt(req.query.limit as string) : undefined;
+      const products = await storage.getFeaturedProducts(limit);
+      res.json(products);
+    } catch (error) {
+      console.error("Error fetching featured products:", error);
+      res.status(500).json({ error: "Failed to fetch featured products" });
+    }
+  });
+  
+  app.get('/api/products/category/:category', async (req, res) => {
+    try {
+      const { category } = req.params;
+      const products = await storage.getProductsByCategory(category);
+      res.json(products);
+    } catch (error) {
+      console.error("Error fetching products by category:", error);
+      res.status(500).json({ error: "Failed to fetch products by category" });
+    }
+  });
+  
+  app.get('/api/products/:id', async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const product = await storage.getProduct(id);
+      
+      if (!product) {
+        return res.status(404).json({ error: "Product not found" });
+      }
+      
+      res.json(product);
+    } catch (error) {
+      console.error("Error fetching product:", error);
+      res.status(500).json({ error: "Failed to fetch product" });
+    }
+  });
+  
+  app.post('/api/admin/products', isAdmin, async (req, res) => {
+    try {
+      const product = req.body;
+      const newProduct = await storage.createProduct(product);
+      res.status(201).json(newProduct);
+    } catch (error) {
+      console.error("Error creating product:", error);
+      res.status(500).json({ error: "Failed to create product" });
+    }
+  });
+  
+  app.put('/api/admin/products/:id', isAdmin, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const product = req.body;
+      const updatedProduct = await storage.updateProduct(id, product);
+      
+      if (!updatedProduct) {
+        return res.status(404).json({ error: "Product not found" });
+      }
+      
+      res.json(updatedProduct);
+    } catch (error) {
+      console.error("Error updating product:", error);
+      res.status(500).json({ error: "Failed to update product" });
+    }
+  });
+  
+  app.delete('/api/admin/products/:id', isAdmin, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const success = await storage.deleteProduct(id);
+      
+      if (!success) {
+        return res.status(404).json({ error: "Product not found" });
+      }
+      
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      res.status(500).json({ error: "Failed to delete product" });
+    }
+  });
 
   const httpServer = createServer(app);
   return httpServer;

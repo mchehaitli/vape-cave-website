@@ -818,6 +818,65 @@ export class MemStorage implements IStorage {
   async deleteStoreLocation(id: number): Promise<boolean> {
     return this.storeLocationsMap.delete(id);
   }
+  
+  // Product operations
+  async getAllProducts(): Promise<Product[]> {
+    return Array.from(this.productsMap.values());
+  }
+  
+  async getFeaturedProducts(limit: number = 10): Promise<Product[]> {
+    const products = Array.from(this.productsMap.values())
+      .filter(product => product.featured)
+      .sort((a, b) => a.name.localeCompare(b.name));
+    
+    return products.slice(0, limit);
+  }
+  
+  async getProductsByCategory(category: string): Promise<Product[]> {
+    return Array.from(this.productsMap.values())
+      .filter(product => product.category === category)
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }
+  
+  async getProduct(id: number): Promise<Product | undefined> {
+    return this.productsMap.get(id);
+  }
+  
+  async createProduct(product: InsertProduct): Promise<Product> {
+    const id = this.productCurrentId++;
+    const now = new Date();
+    
+    const newProduct: Product = {
+      ...product,
+      id,
+      created_at: now,
+      updated_at: now
+    };
+    
+    this.productsMap.set(id, newProduct);
+    return newProduct;
+  }
+  
+  async updateProduct(id: number, product: Partial<InsertProduct>): Promise<Product | undefined> {
+    const existingProduct = this.productsMap.get(id);
+    
+    if (!existingProduct) {
+      return undefined;
+    }
+    
+    const updatedProduct: Product = {
+      ...existingProduct,
+      ...product,
+      updated_at: new Date()
+    };
+    
+    this.productsMap.set(id, updatedProduct);
+    return updatedProduct;
+  }
+  
+  async deleteProduct(id: number): Promise<boolean> {
+    return this.productsMap.delete(id);
+  }
 }
 
 // Try to use the database implementation, fall back to memory if it fails
