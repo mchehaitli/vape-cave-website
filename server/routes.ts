@@ -1,8 +1,9 @@
 import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertUserSchema, insertBrandCategorySchema, insertBrandSchema, insertBlogPostSchema, insertStoreLocationSchema } from "@shared/schema";
+import { insertUserSchema, insertBrandCategorySchema, insertBrandSchema, insertBlogPostSchema, insertStoreLocationSchema, insertProductSchema } from "@shared/schema";
 import { seedStoreLocations } from "./seed-store-locations";
+import { seedProducts } from "./seed-products";
 import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
 import * as dotenv from "dotenv";
@@ -789,6 +790,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Seed store locations error:", error);
       res.status(500).json({ error: "Failed to seed store locations" });
+    }
+  });
+  
+  // Special endpoint to seed products from frontend data
+  app.post('/api/admin/seed-products', isAdmin, async (req, res) => {
+    try {
+      await seedProducts();
+      res.json({ message: "Products seeded successfully" });
+    } catch (error) {
+      console.error("Seed products error:", error);
+      res.status(500).json({ error: "Failed to seed products" });
     }
   });
 

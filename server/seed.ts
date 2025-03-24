@@ -270,6 +270,13 @@ async function seedDatabase() {
       }
     }
     
+    // Seed products
+    try {
+      await seedProducts();
+    } catch (error) {
+      console.error("Error seeding products:", error);
+    }
+    
     console.log("Database seeding completed");
     
   } catch (error) {
