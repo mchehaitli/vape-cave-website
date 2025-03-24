@@ -4,7 +4,8 @@ import {
   brandCategories, type BrandCategory, type InsertBrandCategory,
   blogPosts, type BlogPost, type InsertBlogPost,
   storeLocations, type StoreLocation, type InsertStoreLocation,
-  products, type Product, type InsertProduct
+  products, type Product, type InsertProduct,
+  productCategories, type ProductCategory, type InsertProductCategory
 } from "@shared/schema";
 import { eq, and, asc, desc, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
@@ -570,6 +571,7 @@ export class MemStorage implements IStorage {
   private brandsMap: Map<number, Brand>;
   private blogPostsMap: Map<number, BlogPost>;
   private storeLocationsMap: Map<number, StoreLocation>;
+  private productCategoriesMap: Map<number, ProductCategory>;
   private productsMap: Map<number, Product>;
   
   private userCurrentId: number;
@@ -577,6 +579,7 @@ export class MemStorage implements IStorage {
   private brandCurrentId: number;
   private blogPostCurrentId: number;
   private storeLocationCurrentId: number;
+  private productCategoryCurrentId: number;
   private productCurrentId: number;
 
   constructor() {
@@ -585,6 +588,7 @@ export class MemStorage implements IStorage {
     this.brandsMap = new Map();
     this.blogPostsMap = new Map();
     this.storeLocationsMap = new Map();
+    this.productCategoriesMap = new Map();
     this.productsMap = new Map();
     
     this.userCurrentId = 1;
@@ -592,6 +596,7 @@ export class MemStorage implements IStorage {
     this.brandCurrentId = 1;
     this.blogPostCurrentId = 1;
     this.storeLocationCurrentId = 1;
+    this.productCategoryCurrentId = 1;
     this.productCurrentId = 1;
   }
 
@@ -876,6 +881,59 @@ export class MemStorage implements IStorage {
 
   async deleteStoreLocation(id: number): Promise<boolean> {
     return this.storeLocationsMap.delete(id);
+  }
+  
+  // Product category operations
+  async getAllProductCategories(): Promise<ProductCategory[]> {
+    return Array.from(this.productCategoriesMap.values())
+      .sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
+  }
+  
+  async getProductCategory(id: number): Promise<ProductCategory | undefined> {
+    return this.productCategoriesMap.get(id);
+  }
+  
+  async getProductCategoryBySlug(slug: string): Promise<ProductCategory | undefined> {
+    return Array.from(this.productCategoriesMap.values()).find(
+      (category) => category.slug === slug
+    );
+  }
+  
+  async createProductCategory(category: InsertProductCategory): Promise<ProductCategory> {
+    const id = this.productCategoryCurrentId++;
+    const now = new Date();
+    
+    const newCategory: ProductCategory = {
+      ...category,
+      id,
+      created_at: now,
+      updated_at: now
+    };
+    
+    this.productCategoriesMap.set(id, newCategory);
+    return newCategory;
+  }
+  
+  async updateProductCategory(id: number, category: Partial<InsertProductCategory>): Promise<ProductCategory | undefined> {
+    const existingCategory = this.productCategoriesMap.get(id);
+    
+    if (!existingCategory) {
+      return undefined;
+    }
+    
+    // Create a properly typed updated category
+    const updatedCategory: ProductCategory = { 
+      ...existingCategory,
+      ...category,
+      updated_at: new Date()
+    };
+    
+    this.productCategoriesMap.set(id, updatedCategory);
+    return updatedCategory;
+  }
+  
+  async deleteProductCategory(id: number): Promise<boolean> {
+    return this.productCategoriesMap.delete(id);
   }
   
   // Product operations
