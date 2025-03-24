@@ -466,16 +466,32 @@ const FriscoLocationPage: React.FC = () => {
             Frisco's premier destination for premium vaping products, Delta 8, THC-A, and more.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <DirectionsButton
-              address={location.fullAddress}
-              lat={location.coordinates.lat}
-              lng={location.coordinates.lng}
-              buttonText="Get Directions"
-              variant="primary"
-              showIcon={true}
-              googlePlaceId={location.googlePlaceId}
-              appleMapsLink={location.appleMapsLink}
-            />
+            <a 
+              href={location.googlePlaceId ? 
+                `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}` : 
+                `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(location.fullAddress)}`
+              } 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-md transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+              </svg>
+              Google Maps
+            </a>
+            <a 
+              href={location.appleMapsLink || `https://maps.apple.com/?address=${encodeURIComponent(location.fullAddress)}&ll=${location.coordinates.lat},${location.coordinates.lng}&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m`} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center bg-white/10 hover:bg-white/20 border border-white/30 text-white px-4 py-2 rounded-md transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              Apple Maps
+            </a>
             <a 
               href={`tel:${location.phone.replace(/[^0-9]/g, '')}`} 
               className="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 flex items-center backdrop-blur-sm hover:shadow-lg"
@@ -680,18 +696,32 @@ const FriscoLocationPage: React.FC = () => {
                 </p>
                 
                 <div className="space-y-4">
-                  <DirectionsButton
-                    address={location.fullAddress}
-                    lat={location.coordinates.lat}
-                    lng={location.coordinates.lng}
-                    buttonText="Get Directions with Google Maps"
-                    className="w-full"
-                    variant="primary"
-                    showIcon={true}
-                    fullWidth={true}
-                    googlePlaceId={location.googlePlaceId}
-                    appleMapsLink={location.appleMapsLink}
-                  />
+                  <a 
+                    href={location.googlePlaceId ? 
+                      `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}` : 
+                      `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(location.fullAddress)}`
+                    } 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center w-full bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-md transition-colors mb-2"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                    </svg>
+                    Google Maps Directions
+                  </a>
+                  <a 
+                    href={location.appleMapsLink || `https://maps.apple.com/?address=${encodeURIComponent(location.fullAddress)}&ll=${location.coordinates.lat},${location.coordinates.lng}&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center w-full bg-white/10 hover:bg-white/20 border border-white/30 text-white px-4 py-2 rounded-md transition-colors"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    Apple Maps Directions
+                  </a>
                   
                   {location.publicTransit && (
                     <div className="p-4 bg-black/30 rounded-lg border border-gray-800">
@@ -817,16 +847,32 @@ const FriscoLocationPage: React.FC = () => {
               Experience our friendly atmosphere, knowledgeable staff, and premium selection of vaping products and accessories.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <DirectionsButton
-                address={location.fullAddress}
-                lat={location.coordinates.lat}
-                lng={location.coordinates.lng}
-                buttonText="Get Directions"
-                variant="primary"
-                showIcon={true}
-                googlePlaceId={location.googlePlaceId}
-                appleMapsLink={location.appleMapsLink}
-              />
+              <a 
+                href={location.googlePlaceId ? 
+                  `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}` : 
+                  `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(location.fullAddress)}`
+                } 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-lg transition-all"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                </svg>
+                Google Maps
+              </a>
+              <a 
+                href={location.appleMapsLink || `https://maps.apple.com/?address=${encodeURIComponent(location.fullAddress)}&ll=${location.coordinates.lat},${location.coordinates.lng}&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m`} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold py-3 px-8 rounded-lg transition-all"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                Apple Maps
+              </a>
               <a 
                 href={`tel:${location.phone.replace(/[^0-9]/g, '')}`} 
                 className="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 backdrop-blur-sm hover:shadow-lg"
