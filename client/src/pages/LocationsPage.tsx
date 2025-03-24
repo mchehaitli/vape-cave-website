@@ -498,39 +498,79 @@ const LocationsPage = () => {
                     <div className="w-full mb-2">
                       <h4 className="text-md font-semibold text-orange-500 mb-2">Direct Maps Test for {location.name}:</h4>
                       <div className="flex flex-wrap gap-2">
-                        <a 
-                          href={location.appleMapsLink} 
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded-md flex items-center"
-                        >
-                          <i className="fab fa-apple mr-2"></i>
-                          Direct Apple Maps Link
-                        </a>
-                        <a 
-                          href={location.googlePlaceId 
-                            ? `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}`
-                            : `https://www.google.com/maps/dir/?api=1&destination=${location.coordinates.lat},${location.coordinates.lng}`} 
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded-md flex items-center"
-                        >
-                          <i className="fab fa-google mr-2"></i>
-                          Direct Google Maps Link
-                        </a>
+                        {location.id === 1 ? (
+                          /* Frisco location */
+                          <>
+                            <a 
+                              href="https://maps.apple.com/?address=6958%20Main%20St%20%23200,%20Frisco,%20TX%20%2075033,%20United%20States&ll=33.150730,-96.822550&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m" 
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded-md flex items-center"
+                            >
+                              <i className="fab fa-apple mr-2"></i>
+                              Direct Apple Maps Link
+                            </a>
+                            <a 
+                              href="https://www.google.com/maps/place/?q=place_id:ChIJxXjrR3wVkFQRcKK89i-aFDw" 
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded-md flex items-center"
+                            >
+                              <i className="fab fa-google mr-2"></i>
+                              Direct Google Maps Link
+                            </a>
+                          </>
+                        ) : (
+                          /* Arlington location */
+                          <>
+                            <a 
+                              href="https://maps.apple.com/place?q=Vape%20Cave%20Smoke%20%26%20Stuff&ll=32.6807165%2C-97.1350622&auid=18240116569179355943&lsp=9902&address=4100%20S%20Cooper%20St%2C%20Unit%204108%2C%20Arlington%2C%20TX%20%2076015%2C%20United%20States"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded-md flex items-center"
+                            >
+                              <i className="fab fa-apple mr-2"></i>
+                              Direct Apple Maps Link
+                            </a>
+                            <a 
+                              href="https://www.google.com/maps/place/?q=place_id:ChIJ5_E9yrrXTocRlbmKIFEQJMA"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded-md flex items-center"
+                            >
+                              <i className="fab fa-google mr-2"></i>
+                              Direct Google Maps Link
+                            </a>
+                          </>
+                        )}
                       </div>
                     </div>
                     
-                    <DirectionsButton
-                      address={location.fullAddress}
-                      lat={location.coordinates.lat}
-                      lng={location.coordinates.lng}
-                      className="flex-1"
-                      buttonText="Get Directions"
-                      variant="primary"
-                      googlePlaceId={location.googlePlaceId}
-                      appleMapsLink={location.appleMapsLink}
-                    />
+                    {location.id === 1 ? (
+                      /* Frisco location */
+                      <DirectionsButton
+                        address={location.fullAddress}
+                        lat={location.coordinates.lat}
+                        lng={location.coordinates.lng}
+                        className="flex-1"
+                        buttonText="Get Directions"
+                        variant="primary"
+                        googlePlaceId="ChIJxXjrR3wVkFQRcKK89i-aFDw"
+                        appleMapsLink="https://maps.apple.com/?address=6958%20Main%20St%20%23200,%20Frisco,%20TX%20%2075033,%20United%20States&ll=33.150730,-96.822550&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m"
+                      />
+                    ) : (
+                      /* Arlington location */
+                      <DirectionsButton
+                        address={location.fullAddress}
+                        lat={location.coordinates.lat}
+                        lng={location.coordinates.lng}
+                        className="flex-1"
+                        buttonText="Get Directions"
+                        variant="primary"
+                        googlePlaceId="ChIJ5_E9yrrXTocRlbmKIFEQJMA"
+                        appleMapsLink="https://maps.apple.com/place?q=Vape%20Cave%20Smoke%20%26%20Stuff&ll=32.6807165%2C-97.1350622&auid=18240116569179355943&lsp=9902&address=4100%20S%20Cooper%20St%2C%20Unit%204108%2C%20Arlington%2C%20TX%20%2076015%2C%20United%20States"
+                      />
+                    )}
                     
                     {location.id === 1 && (
                       <Link href="/locations/frisco" className="flex-1 bg-primary text-black hover:bg-primary/80 font-medium py-2 px-4 rounded-md flex items-center justify-center">
@@ -701,7 +741,7 @@ const LocationsPage = () => {
                 <p className="text-gray-300 mb-4">6958 Main St #200, Frisco, TX 75033</p>
                 <div className="flex flex-wrap gap-2 mb-3 justify-center">
                   <a 
-                    href={formattedLocations && formattedLocations[0] ? formattedLocations[0].appleMapsLink : "#"} 
+                    href="https://maps.apple.com/?address=6958%20Main%20St%20%23200,%20Frisco,%20TX%20%2075033,%20United%20States&ll=33.150730,-96.822550&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-sm bg-gray-800 hover:bg-gray-700 text-white py-1 px-3 rounded-md flex items-center"
@@ -709,9 +749,7 @@ const LocationsPage = () => {
                     <i className="fab fa-apple mr-1"></i> Apple Maps
                   </a>
                   <a 
-                    href={formattedLocations && formattedLocations[0] && formattedLocations[0].googlePlaceId
-                      ? `https://www.google.com/maps/place/?q=place_id:${formattedLocations[0].googlePlaceId}`
-                      : "#"} 
+                    href="https://www.google.com/maps/place/?q=place_id:ChIJxXjrR3wVkFQRcKK89i-aFDw" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-sm bg-gray-800 hover:bg-gray-700 text-white py-1 px-3 rounded-md flex items-center"
@@ -732,7 +770,7 @@ const LocationsPage = () => {
                 <p className="text-gray-300 mb-4">4100 S Cooper St #4108, Arlington, TX 76015</p>
                 <div className="flex flex-wrap gap-2 mb-3 justify-center">
                   <a 
-                    href={formattedLocations && formattedLocations[1] ? formattedLocations[1].appleMapsLink : "#"} 
+                    href="https://maps.apple.com/place?q=Vape%20Cave%20Smoke%20%26%20Stuff&ll=32.6807165%2C-97.1350622&auid=18240116569179355943&lsp=9902&address=4100%20S%20Cooper%20St%2C%20Unit%204108%2C%20Arlington%2C%20TX%20%2076015%2C%20United%20States" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-sm bg-gray-800 hover:bg-gray-700 text-white py-1 px-3 rounded-md flex items-center"
@@ -740,9 +778,7 @@ const LocationsPage = () => {
                     <i className="fab fa-apple mr-1"></i> Apple Maps
                   </a>
                   <a 
-                    href={formattedLocations && formattedLocations[1] && formattedLocations[1].googlePlaceId
-                      ? `https://www.google.com/maps/place/?q=place_id:${formattedLocations[1].googlePlaceId}`
-                      : "#"} 
+                    href="https://www.google.com/maps/place/?q=place_id:ChIJ5_E9yrrXTocRlbmKIFEQJMA" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-sm bg-gray-800 hover:bg-gray-700 text-white py-1 px-3 rounded-md flex items-center"
