@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import MainLayout from "@/layouts/MainLayout";
 import { Helmet } from "react-helmet";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { Link } from "wouter";
 import GoogleMapsIntegration from "@/components/GoogleMapsIntegration";
 import DirectionsButton from "@/components/DirectionsButton";
@@ -386,6 +387,17 @@ const FriscoLocationPage: React.FC = () => {
   // Local state for toggling sections
   const [showDetails, setShowDetails] = useState<boolean>(true);
   const [showProducts, setShowProducts] = useState<boolean>(true);
+  
+  // State for collapsible FAQ items
+  const [openFAQs, setOpenFAQs] = useState<Record<number, boolean>>({});
+  
+  // Function to toggle FAQ item open/closed
+  const toggleFAQ = (faqId: number) => {
+    setOpenFAQs(prev => ({
+      ...prev,
+      [faqId]: !prev[faqId]
+    }));
+  };
   
   return (
     <MainLayout
