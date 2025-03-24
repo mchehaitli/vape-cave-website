@@ -1156,8 +1156,9 @@ export default function AdminPage() {
               <TabsList className="bg-gray-800 border border-gray-700 w-full md:w-auto mb-2">
                 <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="dashboard">Dashboard</TabsTrigger>
                 <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="products">Products</TabsTrigger>
+                <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="product-categories">Product Categories</TabsTrigger>
                 <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="brands">Brands</TabsTrigger>
-                <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="categories">Categories</TabsTrigger>
+                <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="categories">Brand Categories</TabsTrigger>
                 <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="store-hours">Store Hours</TabsTrigger>
                 <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="blog">Blog</TabsTrigger>
                 <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="settings">Settings</TabsTrigger>
@@ -1204,6 +1205,263 @@ export default function AdminPage() {
               </div>
             </TabsContent>
 
+            <TabsContent value="product-categories" className="space-y-4">
+              <Card className="bg-gray-800 border-gray-700">
+                <CardHeader>
+                  <CardTitle>Product Categories</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-400 mb-4">
+                    Manage product categories to organize your products. These categories will be available when adding or editing products.
+                  </p>
+                  <div className="flex justify-end mb-4">
+                    <Button 
+                      onClick={handleAddProductCategory}
+                      className="bg-primary hover:bg-primary/90 flex items-center gap-2"
+                    >
+                      <Plus size={16} />
+                      Add New Category
+                    </Button>
+                  </div>
+                  
+                  {isProductCategoriesLoading ? (
+                    <div className="animate-pulse space-y-3">
+                      {[1, 2, 3].map((i) => (
+                        <div key={i} className="h-14 bg-gray-700 rounded"></div>
+                      ))}
+                    </div>
+                  ) : productCategories && productCategories.length > 0 ? (
+                    <div className="rounded-md border border-gray-700 overflow-x-auto">
+                      <Table>
+                        <TableHeader className="bg-gray-800">
+                          <TableRow className="hover:bg-gray-700/50 border-gray-700">
+                            <TableHead className="text-gray-400">Name</TableHead>
+                            <TableHead className="text-gray-400 hidden md:table-cell">Slug</TableHead>
+                            <TableHead className="text-gray-400 hidden md:table-cell">Display Order</TableHead>
+                            <TableHead className="text-gray-400 text-right">Actions</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {productCategories.map((category: any) => (
+                            <TableRow key={category.id} className="hover:bg-gray-700/50 border-gray-700">
+                              <TableCell className="font-medium">
+                                {category.name}
+                                {category.description && (
+                                  <div className="text-xs text-gray-400 mt-1 line-clamp-1 md:hidden">
+                                    {category.description}
+                                  </div>
+                                )}
+                              </TableCell>
+                              <TableCell className="hidden md:table-cell text-gray-400 font-mono text-xs">
+                                {category.slug}
+                              </TableCell>
+                              <TableCell className="hidden md:table-cell text-gray-400">
+                                {category.display_order ?? '0'}
+                              </TableCell>
+                              <TableCell className="text-right">
+                                <div className="flex justify-end gap-2">
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm"
+                                    className="h-8 w-8 p-0 text-gray-400 hover:text-white hover:bg-gray-700"
+                                    onClick={() => handleEditProductCategory(category)}
+                                  >
+                                    <span className="sr-only">Edit</span>
+                                    <Edit size={16} />
+                                  </Button>
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm"
+                                    className="h-8 w-8 p-0 text-red-400 hover:text-red-300 hover:bg-gray-700"
+                                    onClick={() => handleDeleteProductCategory(category.id)}
+                                  >
+                                    <span className="sr-only">Delete</span>
+                                    <Trash2 size={16} />
+                                  </Button>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-gray-400">
+                      <p>No product categories found. Click "Add New Category" to create your first category.</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+              
+              {/* Product Category Dialog */}
+              <Dialog open={productCategoryDialogOpen} onOpenChange={setProductCategoryDialogOpen}>
+                <DialogContent className="bg-gray-800 text-white border-gray-700 sm:max-w-md">
+                  <DialogHeader>
+                    <DialogTitle>{editingProductCategory ? "Edit Product Category" : "Add New Product Category"}</DialogTitle>
+                    <DialogDescription className="text-gray-400">
+                      {editingProductCategory 
+                        ? "Edit product category details below and save changes." 
+                        : "Fill in the details to create a new product category."
+                      }
+                    </DialogDescription>
+                  </DialogHeader>
+                  
+                  <Form {...productCategoryForm}>
+                    <form onSubmit={productCategoryForm.handleSubmit(onProductCategorySubmit)} className="space-y-4">
+                      <FormField
+                        control={productCategoryForm.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Category Name</FormLabel>
+                            <FormControl>
+                              <Input
+                                className="bg-gray-900 border-gray-700 text-white" 
+                                placeholder="Enter category name"
+                                {...field}
+                                onChange={(e) => {
+                                  field.onChange(e);
+                                  // Auto-generate slug if slug field is empty or was auto-generated
+                                  if (!productCategoryForm.getValues("slug") || 
+                                      productCategoryForm.getValues("slug") === 
+                                      productCategoryForm.getValues("name").toLowerCase().replace(/\s+/g, '-')) {
+                                    productCategoryForm.setValue(
+                                      "slug", 
+                                      e.target.value.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+                                    );
+                                  }
+                                }}
+                              />
+                            </FormControl>
+                            <FormMessage className="text-red-400" />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={productCategoryForm.control}
+                        name="slug"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Slug</FormLabel>
+                            <FormControl>
+                              <Input
+                                className="bg-gray-900 border-gray-700 text-white font-mono text-sm" 
+                                placeholder="enter-category-slug"
+                                {...field}
+                                onChange={(e) => {
+                                  // Force lowercase and replace spaces with hyphens
+                                  const sanitizedValue = e.target.value
+                                    .toLowerCase()
+                                    .replace(/\s+/g, '-')
+                                    .replace(/[^a-z0-9-]/g, '');
+                                  field.onChange(sanitizedValue);
+                                }}
+                              />
+                            </FormControl>
+                            <FormDescription className="text-gray-500 text-xs">
+                              URL-friendly version of the name. Auto-generated but can be customized.
+                            </FormDescription>
+                            <FormMessage className="text-red-400" />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={productCategoryForm.control}
+                        name="description"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Description</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                className="bg-gray-900 border-gray-700 text-white min-h-[80px]" 
+                                placeholder="Enter category description (optional)"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage className="text-red-400" />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={productCategoryForm.control}
+                        name="display_order"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Display Order</FormLabel>
+                            <FormControl>
+                              <Input
+                                className="bg-gray-900 border-gray-700 text-white" 
+                                type="number"
+                                min={0}
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormDescription className="text-gray-500 text-xs">
+                              Lower numbers display first in category lists. Default is 0.
+                            </FormDescription>
+                            <FormMessage className="text-red-400" />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <DialogFooter className="gap-2 sm:gap-0 pt-4">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="border-gray-600 hover:bg-gray-700 text-gray-300"
+                          onClick={() => setProductCategoryDialogOpen(false)}
+                        >
+                          Cancel
+                        </Button>
+                        <Button 
+                          type="submit"
+                          className="bg-primary hover:bg-primary/90"
+                          disabled={productCategoryForm.formState.isSubmitting}
+                        >
+                          {productCategoryForm.formState.isSubmitting ? (
+                            <div className="flex items-center gap-2">
+                              <RefreshCcw size={16} className="animate-spin" />
+                              Saving...
+                            </div>
+                          ) : editingProductCategory ? "Update Category" : "Create Category"}
+                        </Button>
+                      </DialogFooter>
+                    </form>
+                  </Form>
+                </DialogContent>
+              </Dialog>
+              
+              {/* Delete Product Category Confirmation */}
+              <AlertDialog 
+                open={deletingProductCategoryId !== null} 
+                onOpenChange={() => setDeletingProductCategoryId(null)}
+              >
+                <AlertDialogContent className="bg-gray-800 text-white border-gray-700">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                    <AlertDialogDescription className="text-gray-400">
+                      This will permanently delete this product category. This action cannot be undone.
+                      Any products using this category will need to be reassigned to another category.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="bg-gray-700 text-white hover:bg-gray-600 border-gray-600">
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction 
+                      className="bg-red-600 hover:bg-red-700"
+                      onClick={confirmDeleteProductCategory}
+                    >
+                      Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </TabsContent>
+            
             <TabsContent value="products" className="space-y-4">
               <Card className="bg-gray-800 border-gray-700">
                 <CardHeader>
