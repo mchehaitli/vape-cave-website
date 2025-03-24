@@ -209,6 +209,7 @@ const productSchema = z.object({
     required_error: "Description is required"
   }),
   price: z.string().optional(),
+  hidePrice: z.boolean().default(false),
   featured: z.boolean().default(false),
   featuredLabel: z.string().optional(),
   stock: z.coerce.number().optional()
@@ -468,6 +469,7 @@ export default function AdminPage() {
       image: "",
       description: "",
       price: "",
+      hidePrice: false,
       featured: false,
       featuredLabel: "",
       stock: 0
@@ -707,6 +709,7 @@ export default function AdminPage() {
         image: editingProduct.image,
         description: editingProduct.description,
         price: editingProduct.price,
+        hidePrice: editingProduct.hidePrice || false,
         featured: editingProduct.featured || false,
         featuredLabel: editingProduct.featuredLabel || "",
         stock: editingProduct.stock || 0
@@ -718,6 +721,7 @@ export default function AdminPage() {
         image: "",
         description: "",
         price: "",
+        hidePrice: false,
         featured: false,
         featuredLabel: "",
         stock: 0
