@@ -784,65 +784,97 @@ const FriscoLocationPage: React.FC = () => {
           >
             {/* FAQ Item 1 */}
             <div className="py-5" itemScope itemType="https://schema.org/Question">
-              <div className="flex justify-between cursor-pointer">
+              <div 
+                className="flex justify-between cursor-pointer" 
+                onClick={() => toggleFAQ(1)}
+              >
                 <h3 className="text-lg font-medium text-primary" itemProp="name">What are your hours at the Frisco location?</h3>
+                <button className="text-primary focus:outline-none transition-transform">
+                  {openFAQs[1] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                </button>
               </div>
-              <div className="mt-2" itemScope itemType="https://schema.org/Answer">
-                <div itemProp="text">
-                  <p className="text-gray-300">
-                    Our Frisco store is open from 10:00 AM to 12:00 AM Monday through Thursday and Sunday. 
-                    On Friday and Saturday, we offer extended hours from 10:00 AM to 1:00 AM.
-                  </p>
+              {openFAQs[1] && (
+                <div className="mt-2" itemScope itemType="https://schema.org/Answer">
+                  <div itemProp="text">
+                    <p className="text-gray-300">
+                      Our Frisco store is open from 10:00 AM to 12:00 AM Monday through Thursday and Sunday. 
+                      On Friday and Saturday, we offer extended hours from 10:00 AM to 1:00 AM.
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             
             {/* FAQ Item 2 */}
             <div className="py-5" itemScope itemType="https://schema.org/Question">
-              <div className="flex justify-between cursor-pointer">
+              <div 
+                className="flex justify-between cursor-pointer"
+                onClick={() => toggleFAQ(2)}
+              >
                 <h3 className="text-lg font-medium text-primary" itemProp="name">What products do you carry at the Frisco location?</h3>
+                <button className="text-primary focus:outline-none transition-transform">
+                  {openFAQs[2] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                </button>
               </div>
-              <div className="mt-2" itemScope itemType="https://schema.org/Answer">
-                <div itemProp="text">
-                  <p className="text-gray-300">
-                    Our Frisco location offers a full range of vaping products including disposable vapes, Delta 8, THC-A flower, 
-                    Delta 9 edibles, pre-rolls, premium flower, vape pens, cartridges, accessories, and glass products. 
-                    Our selection is updated regularly with the latest products.
-                  </p>
+              {openFAQs[2] && (
+                <div className="mt-2" itemScope itemType="https://schema.org/Answer">
+                  <div itemProp="text">
+                    <p className="text-gray-300">
+                      Our Frisco location offers a full range of vaping products including disposable vapes, Delta 8, THC-A flower, 
+                      Delta 9 edibles, pre-rolls, premium flower, vape pens, cartridges, accessories, and glass products. 
+                      Our selection is updated regularly with the latest products.
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             
             {/* FAQ Item 3 */}
             <div className="py-5" itemScope itemType="https://schema.org/Question">
-              <div className="flex justify-between cursor-pointer">
+              <div 
+                className="flex justify-between cursor-pointer"
+                onClick={() => toggleFAQ(3)}
+              >
                 <h3 className="text-lg font-medium text-primary" itemProp="name">How do I find your Frisco store online?</h3>
+                <button className="text-primary focus:outline-none transition-transform">
+                  {openFAQs[3] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                </button>
               </div>
-              <div className="mt-2" itemScope itemType="https://schema.org/Answer">
-                <div itemProp="text">
-                  <p className="text-gray-300">
-                    The easiest way to find our Frisco store is to visit our Google Business page by clicking the "Visit Our Google Business Page" 
-                    link on our website. This will show you our exact location, hours, customer reviews, and photos of our store. For Apple 
-                    device users, we also provide a direct Apple Maps link for easy navigation.
-                  </p>
+              {openFAQs[3] && (
+                <div className="mt-2" itemScope itemType="https://schema.org/Answer">
+                  <div itemProp="text">
+                    <p className="text-gray-300">
+                      The easiest way to find our Frisco store is to visit our Google Business page by clicking the "Visit Our Google Business Page" 
+                      link on our website. This will show you our exact location, hours, customer reviews, and photos of our store. For Apple 
+                      device users, we also provide a direct Apple Maps link for easy navigation.
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             
             {/* FAQ Item 4 */}
             <div className="py-5" itemScope itemType="https://schema.org/Question">
-              <div className="flex justify-between cursor-pointer">
+              <div 
+                className="flex justify-between cursor-pointer"
+                onClick={() => toggleFAQ(4)}
+              >
                 <h3 className="text-lg font-medium text-primary" itemProp="name">Do you offer any special discounts at the Frisco location?</h3>
+                <button className="text-primary focus:outline-none transition-transform">
+                  {openFAQs[4] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                </button>
               </div>
-              <div className="mt-2" itemScope itemType="https://schema.org/Answer">
-                <div itemProp="text">
-                  <p className="text-gray-300">
-                    Yes, our Frisco store offers several special discounts including military discounts, student discounts, 
-                    and a rewards program for frequent customers. We also run weekly specials on select products. 
-                    Visit our store or call us at {location.phone} to learn more about our current promotions.
-                  </p>
+              {openFAQs[4] && (
+                <div className="mt-2" itemScope itemType="https://schema.org/Answer">
+                  <div itemProp="text">
+                    <p className="text-gray-300">
+                      Yes, our Frisco store offers several special discounts including military discounts, student discounts, 
+                      and a rewards program for frequent customers. We also run weekly specials on select products. 
+                      Visit our store or call us at {location.phone} to learn more about our current promotions.
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
