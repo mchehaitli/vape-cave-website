@@ -1,6 +1,7 @@
 import { useState } from "react";
 import MainLayout from "@/layouts/MainLayout";
-import { products } from "@/data/products";
+import { useProducts, useProductsByCategory } from "@/hooks/use-products";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ProductsPage = () => {
   const [activeCategory, setActiveCategory] = useState("all");
@@ -11,11 +12,18 @@ const ProductsPage = () => {
     { id: "e-liquids", name: "E-Liquids" },
     { id: "accessories", name: "Accessories" }
   ];
+
+  // Fetch products based on active category
+  const allProductsQuery = useProducts();
+  const categoryProductsQuery = useProductsByCategory(activeCategory);
   
-  // Filter products by category
-  const filteredProducts = activeCategory === "all" 
-    ? products 
-    : products.filter(product => product.category === activeCategory);
+  // Determine which query to use based on active category
+  const { data: products, isLoading } = activeCategory === "all" 
+    ? allProductsQuery 
+    : categoryProductsQuery;
+  
+  // Filter products by category only if using all products
+  const filteredProducts = (products || []);
   
   return (
     <MainLayout
@@ -59,7 +67,25 @@ const ProductsPage = () => {
       {/* Products Grid */}
       <section className="py-12 bg-light">
         <div className="container mx-auto px-4">
-          {filteredProducts.length > 0 ? (
+          {isLoading ? (
+            // Loading state - skeleton UI
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {Array(8).fill(0).map((_, index) => (
+                <div key={index} className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-md">
+                  <Skeleton className="w-full h-56" />
+                  <div className="p-5">
+                    <Skeleton className="h-6 w-1/3 mb-2" />
+                    <Skeleton className="h-4 w-full mb-2" />
+                    <Skeleton className="h-4 w-5/6 mb-4" />
+                    <div className="flex justify-between items-center">
+                      <Skeleton className="h-6 w-20" />
+                      <Skeleton className="h-10 w-28" />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : filteredProducts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredProducts.map((product) => (
                 <div 
@@ -74,13 +100,13 @@ const ProductsPage = () => {
                   <div className="p-5">
                     {product.featured && (
                       <span className="inline-block bg-primary/10 text-primary text-xs font-semibold rounded-full px-3 py-1 mb-2">
-                        {product.featuredLabel}
+                        {product.featuredLabel || "Featured"}
                       </span>
                     )}
                     <h3 className="font-['Poppins'] font-semibold text-lg mb-2">{product.name}</h3>
                     <p className="text-dark/70 text-sm mb-4">{product.description}</p>
                     <div className="flex justify-between items-center">
-                      <span className="font-bold text-lg">${product.price.toFixed(2)}</span>
+                      <span className="font-bold text-lg">${parseFloat(product.price).toFixed(2)}</span>
                       <button className="bg-primary hover:bg-primary/90 text-black font-medium py-2 px-4 rounded-md transition-colors">
                         Add to Cart
                       </button>

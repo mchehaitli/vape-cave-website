@@ -818,7 +818,7 @@ export class MemStorage implements IStorage {
   async deleteStoreLocation(id: number): Promise<boolean> {
     return this.storeLocationsMap.delete(id);
   }
-
+  
   // Product operations
   async getAllProducts(): Promise<Product[]> {
     return Array.from(this.productsMap.values())
