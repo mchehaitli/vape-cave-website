@@ -83,6 +83,18 @@ const userSchema = z.object({
   isAdmin: z.boolean().default(false),
 });
 
+// Product category schema for forms
+const productCategorySchema = z.object({
+  name: z.string({
+    required_error: "Category name is required"
+  }),
+  slug: z.string({
+    required_error: "Slug is required"
+  }),
+  description: z.string().optional(),
+  display_order: z.coerce.number().default(0)
+});
+
 // Blog category schema for forms
 const blogCategorySchema = z.object({
   name: z.string({
@@ -211,6 +223,7 @@ type BlogCategoryFormValues = z.infer<typeof blogCategorySchema>;
 type BlogPostFormValues = z.infer<typeof blogPostSchema>;
 type StoreLocationFormValues = z.infer<typeof storeLocationSchema>;
 type ProductFormValues = z.infer<typeof productSchema>;
+type ProductCategoryFormValues = z.infer<typeof productCategorySchema>;
 
 export default function AdminPage() {
   const queryClient = useQueryClient();
@@ -245,6 +258,12 @@ export default function AdminPage() {
     staleTime: 30000,
   });
   
+  // Query for product categories
+  const { data: productCategories = [], isLoading: isProductCategoriesLoading } = useQuery<any[]>({
+    queryKey: ['/api/product-categories'],
+    staleTime: 30000,
+  });
+  
   // State for brand management
   const [brandDialogOpen, setBrandDialogOpen] = useState(false);
   const [editingBrand, setEditingBrand] = useState<any>(null);
@@ -275,6 +294,11 @@ export default function AdminPage() {
   const [editingStoreLocation, setEditingStoreLocation] = useState<any>(null);
   const [deletingStoreLocationId, setDeletingStoreLocationId] = useState<number | null>(null);
   const [isSeedingLocations, setIsSeedingLocations] = useState(false);
+  
+  // State for product category management
+  const [productCategoryDialogOpen, setProductCategoryDialogOpen] = useState(false);
+  const [editingProductCategory, setEditingProductCategory] = useState<any>(null);
+  const [deletingProductCategoryId, setDeletingProductCategoryId] = useState<number | null>(null);
   
   // State for product management
   const [productDialogOpen, setProductDialogOpen] = useState(false);
@@ -422,6 +446,17 @@ export default function AdminPage() {
       featured: false,
       metaTitle: "",
       metaDescription: ""
+    }
+  });
+  
+  // Product category form setup
+  const productCategoryForm = useForm<ProductCategoryFormValues>({
+    resolver: zodResolver(productCategorySchema),
+    defaultValues: {
+      name: "",
+      slug: "",
+      description: "",
+      display_order: 0
     }
   });
   
@@ -645,6 +680,25 @@ export default function AdminPage() {
     }
   }, [storeLocationDialogOpen, editingStoreLocation, storeLocationForm]);
   
+  // Reset product category form when dialog is opened/closed
+  useEffect(() => {
+    if (productCategoryDialogOpen && editingProductCategory) {
+      productCategoryForm.reset({
+        name: editingProductCategory.name,
+        slug: editingProductCategory.slug,
+        description: editingProductCategory.description || "",
+        display_order: editingProductCategory.display_order || 0
+      });
+    } else if (productCategoryDialogOpen) {
+      productCategoryForm.reset({
+        name: "",
+        slug: "",
+        description: "",
+        display_order: 0
+      });
+    }
+  }, [productCategoryDialogOpen, editingProductCategory, productCategoryForm]);
+
   // Reset product form when dialog is opened/closed
   useEffect(() => {
     if (productDialogOpen && editingProduct) {
@@ -896,6 +950,83 @@ export default function AdminPage() {
       toast({
         title: "Error",
         description: "Failed to save category",
+        variant: "destructive",
+      });
+    }
+  };
+  
+  // Product Category CRUD operations
+  const handleAddProductCategory = () => {
+    setEditingProductCategory(null);
+    setProductCategoryDialogOpen(true);
+  };
+  
+  const handleEditProductCategory = (category: any) => {
+    setEditingProductCategory(category);
+    setProductCategoryDialogOpen(true);
+  };
+  
+  const handleDeleteProductCategory = (id: number) => {
+    setDeletingProductCategoryId(id);
+  };
+  
+  const confirmDeleteProductCategory = async () => {
+    if (!deletingProductCategoryId) return;
+    
+    try {
+      await apiRequest('DELETE', `/api/admin/product-categories/${deletingProductCategoryId}`);
+      
+      queryClient.invalidateQueries({ queryKey: ['/api/product-categories'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/products'] });
+      
+      toast({
+        title: "Product Category Deleted",
+        description: "The product category has been successfully deleted",
+      });
+    } catch (error) {
+      console.error("Delete product category error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to delete product category",
+        variant: "destructive",
+      });
+    } finally {
+      setDeletingProductCategoryId(null);
+    }
+  };
+  
+  const onProductCategorySubmit = async (data: ProductCategoryFormValues) => {
+    try {
+      if (editingProductCategory) {
+        // Update existing product category
+        await apiRequest('PUT', `/api/admin/product-categories/${editingProductCategory.id}`, data);
+        
+        toast({
+          title: "Product Category Updated",
+          description: "The product category has been successfully updated",
+        });
+      } else {
+        // Create new product category
+        await apiRequest('POST', '/api/admin/product-categories', data);
+        
+        toast({
+          title: "Product Category Created",
+          description: "The product category has been successfully created",
+        });
+      }
+      
+      // Invalidate queries to refresh data
+      queryClient.invalidateQueries({ queryKey: ['/api/product-categories'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/products'] });
+      
+      // Close dialog
+      setProductCategoryDialogOpen(false);
+      setEditingProductCategory(null);
+    } catch (error) {
+      console.error("Product category submit error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to save product category",
         variant: "destructive",
       });
     }
