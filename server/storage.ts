@@ -514,11 +514,24 @@ export class DbStorage implements IStorage {
   }
   
   async getProductsByCategory(category: string): Promise<Product[]> {
-    return db
-      .select()
-      .from(products)
-      .where(eq(products.category, category))
-      .orderBy(asc(products.name));
+    // First check if the category input is actually a numeric ID
+    const categoryId = !isNaN(parseInt(category)) ? parseInt(category) : null;
+    
+    if (categoryId) {
+      // If it's a valid category ID, filter by categoryId
+      return db
+        .select()
+        .from(products)
+        .where(eq(products.categoryId, categoryId))
+        .orderBy(asc(products.name));
+    } else {
+      // Otherwise filter by category slug
+      return db
+        .select()
+        .from(products)
+        .where(eq(products.category, category))
+        .orderBy(asc(products.name));
+    }
   }
   
   async getProduct(id: number): Promise<Product | undefined> {
@@ -527,7 +540,22 @@ export class DbStorage implements IStorage {
   }
   
   async createProduct(product: InsertProduct): Promise<Product> {
-    const result = await db.insert(products).values(product).returning();
+    // Create a product object with all fields from the form
+    const productData: any = { ...product };
+    
+    // If no category ID provided but we have a category slug, try to find the category ID
+    if (!productData.categoryId && productData.category) {
+      try {
+        const category = await this.getProductCategoryBySlug(productData.category);
+        if (category) {
+          productData.categoryId = category.id;
+        }
+      } catch (error) {
+        console.error("Error finding category ID for slug:", error);
+      }
+    }
+    
+    const result = await db.insert(products).values(productData).returning();
     return result[0];
   }
   
@@ -535,10 +563,25 @@ export class DbStorage implements IStorage {
     // Create a clean update object
     const updateData: Partial<Omit<Product, 'id'>> = {};
     
+    // Make a copy of the product data
+    const productData = { ...product };
+    
+    // If category has changed, try to update categoryId to match
+    if (productData.category && !productData.categoryId) {
+      try {
+        const category = await this.getProductCategoryBySlug(productData.category);
+        if (category) {
+          productData.categoryId = category.id;
+        }
+      } catch (error) {
+        console.error("Error finding category ID for slug:", error);
+      }
+    }
+    
     // Map fields to the update data object
-    Object.keys(product).forEach(key => {
-      if (product[key as keyof InsertProduct] !== undefined) {
-        updateData[key as keyof Omit<Product, 'id'>] = product[key as keyof InsertProduct];
+    Object.keys(productData).forEach(key => {
+      if (productData[key as keyof InsertProduct] !== undefined) {
+        updateData[key as keyof Omit<Product, 'id'>] = productData[key as keyof InsertProduct];
       }
     });
     
@@ -950,9 +993,20 @@ export class MemStorage implements IStorage {
   }
   
   async getProductsByCategory(category: string): Promise<Product[]> {
-    return Array.from(this.productsMap.values())
-      .filter(product => product.category === category)
-      .sort((a, b) => a.name.localeCompare(b.name));
+    // First check if the category input is actually a numeric ID
+    const categoryId = !isNaN(parseInt(category)) ? parseInt(category) : null;
+    
+    if (categoryId) {
+      // If it's a valid category ID, filter by categoryId
+      return Array.from(this.productsMap.values())
+        .filter(product => product.categoryId === categoryId)
+        .sort((a, b) => a.name.localeCompare(b.name));
+    } else {
+      // Otherwise filter by category slug
+      return Array.from(this.productsMap.values())
+        .filter(product => product.category === category)
+        .sort((a, b) => a.name.localeCompare(b.name));
+    }
   }
   
   async getProduct(id: number): Promise<Product | undefined> {
@@ -963,8 +1017,23 @@ export class MemStorage implements IStorage {
     const id = this.productCurrentId++;
     const now = new Date();
     
+    // Create a product object with all fields from the form
+    const productData: any = { ...product };
+    
+    // If no category ID provided but we have a category slug, try to find the category ID
+    if (!productData.categoryId && productData.category) {
+      try {
+        const category = await this.getProductCategoryBySlug(productData.category);
+        if (category) {
+          productData.categoryId = category.id;
+        }
+      } catch (error) {
+        console.error("Error finding category ID for slug:", error);
+      }
+    }
+    
     const newProduct: Product = {
-      ...product,
+      ...productData,
       id,
       created_at: now,
       updated_at: now
@@ -981,9 +1050,24 @@ export class MemStorage implements IStorage {
       return undefined;
     }
     
+    // Make a copy of the product data
+    const productData = { ...product };
+    
+    // If category has changed, try to update categoryId to match
+    if (productData.category && !productData.categoryId) {
+      try {
+        const category = await this.getProductCategoryBySlug(productData.category);
+        if (category) {
+          productData.categoryId = category.id;
+        }
+      } catch (error) {
+        console.error("Error finding category ID for slug:", error);
+      }
+    }
+    
     const updatedProduct: Product = {
       ...existingProduct,
-      ...product,
+      ...productData,
       updated_at: new Date()
     };
     
