@@ -320,12 +320,24 @@ const Footer = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
                 <div>
-                  <Link href="/locations/frisco">
+                  <a 
+                    href="https://maps.app.goo.gl/jzbqUDyvvGHuwyXJ7" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                  >
                     <span className="text-white/70 hover:text-primary/80 block">
                       {frisco?.full_address || "Loading address..."}
                     </span>
                     <span className="text-primary/80 hover:text-primary text-xs mt-1 block">Find us on Google Maps</span>
-                  </Link>
+                  </a>
+                  <a 
+                    href="https://maps.apple.com/?address=6958%20Main%20St,%20Unit%20200,%20Frisco,%20TX%20%2075033,%20United%20States&auid=14231591118256703794&ll=33.150849,-96.824392&lsp=9902&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-primary/80 hover:text-primary text-xs mt-1 block"
+                  >
+                    View on Apple Maps
+                  </a>
                 </div>
               </li>
               <li className="flex items-start">
@@ -376,12 +388,24 @@ const Footer = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
                 <div>
-                  <Link href="/locations/arlington">
+                  <a 
+                    href="https://maps.app.goo.gl/7RRoEeD3uzANmdhZA" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                  >
                     <span className="text-white/70 hover:text-primary/80 block">
                       {arlington?.full_address || "Loading address..."}
                     </span>
                     <span className="text-primary/80 hover:text-primary text-xs mt-1 block">Find us on Google Maps</span>
-                  </Link>
+                  </a>
+                  <a 
+                    href="https://maps.apple.com/place?q=Vape%20Cave%20Smoke%20%26%20Stuff&ll=32.6807165%2C-97.1350622&auid=18240116569179355943&lsp=9902&address=4100%20S%20Cooper%20St%2C%20Unit%204108%2C%20Arlington%2C%20TX%20%2076015%2C%20United%20States" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-primary/80 hover:text-primary text-xs mt-1 block"
+                  >
+                    View on Apple Maps
+                  </a>
                 </div>
               </li>
               <li className="flex items-start">
