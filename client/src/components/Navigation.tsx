@@ -58,6 +58,7 @@ const Navigation = () => {
 
   const navItems = [
     { label: "Home", path: "/", ariaLabel: "Go to homepage" },
+    { label: "Products", path: "/products", ariaLabel: "Browse our products" },
     { label: "Frisco Store", path: "/locations/frisco", ariaLabel: "Visit our Frisco TX location" },
     { label: "Arlington Store", path: "/locations/arlington", ariaLabel: "Visit our Arlington TX location" },
     { label: "Blog", path: "/blog", ariaLabel: "Read our blog" },
