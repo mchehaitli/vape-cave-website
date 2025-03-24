@@ -455,10 +455,7 @@ const ArlingtonLocationPage: React.FC = () => {
           <p className="text-xl md:text-2xl max-w-2xl drop-shadow-md">Your premier destination for premium vaping products in Arlington, Texas.</p>
           <div className="mt-8 flex flex-wrap gap-4">
             <a 
-              href={location.googlePlaceId ? 
-                `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}` : 
-                `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(location.fullAddress)}`
-              } 
+              href="https://maps.app.goo.gl/7RRoEeD3uzANmdhZA" 
               target="_blank" 
               rel="noopener noreferrer"
               className="inline-flex items-center bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-lg transition-all"
@@ -469,7 +466,7 @@ const ArlingtonLocationPage: React.FC = () => {
               Google Maps
             </a>
             <a 
-              href={location.appleMapsLink || `https://maps.apple.com/?address=${encodeURIComponent(location.fullAddress)}&ll=${location.coordinates.lat},${location.coordinates.lng}&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m`} 
+              href="https://maps.apple.com/?address=4100%20S%20Cooper%20St%20%234108,%20Arlington,%20TX%20%2076015,%20United%20States&ll=32.687070,-97.134800&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m" 
               target="_blank" 
               rel="noopener noreferrer"
               className="inline-flex items-center bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold py-3 px-8 rounded-lg transition-all"
@@ -726,10 +723,7 @@ const ArlingtonLocationPage: React.FC = () => {
                 
                 <h3 className="text-lg font-semibold mb-3 text-white">Get Directions</h3>
                 <a 
-                  href={location.googlePlaceId ? 
-                    `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}` : 
-                    `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(location.fullAddress)}`
-                  } 
+                  href="https://maps.app.goo.gl/7RRoEeD3uzANmdhZA" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center w-full bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-md transition-colors mb-2"
@@ -740,7 +734,7 @@ const ArlingtonLocationPage: React.FC = () => {
                   Google Maps Directions
                 </a>
                 <a 
-                  href={location.appleMapsLink || `https://maps.apple.com/?address=${encodeURIComponent(location.fullAddress)}&ll=${location.coordinates.lat},${location.coordinates.lng}&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m`} 
+                  href="https://maps.apple.com/?address=4100%20S%20Cooper%20St%20%234108,%20Arlington,%20TX%20%2076015,%20United%20States&ll=32.687070,-97.134800&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center w-full bg-white/10 hover:bg-white/20 border border-white/30 text-white px-4 py-2 rounded-md transition-colors"
@@ -897,10 +891,7 @@ const ArlingtonLocationPage: React.FC = () => {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <a 
-                href={location.googlePlaceId ? 
-                  `https://www.google.com/maps/place/?q=place_id:${location.googlePlaceId}` : 
-                  `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(location.fullAddress)}`
-                } 
+                href="https://maps.app.goo.gl/7RRoEeD3uzANmdhZA" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-flex items-center bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-lg transition-all"
@@ -911,7 +902,7 @@ const ArlingtonLocationPage: React.FC = () => {
                 Google Maps
               </a>
               <a 
-                href={location.appleMapsLink || `https://maps.apple.com/?address=${encodeURIComponent(location.fullAddress)}&ll=${location.coordinates.lat},${location.coordinates.lng}&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m`} 
+                href="https://maps.apple.com/?address=4100%20S%20Cooper%20St%20%234108,%20Arlington,%20TX%20%2076015,%20United%20States&ll=32.687070,-97.134800&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-flex items-center bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold py-3 px-8 rounded-lg transition-all"
