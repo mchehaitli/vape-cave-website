@@ -685,18 +685,31 @@ const ArlingtonLocationPage: React.FC = () => {
                     <h3 className="text-xl font-semibold mb-4 text-white">Featured Products at Arlington</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                       {arlingtonProducts.map((product) => (
-                        <div key={product.id} className="bg-medium rounded-xl overflow-hidden shadow-lg border border-gray-700">
-                          <div className="h-40 overflow-hidden">
-                            <img 
-                              src={product.image} 
-                              alt={product.name} 
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          <div className="p-4">
-                            <h4 className="font-medium mb-1 text-white">{product.name}</h4>
-                            <p className="text-sm text-gray-300 mb-2">{product.category}</p>
-                            <p className="font-bold text-primary">${product.price.toFixed(2)}</p>
+                        <div 
+                          key={product.id} 
+                          className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow"
+                        >
+                          <img 
+                            src={product.image} 
+                            alt={product.name} 
+                            className="w-full h-56 object-cover"
+                          />
+                          <div className="p-5">
+                            {product.featured && (
+                              <span className="inline-block bg-primary/10 text-primary text-xs font-semibold rounded-full px-3 py-1 mb-2">
+                                {product.featuredLabel || "Featured"}
+                              </span>
+                            )}
+                            <h3 className="font-['Poppins'] font-semibold text-lg mb-2">{product.name}</h3>
+                            <p className="text-dark/70 text-sm mb-4">{product.description}</p>
+                            <div className="flex justify-between items-center">
+                              <span className="font-bold text-lg">${product.price.toFixed(2)}</span>
+                              <Link href="/products">
+                                <button className="bg-primary hover:bg-primary/90 text-black font-medium py-2 px-4 rounded-md transition-colors">
+                                  View Details
+                                </button>
+                              </Link>
+                            </div>
                           </div>
                         </div>
                       ))}
