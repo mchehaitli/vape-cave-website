@@ -546,32 +546,6 @@ const LocationsPage = () => {
                       </div>
                     </div>
                     
-                    {location.id === 1 ? (
-                      /* Frisco location */
-                      <DirectionsButton
-                        address={location.fullAddress}
-                        lat={location.coordinates.lat}
-                        lng={location.coordinates.lng}
-                        className="flex-1"
-                        buttonText="Get Directions"
-                        variant="primary"
-                        googlePlaceId="ChIJxXjrR3wVkFQRcKK89i-aFDw"
-                        appleMapsLink="https://maps.apple.com/?address=6958%20Main%20St,%20Unit%20200,%20Frisco,%20TX%20%2075033,%20United%20States&auid=14231591118256703794&ll=33.150849,-96.824392&lsp=9902&q=Vape%20Cave%20Smoke%20%26%20Stuff&t=m"
-                      />
-                    ) : (
-                      /* Arlington location */
-                      <DirectionsButton
-                        address={location.fullAddress}
-                        lat={location.coordinates.lat}
-                        lng={location.coordinates.lng}
-                        className="flex-1"
-                        buttonText="Get Directions"
-                        variant="primary"
-                        googlePlaceId="ChIJ23422NdJSYYRVX94pdZlUGg"
-                        appleMapsLink="https://maps.apple.com/place?q=Vape%20Cave%20Smoke%20%26%20Stuff&ll=32.6807165%2C-97.1350622&auid=18240116569179355943&lsp=9902&address=4100%20S%20Cooper%20St%2C%20Unit%204108%2C%20Arlington%2C%20TX%20%2076015%2C%20United%20States"
-                      />
-                    )}
-                    
                     {location.id === 1 && (
                       <Link href="/locations/frisco" className="flex-1 bg-primary text-black hover:bg-primary/80 font-medium py-2 px-4 rounded-md flex items-center justify-center">
                         <i className="fas fa-map-marker-alt mr-2"></i>
