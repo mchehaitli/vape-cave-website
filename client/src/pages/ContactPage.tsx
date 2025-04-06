@@ -77,181 +77,104 @@ const ContactPage = () => {
         </div>
       </section>
       
-      {/* Contact Form and Info */}
+      {/* Contact Form */}
       <section className="py-16 bg-darker">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-            {/* Contact Form */}
-            <div className="lg:col-span-3">
-              {formSubmitted && (
-                <div className="bg-primary/20 border border-primary/40 text-white rounded-lg p-4 mb-6">
-                  <div className="flex items-center">
-                    <i className="fas fa-check-circle text-primary mr-2"></i>
-                    <p>Thank you for your message! We'll get back to you soon.</p>
-                  </div>
-                </div>
-              )}
-              
-              {errorMessage && (
-                <div className="bg-red-900/20 border border-red-500/40 text-white rounded-lg p-4 mb-6">
-                  <div className="flex items-center">
-                    <i className="fas fa-exclamation-circle text-red-500 mr-2"></i>
-                    <p>{errorMessage}</p>
-                  </div>
-                </div>
-              )}
-              
-              <form className="bg-black p-6 rounded-lg border border-gray-800" onSubmit={handleSubmit}>
-                <div className="mb-4">
-                  <label htmlFor="name" className="block text-white font-medium mb-2">Your Name</label>
-                  <input 
-                    type="text" 
-                    id="name" 
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 bg-gray-900 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                    required
-                  />
-                </div>
-                
-                <div className="mb-4">
-                  <label htmlFor="email" className="block text-white font-medium mb-2">Email Address</label>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 bg-gray-900 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                    required
-                  />
-                </div>
-                
-                <div className="mb-4">
-                  <label htmlFor="subject" className="block text-white font-medium mb-2">Subject</label>
-                  <select 
-                    id="subject" 
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 bg-gray-900 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                    required
-                  >
-                    <option value="" disabled>Select a subject</option>
-                    <option value="general">General Inquiry</option>
-                    <option value="product">Product Question</option>
-                    <option value="order">Order Status</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-                
-                <div className="mb-4">
-                  <label htmlFor="message" className="block text-white font-medium mb-2">Message</label>
-                  <textarea 
-                    id="message" 
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    rows={5} 
-                    className="w-full px-4 py-2 bg-gray-900 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                    required
-                  ></textarea>
-                </div>
-                
-                <button 
-                  type="submit" 
-                  className="w-full bg-primary hover:bg-primary/90 text-black font-bold py-3 px-6 rounded-md transition-colors flex items-center justify-center"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Sending...
-                    </>
-                  ) : (
-                    'Send Message'
-                  )}
-                </button>
-              </form>
-            </div>
-            
-            {/* Contact Info */}
-            <div className="lg:col-span-2">
-              <div className="bg-black text-white p-6 rounded-lg h-full border border-gray-800">
-                <h3 className="font-['Poppins'] font-semibold text-xl mb-6">Get In Touch</h3>
-                
-                <div className="space-y-6">
-                  <div className="flex items-start">
-                    <div className="bg-primary/20 p-3 rounded-full mr-4">
-                      <i className="fas fa-envelope text-primary"></i>
-                    </div>
-                    <div>
-                      <h4 className="font-medium mb-1">Email Us</h4>
-                      <p className="text-gray-300">vapecavetx@gmail.com</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start">
-                    <div className="bg-primary/20 p-3 rounded-full mr-4">
-                      <i className="fas fa-phone-alt text-primary"></i>
-                    </div>
-                    <div>
-                      <h4 className="font-medium mb-1">Call Us</h4>
-                      <p className="text-gray-300">Frisco: (469) 294-0061</p>
-                      <p className="text-gray-300">Arlington: (682) 270-0334</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start">
-                    <div className="bg-primary/20 p-3 rounded-full mr-4">
-                      <i className="fas fa-clock text-primary"></i>
-                    </div>
-                    <div>
-                      <h4 className="font-medium mb-1">Business Hours</h4>
-                      <p className="text-gray-300">Frisco: 10:00 AM - 12:00 AM (1:00 AM Fri-Sat)</p>
-                      <p className="text-gray-300">Arlington: 10:00 AM - 11:00 PM</p>
-                      <p className="text-gray-300 font-medium">Both locations open 7 days a week</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start">
-                    <div className="bg-primary/20 p-3 rounded-full mr-4">
-                      <i className="fas fa-map-marker-alt text-primary"></i>
-                    </div>
-                    <div>
-                      <h4 className="font-medium mb-1">Locations</h4>
-                      <div>
-                        <p className="text-gray-300">Frisco: 6958 Main St, Frisco, TX 75033</p>
-                        <p className="text-primary/80 text-xs mt-1">Google Place ID: ChIJxXjrR3wVkFQRcKK89i-aFDw</p>
-                      </div>
-                      <div className="mt-2">
-                        <p className="text-gray-300">Arlington: 4100 S Cooper St, Unit 4108, Arlington, TX 76015</p>
-                        <p className="text-primary/80 text-xs mt-1">See website for directions</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="mt-8">
-                  <h4 className="font-medium mb-3">Follow Us</h4>
-                  <div className="flex space-x-4">
-                    <a href="#" className="bg-primary/20 hover:bg-primary/30 p-2 rounded-full transition-colors">
-                      <i className="fab fa-facebook-f text-primary"></i>
-                    </a>
-                    <a href="#" className="bg-primary/20 hover:bg-primary/30 p-2 rounded-full transition-colors">
-                      <i className="fab fa-instagram text-primary"></i>
-                    </a>
-                    <a href="#" className="bg-primary/20 hover:bg-primary/30 p-2 rounded-full transition-colors">
-                      <i className="fab fa-twitter text-primary"></i>
-                    </a>
-                  </div>
+          <div className="max-w-2xl mx-auto">
+            {formSubmitted && (
+              <div className="bg-primary/20 border border-primary/40 text-white rounded-lg p-4 mb-6">
+                <div className="flex items-center">
+                  <i className="fas fa-check-circle text-primary mr-2"></i>
+                  <p>Thank you for your message! We'll get back to you soon.</p>
                 </div>
               </div>
-            </div>
+            )}
+            
+            {errorMessage && (
+              <div className="bg-red-900/20 border border-red-500/40 text-white rounded-lg p-4 mb-6">
+                <div className="flex items-center">
+                  <i className="fas fa-exclamation-circle text-red-500 mr-2"></i>
+                  <p>{errorMessage}</p>
+                </div>
+              </div>
+            )}
+            
+            <form className="bg-black p-6 rounded-lg border border-gray-800" onSubmit={handleSubmit}>
+              <div className="mb-4">
+                <label htmlFor="name" className="block text-white font-medium mb-2">Your Name</label>
+                <input 
+                  type="text" 
+                  id="name" 
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 bg-gray-900 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                  required
+                />
+              </div>
+              
+              <div className="mb-4">
+                <label htmlFor="email" className="block text-white font-medium mb-2">Email Address</label>
+                <input 
+                  type="email" 
+                  id="email" 
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 bg-gray-900 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                  required
+                />
+              </div>
+              
+              <div className="mb-4">
+                <label htmlFor="subject" className="block text-white font-medium mb-2">Subject</label>
+                <select 
+                  id="subject" 
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 bg-gray-900 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                  required
+                >
+                  <option value="" disabled>Select a subject</option>
+                  <option value="general">General Inquiry</option>
+                  <option value="product">Product Question</option>
+                  <option value="order">Order Status</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              
+              <div className="mb-4">
+                <label htmlFor="message" className="block text-white font-medium mb-2">Message</label>
+                <textarea 
+                  id="message" 
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  rows={5} 
+                  className="w-full px-4 py-2 bg-gray-900 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                  required
+                ></textarea>
+              </div>
+              
+              <button 
+                type="submit" 
+                className="w-full bg-primary hover:bg-primary/90 text-black font-bold py-3 px-6 rounded-md transition-colors flex items-center justify-center"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Sending...
+                  </>
+                ) : (
+                  'Send Message'
+                )}
+              </button>
+            </form>
           </div>
         </div>
       </section>
