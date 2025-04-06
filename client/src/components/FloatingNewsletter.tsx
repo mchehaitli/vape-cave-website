@@ -82,36 +82,36 @@ export function FloatingNewsletter() {
   
   return (
     <div className="fixed bottom-5 right-5 z-50 animate-in fade-in slide-in-from-bottom-5 duration-300">
-      <Card className="w-80 sm:w-96 shadow-lg border-primary/20">
-        <CardHeader className="pb-2 relative">
+      <Card className="w-72 sm:w-80 shadow-lg border-primary/20 bg-background/80 backdrop-blur-sm">
+        <CardHeader className="pb-1 pt-3 px-4 relative">
           <Button 
             variant="ghost" 
             size="icon" 
-            className="absolute top-2 right-2 h-6 w-6" 
+            className="absolute top-1 right-1 h-5 w-5" 
             onClick={handleDismiss}
             aria-label="Close newsletter popup"
           >
-            <X className="h-4 w-4" />
+            <X className="h-3 w-3" />
           </Button>
-          <CardTitle className="text-lg">Join Our Newsletter</CardTitle>
-          <CardDescription>Get updates on new products and exclusive offers.</CardDescription>
+          <CardTitle className="text-sm font-medium">Join Our Newsletter</CardTitle>
+          <CardDescription className="text-xs">Get updates on products and exclusive offers.</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
-          <CardContent>
+          <CardContent className="px-4 py-2">
             <Input
               type="email"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full"
+              className="w-full text-sm h-8"
               required
             />
           </CardContent>
-          <CardFooter className="flex justify-end gap-2 pt-0">
-            <Button variant="outline" onClick={handleDismiss} type="button">
+          <CardFooter className="flex justify-end gap-2 pt-0 pb-3 px-4">
+            <Button variant="ghost" onClick={handleDismiss} type="button" className="h-7 text-xs px-2">
               No Thanks
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting} className="h-7 text-xs px-3">
               {isSubmitting ? "Subscribing..." : "Subscribe"}
             </Button>
           </CardFooter>
