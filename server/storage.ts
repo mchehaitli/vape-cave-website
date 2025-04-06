@@ -5,7 +5,8 @@ import {
   blogPosts, type BlogPost, type InsertBlogPost,
   storeLocations, type StoreLocation, type InsertStoreLocation,
   products, type Product, type InsertProduct,
-  productCategories, type ProductCategory, type InsertProductCategory
+  productCategories, type ProductCategory, type InsertProductCategory,
+  newsletterSubscriptions, type NewsletterSubscription, type InsertNewsletterSubscription
 } from "@shared/schema";
 import { eq, and, asc, desc, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
@@ -80,6 +81,14 @@ export interface IStorage {
   createProduct(product: InsertProduct): Promise<Product>;
   updateProduct(id: number, product: Partial<InsertProduct>): Promise<Product | undefined>;
   deleteProduct(id: number): Promise<boolean>;
+  
+  // Newsletter subscription operations
+  getAllNewsletterSubscriptions(): Promise<NewsletterSubscription[]>;
+  getNewsletterSubscriptionByEmail(email: string): Promise<NewsletterSubscription | undefined>;
+  createNewsletterSubscription(subscription: InsertNewsletterSubscription): Promise<NewsletterSubscription>;
+  updateNewsletterSubscription(id: number, subscription: Partial<InsertNewsletterSubscription>): Promise<NewsletterSubscription | undefined>;
+  toggleNewsletterSubscriptionStatus(id: number, isActive: boolean): Promise<NewsletterSubscription | undefined>;
+  deleteNewsletterSubscription(id: number): Promise<boolean>;
 }
 
 // Database implementation of the storage interface
@@ -675,6 +684,80 @@ export class DbStorage implements IStorage {
     
     return result.length > 0;
   }
+  
+  // Newsletter subscription operations
+  async getAllNewsletterSubscriptions(): Promise<NewsletterSubscription[]> {
+    return db.select().from(newsletterSubscriptions).orderBy(desc(newsletterSubscriptions.subscribed_at));
+  }
+  
+  async getNewsletterSubscriptionByEmail(email: string): Promise<NewsletterSubscription | undefined> {
+    const result = await db.select().from(newsletterSubscriptions).where(eq(newsletterSubscriptions.email, email));
+    return result[0];
+  }
+  
+  async createNewsletterSubscription(subscription: InsertNewsletterSubscription): Promise<NewsletterSubscription> {
+    // Check if the email already exists
+    const existing = await this.getNewsletterSubscriptionByEmail(subscription.email);
+    
+    if (existing) {
+      // If it exists but is inactive, reactivate it
+      if (!existing.is_active) {
+        const updated = await this.toggleNewsletterSubscriptionStatus(existing.id, true);
+        if (updated) {
+          return updated;
+        }
+      }
+      // Otherwise just return the existing one
+      return existing;
+    }
+    
+    // Create new subscription if it doesn't exist
+    const result = await db.insert(newsletterSubscriptions).values({
+      ...subscription,
+      subscribed_at: new Date(),
+      last_updated: new Date()
+    }).returning();
+    
+    return result[0];
+  }
+  
+  async updateNewsletterSubscription(id: number, subscription: Partial<InsertNewsletterSubscription>): Promise<NewsletterSubscription | undefined> {
+    // Create update data object
+    const updateData: Partial<NewsletterSubscription> = {
+      ...subscription,
+      last_updated: new Date()
+    };
+    
+    const result = await db
+      .update(newsletterSubscriptions)
+      .set(updateData)
+      .where(eq(newsletterSubscriptions.id, id))
+      .returning();
+    
+    return result[0];
+  }
+  
+  async toggleNewsletterSubscriptionStatus(id: number, isActive: boolean): Promise<NewsletterSubscription | undefined> {
+    const result = await db
+      .update(newsletterSubscriptions)
+      .set({ 
+        is_active: isActive,
+        last_updated: new Date()
+      })
+      .where(eq(newsletterSubscriptions.id, id))
+      .returning();
+    
+    return result[0];
+  }
+  
+  async deleteNewsletterSubscription(id: number): Promise<boolean> {
+    const result = await db
+      .delete(newsletterSubscriptions)
+      .where(eq(newsletterSubscriptions.id, id))
+      .returning();
+    
+    return result.length > 0;
+  }
 }
 
 // Fallback to MemStorage if database connection fails
@@ -686,6 +769,7 @@ export class MemStorage implements IStorage {
   private storeLocationsMap: Map<number, StoreLocation>;
   private productCategoriesMap: Map<number, ProductCategory>;
   private productsMap: Map<number, Product>;
+  private newsletterSubscriptionsMap: Map<number, NewsletterSubscription>;
   
   private userCurrentId: number;
   private categoryCurrentId: number;
@@ -694,6 +778,7 @@ export class MemStorage implements IStorage {
   private storeLocationCurrentId: number;
   private productCategoryCurrentId: number;
   private productCurrentId: number;
+  private newsletterSubscriptionCurrentId: number;
 
   constructor() {
     this.usersMap = new Map();
@@ -703,6 +788,7 @@ export class MemStorage implements IStorage {
     this.storeLocationsMap = new Map();
     this.productCategoriesMap = new Map();
     this.productsMap = new Map();
+    this.newsletterSubscriptionsMap = new Map();
     
     this.userCurrentId = 1;
     this.categoryCurrentId = 1;
@@ -711,6 +797,7 @@ export class MemStorage implements IStorage {
     this.storeLocationCurrentId = 1;
     this.productCategoryCurrentId = 1;
     this.productCurrentId = 1;
+    this.newsletterSubscriptionCurrentId = 1;
   }
 
   // User operations
@@ -1147,6 +1234,93 @@ export class MemStorage implements IStorage {
   
   async deleteProduct(id: number): Promise<boolean> {
     return this.productsMap.delete(id);
+  }
+  
+  // Newsletter subscription operations
+  async getAllNewsletterSubscriptions(): Promise<NewsletterSubscription[]> {
+    return Array.from(this.newsletterSubscriptionsMap.values())
+      .sort((a, b) => {
+        const dateA = a.subscribed_at ? new Date(a.subscribed_at).getTime() : 0;
+        const dateB = b.subscribed_at ? new Date(b.subscribed_at).getTime() : 0;
+        return dateB - dateA; // Sort by most recent first
+      });
+  }
+  
+  async getNewsletterSubscriptionByEmail(email: string): Promise<NewsletterSubscription | undefined> {
+    return Array.from(this.newsletterSubscriptionsMap.values()).find(
+      (subscription) => subscription.email.toLowerCase() === email.toLowerCase()
+    );
+  }
+  
+  async createNewsletterSubscription(subscription: InsertNewsletterSubscription): Promise<NewsletterSubscription> {
+    // Check if the email already exists
+    const existing = await this.getNewsletterSubscriptionByEmail(subscription.email);
+    
+    if (existing) {
+      // If it exists but is inactive, reactivate it
+      if (!existing.is_active) {
+        const updated = await this.toggleNewsletterSubscriptionStatus(existing.id, true);
+        if (updated) {
+          return updated;
+        }
+      }
+      // Otherwise just return the existing one
+      return existing;
+    }
+    
+    const id = this.newsletterSubscriptionCurrentId++;
+    const now = new Date();
+    
+    const newSubscription: NewsletterSubscription = {
+      id,
+      email: subscription.email,
+      source: subscription.source || "website",
+      ip_address: subscription.ip_address || "",
+      subscribed_at: now,
+      is_active: true,
+      last_updated: now
+    };
+    
+    this.newsletterSubscriptionsMap.set(id, newSubscription);
+    return newSubscription;
+  }
+  
+  async updateNewsletterSubscription(id: number, subscription: Partial<InsertNewsletterSubscription>): Promise<NewsletterSubscription | undefined> {
+    const existingSubscription = this.newsletterSubscriptionsMap.get(id);
+    
+    if (!existingSubscription) {
+      return undefined;
+    }
+    
+    const updatedSubscription: NewsletterSubscription = {
+      ...existingSubscription,
+      ...subscription,
+      last_updated: new Date()
+    };
+    
+    this.newsletterSubscriptionsMap.set(id, updatedSubscription);
+    return updatedSubscription;
+  }
+  
+  async toggleNewsletterSubscriptionStatus(id: number, isActive: boolean): Promise<NewsletterSubscription | undefined> {
+    const subscription = this.newsletterSubscriptionsMap.get(id);
+    
+    if (!subscription) {
+      return undefined;
+    }
+    
+    const updatedSubscription: NewsletterSubscription = {
+      ...subscription,
+      is_active: isActive,
+      last_updated: new Date()
+    };
+    
+    this.newsletterSubscriptionsMap.set(id, updatedSubscription);
+    return updatedSubscription;
+  }
+  
+  async deleteNewsletterSubscription(id: number): Promise<boolean> {
+    return this.newsletterSubscriptionsMap.delete(id);
   }
 }
 

@@ -238,3 +238,23 @@ export const insertProductSchema = createInsertSchema(products)
 
 export type InsertProduct = z.infer<typeof insertProductSchema>;
 export type Product = typeof products.$inferSelect;
+
+// Newsletter Subscriptions table
+export const newsletterSubscriptions = pgTable("newsletter_subscriptions", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  subscribed_at: timestamp("subscribed_at").notNull().defaultNow(),
+  is_active: boolean("is_active").default(true).notNull(),
+  source: text("source").default("website"),
+  ip_address: text("ip_address").default(""),
+  last_updated: timestamp("last_updated").notNull().defaultNow(),
+});
+
+export const insertNewsletterSubscriptionSchema = createInsertSchema(newsletterSubscriptions).pick({
+  email: true,
+  source: true,
+  ip_address: true,
+});
+
+export type InsertNewsletterSubscription = z.infer<typeof insertNewsletterSubscriptionSchema>;
+export type NewsletterSubscription = typeof newsletterSubscriptions.$inferSelect;

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useToast } from "@/hooks/use-toast";
-import { useQueryClient, useQuery } from "@tanstack/react-query";
+import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import MainLayout from "@/layouts/MainLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -231,6 +231,9 @@ export default function AdminPage() {
   const [adminData, setAdminData] = useState<any>(null);
   const [, navigate] = useLocation();
   const { toast } = useToast();
+  
+  // Newsletter subscriptions state
+  const [deletingSubscriptionId, setDeletingSubscriptionId] = useState<number | null>(null);
   const { data: categories, isLoading: isCategoriesLoading } = useBrandCategories();
   const { data: featuredBrands, isLoading: isFeaturedBrandsLoading } = useFeaturedBrands();
   
@@ -262,6 +265,65 @@ export default function AdminPage() {
   const { data: productCategories = [], isLoading: isProductCategoriesLoading } = useQuery<any[]>({
     queryKey: ['/api/product-categories'],
     staleTime: 30000,
+  });
+  
+  // Query for newsletter subscriptions
+  const { 
+    data: subscriptions = [], 
+    isLoading: isSubscriptionsLoading,
+    refetch: refetchSubscriptions
+  } = useQuery<any[]>({
+    queryKey: ['/api/admin/newsletter-subscriptions'],
+    staleTime: 30000,
+  });
+  
+  // Newsletter mutation for toggling subscription status
+  const { 
+    mutate: toggleSubscriptionStatus,
+    isPending: isSubscriptionTogglePending 
+  } = useMutation({
+    mutationFn: ({ id, isActive }: { id: number; isActive: boolean }) => 
+      apiRequest('PUT', `/api/admin/newsletter-subscriptions/${id}/toggle`, { is_active: isActive }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/newsletter-subscriptions'] });
+      toast({
+        title: "Subscription Updated",
+        description: "Subscription status has been updated successfully",
+      });
+    },
+    onError: (error) => {
+      console.error("Error toggling subscription status:", error);
+      toast({
+        title: "Error",
+        description: "Failed to update subscription status",
+        variant: "destructive",
+      });
+    },
+  });
+  
+  // Newsletter mutation for deleting a subscription
+  const { 
+    mutate: deleteSubscription,
+    isPending: isSubscriptionDeletePending 
+  } = useMutation({
+    mutationFn: (id: number) => 
+      apiRequest('DELETE', `/api/admin/newsletter-subscriptions/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/newsletter-subscriptions'] });
+      setDeletingSubscriptionId(null);
+      toast({
+        title: "Subscription Deleted",
+        description: "Newsletter subscription has been deleted successfully",
+      });
+    },
+    onError: (error) => {
+      console.error("Error deleting subscription:", error);
+      toast({
+        title: "Error",
+        description: "Failed to delete subscription",
+        variant: "destructive",
+      });
+    },
   });
   
   // State for brand management
@@ -1245,6 +1307,78 @@ export default function AdminPage() {
       setDeletingStoreLocationId(null);
     }
   };
+  
+  // Toggle subscription status handler
+  const handleToggleSubscriptionStatus = (id: number, isActive: boolean) => {
+    toggleSubscriptionStatus({ id, isActive });
+  };
+  
+  // Delete subscription handler
+  const handleDeleteSubscription = (id: number) => {
+    setDeletingSubscriptionId(id);
+  };
+  
+  // Confirm delete subscription
+  const confirmDeleteSubscription = async () => {
+    if (deletingSubscriptionId) {
+      deleteSubscription(deletingSubscriptionId);
+    }
+  };
+  
+  // Export subscriptions in CSV or JSON format
+  const handleExportSubscriptions = (format: 'csv' | 'json') => {
+    if (!subscriptions || subscriptions.length === 0) {
+      toast({
+        title: "No data to export",
+        description: "There are no newsletter subscriptions to export.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    let content = '';
+    let fileName = `newsletter-subscriptions-${new Date().toISOString().split('T')[0]}`;
+    
+    if (format === 'csv') {
+      // Create CSV content
+      const headers = ['ID', 'Email', 'Status', 'Subscribed Date', 'Source', 'IP Address', 'Last Updated'];
+      content = headers.join(',') + '\n';
+      
+      subscriptions.forEach(sub => {
+        const row = [
+          sub.id,
+          `"${sub.email}"`,
+          sub.is_active ? 'Active' : 'Inactive',
+          new Date(sub.subscribed_at).toISOString(),
+          `"${sub.source || 'Website'}"`,
+          `"${sub.ip_address || ''}"`,
+          sub.last_updated ? new Date(sub.last_updated).toISOString() : ''
+        ];
+        content += row.join(',') + '\n';
+      });
+      
+      fileName += '.csv';
+    } else {
+      // Create JSON content
+      content = JSON.stringify(subscriptions, null, 2);
+      fileName += '.json';
+    }
+    
+    // Create and download the file
+    const blob = new Blob([content], { type: format === 'csv' ? 'text/csv;charset=utf-8' : 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', fileName);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    toast({
+      title: "Export Successful",
+      description: `Newsletter subscriptions exported as ${format.toUpperCase()}.`,
+    });
+  };
 
   if (isLoading) {
     return (
@@ -1295,6 +1429,7 @@ export default function AdminPage() {
                 <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="categories">Brand Categories</TabsTrigger>
                 <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="store-hours">Store Hours</TabsTrigger>
                 <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="blog">Blog</TabsTrigger>
+                <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="newsletter">Newsletter</TabsTrigger>
                 <TabsTrigger className="flex-1 md:flex-none whitespace-nowrap text-xs md:text-sm" value="settings">Settings</TabsTrigger>
               </TabsList>
             </div>
@@ -3676,6 +3811,198 @@ export default function AdminPage() {
                       onClick={confirmDeleteBlogPost}
                     >
                       Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </TabsContent>
+            
+            <TabsContent value="newsletter" className="space-y-4">
+              <Card className="bg-gray-800 border-gray-700">
+                <CardHeader className="flex flex-row items-center justify-between">
+                  <CardTitle>Newsletter Subscriptions</CardTitle>
+                  <Button 
+                    variant="outline" 
+                    className="border-gray-600 hover:bg-gray-700 text-gray-300 flex items-center gap-2"
+                    onClick={() => {
+                      // Force refetch subscriptions
+                      refetchSubscriptions();
+                    }}
+                  >
+                    <RefreshCcw size={16} />
+                    Refresh
+                  </Button>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-400 mb-4">
+                    Manage your newsletter subscribers, export subscription data, and track subscription activity.
+                  </p>
+                  
+                  <div className="flex flex-col md:flex-row justify-between mb-6 gap-4">
+                    <div className="flex gap-2">
+                      <Button
+                        className="bg-primary hover:bg-primary/90 flex items-center gap-2"
+                        onClick={() => handleExportSubscriptions('csv')}
+                      >
+                        <Download size={16} />
+                        Export CSV
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="border-gray-600 hover:bg-gray-700 text-gray-300 flex items-center gap-2"
+                        onClick={() => handleExportSubscriptions('json')}
+                      >
+                        <Download size={16} />
+                        Export JSON
+                      </Button>
+                    </div>
+                    
+                    <div className="flex items-center gap-2 text-sm text-gray-400">
+                      <Clock size={16} />
+                      <span>Last updated: {new Date().toLocaleString()}</span>
+                    </div>
+                  </div>
+                  
+                  {isSubscriptionsLoading ? (
+                    <div className="animate-pulse space-y-3">
+                      {[1, 2, 3, 4, 5].map((i) => (
+                        <div key={i} className="h-14 bg-gray-700 rounded"></div>
+                      ))}
+                    </div>
+                  ) : subscriptions && subscriptions.length > 0 ? (
+                    <div className="rounded-md border border-gray-700 overflow-x-auto">
+                      <Table>
+                        <TableHeader className="bg-gray-800">
+                          <TableRow className="hover:bg-gray-700/50 border-gray-700">
+                            <TableHead className="text-gray-400">Email</TableHead>
+                            <TableHead className="text-gray-400 hidden md:table-cell">Status</TableHead>
+                            <TableHead className="text-gray-400 hidden md:table-cell">Date</TableHead>
+                            <TableHead className="text-gray-400 hidden lg:table-cell">Source</TableHead>
+                            <TableHead className="text-gray-400 text-right">Actions</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {subscriptions.map((subscription: any) => (
+                            <TableRow key={subscription.id} className="hover:bg-gray-700/50 border-gray-700">
+                              <TableCell className="font-medium">
+                                {subscription.email}
+                                <div className="text-xs text-gray-400 mt-1 md:hidden">
+                                  {subscription.is_active ? (
+                                    <Badge variant="outline" className="bg-green-900/20 text-green-400 border-green-800 text-xs">
+                                      Active
+                                    </Badge>
+                                  ) : (
+                                    <Badge variant="outline" className="bg-red-900/20 text-red-400 border-red-800 text-xs">
+                                      Unsubscribed
+                                    </Badge>
+                                  )}
+                                  <span className="ml-2">{new Date(subscription.subscribed_at).toLocaleDateString()}</span>
+                                </div>
+                              </TableCell>
+                              <TableCell className="hidden md:table-cell">
+                                {subscription.is_active ? (
+                                  <Badge variant="outline" className="bg-green-900/20 text-green-400 border-green-800">
+                                    Active
+                                  </Badge>
+                                ) : (
+                                  <Badge variant="outline" className="bg-red-900/20 text-red-400 border-red-800">
+                                    Unsubscribed
+                                  </Badge>
+                                )}
+                              </TableCell>
+                              <TableCell className="hidden md:table-cell text-gray-400">
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <span>{new Date(subscription.subscribed_at).toLocaleDateString()}</span>
+                                  </TooltipTrigger>
+                                  <TooltipContent className="bg-gray-900 border-gray-700 text-white">
+                                    <p>Subscribed: {new Date(subscription.subscribed_at).toLocaleString()}</p>
+                                    {subscription.last_updated && (
+                                      <p>Last Updated: {new Date(subscription.last_updated).toLocaleString()}</p>
+                                    )}
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TableCell>
+                              <TableCell className="hidden lg:table-cell text-gray-400">
+                                {subscription.source || "Website"}
+                                {subscription.ip_address && (
+                                  <Tooltip>
+                                    <TooltipTrigger asChild>
+                                      <span className="ml-2 cursor-help">
+                                        <Info size={14} className="inline opacity-60" />
+                                      </span>
+                                    </TooltipTrigger>
+                                    <TooltipContent className="bg-gray-900 border-gray-700 text-white">
+                                      <p>IP: {subscription.ip_address}</p>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                )}
+                              </TableCell>
+                              <TableCell className="text-right">
+                                <div className="flex justify-end gap-2">
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm"
+                                    className={`h-8 w-8 p-0 ${subscription.is_active ? 'text-green-400 hover:text-green-300' : 'text-red-400 hover:text-red-300'} hover:bg-gray-700`}
+                                    onClick={() => handleToggleSubscriptionStatus(subscription.id, !subscription.is_active)}
+                                  >
+                                    <span className="sr-only">{subscription.is_active ? 'Deactivate' : 'Activate'}</span>
+                                    <Switch checked={subscription.is_active} className="hidden" />
+                                    {subscription.is_active ? 'Active' : 'Inactive'}
+                                  </Button>
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm"
+                                    className="h-8 w-8 p-0 text-red-400 hover:text-red-300 hover:bg-gray-700"
+                                    onClick={() => handleDeleteSubscription(subscription.id)}
+                                  >
+                                    <span className="sr-only">Delete</span>
+                                    <Trash2 size={16} />
+                                  </Button>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  ) : (
+                    <div className="text-center py-12 text-gray-400 flex flex-col items-center justify-center">
+                      <AlertCircle className="h-12 w-12 mb-4 text-gray-500" />
+                      <p className="text-lg font-medium">No newsletter subscriptions found</p>
+                      <p className="text-sm mt-1">Subscriptions will appear here when customers sign up.</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+              
+              {/* Delete Subscription Confirmation */}
+              <AlertDialog 
+                open={deletingSubscriptionId !== null} 
+                onOpenChange={() => setDeletingSubscriptionId(null)}
+              >
+                <AlertDialogContent className="bg-gray-800 text-white border-gray-700">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                    <AlertDialogDescription className="text-gray-400">
+                      This will permanently delete this subscription from your database.
+                      This action cannot be undone.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter className="gap-2 sm:gap-0">
+                    <AlertDialogCancel className="border-gray-600 hover:bg-gray-700 text-gray-300">
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      className="bg-red-600 hover:bg-red-700 text-white"
+                      onClick={confirmDeleteSubscription}
+                    >
+                      {isSubscriptionDeletePending ? (
+                        <div className="flex items-center gap-2">
+                          <RefreshCcw size={16} className="animate-spin" />
+                          Deleting...
+                        </div>
+                      ) : "Delete Subscription"}
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>

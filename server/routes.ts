@@ -8,7 +8,9 @@ import {
   insertBlogPostSchema, 
   insertStoreLocationSchema,
   insertProductCategorySchema,
-  insertProductSchema
+  insertProductSchema,
+  InsertNewsletterSubscription,
+  insertNewsletterSubscriptionSchema
 } from "@shared/schema";
 import { seedStoreLocations } from "./seed-store-locations";
 import session from "express-session";
@@ -736,14 +738,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: "Invalid email format" });
       }
       
-      const subscriptionData: NewsletterSubscription = { email };
+      // Get IP address for tracking purposes
+      const ip_address = req.ip || req.socket.remoteAddress || '';
+      const source = req.get('Referrer') ? 'website' : 'unknown';
       
-      const result = await sendNewsletterSubscriptionEmail(subscriptionData);
+      // Create subscription data
+      const subscriptionData: InsertNewsletterSubscription = { 
+        email, 
+        ip_address,
+        source
+      };
       
-      if (result.success) {
-        res.json({ message: "Newsletter subscription successful" });
-      } else {
-        res.status(500).json({ error: "Failed to process newsletter subscription" });
+      try {
+        // Save to database
+        await storage.createNewsletterSubscription(subscriptionData);
+        
+        // Send email notification
+        const emailData: NewsletterSubscription = { email };
+        const result = await sendNewsletterSubscriptionEmail(emailData);
+        
+        if (result.success) {
+          res.json({ message: "Newsletter subscription successful" });
+        } else {
+          // Still return success even if email fails, as DB save was successful
+          console.warn("Newsletter subscription saved, but email notification failed");
+          res.json({ message: "Newsletter subscription successful" });
+        }
+      } catch (dbError) {
+        console.error("Error saving newsletter subscription:", dbError);
+        res.status(500).json({ error: "Failed to save newsletter subscription" });
       }
     } catch (error) {
       console.error("Newsletter subscription error:", error);
@@ -958,6 +981,62 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error deleting product:", error);
       res.status(500).json({ error: "Failed to delete product" });
+    }
+  });
+  
+  // Newsletter subscription management endpoints
+  app.get('/api/admin/newsletter-subscriptions', isAdmin, async (req, res) => {
+    try {
+      const subscriptions = await storage.getAllNewsletterSubscriptions();
+      res.json(subscriptions);
+    } catch (error) {
+      console.error("Error fetching newsletter subscriptions:", error);
+      res.status(500).json({ error: "Failed to fetch newsletter subscriptions" });
+    }
+  });
+  
+  app.put('/api/admin/newsletter-subscriptions/:id/toggle', isAdmin, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid subscription ID" });
+      }
+      
+      const { is_active } = req.body;
+      if (typeof is_active !== 'boolean') {
+        return res.status(400).json({ error: "is_active must be a boolean" });
+      }
+      
+      const subscription = await storage.toggleNewsletterSubscriptionStatus(id, is_active);
+      
+      if (!subscription) {
+        return res.status(404).json({ error: "Subscription not found" });
+      }
+      
+      res.json(subscription);
+    } catch (error) {
+      console.error("Error toggling subscription status:", error);
+      res.status(500).json({ error: "Failed to update subscription status" });
+    }
+  });
+  
+  app.delete('/api/admin/newsletter-subscriptions/:id', isAdmin, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid subscription ID" });
+      }
+      
+      const success = await storage.deleteNewsletterSubscription(id);
+      
+      if (!success) {
+        return res.status(404).json({ error: "Subscription not found" });
+      }
+      
+      res.json({ message: "Subscription deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting subscription:", error);
+      res.status(500).json({ error: "Failed to delete subscription" });
     }
   });
 
