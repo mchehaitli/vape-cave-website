@@ -12,6 +12,17 @@ import {
 } from "@/hooks/use-store-locations";
 import { products } from "@/data/products";
 
+// Define a subset of products specifically for this location (Frisco)
+const friscoProducts = products.filter(product => 
+  // Filter criteria - include products that are popular in Frisco
+  // You can adjust the filter as needed
+  product.featured || 
+  product.category.includes("Disposable") || 
+  product.category.includes("Delta") ||
+  product.name.includes("Elf Bar") || 
+  product.name.includes("Lost Mary")
+).slice(0, 15); // Limit to top 15 products
+
 /**
  * Dedicated page for the Frisco location with enhanced SEO
  * This page focuses on the Frisco store specifically to improve local search visibility
