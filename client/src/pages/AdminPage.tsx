@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
+import * as XLSX from 'xlsx';
 import MainLayout from "@/layouts/MainLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -1325,8 +1326,8 @@ export default function AdminPage() {
     }
   };
   
-  // Export subscriptions in CSV or JSON format
-  const handleExportSubscriptions = (format: 'csv' | 'json') => {
+  // Export subscriptions in Excel, CSV or JSON format
+  const handleExportSubscriptions = (format: 'excel' | 'csv' | 'json') => {
     if (!subscriptions || subscriptions.length === 0) {
       toast({
         title: "No data to export",
@@ -1338,8 +1339,47 @@ export default function AdminPage() {
     
     let content = '';
     let fileName = `newsletter-subscriptions-${new Date().toISOString().split('T')[0]}`;
+    let blob: Blob;
     
-    if (format === 'csv') {
+    if (format === 'excel') {
+      // Create Excel workbook
+      const headers = ['ID', 'Email', 'Status', 'Subscribed Date', 'Source', 'IP Address', 'Last Updated'];
+      
+      // Prepare data for Excel
+      const data = subscriptions.map(sub => [
+        sub.id,
+        sub.email,
+        sub.is_active ? 'Active' : 'Inactive',
+        new Date(sub.subscribed_at),
+        sub.source || 'Website',
+        sub.ip_address || '',
+        sub.last_updated ? new Date(sub.last_updated) : ''
+      ]);
+      
+      // Create worksheet
+      const ws = XLSX.utils.aoa_to_sheet([headers, ...data]);
+      
+      // Set column widths
+      const cols = [
+        { wch: 5 },  // ID
+        { wch: 30 }, // Email
+        { wch: 10 }, // Status
+        { wch: 20 }, // Subscribed Date
+        { wch: 15 }, // Source
+        { wch: 15 }, // IP Address
+        { wch: 20 }  // Last Updated
+      ];
+      ws['!cols'] = cols;
+      
+      // Create workbook
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Newsletter Subscribers');
+      
+      // Generate Excel file
+      const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      fileName += '.xlsx';
+    } else if (format === 'csv') {
       // Create CSV content
       const headers = ['ID', 'Email', 'Status', 'Subscribed Date', 'Source', 'IP Address', 'Last Updated'];
       content = headers.join(',') + '\n';
@@ -1358,14 +1398,15 @@ export default function AdminPage() {
       });
       
       fileName += '.csv';
+      blob = new Blob([content], { type: 'text/csv;charset=utf-8' });
     } else {
       // Create JSON content
       content = JSON.stringify(subscriptions, null, 2);
       fileName += '.json';
+      blob = new Blob([content], { type: 'application/json' });
     }
     
     // Create and download the file
-    const blob = new Blob([content], { type: format === 'csv' ? 'text/csv;charset=utf-8' : 'application/json' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
@@ -3839,9 +3880,17 @@ export default function AdminPage() {
                   </p>
                   
                   <div className="flex flex-col md:flex-row justify-between mb-6 gap-4">
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                       <Button
                         className="bg-primary hover:bg-primary/90 flex items-center gap-2"
+                        onClick={() => handleExportSubscriptions('excel')}
+                      >
+                        <Download size={16} />
+                        Export Excel
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="border-gray-600 hover:bg-gray-700 text-gray-300 flex items-center gap-2"
                         onClick={() => handleExportSubscriptions('csv')}
                       >
                         <Download size={16} />
