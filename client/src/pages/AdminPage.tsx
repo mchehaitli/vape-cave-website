@@ -1342,19 +1342,61 @@ export default function AdminPage() {
     let blob: Blob;
     
     if (format === 'excel') {
-      // Create Excel workbook
-      const headers = ['ID', 'Email', 'Status', 'Subscribed Date', 'Source', 'IP Address', 'Last Updated'];
+      // Create Excel workbook with US Central time zone and separate date/time columns
+      const headers = ['ID', 'Email', 'Status', 'Subscribed Date', 'Subscribed Time', 'Source', 'IP Address', 'Last Updated Date', 'Last Updated Time'];
       
-      // Prepare data for Excel
-      const data = subscriptions.map(sub => [
-        sub.id,
-        sub.email,
-        sub.is_active ? 'Active' : 'Inactive',
-        new Date(sub.subscribed_at),
-        sub.source || 'Website',
-        sub.ip_address || '',
-        sub.last_updated ? new Date(sub.last_updated) : ''
-      ]);
+      // Function to format date in US Central Time
+      const formatDateInCentralTime = (dateStr: string) => {
+        if (!dateStr) return ['', ''];
+        
+        // Create date object and format to US Central Time
+        const date = new Date(dateStr);
+        
+        // Format for Central Time (UTC-6 or UTC-5 for daylight savings)
+        const options: Intl.DateTimeFormatOptions = { 
+          timeZone: 'America/Chicago'
+        };
+        
+        // Format date (MM/DD/YYYY)
+        const dateOptions: Intl.DateTimeFormatOptions = {
+          ...options,
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        };
+        const formattedDate = new Intl.DateTimeFormat('en-US', dateOptions).format(date);
+        
+        // Format time (hh:mm:ss AM/PM)
+        const timeOptions: Intl.DateTimeFormatOptions = {
+          ...options,
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true
+        };
+        const formattedTime = new Intl.DateTimeFormat('en-US', timeOptions).format(date);
+        
+        return [formattedDate, formattedTime];
+      };
+      
+      // Prepare data for Excel with separate date and time columns in US Central Time
+      const data = subscriptions.map(sub => {
+        const [subscribedDate, subscribedTime] = formatDateInCentralTime(sub.subscribed_at);
+        const [lastUpdatedDate, lastUpdatedTime] = sub.last_updated ? 
+          formatDateInCentralTime(sub.last_updated) : ['', ''];
+        
+        return [
+          sub.id,
+          sub.email,
+          sub.is_active ? 'Active' : 'Inactive',
+          subscribedDate,
+          subscribedTime,
+          sub.source || 'Website',
+          sub.ip_address || '',
+          lastUpdatedDate,
+          lastUpdatedTime
+        ];
+      });
       
       // Create worksheet
       const ws = XLSX.utils.aoa_to_sheet([headers, ...data]);
@@ -1364,10 +1406,12 @@ export default function AdminPage() {
         { wch: 5 },  // ID
         { wch: 30 }, // Email
         { wch: 10 }, // Status
-        { wch: 20 }, // Subscribed Date
+        { wch: 15 }, // Subscribed Date
+        { wch: 15 }, // Subscribed Time
         { wch: 15 }, // Source
         { wch: 15 }, // IP Address
-        { wch: 20 }  // Last Updated
+        { wch: 15 }, // Last Updated Date
+        { wch: 15 }  // Last Updated Time
       ];
       ws['!cols'] = cols;
       
@@ -1380,19 +1424,59 @@ export default function AdminPage() {
       blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
       fileName += '.xlsx';
     } else if (format === 'csv') {
-      // Create CSV content
-      const headers = ['ID', 'Email', 'Status', 'Subscribed Date', 'Source', 'IP Address', 'Last Updated'];
+      // Create CSV content with US Central Time
+      const headers = ['ID', 'Email', 'Status', 'Subscribed Date', 'Subscribed Time', 'Source', 'IP Address', 'Last Updated Date', 'Last Updated Time'];
       content = headers.join(',') + '\n';
       
+      // Function to format date in US Central Time (reuse from above)
+      const formatDateInCentralTime = (dateStr: string) => {
+        if (!dateStr) return ['', ''];
+        
+        // Create date object and format to US Central Time
+        const date = new Date(dateStr);
+        
+        // Format for Central Time
+        const options: Intl.DateTimeFormatOptions = { 
+          timeZone: 'America/Chicago'
+        };
+        
+        // Format date (MM/DD/YYYY)
+        const dateOptions: Intl.DateTimeFormatOptions = {
+          ...options,
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        };
+        const formattedDate = new Intl.DateTimeFormat('en-US', dateOptions).format(date);
+        
+        // Format time (hh:mm:ss AM/PM)
+        const timeOptions: Intl.DateTimeFormatOptions = {
+          ...options,
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true
+        };
+        const formattedTime = new Intl.DateTimeFormat('en-US', timeOptions).format(date);
+        
+        return [formattedDate, formattedTime];
+      };
+      
       subscriptions.forEach(sub => {
+        const [subscribedDate, subscribedTime] = formatDateInCentralTime(sub.subscribed_at);
+        const [lastUpdatedDate, lastUpdatedTime] = sub.last_updated ? 
+          formatDateInCentralTime(sub.last_updated) : ['', ''];
+          
         const row = [
           sub.id,
           `"${sub.email}"`,
           sub.is_active ? 'Active' : 'Inactive',
-          new Date(sub.subscribed_at).toISOString(),
+          `"${subscribedDate}"`,
+          `"${subscribedTime}"`,
           `"${sub.source || 'Website'}"`,
           `"${sub.ip_address || ''}"`,
-          sub.last_updated ? new Date(sub.last_updated).toISOString() : ''
+          `"${lastUpdatedDate}"`,
+          `"${lastUpdatedTime}"`
         ];
         content += row.join(',') + '\n';
       });
