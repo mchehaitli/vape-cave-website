@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet";
 import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import FloatingNewsletter from "@/components/FloatingNewsletter";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -295,6 +296,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
           {children}
         </motion.div>
       </main>
+      <FloatingNewsletter />
       <Footer />
     </div>
   );
