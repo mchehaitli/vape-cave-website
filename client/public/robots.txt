@@ -22,7 +22,8 @@ Allow: /products/brands/geekvape
 Allow: /products/brands/hyde
 Allow: /products/brands/uwell-caliburn
 
-# Sitemap location with updated date marker
+# Sitemap locations with updated date markers
 Sitemap: https://vapecavetx.com/sitemap.xml
+Sitemap: https://vapecavetx.com/news-sitemap.xml
 
-# Optimized for local searches - Last updated: 2025-03-15
+# Optimized for local searches - Last updated: 2025-05-09

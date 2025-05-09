@@ -470,6 +470,56 @@ const FriscoLocationPage: React.FC = () => {
         {/* Alternative languages - helpful for international customers */}
         <link rel="alternate" href="https://vapecavetx.com/locations/frisco" hrefLang="en-us" />
         <link rel="alternate" href="https://vapecavetx.com/es/locations/frisco" hrefLang="es" />
+        
+        {/* FAQ schema for enhanced search results including FAQ rich snippets */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What are the hours for Vape Cave in Frisco, TX?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Vape Cave Frisco is open 7 days a week from 10:00 AM to 12:00 AM (midnight)."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What products does Vape Cave Frisco carry?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Vape Cave Frisco carries a wide selection of premium vaping products including Elf Bar, Lost Mary, GeekVape, disposable vapes, vape devices, Delta 8, THC-A, and accessories."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Where is Vape Cave located in Frisco?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Vape Cave Frisco is located at 6958 Main St #200, Frisco, TX 75033, conveniently accessible from Plano, McKinney, and Allen."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does Vape Cave Frisco sell Delta 8 products?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, Vape Cave Frisco carries a wide selection of premium Delta 8 products including disposables, cartridges, edibles, and more."
+                }
+              },
+              {
+                "@type": "Question", 
+                "name": "What forms of payment does Vape Cave Frisco accept?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Vape Cave Frisco accepts cash, credit cards, and debit cards for all purchases."
+                }
+              }
+            ]
+          })}
+        </script>
       </Helmet>
 
 

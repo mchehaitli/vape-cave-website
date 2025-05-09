@@ -261,6 +261,40 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         {/* Canonical Tag */}
         <link rel="canonical" href={canonicalUrl} />
         
+        {/* Enhanced Website Schema */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "@id": "https://vapecavetx.com/#website",
+            "url": "https://vapecavetx.com",
+            "name": "Vape Cave - Premium Vaping Products & Accessories",
+            "description": "Vape Cave offers premium vaping products with locations in Frisco and Arlington, TX. Shop our selection of disposable vapes, e-liquids, Delta 8, THC-A, and more.",
+            "publisher": {
+              "@type": "Organization",
+              "@id": "https://vapecavetx.com/#organization",
+              "name": "Vape Cave",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://vapecavetx.com/vapecave-logo.png"
+              }
+            },
+            "potentialAction": [
+              {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://vapecavetx.com/search?q={search_term_string}"
+                },
+                "query-input": "required name=search_term_string"
+              }
+            ],
+            "inLanguage": "en-US",
+            "copyrightYear": "2023",
+            "dateModified": "2025-05-09"
+          })}
+        </script>
+        
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content={canonicalUrl} />
