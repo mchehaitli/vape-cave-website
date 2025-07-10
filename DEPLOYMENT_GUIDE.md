@@ -20,8 +20,9 @@
 - **Best for**: Full-stack applications with databases
 - **Database**: Can host PostgreSQL or connect to external
 - **Pros**: Easy Docker deployment, supports many languages
-- **Limits**: $5/month usage limit (free tier), then pay-as-you-go
+- **Limits**: $5 trial credit only, then paid ($0.000463/GB-hour)
 - **Setup**: Connect GitHub repo, automatic deployment
+- **Note**: No longer free after trial period
 
 ### 4. Render
 - **Best for**: Full-stack applications
