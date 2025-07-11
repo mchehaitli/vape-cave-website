@@ -145,5 +145,6 @@ Preferred communication style: Simple, everyday language.
 - ✅ Fixed: Netlify serverless functions created for API endpoints
 - ✅ Fixed: Product images and admin dashboard deployment issues resolved
 - 🚀 Latest: All fixes pushed to GitHub - Netlify redeploying now
-- ⚠️ Issue: Admin login authentication response format mismatch between frontend/backend
-- 🔧 Solution: API returns `isAdmin: true` but frontend expects different format
+- ✅ Fixed: Admin login authentication response format mismatch resolved
+- ⚠️ Critical Issue: Brands/categories data missing due to column name mismatch (categoryId vs category_id)
+- 🔧 Solution: Updated API to use correct database column names, pushing fix to Netlify

@@ -91,7 +91,7 @@ export const handler: Handler = async (event, context) => {
 
       const result = (categories || []).map(category => ({
         ...category,
-        brands: (brands || []).filter(brand => brand.categoryId === category.id)
+        brands: (brands || []).filter(brand => brand.category_id === category.id)
       }));
 
       return {
