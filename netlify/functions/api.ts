@@ -42,7 +42,7 @@ export const handler: Handler = async (event, context) => {
       return { statusCode: 200, headers, body: JSON.stringify(result) };
     }
 
-    if (event.path.includes('/products') && event.httpMethod === 'GET') {
+    if ((event.path === '/api/products' || event.path.endsWith('/products')) && event.httpMethod === 'GET') {
       const { data } = await supabase
         .from('products')
         .select('*')
@@ -50,15 +50,15 @@ export const handler: Handler = async (event, context) => {
       return { statusCode: 200, headers, body: JSON.stringify(data || []) };
     }
 
-    if (event.path.includes('/store-locations')) {
+    if (event.path === '/api/store-locations' || event.path.endsWith('/store-locations')) {
       const { data } = await supabase
         .from('store_locations')
-        .select('id, name, city, address, phone')
-        .limit(5);
+        .select('*')
+        .order('id');
       return { statusCode: 200, headers, body: JSON.stringify(data || []) };
     }
 
-    if (event.path.includes('/blog-posts') && event.httpMethod === 'GET') {
+    if ((event.path === '/api/blog-posts' || event.path.endsWith('/blog-posts')) && event.httpMethod === 'GET') {
       const { data } = await supabase
         .from('blog_posts')
         .select('*')
@@ -66,18 +66,18 @@ export const handler: Handler = async (event, context) => {
       return { statusCode: 200, headers, body: JSON.stringify(data || []) };
     }
 
-    // All admin data endpoints
-    if (event.path.includes('/brand-categories')) {
+    // Admin data endpoints - specific paths first
+    if (event.path === '/api/brand-categories' || event.path.endsWith('/brand-categories')) {
       const { data } = await supabase.from('brand_categories').select('*').order('display_order');
       return { statusCode: 200, headers, body: JSON.stringify(data || []) };
     }
 
-    if (event.path.includes('/brands')) {
+    if (event.path === '/api/brands' || (event.path.endsWith('/brands') && event.httpMethod === 'GET')) {
       const { data } = await supabase.from('brands').select('*').order('display_order');
       return { statusCode: 200, headers, body: JSON.stringify(data || []) };
     }
 
-    if (event.path.includes('/newsletter-subscriptions')) {
+    if (event.path === '/api/newsletter-subscriptions' || event.path.endsWith('/newsletter-subscriptions')) {
       const { data } = await supabase.from('newsletter_subscriptions').select('*').order('created_at', { ascending: false });
       return { statusCode: 200, headers, body: JSON.stringify(data || []) };
     }
