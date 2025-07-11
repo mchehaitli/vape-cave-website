@@ -19,38 +19,24 @@ export const handler: Handler = async (event, context) => {
     
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Featured brands endpoint - only essential fields
+    // Featured brands endpoint - MINIMAL FIELDS ONLY
     if (event.path.includes('/featured-brands')) {
-      const { data: categories, error: catError } = await supabase
+      const { data: categories } = await supabase
         .from('brand_categories')
-        .select('id, category, bg_class, display_order, interval_ms')
+        .select('id, category, bg_class, display_order')
         .order('display_order');
 
-      if (catError) {
-        return {
-          statusCode: 500,
-          headers,
-          body: JSON.stringify({ error: 'Categories error', details: catError.message }),
-        };
-      }
-
-      const { data: brands, error: brandError } = await supabase
+      const { data: brands } = await supabase
         .from('brands')
-        .select('id, name, image, description, category_id, display_order')
+        .select('id, name, category_id')
         .order('display_order');
 
-      if (brandError) {
-        return {
-          statusCode: 500,
-          headers,
-          body: JSON.stringify({ error: 'Brands error', details: brandError.message }),
-        };
-      }
-
-      // Group brands by category
       const result = (categories || []).map(category => ({
-        ...category,
-        brands: (brands || []).filter(brand => brand.category_id === category.id)
+        id: category.id,
+        category: category.category,
+        bg_class: category.bg_class,
+        display_order: category.display_order,
+        brands: (brands || []).filter(brand => brand.category_id === category.id).slice(0, 5)
       }));
 
       return {
@@ -60,12 +46,12 @@ export const handler: Handler = async (event, context) => {
       };
     }
 
-    // Products endpoint - essential fields only
+    // Products endpoint - MINIMAL FIELDS
     if (event.path.includes('/products')) {
-      const { data: products, error } = await supabase
+      const { data: products } = await supabase
         .from('products')
-        .select('id, name, category, image, description, price, hide_price, featured, featured_label')
-        .order('id');
+        .select('id, name, category, price')
+        .limit(20);
 
       return {
         statusCode: 200,
@@ -74,12 +60,12 @@ export const handler: Handler = async (event, context) => {
       };
     }
 
-    // Store locations endpoint
+    // Store locations - MINIMAL FIELDS
     if (event.path.includes('/store-locations')) {
-      const { data: locations, error } = await supabase
+      const { data: locations } = await supabase
         .from('store_locations')
-        .select('id, name, city, address, phone, hours, lat, lng, image')
-        .order('id');
+        .select('id, name, city, address, phone')
+        .limit(10);
 
       return {
         statusCode: 200,
@@ -88,13 +74,13 @@ export const handler: Handler = async (event, context) => {
       };
     }
 
-    // Blog posts endpoint
+    // Blog posts - MINIMAL FIELDS  
     if (event.path.includes('/blog-posts')) {
-      const { data: posts, error } = await supabase
+      const { data: posts } = await supabase
         .from('blog_posts')
-        .select('id, title, slug, summary, image_url, published, created_at')
+        .select('id, title, slug, summary')
         .eq('published', true)
-        .order('created_at', { ascending: false });
+        .limit(10);
 
       return {
         statusCode: 200,
@@ -103,7 +89,7 @@ export const handler: Handler = async (event, context) => {
       };
     }
 
-    // Admin authentication endpoint
+    // Admin auth - WORKING
     if (event.path.includes('/auth/login') && event.httpMethod === 'POST') {
       const { username, password } = JSON.parse(event.body || '{}');
       
@@ -132,11 +118,10 @@ export const handler: Handler = async (event, context) => {
     };
 
   } catch (error) {
-    console.error('API error:', error);
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ error: 'Internal server error', details: String(error) }),
+      body: JSON.stringify({ error: 'Server error' }),
     };
   }
 };
