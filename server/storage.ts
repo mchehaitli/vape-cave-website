@@ -9,20 +9,8 @@ import {
   newsletterSubscriptions, type NewsletterSubscription, type InsertNewsletterSubscription
 } from "@shared/schema";
 import { eq, and, asc, desc, sql } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/node-postgres";
-import pg from "pg";
 import * as bcrypt from "bcryptjs";
-import * as dotenv from "dotenv";
-
-dotenv.config();
-
-// Create a PostgreSQL connection pool
-const pool = new pg.Pool({
-  connectionString: process.env.DATABASE_URL,
-});
-
-// Initialize drizzle with the pool
-const db = drizzle(pool);
+import { db } from "./db";
 
 // Storage interface defining all database operations
 export interface IStorage {
