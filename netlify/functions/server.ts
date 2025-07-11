@@ -1,0 +1,84 @@
+import type { Handler } from '@netlify/functions';
+import { db } from '../../server/db';
+import { products, brands, brandCategories, storeLocations, blogPosts, newsletterSubscriptions } from '../../shared/schema';
+
+export const handler: Handler = async (event, context) => {
+  const path = event.path;
+  const method = event.httpMethod;
+
+  // Handle CORS
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Content-Type': 'application/json',
+  };
+
+  if (method === 'OPTIONS') {
+    return { statusCode: 200, headers, body: '' };
+  }
+
+  try {
+    // Route: GET /api/products
+    if (path === '/api/products' && method === 'GET') {
+      const allProducts = await db.select().from(products);
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify(allProducts),
+      };
+    }
+
+    // Route: GET /api/featured-brands
+    if (path === '/api/featured-brands' && method === 'GET') {
+      const categories = await db.select().from(brandCategories);
+      const allBrands = await db.select().from(brands);
+      
+      const result = categories.map(category => ({
+        ...category,
+        brands: allBrands.filter(brand => brand.categoryId === category.id)
+      }));
+      
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify(result),
+      };
+    }
+
+    // Route: GET /api/store-locations
+    if (path === '/api/store-locations' && method === 'GET') {
+      const locations = await db.select().from(storeLocations);
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify(locations),
+      };
+    }
+
+    // Route: GET /api/blog-posts
+    if (path === '/api/blog-posts' && method === 'GET') {
+      const posts = await db.select().from(blogPosts);
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify(posts),
+      };
+    }
+
+    // Default 404
+    return {
+      statusCode: 404,
+      headers,
+      body: JSON.stringify({ error: 'Not found' }),
+    };
+
+  } catch (error) {
+    console.error('API Error:', error);
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({ error: 'Internal server error' }),
+    };
+  }
+};
