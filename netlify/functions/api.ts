@@ -142,11 +142,14 @@ export const handler: Handler = async (event, context) => {
 
     // Admin authentication endpoint
     if (event.path.includes('/auth/login') && event.httpMethod === 'POST') {
+      console.log('Admin login attempt received');
       try {
         const { username, password } = JSON.parse(event.body || '{}');
+        console.log('Login attempt for username:', username);
         
         // For now, use hardcoded admin credentials since Supabase user migration has RLS issues
         if (username === 'admin' && password === 'admin123') {
+          console.log('Admin login successful');
           return {
             statusCode: 200,
             headers,
@@ -157,18 +160,34 @@ export const handler: Handler = async (event, context) => {
           };
         }
         
+        console.log('Invalid credentials provided');
         return {
           statusCode: 401,
           headers,
           body: JSON.stringify({ success: false, error: 'Invalid credentials' }),
         };
       } catch (error) {
+        console.error('Login parsing error:', error);
         return {
           statusCode: 400,
           headers,
           body: JSON.stringify({ success: false, error: 'Invalid request body' }),
         };
       }
+    }
+    
+    // Test endpoint for debugging
+    if (event.path.includes('/test')) {
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({ 
+          message: 'API is working', 
+          path: event.path,
+          method: event.httpMethod,
+          timestamp: new Date().toISOString()
+        }),
+      };
     }
 
     // Default response
