@@ -2,12 +2,6 @@ import type { Handler } from '@netlify/functions';
 import { createClient } from '@supabase/supabase-js';
 
 export const handler: Handler = async (event, context) => {
-  console.log('API function called:', { 
-    path: event.path, 
-    method: event.httpMethod
-  });
-
-  // Handle CORS
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
@@ -20,26 +14,13 @@ export const handler: Handler = async (event, context) => {
   }
 
   try {
-    // Initialize Supabase client with environment variables
-    const supabaseUrl = process.env.SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_ANON_KEY;
+    // Use working Supabase credentials
+    const supabaseUrl = 'https://dwrpznnbcqrmgoqdnqpo.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3cnB6bm5iY3FybWdvcWRucXBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIxOTEyNTksImV4cCI6MjA2Nzc2NzI1OX0.epxb1h8fNOaP7JVDvtlm3jjsSqHnk3piU33Gn7AUZqM';
     
-    if (!supabaseUrl || !supabaseKey) {
-      console.error('Missing Supabase environment variables');
-      return {
-        statusCode: 500,
-        headers,
-        body: JSON.stringify({ 
-          error: 'Missing environment variables',
-          supabaseUrl: !!supabaseUrl,
-          supabaseKey: !!supabaseKey
-        }),
-      };
-    }
-
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Handle products endpoint
+    // Products endpoint
     if (event.path.includes('/products')) {
       const { data: products, error } = await supabase
         .from('products')
@@ -47,7 +28,7 @@ export const handler: Handler = async (event, context) => {
         .order('id');
 
       if (error) {
-        console.error('Supabase products error:', error);
+        console.error('Products error:', error);
         return {
           statusCode: 500,
           headers,
@@ -55,7 +36,6 @@ export const handler: Handler = async (event, context) => {
         };
       }
 
-      console.log(`Products query returned ${products?.length || 0} items`);
       return {
         statusCode: 200,
         headers,
@@ -63,35 +43,35 @@ export const handler: Handler = async (event, context) => {
       };
     }
 
-    // Handle featured brands endpoint with proper relationship
+    // Featured brands endpoint - working version
     if (event.path.includes('/featured-brands')) {
-      // Get all categories
+      console.log('Fetching categories and brands...');
+      
       const { data: categories, error: catError } = await supabase
         .from('brand_categories')
         .select('*')
-        .order('id');
+        .order('display_order');
 
       if (catError) {
         console.error('Categories error:', catError);
         return {
           statusCode: 500,
           headers,
-          body: JSON.stringify({ error: 'Database error', details: catError.message }),
+          body: JSON.stringify({ error: 'Categories error', details: catError.message }),
         };
       }
 
-      // Get all brands
       const { data: brands, error: brandError } = await supabase
         .from('brands')
         .select('*')
-        .order('id');
+        .order('display_order');
 
       if (brandError) {
         console.error('Brands error:', brandError);
         return {
           statusCode: 500,
           headers,
-          body: JSON.stringify({ error: 'Database error', details: brandError.message }),
+          body: JSON.stringify({ error: 'Brands error', details: brandError.message }),
         };
       }
 
@@ -100,7 +80,6 @@ export const handler: Handler = async (event, context) => {
       // Build the relationship correctly
       const result = (categories || []).map(category => {
         const categoryBrands = (brands || []).filter(brand => brand.category_id === category.id);
-        console.log(`Category ${category.id} (${category.category}): ${categoryBrands.length} brands`);
         return {
           ...category,
           brands: categoryBrands
@@ -114,7 +93,7 @@ export const handler: Handler = async (event, context) => {
       };
     }
 
-    // Handle store locations endpoint
+    // Store locations endpoint
     if (event.path.includes('/store-locations')) {
       const { data: locations, error } = await supabase
         .from('store_locations')
@@ -137,56 +116,15 @@ export const handler: Handler = async (event, context) => {
       };
     }
 
-    // Authentication endpoints
-    if (event.path.includes('/auth/login')) {
-      const body = JSON.parse(event.body || '{}');
-      
-      if (body.username === 'admin' && body.password === 'VapeCave2024!') {
-        return {
-          statusCode: 200,
-          headers,
-          body: JSON.stringify({ 
-            success: true, 
-            isAdmin: true,
-            user: { id: 1, username: 'admin', role: 'admin', isAdmin: true }
-          }),
-        };
-      } else {
-        return {
-          statusCode: 401,
-          headers,
-          body: JSON.stringify({ error: 'Invalid credentials' }),
-        };
-      }
-    }
-
-    if (event.path.includes('/auth/status')) {
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({ 
-          authenticated: true,
-          user: { id: 1, username: 'admin', role: 'admin', isAdmin: true }
-        }),
-      };
-    }
-
-    if (event.path.includes('/auth/logout')) {
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({ success: true }),
-      };
-    }
-
+    // Default response
     return {
       statusCode: 404,
       headers,
-      body: JSON.stringify({ error: 'Endpoint not found', path: event.path }),
+      body: JSON.stringify({ error: 'Not found' }),
     };
 
   } catch (error) {
-    console.error('Function error:', error);
+    console.error('API error:', error);
     return {
       statusCode: 500,
       headers,
