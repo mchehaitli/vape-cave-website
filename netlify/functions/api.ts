@@ -22,155 +22,141 @@ export const handler: Handler = async (event, context) => {
     const path = event.path || '';
     const method = event.httpMethod || 'GET';
 
-    // Featured brands for homepage carousel
+    // Featured brands - NO IMAGES to prevent size overflow
     if (path.includes('/featured-brands')) {
       const { data: categories } = await supabase
         .from('brand_categories')
-        .select('id, category, bg_class, display_order, interval_ms')
-        .order('display_order');
+        .select('id, category, bg_class')
+        .order('display_order')
+        .limit(6);
 
       const { data: brands } = await supabase
         .from('brands')
-        .select('id, name, image, category_id, display_order')
-        .order('display_order');
+        .select('id, name, category_id')
+        .order('display_order')
+        .limit(20);
 
       const result = (categories || []).map(cat => ({
         id: cat.id,
         category: cat.category,
         bg_class: cat.bg_class,
-        display_order: cat.display_order,
-        interval_ms: cat.interval_ms,
-        brands: (brands || []).filter(b => b.category_id === cat.id)
+        brands: (brands || []).filter(b => b.category_id === cat.id).slice(0, 5)
       }));
 
       return { statusCode: 200, headers, body: JSON.stringify(result) };
     }
 
-    // ADMIN ENDPOINTS - All data with full CRUD
-
     // Brand Categories
-    if (path.endsWith('/brand-categories')) {
-      if (method === 'GET') {
-        const { data } = await supabase.from('brand_categories').select('*').order('display_order');
-        return { statusCode: 200, headers, body: JSON.stringify(data || []) };
-      }
+    if (path.endsWith('/brand-categories') && method === 'GET') {
+      const { data } = await supabase.from('brand_categories').select('id, category, bg_class, display_order').order('display_order');
+      return { statusCode: 200, headers, body: JSON.stringify(data || []) };
     }
 
-    // Brands 
-    if (path.endsWith('/brands') && !path.includes('featured')) {
-      if (method === 'GET') {
-        const { data } = await supabase.from('brands').select('*').order('display_order');
-        return { statusCode: 200, headers, body: JSON.stringify(data || []) };
-      }
-      if (method === 'POST') {
-        const brandData = JSON.parse(event.body || '{}');
-        const { data, error } = await supabase.from('brands').insert(brandData).select();
-        if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
-        return { statusCode: 201, headers, body: JSON.stringify(data[0]) };
-      }
+    // Brands - NO IMAGES or DESCRIPTIONS
+    if (path.endsWith('/brands') && !path.includes('featured') && method === 'GET') {
+      const { data } = await supabase.from('brands').select('id, name, category_id, display_order').order('display_order');
+      return { statusCode: 200, headers, body: JSON.stringify(data || []) };
     }
 
-    // Individual brand operations
-    if (path.includes('/brands/') && method !== 'GET') {
-      const id = path.split('/').pop();
-      if (method === 'PUT') {
-        const brandData = JSON.parse(event.body || '{}');
-        const { data, error } = await supabase.from('brands').update(brandData).eq('id', id).select();
-        if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
-        return { statusCode: 200, headers, body: JSON.stringify(data[0]) };
-      }
-      if (method === 'DELETE') {
-        const { error } = await supabase.from('brands').delete().eq('id', id);
-        if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
-        return { statusCode: 204, headers, body: '' };
-      }
+    // Products - NO IMAGES or DESCRIPTIONS
+    if (path.endsWith('/products') && method === 'GET') {
+      const { data } = await supabase.from('products').select('id, name, category, price, featured').order('id');
+      return { statusCode: 200, headers, body: JSON.stringify(data || []) };
     }
 
-    // Products
-    if (path.endsWith('/products')) {
-      if (method === 'GET') {
-        const { data } = await supabase.from('products').select('*').order('id');
-        return { statusCode: 200, headers, body: JSON.stringify(data || []) };
-      }
-      if (method === 'POST') {
-        const productData = JSON.parse(event.body || '{}');
-        const { data, error } = await supabase.from('products').insert(productData).select();
-        if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
-        return { statusCode: 201, headers, body: JSON.stringify(data[0]) };
-      }
+    // Blog Posts - NO CONTENT or IMAGES
+    if (path.endsWith('/blog-posts') && method === 'GET') {
+      const { data } = await supabase.from('blog_posts').select('id, title, slug, published, created_at').order('created_at', { ascending: false });
+      return { statusCode: 200, headers, body: JSON.stringify(data || []) };
     }
 
-    // Individual product operations
-    if (path.includes('/products/') && method !== 'GET') {
-      const id = path.split('/').pop();
-      if (method === 'PUT') {
-        const productData = JSON.parse(event.body || '{}');
-        const { data, error } = await supabase.from('products').update(productData).eq('id', id).select();
-        if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
-        return { statusCode: 200, headers, body: JSON.stringify(data[0]) };
-      }
-      if (method === 'DELETE') {
-        const { error } = await supabase.from('products').delete().eq('id', id);
-        if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
-        return { statusCode: 204, headers, body: '' };
-      }
-    }
-
-    // Blog Posts
-    if (path.endsWith('/blog-posts')) {
-      if (method === 'GET') {
-        const { data } = await supabase.from('blog_posts').select('*').order('created_at', { ascending: false });
-        return { statusCode: 200, headers, body: JSON.stringify(data || []) };
-      }
-      if (method === 'POST') {
-        const postData = JSON.parse(event.body || '{}');
-        const { data, error } = await supabase.from('blog_posts').insert(postData).select();
-        if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
-        return { statusCode: 201, headers, body: JSON.stringify(data[0]) };
-      }
-    }
-
-    // Individual blog post operations
-    if (path.includes('/blog-posts/') && method !== 'GET') {
-      const id = path.split('/').pop();
-      if (method === 'PUT') {
-        const postData = JSON.parse(event.body || '{}');
-        const { data, error } = await supabase.from('blog_posts').update(postData).eq('id', id).select();
-        if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
-        return { statusCode: 200, headers, body: JSON.stringify(data[0]) };
-      }
-      if (method === 'DELETE') {
-        const { error } = await supabase.from('blog_posts').delete().eq('id', id);
-        if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
-        return { statusCode: 204, headers, body: '' };
-      }
-    }
-
-    // Store Locations
-    if (path.endsWith('/store-locations')) {
-      if (method === 'GET') {
-        const { data } = await supabase.from('store_locations').select('*').order('id');
-        return { statusCode: 200, headers, body: JSON.stringify(data || []) };
-      }
+    // Store Locations - NO LARGE FIELDS
+    if (path.endsWith('/store-locations') && method === 'GET') {
+      const { data } = await supabase.from('store_locations').select('id, name, city, address, phone, hours').order('id');
+      return { statusCode: 200, headers, body: JSON.stringify(data || []) };
     }
 
     // Newsletter Subscriptions
-    if (path.endsWith('/newsletter-subscriptions')) {
-      if (method === 'GET') {
-        const { data } = await supabase.from('newsletter_subscriptions').select('*').order('created_at', { ascending: false });
-        return { statusCode: 200, headers, body: JSON.stringify(data || []) };
-      }
-      if (method === 'POST') {
-        const emailData = JSON.parse(event.body || '{}');
-        const { data, error } = await supabase.from('newsletter_subscriptions').insert(emailData).select();
-        if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
-        return { statusCode: 201, headers, body: JSON.stringify(data[0]) };
-      }
+    if (path.endsWith('/newsletter-subscriptions') && method === 'GET') {
+      const { data } = await supabase.from('newsletter_subscriptions').select('id, email, created_at').order('created_at', { ascending: false });
+      return { statusCode: 200, headers, body: JSON.stringify(data || []) };
     }
 
-    // Contact form
+    // CRUD Operations for admin
+    if (method === 'POST' && path.endsWith('/brands')) {
+      const brandData = JSON.parse(event.body || '{}');
+      const { data, error } = await supabase.from('brands').insert(brandData).select();
+      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+      return { statusCode: 201, headers, body: JSON.stringify(data[0]) };
+    }
+
+    if (method === 'PUT' && path.includes('/brands/')) {
+      const id = path.split('/').pop();
+      const brandData = JSON.parse(event.body || '{}');
+      const { data, error } = await supabase.from('brands').update(brandData).eq('id', id).select();
+      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+      return { statusCode: 200, headers, body: JSON.stringify(data[0]) };
+    }
+
+    if (method === 'DELETE' && path.includes('/brands/')) {
+      const id = path.split('/').pop();
+      const { error } = await supabase.from('brands').delete().eq('id', id);
+      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+      return { statusCode: 204, headers, body: '' };
+    }
+
+    if (method === 'POST' && path.endsWith('/products')) {
+      const productData = JSON.parse(event.body || '{}');
+      const { data, error } = await supabase.from('products').insert(productData).select();
+      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+      return { statusCode: 201, headers, body: JSON.stringify(data[0]) };
+    }
+
+    if (method === 'PUT' && path.includes('/products/')) {
+      const id = path.split('/').pop();
+      const productData = JSON.parse(event.body || '{}');
+      const { data, error } = await supabase.from('products').update(productData).eq('id', id).select();
+      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+      return { statusCode: 200, headers, body: JSON.stringify(data[0]) };
+    }
+
+    if (method === 'DELETE' && path.includes('/products/')) {
+      const id = path.split('/').pop();
+      const { error } = await supabase.from('products').delete().eq('id', id);
+      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+      return { statusCode: 204, headers, body: '' };
+    }
+
+    if (method === 'POST' && path.endsWith('/blog-posts')) {
+      const postData = JSON.parse(event.body || '{}');
+      const { data, error } = await supabase.from('blog_posts').insert(postData).select();
+      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+      return { statusCode: 201, headers, body: JSON.stringify(data[0]) };
+    }
+
+    if (method === 'PUT' && path.includes('/blog-posts/')) {
+      const id = path.split('/').pop();
+      const postData = JSON.parse(event.body || '{}');
+      const { data, error } = await supabase.from('blog_posts').update(postData).eq('id', id).select();
+      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+      return { statusCode: 200, headers, body: JSON.stringify(data[0]) };
+    }
+
+    if (method === 'DELETE' && path.includes('/blog-posts/')) {
+      const id = path.split('/').pop();
+      const { error } = await supabase.from('blog_posts').delete().eq('id', id);
+      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+      return { statusCode: 204, headers, body: '' };
+    }
+
+    if (method === 'POST' && path.endsWith('/newsletter-subscriptions')) {
+      const emailData = JSON.parse(event.body || '{}');
+      const { data, error } = await supabase.from('newsletter_subscriptions').insert(emailData).select();
+      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+      return { statusCode: 201, headers, body: JSON.stringify(data[0]) };
+    }
+
     if (path.endsWith('/contact') && method === 'POST') {
-      // Just return success for contact form
       return { statusCode: 200, headers, body: JSON.stringify({ success: true, message: 'Message sent successfully' }) };
     }
 
@@ -187,10 +173,9 @@ export const handler: Handler = async (event, context) => {
       return { statusCode: 401, headers, body: JSON.stringify({ success: false, error: 'Invalid credentials' }) };
     }
 
-    return { statusCode: 404, headers, body: JSON.stringify({ error: 'Endpoint not found' }) };
+    return { statusCode: 404, headers, body: JSON.stringify({ error: 'Not found' }) };
 
   } catch (error) {
-    console.error('API Error:', error);
-    return { statusCode: 500, headers, body: JSON.stringify({ error: 'Internal server error' }) };
+    return { statusCode: 500, headers, body: JSON.stringify({ error: 'Server error' }) };
   }
 };
