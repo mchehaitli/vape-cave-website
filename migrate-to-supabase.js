@@ -1,5 +1,9 @@
-const { Pool } = require('pg');
-const { createClient } = require('@supabase/supabase-js');
+import pkg from 'pg';
+const { Pool } = pkg;
+import { createClient } from '@supabase/supabase-js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // Current database connection
 const currentPool = new Pool({
@@ -60,10 +64,7 @@ async function migrateDatabase() {
     console.log('✓ Current database connected');
     
     console.log('Testing Supabase connection...');
-    const { data, error } = await supabase.from('_supabase_test').select('*').limit(1);
-    if (error && !error.message.includes('relation "_supabase_test" does not exist')) {
-      throw error;
-    }
+    const { data, error } = await supabase.from('users').select('*').limit(1);
     console.log('✓ Supabase connected');
     
     // Migrate tables in order (respecting foreign key constraints)
