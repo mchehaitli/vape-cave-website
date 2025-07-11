@@ -19,16 +19,16 @@ export const handler: Handler = async (event, context) => {
     
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Featured brands endpoint - MINIMAL FIELDS ONLY
+    // Featured brands endpoint - WITH IMAGES BUT LIMITED
     if (event.path.includes('/featured-brands')) {
       const { data: categories } = await supabase
         .from('brand_categories')
-        .select('id, category, bg_class, display_order')
+        .select('id, category, bg_class, display_order, interval_ms')
         .order('display_order');
 
       const { data: brands } = await supabase
         .from('brands')
-        .select('id, name, category_id')
+        .select('id, name, image, category_id, display_order')
         .order('display_order');
 
       const result = (categories || []).map(category => ({
@@ -36,7 +36,8 @@ export const handler: Handler = async (event, context) => {
         category: category.category,
         bg_class: category.bg_class,
         display_order: category.display_order,
-        brands: (brands || []).filter(brand => brand.category_id === category.id).slice(0, 5)
+        interval_ms: category.interval_ms,
+        brands: (brands || []).filter(brand => brand.category_id === category.id).slice(0, 6)
       }));
 
       return {
@@ -46,12 +47,12 @@ export const handler: Handler = async (event, context) => {
       };
     }
 
-    // Products endpoint - MINIMAL FIELDS
+    // Products endpoint - WITH IMAGES
     if (event.path.includes('/products')) {
       const { data: products } = await supabase
         .from('products')
-        .select('id, name, category, price')
-        .limit(20);
+        .select('id, name, category, image, price, hide_price, featured, featured_label')
+        .limit(50);
 
       return {
         statusCode: 200,
@@ -60,11 +61,11 @@ export const handler: Handler = async (event, context) => {
       };
     }
 
-    // Store locations - MINIMAL FIELDS
+    // Store locations - WITH ESSENTIAL INFO
     if (event.path.includes('/store-locations')) {
       const { data: locations } = await supabase
         .from('store_locations')
-        .select('id, name, city, address, phone')
+        .select('id, name, city, address, phone, hours, lat, lng, image')
         .limit(10);
 
       return {
@@ -74,13 +75,13 @@ export const handler: Handler = async (event, context) => {
       };
     }
 
-    // Blog posts - MINIMAL FIELDS  
+    // Blog posts - WITH IMAGES
     if (event.path.includes('/blog-posts')) {
       const { data: posts } = await supabase
         .from('blog_posts')
-        .select('id, title, slug, summary')
+        .select('id, title, slug, summary, image_url, published, created_at')
         .eq('published', true)
-        .limit(10);
+        .limit(20);
 
       return {
         statusCode: 200,
