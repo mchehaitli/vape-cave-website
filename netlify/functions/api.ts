@@ -140,6 +140,37 @@ export const handler: Handler = async (event, context) => {
       };
     }
 
+    // Admin authentication endpoint
+    if (event.path.includes('/auth/login') && event.httpMethod === 'POST') {
+      try {
+        const { username, password } = JSON.parse(event.body || '{}');
+        
+        // For now, use hardcoded admin credentials since Supabase user migration has RLS issues
+        if (username === 'admin' && password === 'admin123') {
+          return {
+            statusCode: 200,
+            headers,
+            body: JSON.stringify({ 
+              success: true, 
+              user: { id: 1, username: 'admin', role: 'admin' }
+            }),
+          };
+        }
+        
+        return {
+          statusCode: 401,
+          headers,
+          body: JSON.stringify({ success: false, error: 'Invalid credentials' }),
+        };
+      } catch (error) {
+        return {
+          statusCode: 400,
+          headers,
+          body: JSON.stringify({ success: false, error: 'Invalid request body' }),
+        };
+      }
+    }
+
     // Default response
     return {
       statusCode: 404,

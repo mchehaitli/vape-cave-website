@@ -1,6 +1,14 @@
 -- Manual data restoration for Supabase
 -- Run these commands in your Supabase SQL editor to restore all data
 
+-- Admin User (1 item)
+INSERT INTO users (id, username, password_hash, role) VALUES
+(1, 'admin', '$2b$10$dJb4FC7lrizRU8PWy0MLB.EqJ9oYERMSfJTMs8Lvo/xkbROs2UHXG', 'admin')
+ON CONFLICT (id) DO UPDATE SET
+  username = EXCLUDED.username,
+  password_hash = EXCLUDED.password_hash,
+  role = EXCLUDED.role;
+
 -- Brand Categories (6 items)
 INSERT INTO brand_categories (id, category, bg_class, display_order, interval_ms) VALUES
 (1, 'Disposables Nicotiene', 'bg-gradient-to-br from-indigo-900 to-indigo-800', 1, 5000),
