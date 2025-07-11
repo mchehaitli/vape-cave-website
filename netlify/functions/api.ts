@@ -14,115 +14,159 @@ export const handler: Handler = async (event, context) => {
   }
 
   try {
-    const supabaseUrl = 'https://dwrpznnbcqrmgoqdnqpo.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3cnB6bm5iY3FybWdvcWRucXBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIxOTEyNTksImV4cCI6MjA2Nzc2NzI1OX0.epxb1h8fNOaP7JVDvtlm3jjsSqHnk3piU33Gn7AUZqM';
-    
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    const supabase = createClient(
+      'https://dwrpznnbcqrmgoqdnqpo.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3cnB6bm5iY3FybWdvcWRucXBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIxOTEyNTksImV4cCI6MjA2Nzc2NzI1OX0.epxb1h8fNOaP7JVDvtlm3jjsSqHnk3piU33Gn7AUZqM'
+    );
 
-    // Featured brands endpoint - WITH IMAGES BUT LIMITED
     if (event.path.includes('/featured-brands')) {
       const { data: categories } = await supabase
         .from('brand_categories')
-        .select('id, category, bg_class, display_order, interval_ms')
-        .order('display_order');
+        .select('id, category, bg_class')
+        .order('display_order')
+        .limit(6);
 
       const { data: brands } = await supabase
         .from('brands')
-        .select('id, name, image, category_id, display_order')
-        .order('display_order');
+        .select('id, name, category_id')
+        .order('display_order')
+        .limit(18);
 
-      const result = (categories || []).map(category => ({
-        id: category.id,
-        category: category.category,
-        bg_class: category.bg_class,
-        display_order: category.display_order,
-        interval_ms: category.interval_ms,
-        brands: (brands || []).filter(brand => brand.category_id === category.id).slice(0, 6)
+      const result = (categories || []).map(cat => ({
+        id: cat.id,
+        category: cat.category,
+        bg_class: cat.bg_class,
+        brands: (brands || []).filter(b => b.category_id === cat.id).slice(0, 3)
       }));
 
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify(result),
-      };
+      return { statusCode: 200, headers, body: JSON.stringify(result) };
     }
 
-    // Products endpoint - WITH IMAGES
-    if (event.path.includes('/products')) {
-      const { data: products } = await supabase
+    if (event.path.includes('/products') && event.httpMethod === 'GET') {
+      const { data } = await supabase
         .from('products')
-        .select('id, name, category, image, price, hide_price, featured, featured_label')
-        .limit(50);
-
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify(products || []),
-      };
+        .select('*')
+        .order('id');
+      return { statusCode: 200, headers, body: JSON.stringify(data || []) };
     }
 
-    // Store locations - WITH ESSENTIAL INFO
     if (event.path.includes('/store-locations')) {
-      const { data: locations } = await supabase
+      const { data } = await supabase
         .from('store_locations')
-        .select('id, name, city, address, phone, hours, lat, lng, image')
-        .limit(10);
-
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify(locations || []),
-      };
+        .select('id, name, city, address, phone')
+        .limit(5);
+      return { statusCode: 200, headers, body: JSON.stringify(data || []) };
     }
 
-    // Blog posts - WITH IMAGES
-    if (event.path.includes('/blog-posts')) {
-      const { data: posts } = await supabase
+    if (event.path.includes('/blog-posts') && event.httpMethod === 'GET') {
+      const { data } = await supabase
         .from('blog_posts')
-        .select('id, title, slug, summary, image_url, published, created_at')
-        .eq('published', true)
-        .limit(20);
-
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify(posts || []),
-      };
+        .select('*')
+        .order('created_at', { ascending: false });
+      return { statusCode: 200, headers, body: JSON.stringify(data || []) };
     }
 
-    // Admin auth - WORKING
+    // All admin data endpoints
+    if (event.path.includes('/brand-categories')) {
+      const { data } = await supabase.from('brand_categories').select('*').order('display_order');
+      return { statusCode: 200, headers, body: JSON.stringify(data || []) };
+    }
+
+    if (event.path.includes('/brands')) {
+      const { data } = await supabase.from('brands').select('*').order('display_order');
+      return { statusCode: 200, headers, body: JSON.stringify(data || []) };
+    }
+
+    if (event.path.includes('/newsletter-subscriptions')) {
+      const { data } = await supabase.from('newsletter_subscriptions').select('*').order('created_at', { ascending: false });
+      return { statusCode: 200, headers, body: JSON.stringify(data || []) };
+    }
+
+    // Admin auth
     if (event.path.includes('/auth/login') && event.httpMethod === 'POST') {
       const { username, password } = JSON.parse(event.body || '{}');
-      
       if (username === 'admin' && password === 'admin123') {
         return {
           statusCode: 200,
           headers,
-          body: JSON.stringify({ 
-            success: true, 
-            user: { id: 1, username: 'admin', role: 'admin' }
-          }),
+          body: JSON.stringify({ success: true, user: { id: 1, username: 'admin', role: 'admin' } })
         };
       }
-      
-      return {
-        statusCode: 401,
-        headers,
-        body: JSON.stringify({ success: false, error: 'Invalid credentials' }),
-      };
+      return { statusCode: 401, headers, body: JSON.stringify({ success: false, error: 'Invalid credentials' }) };
     }
 
-    return {
-      statusCode: 404,
-      headers,
-      body: JSON.stringify({ error: 'Not found' }),
-    };
+    // Create/Update endpoints for admin
+    if (event.httpMethod === 'POST' && event.path.includes('/brands') && !event.path.includes('/featured-brands')) {
+      const brandData = JSON.parse(event.body || '{}');
+      const { data, error } = await supabase.from('brands').insert(brandData).select();
+      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+      return { statusCode: 201, headers, body: JSON.stringify(data[0]) };
+    }
+
+    if (event.httpMethod === 'PUT' && event.path.includes('/brands/')) {
+      const id = event.path.split('/').pop();
+      const brandData = JSON.parse(event.body || '{}');
+      const { data, error } = await supabase.from('brands').update(brandData).eq('id', id).select();
+      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+      return { statusCode: 200, headers, body: JSON.stringify(data[0]) };
+    }
+
+    if (event.httpMethod === 'DELETE' && event.path.includes('/brands/')) {
+      const id = event.path.split('/').pop();
+      const { error } = await supabase.from('brands').delete().eq('id', id);
+      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+      return { statusCode: 204, headers, body: '' };
+    }
+
+    // Product CRUD
+    if (event.httpMethod === 'POST' && event.path.includes('/products') && !event.path.includes('/blog-posts')) {
+      const productData = JSON.parse(event.body || '{}');
+      const { data, error } = await supabase.from('products').insert(productData).select();
+      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+      return { statusCode: 201, headers, body: JSON.stringify(data[0]) };
+    }
+
+    if (event.httpMethod === 'PUT' && event.path.includes('/products/')) {
+      const id = event.path.split('/').pop();
+      const productData = JSON.parse(event.body || '{}');
+      const { data, error } = await supabase.from('products').update(productData).eq('id', id).select();
+      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+      return { statusCode: 200, headers, body: JSON.stringify(data[0]) };
+    }
+
+    if (event.httpMethod === 'DELETE' && event.path.includes('/products/')) {
+      const id = event.path.split('/').pop();
+      const { error } = await supabase.from('products').delete().eq('id', id);
+      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+      return { statusCode: 204, headers, body: '' };
+    }
+
+    // Blog posts CRUD
+    if (event.httpMethod === 'POST' && event.path.includes('/blog-posts')) {
+      const postData = JSON.parse(event.body || '{}');
+      const { data, error } = await supabase.from('blog_posts').insert(postData).select();
+      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+      return { statusCode: 201, headers, body: JSON.stringify(data[0]) };
+    }
+
+    if (event.httpMethod === 'PUT' && event.path.includes('/blog-posts/')) {
+      const id = event.path.split('/').pop();
+      const postData = JSON.parse(event.body || '{}');
+      const { data, error } = await supabase.from('blog_posts').update(postData).eq('id', id).select();
+      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+      return { statusCode: 200, headers, body: JSON.stringify(data[0]) };
+    }
+
+    if (event.httpMethod === 'DELETE' && event.path.includes('/blog-posts/')) {
+      const id = event.path.split('/').pop();
+      const { error } = await supabase.from('blog_posts').delete().eq('id', id);
+      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+      return { statusCode: 204, headers, body: '' };
+    }
+
+    return { statusCode: 404, headers, body: JSON.stringify({ error: 'Not found' }) };
 
   } catch (error) {
-    return {
-      statusCode: 500,
-      headers,
-      body: JSON.stringify({ error: 'Server error' }),
-    };
+    return { statusCode: 500, headers, body: JSON.stringify({ error: 'Server error' }) };
   }
 };
