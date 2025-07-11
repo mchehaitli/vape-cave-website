@@ -3,8 +3,10 @@ import { db } from '../../server/db';
 import { products, brands, brandCategories, storeLocations, blogPosts, newsletterSubscriptions } from '../../shared/schema';
 
 export const handler: Handler = async (event, context) => {
-  const path = event.path;
+  const path = event.path.replace('/.netlify/functions/server', '');
   const method = event.httpMethod;
+  
+  console.log('Function called with path:', path, 'method:', method);
 
   // Handle CORS
   const headers = {
@@ -66,11 +68,39 @@ export const handler: Handler = async (event, context) => {
       };
     }
 
+    // Handle authentication routes for admin
+    if (path === '/api/auth/login' && method === 'POST') {
+      const { username, password } = JSON.parse(event.body || '{}');
+      
+      // Simple hardcoded admin check for now
+      if (username === 'admin' && password === 'VapeCave2024!') {
+        return {
+          statusCode: 200,
+          headers,
+          body: JSON.stringify({ 
+            success: true, 
+            user: { id: 1, username: 'admin', role: 'admin' }
+          }),
+        };
+      } else {
+        return {
+          statusCode: 401,
+          headers,
+          body: JSON.stringify({ error: 'Invalid credentials' }),
+        };
+      }
+    }
+
     // Default 404
     return {
       statusCode: 404,
       headers,
-      body: JSON.stringify({ error: 'Not found' }),
+      body: JSON.stringify({ 
+        error: 'Not found', 
+        path: path, 
+        method: method,
+        available: ['/api/products', '/api/featured-brands', '/api/store-locations', '/api/blog-posts', '/api/auth/login']
+      }),
     };
 
   } catch (error) {
