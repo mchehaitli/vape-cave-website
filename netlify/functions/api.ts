@@ -25,6 +25,10 @@ export const handler: Handler = async (event, context) => {
     const supabaseKey = process.env.SUPABASE_ANON_KEY;
     
     if (!supabaseUrl || !supabaseKey) {
+      console.error('Missing Supabase environment variables', { 
+        hasUrl: !!supabaseUrl, 
+        hasKey: !!supabaseKey 
+      });
       return {
         statusCode: 500,
         headers,
@@ -89,10 +93,14 @@ export const handler: Handler = async (event, context) => {
         };
       }
 
-      const result = (categories || []).map(category => ({
-        ...category,
-        brands: (brands || []).filter(brand => brand.category_id === category.id)
-      }));
+      const result = (categories || []).map(category => {
+        const categoryBrands = (brands || []).filter(brand => brand.category_id === category.id);
+        console.log(`Category ${category.id} (${category.category}): ${categoryBrands.length} brands`);
+        return {
+          ...category,
+          brands: categoryBrands
+        };
+      });
 
       return {
         statusCode: 200,
