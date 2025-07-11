@@ -396,13 +396,12 @@ export default function AdminPage() {
   };
 
   useEffect(() => {
-    // Check if user is authenticated and is admin
-    const checkAuth = async () => {
+    // Check if user is authenticated and is admin using localStorage
+    const checkAuth = () => {
       try {
-        const response = await fetch('/api/auth/status');
-        const data = await response.json();
+        const storedAdmin = localStorage.getItem('vape_cave_admin');
         
-        if (!data.authenticated || !data.user || data.user.role !== 'admin') {
+        if (!storedAdmin) {
           toast({
             title: "Unauthorized",
             description: "Please login with admin credentials",
@@ -412,13 +411,27 @@ export default function AdminPage() {
           return;
         }
         
-        setAdminData(data.user);
+        const adminData = JSON.parse(storedAdmin);
+        
+        if (!adminData || adminData.role !== 'admin') {
+          localStorage.removeItem('vape_cave_admin');
+          toast({
+            title: "Unauthorized",
+            description: "Please login with admin credentials",
+            variant: "destructive",
+          });
+          navigate('/admin/login');
+          return;
+        }
+        
+        setAdminData(adminData);
         setIsLoading(false);
       } catch (error) {
         console.error("Auth check error:", error);
+        localStorage.removeItem('vape_cave_admin');
         toast({
           title: "Error",
-          description: "Failed to verify authentication",
+          description: "Please login with admin credentials",
           variant: "destructive",
         });
         navigate('/admin/login');
@@ -428,11 +441,9 @@ export default function AdminPage() {
     checkAuth();
   }, [navigate, toast]);
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     try {
-      await fetch('/api/auth/logout', {
-        method: 'POST',
-      });
+      localStorage.removeItem('vape_cave_admin');
       
       toast({
         title: "Logged out",
