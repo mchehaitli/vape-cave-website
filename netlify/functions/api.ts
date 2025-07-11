@@ -132,7 +132,8 @@ export const handler: Handler = async (event, context) => {
           headers,
           body: JSON.stringify({ 
             success: true, 
-            user: { id: 1, username: 'admin', role: 'admin' }
+            isAdmin: true,
+            user: { id: 1, username: 'admin', role: 'admin', isAdmin: true }
           }),
         };
       } else {
@@ -142,6 +143,27 @@ export const handler: Handler = async (event, context) => {
           body: JSON.stringify({ error: 'Invalid credentials' }),
         };
       }
+    }
+
+    // Handle authentication status check
+    if (event.path.includes('/auth/status')) {
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({ 
+          authenticated: true,
+          user: { id: 1, username: 'admin', role: 'admin', isAdmin: true }
+        }),
+      };
+    }
+
+    // Handle logout
+    if (event.path.includes('/auth/logout')) {
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({ success: true }),
+      };
     }
 
     return {
