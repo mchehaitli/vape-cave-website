@@ -46,7 +46,7 @@ export default function AdminLoginPage() {
 
       if (response.ok) {
         const userData = await response.json();
-        if (userData.isAdmin) {
+        if (userData.success && userData.user && userData.user.role === 'admin') {
           toast({
             title: "Login successful",
             description: "Welcome to the Vape Cave admin panel.",

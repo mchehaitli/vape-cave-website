@@ -402,7 +402,7 @@ export default function AdminPage() {
         const response = await fetch('/api/auth/status');
         const data = await response.json();
         
-        if (!data.authenticated || !data.user.isAdmin) {
+        if (!data.authenticated || !data.user || data.user.role !== 'admin') {
           toast({
             title: "Unauthorized",
             description: "Please login with admin credentials",
