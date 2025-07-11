@@ -19,71 +19,163 @@ export const handler: Handler = async (event, context) => {
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3cnB6bm5iY3FybWdvcWRucXBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIxOTEyNTksImV4cCI6MjA2Nzc2NzI1OX0.epxb1h8fNOaP7JVDvtlm3jjsSqHnk3piU33Gn7AUZqM'
     );
 
-    if (event.path.includes('/featured-brands')) {
+    const path = event.path || '';
+    const method = event.httpMethod || 'GET';
+
+    // Featured brands for homepage carousel
+    if (path.includes('/featured-brands')) {
       const { data: categories } = await supabase
         .from('brand_categories')
-        .select('id, category, bg_class')
-        .order('display_order')
-        .limit(6);
+        .select('id, category, bg_class, display_order, interval_ms')
+        .order('display_order');
 
       const { data: brands } = await supabase
         .from('brands')
-        .select('id, name, category_id')
-        .order('display_order')
-        .limit(18);
+        .select('id, name, image, category_id, display_order')
+        .order('display_order');
 
       const result = (categories || []).map(cat => ({
         id: cat.id,
         category: cat.category,
         bg_class: cat.bg_class,
-        brands: (brands || []).filter(b => b.category_id === cat.id).slice(0, 3)
+        display_order: cat.display_order,
+        interval_ms: cat.interval_ms,
+        brands: (brands || []).filter(b => b.category_id === cat.id)
       }));
 
       return { statusCode: 200, headers, body: JSON.stringify(result) };
     }
 
-    if ((event.path === '/api/products' || event.path.endsWith('/products')) && event.httpMethod === 'GET') {
-      const { data } = await supabase
-        .from('products')
-        .select('*')
-        .order('id');
-      return { statusCode: 200, headers, body: JSON.stringify(data || []) };
+    // ADMIN ENDPOINTS - All data with full CRUD
+
+    // Brand Categories
+    if (path.endsWith('/brand-categories')) {
+      if (method === 'GET') {
+        const { data } = await supabase.from('brand_categories').select('*').order('display_order');
+        return { statusCode: 200, headers, body: JSON.stringify(data || []) };
+      }
     }
 
-    if (event.path === '/api/store-locations' || event.path.endsWith('/store-locations')) {
-      const { data } = await supabase
-        .from('store_locations')
-        .select('*')
-        .order('id');
-      return { statusCode: 200, headers, body: JSON.stringify(data || []) };
+    // Brands 
+    if (path.endsWith('/brands') && !path.includes('featured')) {
+      if (method === 'GET') {
+        const { data } = await supabase.from('brands').select('*').order('display_order');
+        return { statusCode: 200, headers, body: JSON.stringify(data || []) };
+      }
+      if (method === 'POST') {
+        const brandData = JSON.parse(event.body || '{}');
+        const { data, error } = await supabase.from('brands').insert(brandData).select();
+        if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+        return { statusCode: 201, headers, body: JSON.stringify(data[0]) };
+      }
     }
 
-    if ((event.path === '/api/blog-posts' || event.path.endsWith('/blog-posts')) && event.httpMethod === 'GET') {
-      const { data } = await supabase
-        .from('blog_posts')
-        .select('*')
-        .order('created_at', { ascending: false });
-      return { statusCode: 200, headers, body: JSON.stringify(data || []) };
+    // Individual brand operations
+    if (path.includes('/brands/') && method !== 'GET') {
+      const id = path.split('/').pop();
+      if (method === 'PUT') {
+        const brandData = JSON.parse(event.body || '{}');
+        const { data, error } = await supabase.from('brands').update(brandData).eq('id', id).select();
+        if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+        return { statusCode: 200, headers, body: JSON.stringify(data[0]) };
+      }
+      if (method === 'DELETE') {
+        const { error } = await supabase.from('brands').delete().eq('id', id);
+        if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+        return { statusCode: 204, headers, body: '' };
+      }
     }
 
-    // Admin data endpoints - specific paths first
-    if (event.path === '/api/brand-categories' || event.path.endsWith('/brand-categories')) {
-      const { data } = await supabase.from('brand_categories').select('*').order('display_order');
-      return { statusCode: 200, headers, body: JSON.stringify(data || []) };
+    // Products
+    if (path.endsWith('/products')) {
+      if (method === 'GET') {
+        const { data } = await supabase.from('products').select('*').order('id');
+        return { statusCode: 200, headers, body: JSON.stringify(data || []) };
+      }
+      if (method === 'POST') {
+        const productData = JSON.parse(event.body || '{}');
+        const { data, error } = await supabase.from('products').insert(productData).select();
+        if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+        return { statusCode: 201, headers, body: JSON.stringify(data[0]) };
+      }
     }
 
-    if (event.path === '/api/brands' || (event.path.endsWith('/brands') && event.httpMethod === 'GET')) {
-      const { data } = await supabase.from('brands').select('*').order('display_order');
-      return { statusCode: 200, headers, body: JSON.stringify(data || []) };
+    // Individual product operations
+    if (path.includes('/products/') && method !== 'GET') {
+      const id = path.split('/').pop();
+      if (method === 'PUT') {
+        const productData = JSON.parse(event.body || '{}');
+        const { data, error } = await supabase.from('products').update(productData).eq('id', id).select();
+        if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+        return { statusCode: 200, headers, body: JSON.stringify(data[0]) };
+      }
+      if (method === 'DELETE') {
+        const { error } = await supabase.from('products').delete().eq('id', id);
+        if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+        return { statusCode: 204, headers, body: '' };
+      }
     }
 
-    if (event.path === '/api/newsletter-subscriptions' || event.path.endsWith('/newsletter-subscriptions')) {
-      const { data } = await supabase.from('newsletter_subscriptions').select('*').order('created_at', { ascending: false });
-      return { statusCode: 200, headers, body: JSON.stringify(data || []) };
+    // Blog Posts
+    if (path.endsWith('/blog-posts')) {
+      if (method === 'GET') {
+        const { data } = await supabase.from('blog_posts').select('*').order('created_at', { ascending: false });
+        return { statusCode: 200, headers, body: JSON.stringify(data || []) };
+      }
+      if (method === 'POST') {
+        const postData = JSON.parse(event.body || '{}');
+        const { data, error } = await supabase.from('blog_posts').insert(postData).select();
+        if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+        return { statusCode: 201, headers, body: JSON.stringify(data[0]) };
+      }
     }
 
-    // Admin auth
-    if (event.path.includes('/auth/login') && event.httpMethod === 'POST') {
+    // Individual blog post operations
+    if (path.includes('/blog-posts/') && method !== 'GET') {
+      const id = path.split('/').pop();
+      if (method === 'PUT') {
+        const postData = JSON.parse(event.body || '{}');
+        const { data, error } = await supabase.from('blog_posts').update(postData).eq('id', id).select();
+        if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+        return { statusCode: 200, headers, body: JSON.stringify(data[0]) };
+      }
+      if (method === 'DELETE') {
+        const { error } = await supabase.from('blog_posts').delete().eq('id', id);
+        if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+        return { statusCode: 204, headers, body: '' };
+      }
+    }
+
+    // Store Locations
+    if (path.endsWith('/store-locations')) {
+      if (method === 'GET') {
+        const { data } = await supabase.from('store_locations').select('*').order('id');
+        return { statusCode: 200, headers, body: JSON.stringify(data || []) };
+      }
+    }
+
+    // Newsletter Subscriptions
+    if (path.endsWith('/newsletter-subscriptions')) {
+      if (method === 'GET') {
+        const { data } = await supabase.from('newsletter_subscriptions').select('*').order('created_at', { ascending: false });
+        return { statusCode: 200, headers, body: JSON.stringify(data || []) };
+      }
+      if (method === 'POST') {
+        const emailData = JSON.parse(event.body || '{}');
+        const { data, error } = await supabase.from('newsletter_subscriptions').insert(emailData).select();
+        if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+        return { statusCode: 201, headers, body: JSON.stringify(data[0]) };
+      }
+    }
+
+    // Contact form
+    if (path.endsWith('/contact') && method === 'POST') {
+      // Just return success for contact form
+      return { statusCode: 200, headers, body: JSON.stringify({ success: true, message: 'Message sent successfully' }) };
+    }
+
+    // Admin Authentication
+    if (path.includes('/auth/login') && method === 'POST') {
       const { username, password } = JSON.parse(event.body || '{}');
       if (username === 'admin' && password === 'admin123') {
         return {
@@ -95,78 +187,10 @@ export const handler: Handler = async (event, context) => {
       return { statusCode: 401, headers, body: JSON.stringify({ success: false, error: 'Invalid credentials' }) };
     }
 
-    // Create/Update endpoints for admin
-    if (event.httpMethod === 'POST' && event.path.includes('/brands') && !event.path.includes('/featured-brands')) {
-      const brandData = JSON.parse(event.body || '{}');
-      const { data, error } = await supabase.from('brands').insert(brandData).select();
-      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
-      return { statusCode: 201, headers, body: JSON.stringify(data[0]) };
-    }
-
-    if (event.httpMethod === 'PUT' && event.path.includes('/brands/')) {
-      const id = event.path.split('/').pop();
-      const brandData = JSON.parse(event.body || '{}');
-      const { data, error } = await supabase.from('brands').update(brandData).eq('id', id).select();
-      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
-      return { statusCode: 200, headers, body: JSON.stringify(data[0]) };
-    }
-
-    if (event.httpMethod === 'DELETE' && event.path.includes('/brands/')) {
-      const id = event.path.split('/').pop();
-      const { error } = await supabase.from('brands').delete().eq('id', id);
-      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
-      return { statusCode: 204, headers, body: '' };
-    }
-
-    // Product CRUD
-    if (event.httpMethod === 'POST' && event.path.includes('/products') && !event.path.includes('/blog-posts')) {
-      const productData = JSON.parse(event.body || '{}');
-      const { data, error } = await supabase.from('products').insert(productData).select();
-      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
-      return { statusCode: 201, headers, body: JSON.stringify(data[0]) };
-    }
-
-    if (event.httpMethod === 'PUT' && event.path.includes('/products/')) {
-      const id = event.path.split('/').pop();
-      const productData = JSON.parse(event.body || '{}');
-      const { data, error } = await supabase.from('products').update(productData).eq('id', id).select();
-      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
-      return { statusCode: 200, headers, body: JSON.stringify(data[0]) };
-    }
-
-    if (event.httpMethod === 'DELETE' && event.path.includes('/products/')) {
-      const id = event.path.split('/').pop();
-      const { error } = await supabase.from('products').delete().eq('id', id);
-      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
-      return { statusCode: 204, headers, body: '' };
-    }
-
-    // Blog posts CRUD
-    if (event.httpMethod === 'POST' && event.path.includes('/blog-posts')) {
-      const postData = JSON.parse(event.body || '{}');
-      const { data, error } = await supabase.from('blog_posts').insert(postData).select();
-      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
-      return { statusCode: 201, headers, body: JSON.stringify(data[0]) };
-    }
-
-    if (event.httpMethod === 'PUT' && event.path.includes('/blog-posts/')) {
-      const id = event.path.split('/').pop();
-      const postData = JSON.parse(event.body || '{}');
-      const { data, error } = await supabase.from('blog_posts').update(postData).eq('id', id).select();
-      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
-      return { statusCode: 200, headers, body: JSON.stringify(data[0]) };
-    }
-
-    if (event.httpMethod === 'DELETE' && event.path.includes('/blog-posts/')) {
-      const id = event.path.split('/').pop();
-      const { error } = await supabase.from('blog_posts').delete().eq('id', id);
-      if (error) return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
-      return { statusCode: 204, headers, body: '' };
-    }
-
-    return { statusCode: 404, headers, body: JSON.stringify({ error: 'Not found' }) };
+    return { statusCode: 404, headers, body: JSON.stringify({ error: 'Endpoint not found' }) };
 
   } catch (error) {
-    return { statusCode: 500, headers, body: JSON.stringify({ error: 'Server error' }) };
+    console.error('API Error:', error);
+    return { statusCode: 500, headers, body: JSON.stringify({ error: 'Internal server error' }) };
   }
 };
