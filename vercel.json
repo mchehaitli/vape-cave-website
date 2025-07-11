@@ -6,7 +6,7 @@
       "use": "@vercel/node"
     },
     {
-      "src": "dist/public/**",
+      "src": "dist/public/**/*",
       "use": "@vercel/static"
     }
   ],
@@ -21,6 +21,7 @@
     }
   ],
   "env": {
-    "NODE_ENV": "production"
+    "SUPABASE_URL": "https://dwrpznnbcqrmgoqdnqpo.supabase.co",
+    "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3cnB6bm5iY3FybWdvcWRucXBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIxOTEyNTksImV4cCI6MjA2Nzc2NzI1OX0.epxb1h8fNOaP7JVDvtlm3jjsSqHnk3piU33Gn7AUZqM"
   }
 }
