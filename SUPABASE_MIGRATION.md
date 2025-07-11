@@ -77,18 +77,41 @@ Upload your React build to Supabase hosting.
 
 ## Ready to Start!
 
-**What you need to do:**
-1. Create your free Supabase account at supabase.com
-2. Create new project called "vape-cave-website"
-3. Share your Project URL and API keys with me
-4. I'll handle the complete migration
+### ✅ SETUP COMPLETE
+- [x] Supabase project created
+- [x] Environment variables configured
+- [x] Database schema ready
+- [x] Migration script prepared
+
+### 🔄 NEXT STEPS (Manual)
+
+**Step 1: Create Database Schema**
+1. Go to your Supabase dashboard: https://dwrpznnbcqrmgoqdnqpo.supabase.co
+2. Click "SQL Editor" in the sidebar
+3. Copy and paste the entire content from `supabase-schema.sql`
+4. Click "Run" to create all tables
+
+**Step 2: Migrate Data**
+After creating the schema, I'll run the migration script to transfer all your data.
+
+**Step 3: Test & Deploy**
+Once data is migrated, we'll test the connection and deploy your frontend.
+
+### 📋 Manual Task Required
+
+**Please complete Step 1 now:**
+- Open your Supabase SQL Editor
+- Run the `supabase-schema.sql` script
+- Confirm all tables are created
+
+Once you've done that, I'll immediately migrate all your data and complete the setup.
 
 **Benefits after migration:**
-- Zero hosting costs
-- Automatic backups
+- Zero hosting costs forever
+- Automatic database backups
 - Built-in admin panel
-- Real-time features
-- Better performance
-- Easier maintenance
+- Real-time features for inventory
+- Better performance and reliability
+- Single platform for everything
 
 The migration preserves all your data, SEO optimizations, and functionality while moving to a more reliable platform.
